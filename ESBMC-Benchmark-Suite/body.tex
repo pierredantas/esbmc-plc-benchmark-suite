@@ -409,7 +409,11 @@ independence. We therefore re-verified the twelve combinational interlock benchm
 bounded model checking. Because nuXmv accepts only its own SMV language, each program was
 translated from PLCopen~XML into an SMV module (inputs as free Boolean variables, coils as
 defined functions, the safety property as an \texttt{INVARSPEC})---a translation that is
-itself an instance of the fragmentation this suite documents. On all \textbf{24 variants
+itself an instance of the fragmentation this suite documents. The SMV models are generated
+systematically from the same rung structure as the PLCopen~XML and are released with the suite;
+their agreement with ESBMC-PLC on the \emph{native} XML is itself a cross-check on the
+translation, since a faulty transcription would in general perturb the verdict rather than
+preserve it across two unrelated engines. On all \textbf{24 variants
 nuXmv agrees with ESBMC-PLC and with the recorded ground truth}: every safe variant is
 proved and every faulted variant refuted. We additionally modelled three \emph{stateful}
 benchmarks---a seal-in latch and two edge detectors---as SMV transition systems that mirror
@@ -463,7 +467,12 @@ can change across tools' scan-cycle timing models---and the ten Structured-Text 
 non-termination and multi-POU structure we do not yet encode for a second checker. The empirical
 claims above concern the validated set; the candidate verdicts are flagged as such so that no
 result rests on an unconfirmed label, and their tool-confirmation follows the porting protocol
-released with the suite. Marking semantics-dependent verdicts \emph{candidate} rather than
+released with the suite. The validated verdicts span all ten domains and both provenance classes
+(22 of 31 authored, 9 of 19 third-party); the candidate set is not concentrated in any industrial
+domain but in two program \emph{kinds}---the timer/counter/latch feature benchmarks and the
+Structured-Text programs---and each benchmark's status is recorded per task, so a reader can
+reweight results by domain or provenance from the released data. Marking semantics-dependent
+verdicts \emph{candidate} rather than
 forcing them through one tool's timer model is itself a consequence of the paper's thesis: where
 tools disagree on meaning, a single ``ground truth'' is the wrong abstraction.
 
@@ -559,10 +568,17 @@ provenance a first-class, recorded property of every task, established by constr
 injection, or audited cross-tool consensus---a discipline we believe any verification benchmark,
 in any domain, should adopt.
 
-The suite is designed to grow. Natural next steps are broadening the fault model beyond the
-non-termination bombs that dominate the available public corpora, adding programs exported from
-proprietary vendor toolchains to widen manufacturer coverage, and enlarging the corpus toward the
-scale needed for a standing competition category. By releasing the benchmarks, property files,
+The suite is designed to grow. Two commitments follow directly from this release. First, we will
+tool-confirm the nineteen candidate verdicts under each tool's own semantics, using the porting
+protocol shipped with the suite---accepting, per our per-tool-verdict stance, that a
+timer-dependent verdict may legitimately differ between tools and recording both. Second, once the
+corpus is normalised to a single PLCopen~XML form that every front-end accepts, we will run a full
+multi-tool matrix---PLCverif and nuXmv alongside ESBMC-PLC---turning the partial cross-tool
+comparison of \S\ref{sec:eval} into a complete one. Beyond these, natural next steps are broadening
+the fault model beyond the non-termination bombs that dominate the available public corpora, adding
+programs exported from proprietary vendor toolchains to widen manufacturer coverage, and enlarging
+the corpus toward the scale needed for a standing competition category. By releasing the
+benchmarks, property files,
 witnesses, schema, and harness under a citable DOI, we intend the suite to serve as a shared,
 extensible foundation on which the PLC formal-verification community can measure and compare its
 progress.
