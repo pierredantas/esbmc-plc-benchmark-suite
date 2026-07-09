@@ -62,10 +62,12 @@ unexamined guess.
     \S\ref{sec:groundtruth}): a schema-validated task layout and a one-command runner that
     re-checks every verdict, letting new tools plug in via adapters and enabling a PLC/ICS
     competition category.
-  \item \textbf{Baseline results} (\S\ref{sec:eval}) for open PLC verifiers on the full
-    suite, establishing reference verdicts and quantifying the input-format fragmentation
-    that today prevents any single tool from running on all programs (\S\ref{sec:eval}: 43/45
-    graphical variants match ground truth on ESBMC-PLC v8.4 (all 25 graphical benchmarks)).
+  \item \textbf{Cross-tool baseline results} (\S\ref{sec:eval}) on the full suite: all 25
+    graphical benchmarks are verified by ESBMC-PLC~v8.4 (43/45 accepted variants match ground
+    truth), and an independent model checker (nuXmv) agrees on all 24 interlock variants, an
+    architecturally independent confirmation of the ground truth. The evaluation also quantifies
+    the input-format fragmentation that today prevents any single tool from running on all
+    programs.
 \end{itemize}
 
 \medskip\noindent

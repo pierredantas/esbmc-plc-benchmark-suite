@@ -67,7 +67,10 @@ property would have mislabelled every attack in two public logic-bomb corpora as
 because the injected defect is a non-terminating loop that the obvious property cannot see.
 We establish reference verdicts with a from-source build of ESBMC-PLC~v8.4: all 25 graphical
 benchmarks run, and 43 of 45 accepted variants match the recorded verdict with no
-disagreements. Porting the textual and Structured-Text benchmarks surfaces a
+disagreements. An independent model checker (nuXmv), whose decision procedure is unrelated to
+ESBMC's, agrees on all 24 interlock variants, evidence that the ground truth is tool-neutral
+rather than an artifact of the tool that helped establish it. Porting the textual and
+Structured-Text benchmarks surfaces a
 \emph{format-and-semantics} fragmentation---one tool's front-end admits a single
 serialization, and even the meaning of a standard timer is not agreed across tools---which
 is itself the phenomenon the suite is designed to expose. The corpus, schema, validator,
