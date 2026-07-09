@@ -1,0 +1,18 @@
+format_version: "0.1"
+id: ld_ton_single
+name: "ton single (K-LD feature benchmark)"
+domain: hvac
+language: LD-textual
+source:
+  origin: authored
+  reference: "K-LD executable-semantics feature suite (rung10_wp2/family)"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: ton_single.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [ton, contacts, coils]
+difficulty: easy
+tags: [feature, semantics]

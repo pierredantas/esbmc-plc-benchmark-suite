@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [heat, cool]
+    justification: "Heating and cooling must never drive the plant simultaneously."

@@ -1,0 +1,18 @@
+format_version: "0.1"
+id: ld_ton_chain2
+name: "ton chain2 (K-LD feature benchmark)"
+domain: manufacturing
+language: LD-textual
+source:
+  origin: authored
+  reference: "K-LD executable-semantics feature suite (rung10_wp2/family)"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: ton_chain2.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [ton, contacts, coils]
+difficulty: easy
+tags: [feature, semantics]

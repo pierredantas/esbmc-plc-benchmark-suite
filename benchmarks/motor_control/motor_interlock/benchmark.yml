@@ -1,0 +1,32 @@
+format_version: "0.1"
+id: motor_interlock
+name: "Forward/reverse motor interlock"
+domain: motor_control
+language: ST
+source:
+  origin: plc-sec
+  reference: "ESBMC-PLC-Sec benchmark S2 (motor interlock, secret-knock LLB)"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: clean.st
+    expected_verdict: true            # SAFE: interlock holds for all reachable scans
+    ground_truth:
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc+, nuxmv]
+  - file: bomb.st
+    expected_verdict: false           # VIOLATION: secret knock energises both motors
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.st
+      seeded_defect: "Added rung: IF fwd AND rev AND maint THEN Motor_A:=TRUE; Motor_B:=TRUE; (bypasses interlock)."
+      witness: "fwd=1, rev=1, maint=1 reaches Motor_A AND Motor_B (measure-zero knock, never exercised by normal operation)."
+metrics:
+  rungs: 3
+  loc: 24
+  pous: 1
+  variables: 5
+features: [contacts, coils, comparison]
+difficulty: easy
+tags: [safety, interlock, security, llb]

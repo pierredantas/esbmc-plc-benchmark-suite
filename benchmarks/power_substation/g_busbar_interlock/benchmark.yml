@@ -1,0 +1,26 @@
+format_version: "0.1"
+id: g_busbar_interlock
+name: "busbar interlock interlock (graphical LD)"
+domain: power_substation
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored for the P6 suite to cover this domain with genuine control logic"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: clean.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+  - file: bomb.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.xml
+      seeded_defect: "Added a maintenance-key OR-branch that bypasses the interlock under a secret maintenance combination."
+      witness: "maint=1 with the conflicting request drives the output into the forbidden state."
+features: [contacts, coils]
+difficulty: medium
+tags: [safety, interlock, security, llb, authored]

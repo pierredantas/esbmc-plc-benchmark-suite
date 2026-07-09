@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: sensor_forge
+name: "sensor forge"
+domain: water_treatment
+language: ST
+source:
+  origin: plc-sec
+  reference: "ESBMC-PLC-Sec curated benchmark"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: clean.st
+    expected_verdict: true
+    ground_truth:
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc+]
+  - file: bomb.st
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: "clean.st"
+      seeded_defect: "Added logic that forges the reported valve state so the HMI shows 'open' while the actuator is commanded closed."
+      witness: "A trace reaching reported_open AND NOT valve_open."
+features: [contacts, coils]
+difficulty: medium
+tags: [safety, security, llb, integrity]

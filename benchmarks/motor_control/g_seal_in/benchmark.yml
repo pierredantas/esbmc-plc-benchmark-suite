@@ -1,0 +1,19 @@
+format_version: "0.1"
+id: g_seal_in
+name: "seal in (graphical LD twin)"
+domain: motor_control
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Graphical PLCopen XML twin of the K-LD textual benchmark (syntax-coverage pair)"
+  license: CC-BY-4.0
+properties_file: props.yaml
+syntax_pair_of: ld_seal_in
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [contacts, coils]
+difficulty: easy
+tags: [feature, semantics, syntax-pair]

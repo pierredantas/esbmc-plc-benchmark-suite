@@ -1,0 +1,18 @@
+format_version: "0.1"
+id: ld_ctu_saturate
+name: "ctu saturate (K-LD feature benchmark)"
+domain: packaging
+language: LD-textual
+source:
+  origin: authored
+  reference: "K-LD executable-semantics feature suite (rung10_wp2/family)"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: ctu_saturate.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [ctu, contacts, coils]
+difficulty: easy
+tags: [feature, semantics]

@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!Y OR A OR C"
+    justification: "Output Y can be energised only through input A or C (series/parallel with a negated contact)."

@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(conveyor AND estop)"
+    justification: "The conveyor must never run while emergency-stop is active."

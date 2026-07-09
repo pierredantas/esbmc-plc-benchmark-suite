@@ -1,0 +1,5 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: termination
+    justification: "Every PLC scan cycle must complete (no non-terminating loop). The malicious variant injects a Govil et al. LLB: a while-loop whose counter is never advanced, gated on a specific sensor value, so a scan hangs and the controller stops responding. Program context: Sensor value-filtering stage before the valve logic."

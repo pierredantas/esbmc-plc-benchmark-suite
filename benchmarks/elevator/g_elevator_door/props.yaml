@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [door_open, drive]
+    justification: "The door must never be open while the car is driving."

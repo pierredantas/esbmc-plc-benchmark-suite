@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(Alarm AND Ack)"
+    justification: "Acknowledge is dominant: the latched alarm and Ack never hold together."

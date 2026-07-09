@@ -1,0 +1,18 @@
+format_version: "0.1"
+id: ld_latch_basic
+name: "latch basic (K-LD feature benchmark)"
+domain: motor_control
+language: LD-textual
+source:
+  origin: authored
+  reference: "K-LD executable-semantics feature suite (rung10_wp2/family)"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: latch_basic.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [latch, contacts, coils]
+difficulty: easy
+tags: [feature, semantics]

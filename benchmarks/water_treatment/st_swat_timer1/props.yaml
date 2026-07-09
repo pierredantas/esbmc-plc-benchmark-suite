@@ -1,0 +1,5 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: termination
+    justification: "Every PLC scan cycle across the multi-PLC SWaT controller must complete. The malicious variant injects a Govil et al. LLB: a while-loop whose value never crosses the exit bound (e.g. i := i*i starting from 0), gated on a specific sensor value, so a scan hangs."

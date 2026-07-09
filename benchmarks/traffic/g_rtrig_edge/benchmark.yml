@@ -1,0 +1,19 @@
+format_version: "0.1"
+id: g_rtrig_edge
+name: "rtrig edge (graphical LD twin)"
+domain: traffic
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Graphical PLCopen XML twin of the K-LD textual benchmark (syntax-coverage pair)"
+  license: CC-BY-4.0
+properties_file: props.yaml
+syntax_pair_of: ld_rtrig_edge
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [contacts, coils]
+difficulty: easy
+tags: [feature, semantics, syntax-pair]

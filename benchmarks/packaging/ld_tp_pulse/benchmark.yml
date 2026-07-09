@@ -1,0 +1,18 @@
+format_version: "0.1"
+id: ld_tp_pulse
+name: "tp pulse (K-LD feature benchmark)"
+domain: packaging
+language: LD-textual
+source:
+  origin: authored
+  reference: "K-LD executable-semantics feature suite (rung10_wp2/family)"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: tp_pulse.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [tp, contacts, coils]
+difficulty: easy
+tags: [feature, semantics]

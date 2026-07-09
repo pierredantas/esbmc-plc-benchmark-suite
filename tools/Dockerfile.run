@@ -1,0 +1,8 @@
+FROM ubuntu:22.04
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libboost-all-dev python3 python3-yaml ca-certificates && rm -rf /var/lib/apt/lists/*
+COPY esbmc-linux-amd64 /usr/local/bin/esbmc
+COPY libz3.so /usr/local/lib/libz3.so
+RUN chmod +x /usr/local/bin/esbmc && ldconfig
+ENV LD_LIBRARY_PATH=/usr/local/lib

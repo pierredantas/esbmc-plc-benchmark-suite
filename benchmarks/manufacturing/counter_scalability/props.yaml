@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(pump AND level_high)"
+    justification: "Overflow guard; here evaluated across counter-fuse widths to measure detection cost vs. scale."

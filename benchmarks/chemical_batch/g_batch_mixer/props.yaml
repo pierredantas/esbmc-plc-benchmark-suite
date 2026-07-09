@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(mixer AND lid_open)"
+    justification: "The mixer must never run while the lid is open."

@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(lights AND master_off)"
+    justification: "The master-off override must always de-energise the lights."

@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: tank_overflow
+name: "tank overflow"
+domain: water_treatment
+language: ST
+source:
+  origin: plc-sec
+  reference: "ESBMC-PLC-Sec curated benchmark"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: clean.st
+    expected_verdict: true
+    ground_truth:
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc+]
+  - file: bomb.st
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: "clean.st"
+      seeded_defect: "Added trigger rung that energises the fill pump while level_high, bypassing the overflow guard."
+      witness: "A trace reaching pump AND level_high (the LLB arming sequence)."
+features: [comparison, contacts, coils]
+difficulty: medium
+tags: [safety, security, llb, overflow]

@@ -1,0 +1,18 @@
+format_version: "0.1"
+id: ld_rtrig_edge
+name: "rtrig edge (K-LD feature benchmark)"
+domain: traffic
+language: LD-textual
+source:
+  origin: authored
+  reference: "K-LD executable-semantics feature suite (rung10_wp2/family)"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: rtrig_edge.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [edge_rising, contacts, coils]
+difficulty: easy
+tags: [feature, semantics]

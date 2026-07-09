@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!Open OR (A AND B)"
+    justification: "The Open coil is energised only when both series contacts A and B are closed."

@@ -1,0 +1,32 @@
+format_version: "0.1"
+id: g_motor_interlock
+name: "Forward/reverse motor interlock (graphical LD)"
+domain: motor_control
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Graphical PLCopen XML twin of benchmark 'motor_interlock' (syntax-coverage pair)"
+  license: CC-BY-4.0
+properties_file: ../motor_interlock/props.yaml   # inherited from the textual twin
+syntax_pair_of: motor_interlock
+variants:
+  - file: clean.xml
+    expected_verdict: true
+    ground_truth:
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc+]
+  - file: bomb.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.xml
+      seeded_defect: "Added OR-branch (fwd AND rev AND maint) into both Motor_A and Motor_B coils, bypassing the interlock."
+      witness: "fwd=1, rev=1, maint=1 reaches Motor_A AND Motor_B."
+metrics:
+  rungs: 2
+  pous: 1
+  variables: 5
+features: [contacts, coils]
+difficulty: easy
+tags: [safety, interlock, security, llb, syntax-pair]

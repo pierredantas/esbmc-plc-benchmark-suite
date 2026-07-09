@@ -1,0 +1,56 @@
+# P6 Suite Index (50 benchmarks / 83 variants)
+
+Auto-generated. Composition: 15 LD-textual · 25 LD-graphical · 10 ST across 10 domains.
+
+| domain | language | id | variants | verdicts | difficulty |
+|---|---|---|---|---|---|
+| building_automation | LD-graphical | `g_building_lighting` | 2 | SAFE/VIOL | easy |
+| building_automation | LD-textual | `ld_comb_mixed` | 1 | SAFE | easy |
+| building_automation | LD-textual | `ld_comb_or` | 1 | SAFE | easy |
+| chemical_batch | LD-graphical | `g_batch_mixer` | 2 | SAFE/VIOL | medium |
+| chemical_batch | LD-graphical | `g_batch_reactor` | 2 | SAFE/VIOL | medium |
+| elevator | LD-graphical | `g_elevator_door` | 2 | SAFE/VIOL | easy |
+| elevator | LD-textual | `ld_ctd_load` | 1 | SAFE | easy |
+| elevator | LD-textual | `ld_timer_latch_mix` | 1 | SAFE | easy |
+| hvac | LD-graphical | `g_hvac_fan_delay` | 2 | SAFE/VIOL | easy |
+| hvac | LD-textual | `ld_tof_hold` | 1 | SAFE | easy |
+| hvac | LD-textual | `ld_ton_single` | 1 | SAFE | easy |
+| manufacturing | LD-graphical | `g_comb_and` | 1 | SAFE | easy |
+| manufacturing | LD-graphical | `g_conveyor_interlock` | 2 | SAFE/VIOL | medium |
+| manufacturing | LD-graphical | `g_ppu_evolution_1` | 1 | SAFE | easy |
+| manufacturing | LD-textual | `ld_comb_and` | 1 | SAFE | easy |
+| manufacturing | LD-textual | `ld_ton_chain2` | 1 | SAFE | easy |
+| manufacturing | ST | `counter_scalability` | 5 | VIOL/VIOL/VIOL/VIOL/VIOL | medium |
+| motor_control | LD-graphical | `g_motor_interlock` | 2 | SAFE/VIOL | easy |
+| motor_control | LD-graphical | `g_seal_in` | 1 | SAFE | easy |
+| motor_control | LD-textual | `ld_latch_basic` | 1 | SAFE | easy |
+| motor_control | LD-textual | `ld_seal_in` | 1 | SAFE | easy |
+| motor_control | ST | `motor_interlock` | 2 | SAFE/VIOL | easy |
+| packaging | LD-graphical | `g_ftrig_edge` | 1 | SAFE | easy |
+| packaging | LD-graphical | `g_packaging_filler` | 2 | SAFE/VIOL | medium |
+| packaging | LD-textual | `ld_ctu_saturate` | 1 | SAFE | easy |
+| packaging | LD-textual | `ld_ftrig_edge` | 1 | SAFE | easy |
+| packaging | LD-textual | `ld_tp_pulse` | 1 | SAFE | easy |
+| power_substation | LD-graphical | `g_busbar_interlock` | 2 | SAFE/VIOL | medium |
+| power_substation | LD-graphical | `g_substation_breaker` | 2 | SAFE/VIOL | medium |
+| power_substation | LD-graphical | `g_transformer_protect` | 2 | SAFE/VIOL | medium |
+| traffic | LD-graphical | `g_rtrig_edge` | 1 | SAFE | easy |
+| traffic | LD-graphical | `g_traffic_light` | 2 | SAFE/VIOL | easy |
+| traffic | LD-textual | `ld_edge_counter` | 1 | SAFE | easy |
+| traffic | LD-textual | `ld_rtrig_edge` | 1 | SAFE | easy |
+| water_treatment | LD-graphical | `g_tank_assignment` | 2 | SAFE/VIOL | medium |
+| water_treatment | LD-graphical | `g_tank_start_eq` | 2 | SAFE/VIOL | medium |
+| water_treatment | LD-graphical | `g_tank_start_le` | 2 | SAFE/VIOL | medium |
+| water_treatment | LD-graphical | `g_tank_stop_ge` | 2 | SAFE/VIOL | medium |
+| water_treatment | LD-graphical | `g_tank_sub_function` | 2 | SAFE/VIOL | medium |
+| water_treatment | LD-graphical | `g_tank_substitution_coil` | 2 | SAFE/VIOL | medium |
+| water_treatment | LD-graphical | `g_tank_value_filtering` | 2 | SAFE/VIOL | medium |
+| water_treatment | LD-graphical | `g_tank_valves` | 2 | SAFE/VIOL | medium |
+| water_treatment | ST | `sensor_forge` | 2 | SAFE/VIOL | medium |
+| water_treatment | ST | `st_swat_eq1` | 2 | SAFE/VIOL | hard |
+| water_treatment | ST | `st_swat_ge1` | 2 | SAFE/VIOL | hard |
+| water_treatment | ST | `st_swat_le1` | 2 | SAFE/VIOL | hard |
+| water_treatment | ST | `st_swat_level1` | 2 | SAFE/VIOL | hard |
+| water_treatment | ST | `st_swat_sub1` | 2 | SAFE/VIOL | hard |
+| water_treatment | ST | `st_swat_timer1` | 2 | SAFE/VIOL | hard |
+| water_treatment | ST | `tank_overflow` | 2 | SAFE/VIOL | medium |

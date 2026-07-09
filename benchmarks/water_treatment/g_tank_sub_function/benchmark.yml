@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_tank_sub_function
+name: "Tank valve controller — sub function (graphical LD)"
+domain: water_treatment
+language: LD-graphical
+source:
+  origin: plc-ld-dataset
+  reference: "PLC-LD-dataset (Iacobelli et al.); legitimate/malicious LLB pair, PLCopen XML"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: legitimate_lsub_function.xml
+    expected_verdict: true
+    ground_truth:
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc+]
+  - file: malicious_msub_function.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: legitimate_lsub_function.xml
+      seeded_defect: "Injected non-terminating while-loop (loop counter never incremented), gated on a trigger sensor value."
+      witness: "A trigger input (e.g. IN1=12) enters the loop that never exits; the scan-watchdog flags the hang."
+features: [function_block, arithmetic_int]
+difficulty: medium
+tags: [security, llb, non-termination]

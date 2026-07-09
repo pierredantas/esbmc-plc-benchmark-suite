@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [feeder_a, feeder_b]
+    justification: "Two feeders must never energise the bus in parallel."

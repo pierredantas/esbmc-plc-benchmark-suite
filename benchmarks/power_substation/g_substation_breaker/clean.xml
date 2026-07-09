@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="S3 Group, University of Manchester" productName="ESBMC-PLC P6 Suite" productVersion="1.0" creationDateTime="2026-07-09T00:00:00" />
+  <contentHeader name="g_substation_breaker_clean"><coordinateInfo><ld><scaling x="1" y="1" /></ld></coordinateInfo></contentHeader>
+  <types><dataTypes /><pous>
+    <pou name="g_substation_breaker_clean" pouType="program">
+      <interface><inputVars><variable name="close_cmd"><type><BOOL /></type></variable><variable name="fault"><type><BOOL /></type></variable><variable name="lockout"><type><BOOL /></type></variable><variable name="maint"><type><BOOL /></type></variable></inputVars><outputVars><variable name="breaker_closed"><type><BOOL /></type></variable><variable name="alarm"><type><BOOL /></type></variable></outputVars></interface>
+      <body><LD>
+        <leftPowerRail localId="0"><position x="0" y="0" /><connectionPointOut formalParameter="none" /></leftPowerRail>
+        <contact localId="3" negated="true" storage="none" edge="none"><position x="20" y="10" /><connectionPointIn><connection refLocalId="0" /></connectionPointIn><connectionPointOut /><variable>fault</variable></contact><contact localId="4" negated="false" storage="none" edge="none"><position x="40" y="10" /><connectionPointIn><connection refLocalId="3" /></connectionPointIn><connectionPointOut /><variable>close_cmd</variable></contact><contact localId="5" negated="true" storage="none" edge="none"><position x="60" y="10" /><connectionPointIn><connection refLocalId="4" /></connectionPointIn><connectionPointOut /><variable>lockout</variable></contact><coil localId="6" negated="false" storage="none"><position x="80" y="10" /><connectionPointIn><connection refLocalId="5" /></connectionPointIn><connectionPointOut /><variable>breaker_closed</variable></coil><contact localId="7" negated="false" storage="none" edge="none"><position x="20" y="30" /><connectionPointIn><connection refLocalId="0" /></connectionPointIn><connectionPointOut /><variable>fault</variable></contact><coil localId="8" negated="false" storage="none"><position x="40" y="30" /><connectionPointIn><connection refLocalId="7" /></connectionPointIn><connectionPointOut /><variable>alarm</variable></coil>
+        <rightPowerRail localId="2147483646"><position x="400" y="0" /><connectionPointIn /></rightPowerRail>
+      </LD></body>
+    </pou>
+  </pous></types>
+  <instances><configurations><configuration name="Config0"><resource name="Res0">
+    <task name="tcyclic" interval="PT0.01S" priority="0"><pouInstance name="inst0" typeName="g_substation_breaker_clean" /></task>
+  </resource></configuration></configurations></instances>
+</project>

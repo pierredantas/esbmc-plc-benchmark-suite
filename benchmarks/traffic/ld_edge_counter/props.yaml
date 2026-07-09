@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(Full AND Reset)"
+    justification: "Reset is dominant: the counter Full flag and Reset never hold together."

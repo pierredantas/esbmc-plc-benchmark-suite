@@ -1,0 +1,18 @@
+format_version: "0.1"
+id: g_ppu_evolution_1
+name: "PPU LD evolution 1 (graphical LD)"
+domain: manufacturing
+language: LD-graphical
+source:
+  origin: ppu
+  reference: "IEC 61131-3 clone-detection corpus (PPU, TwinCAT export), LD_EVOLUTION_1"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: evolution_1.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [contacts, coils]
+difficulty: easy
+tags: [pick-and-place, clone-corpus]

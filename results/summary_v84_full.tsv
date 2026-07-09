@@ -1,0 +1,84 @@
+id	variant	expected	got	status	reason
+g_building_lighting	clean.xml	true	true	OK	
+g_building_lighting	bomb.xml	false	false	OK	
+ld_comb_mixed	comb_mixed.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+ld_comb_or	comb_or.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+g_batch_mixer	clean.xml	true	true	OK	
+g_batch_mixer	bomb.xml	false	false	OK	
+g_batch_reactor	clean.xml	true	true	OK	
+g_batch_reactor	bomb.xml	false	false	OK	
+g_elevator_door	clean.xml	true	true	OK	
+g_elevator_door	bomb.xml	false	false	OK	
+ld_ctd_load	ctd_load.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+ld_timer_latch_mix	timer_latch_mix.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+g_hvac_fan_delay	clean.xml	true	true	OK	
+g_hvac_fan_delay	bomb.xml	false	false	OK	
+ld_tof_hold	tof_hold.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+ld_ton_single	ton_single.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+counter_scalability	bomb_N00255.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+counter_scalability	bomb_N01023.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+counter_scalability	bomb_N04095.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+counter_scalability	bomb_N16383.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+counter_scalability	bomb_N32767.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+g_comb_and	program.xml	true	true	OK	
+g_conveyor_interlock	clean.xml	true	true	OK	
+g_conveyor_interlock	bomb.xml	false	false	OK	
+g_ppu_evolution_1	evolution_1.xml	true	true	OK	
+ld_comb_and	comb_and.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+ld_ton_chain2	ton_chain2.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+g_motor_interlock	clean.xml	true	true	OK	
+g_motor_interlock	bomb.xml	false	false	OK	
+g_seal_in	program.xml	true	true	OK	
+ld_latch_basic	latch_basic.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+ld_seal_in	seal_in.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+motor_interlock	clean.st	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+motor_interlock	bomb.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+g_ftrig_edge	program.xml	true	unknown	UNKNOWN	
+g_packaging_filler	clean.xml	true	true	OK	
+g_packaging_filler	bomb.xml	false	false	OK	
+ld_ctu_saturate	ctu_saturate.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+ld_ftrig_edge	ftrig_edge.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+ld_tp_pulse	tp_pulse.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+g_busbar_interlock	clean.xml	true	true	OK	
+g_busbar_interlock	bomb.xml	false	false	OK	
+g_substation_breaker	clean.xml	true	true	OK	
+g_substation_breaker	bomb.xml	false	false	OK	
+g_transformer_protect	clean.xml	true	true	OK	
+g_transformer_protect	bomb.xml	false	false	OK	
+g_rtrig_edge	program.xml	true	unknown	UNKNOWN	
+g_traffic_light	clean.xml	true	true	OK	
+g_traffic_light	bomb.xml	false	false	OK	
+ld_edge_counter	edge_counter.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+ld_rtrig_edge	rtrig_edge.ld	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+g_tank_assignment	legitimate_lassignment.xml	true	true	OK	
+g_tank_assignment	malicious_massignment.xml	false	false	OK	
+g_tank_start_eq	legitimate_lstart_eq.xml	true	true	OK	
+g_tank_start_eq	malicious_mstart_eq.xml	false	false	OK	
+g_tank_start_le	legitimate_lstart_le.xml	true	true	OK	
+g_tank_start_le	malicious_mstart_le.xml	false	false	OK	
+g_tank_stop_ge	legitimate_lstop_ge.xml	true	true	OK	
+g_tank_stop_ge	malicious_mstop_ge.xml	false	false	OK	
+g_tank_sub_function	legitimate_lsub_function.xml	true	true	OK	
+g_tank_sub_function	malicious_msub_function.xml	false	false	OK	
+g_tank_substitution_coil	legitimate_lsubstitution_coil.xml	true	true	OK	
+g_tank_substitution_coil	malicious_msubstitution_coil.xml	false	false	OK	
+g_tank_value_filtering	legitimate_lvalue_filtering.xml	true	true	OK	
+g_tank_value_filtering	malicious_mvalue_filtering.xml	false	false	OK	
+g_tank_valves	legitimate_lvalves_handler.xml	true	true	OK	
+g_tank_valves	malicious_mvalves_handler.xml	false	false	OK	
+sensor_forge	clean.st	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+sensor_forge	bomb.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+st_swat_eq1	sleg_EQ1_0.st	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+st_swat_eq1	smal_EQ1_0.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+st_swat_ge1	sleg_GE1_0.st	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+st_swat_ge1	smal_GE1_0.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+st_swat_le1	sleg_LE1_0.st	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+st_swat_le1	smal_LE1_0.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+st_swat_level1	sleg_level1_0.st	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+st_swat_level1	smal_level1_0.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+st_swat_sub1	sleg_sub1_0.st	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+st_swat_sub1	smal_sub1_0.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+st_swat_timer1	sleg_timer1_0.st	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+st_swat_timer1	smal_timer1_0.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+tank_overflow	clean.st	True	-	SKIP	input not PLCopen XML (.st/.ld DSL)
+tank_overflow	bomb.st	False	-	SKIP	input not PLCopen XML (.st/.ld DSL)

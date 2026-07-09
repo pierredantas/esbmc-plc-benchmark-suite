@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!Light OR Btn"
+    justification: "The on-delay light can be on only while the button is (or was recently) pressed."

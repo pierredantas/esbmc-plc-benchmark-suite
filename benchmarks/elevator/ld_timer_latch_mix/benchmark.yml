@@ -1,0 +1,18 @@
+format_version: "0.1"
+id: ld_timer_latch_mix
+name: "timer latch mix (K-LD feature benchmark)"
+domain: elevator
+language: LD-textual
+source:
+  origin: authored
+  reference: "K-LD executable-semantics feature suite (rung10_wp2/family)"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: timer_latch_mix.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [ton, latch, contacts, coils]
+difficulty: easy
+tags: [feature, semantics]

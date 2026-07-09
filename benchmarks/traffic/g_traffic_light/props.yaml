@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [ns_green, ew_green]
+    justification: "Conflicting green phases must never be energised simultaneously."

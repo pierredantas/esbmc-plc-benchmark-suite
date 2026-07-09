@@ -1,0 +1,11 @@
+format_version: "0.1"
+# Applies to both variants (clean.st -> SAFE, bomb.st -> VIOLATION of P1 via P2 witness).
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [Motor_A, Motor_B]
+    justification: "Forward/reverse contactors must never be energised together (contactor short / mechanical damage)."
+  - id: P2
+    kind: reachability
+    expression: "Motor_A AND Motor_B"
+    justification: "Trigger synthesis: a witness recovers the secret-knock input combination that violates the interlock."

@@ -1,0 +1,49 @@
+format_version: "0.1"
+id: counter_scalability
+name: "counter scalability"
+domain: manufacturing
+language: ST
+source:
+  origin: plc-sec
+  reference: "ESBMC-PLC-Sec curated benchmark"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: bomb_N00255.st
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: expert
+      seeded_defect: "Counter-fused overflow bomb, fuse width N=255 (by construction VIOLATION)."
+      witness: "A trace that arms pump AND level_high once the counter fuse elapses."
+  - file: bomb_N01023.st
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: expert
+      seeded_defect: "Counter-fused overflow bomb, fuse width N=1023 (by construction VIOLATION)."
+      witness: "A trace that arms pump AND level_high once the counter fuse elapses."
+  - file: bomb_N04095.st
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: expert
+      seeded_defect: "Counter-fused overflow bomb, fuse width N=4095 (by construction VIOLATION)."
+      witness: "A trace that arms pump AND level_high once the counter fuse elapses."
+  - file: bomb_N16383.st
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: expert
+      seeded_defect: "Counter-fused overflow bomb, fuse width N=16383 (by construction VIOLATION)."
+      witness: "A trace that arms pump AND level_high once the counter fuse elapses."
+  - file: bomb_N32767.st
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: expert
+      seeded_defect: "Counter-fused overflow bomb, fuse width N=32767 (by construction VIOLATION)."
+      witness: "A trace that arms pump AND level_high once the counter fuse elapses."
+features: [ctu, comparison]
+difficulty: medium
+tags: [scalability, security, llb]

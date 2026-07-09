@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://esbmc-plc.org/p6/benchmark.schema.json",
+  "title": "P6 benchmark descriptor (benchmark.yml)",
+  "type": "object",
+  "required": ["format_version", "id", "name", "domain", "language", "source", "properties_file", "variants"],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": { "type": "string" },
+    "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "name": { "type": "string" },
+    "domain": {
+      "type": "string",
+      "enum": ["water_treatment", "motor_control", "manufacturing", "chemical_batch",
+               "hvac", "packaging", "elevator", "traffic", "building_automation", "power_substation"]
+    },
+    "language": { "type": "string", "enum": ["LD-textual", "LD-graphical", "ST", "FBD", "SFC"] },
+    "source": {
+      "type": "object",
+      "required": ["origin", "license"],
+      "additionalProperties": false,
+      "properties": {
+        "origin": {
+          "type": "string",
+          "enum": ["authored", "openplc", "beremiz", "ppu", "swat", "mathworks", "controllino", "plc-ld-dataset", "plc-sec"]
+        },
+        "reference": { "type": "string" },
+        "license": { "type": "string" }
+      }
+    },
+    "properties_file": { "type": "string" },
+    "syntax_pair_of": { "type": "string", "description": "id of the twin benchmark in the other syntax, if this is a syntax-coverage pair" },
+    "variants": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/variant" }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rungs": { "type": "integer" },
+        "loc": { "type": "integer" },
+        "pous": { "type": "integer" },
+        "variables": { "type": "integer" }
+      }
+    },
+    "features": { "type": "array", "items": { "type": "string" } },
+    "difficulty": { "type": "string", "enum": ["easy", "medium", "hard", "challenge"] },
+    "tags": { "type": "array", "items": { "type": "string" } }
+  },
+  "$defs": {
+    "variant": {
+      "type": "object",
+      "required": ["file", "expected_verdict", "ground_truth"],
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string" },
+        "expected_verdict": { "type": "boolean", "description": "true = SAFE (all properties hold); false = VIOLATION" },
+        "violated_properties": { "type": "array", "items": { "type": "string", "pattern": "^P[0-9]+$" } },
+        "ground_truth": {
+          "type": "object",
+          "required": ["method"],
+          "additionalProperties": false,
+          "properties": {
+            "method": { "type": "string", "enum": ["expert", "cross-tool-consensus", "fault-injection"] },
+            "confirmed_by": { "type": "array", "items": { "type": "string" } },
+            "base_variant": { "type": "string" },
+            "seeded_defect": { "type": "string" },
+            "witness": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

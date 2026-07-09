@@ -1,0 +1,18 @@
+format_version: "0.1"
+id: ld_comb_or
+name: "comb or (K-LD feature benchmark)"
+domain: building_automation
+language: LD-textual
+source:
+  origin: authored
+  reference: "K-LD executable-semantics feature suite (rung10_wp2/family)"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: comb_or.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [contacts, coils]
+difficulty: easy
+tags: [feature, semantics]

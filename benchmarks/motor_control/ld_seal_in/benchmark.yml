@@ -1,0 +1,18 @@
+format_version: "0.1"
+id: ld_seal_in
+name: "seal in (K-LD feature benchmark)"
+domain: motor_control
+language: LD-textual
+source:
+  origin: authored
+  reference: "K-LD executable-semantics feature suite (rung10_wp2/family)"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: seal_in.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [seal_in, contacts, coils]
+difficulty: easy
+tags: [feature, semantics]

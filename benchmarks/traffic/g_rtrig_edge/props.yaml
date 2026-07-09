@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!OneShot OR Sig"
+    justification: "The rising-edge one-shot fires only when the signal is (now) high."

@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: st_swat_eq1
+name: "SWaT multi-PLC level control — EQ1"
+domain: water_treatment
+language: ST
+source:
+  origin: swat
+  reference: "SWaT testbed via PLC_Defuser dataset; legitimate/malicious LLB pair"
+  license: CC-BY-4.0
+properties_file: props.yaml
+variants:
+  - file: sleg_EQ1_0.st
+    expected_verdict: true
+    ground_truth:
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc+]
+  - file: smal_EQ1_0.st
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: sleg_EQ1_0.st
+      seeded_defect: "Injected non-terminating while-loop in a comparator function block (loop variable never reaches the exit bound), gated on a trigger sensor value."
+      witness: "A trigger input (e.g. IN2=20.0) enters the loop that never exits; the scan-watchdog flags the hang."
+features: [function_block, comparison, multi_pou]
+difficulty: hard
+tags: [security, llb, non-termination, multi-plc]

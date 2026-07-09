@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(Q AND R)"
+    justification: "Unlatch is dominant within a scan: latched output Q and reset R never hold together."

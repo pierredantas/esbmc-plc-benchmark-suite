@@ -1,0 +1,5 @@
+.DS_Store
+results/logs/
+results/esbmc-plc+/
+__pycache__/
+*.props.yaml.tmp
