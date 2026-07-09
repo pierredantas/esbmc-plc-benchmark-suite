@@ -64,9 +64,10 @@ unexamined guess.
     competition category.
   \item \textbf{Cross-tool baseline results} (\S\ref{sec:eval}) on the full suite: all 25
     graphical benchmarks are verified by ESBMC-PLC~v8.4 (43/45 accepted variants match ground
-    truth), and an independent model checker (nuXmv) agrees on all 24 interlock variants and resolves two
-    stateful benchmarks that ESBMC-PLC leaves unknown---an independent confirmation of the
-    ground truth and a demonstration that the suite discriminates between tools. The evaluation also quantifies
+    truth), and---on the 21 finite-state benchmarks it can ingest---an independent model checker
+    (nuXmv) agrees on all 24 interlock variants and resolves two stateful benchmarks that ESBMC-PLC
+    leaves unknown, an independent confirmation of the ground truth and a demonstration that the
+    suite discriminates between tools. The evaluation also quantifies
     the input-format fragmentation that today prevents any single tool from running on all
     programs.
 \end{itemize}
@@ -93,7 +94,11 @@ provide the common target and, in \S\ref{sec:eval}, run several of these tools o
 In software verification for C, SV-COMP~\citep{beyer_state_2024} and Test-Comp~\citep{testcomp} show how a
 standard suite with explicit expected verdicts, machine-readable task definitions, and validated
 witnesses can turn isolated tools into a comparable, cumulatively improving community. We adopt
-that task model and adapt it to PLC verification. For IEC~61131-3 specifically, the closest prior
+that task model and adapt it to PLC verification. Our contribution beyond that transfer is
+threefold, and none of it arises in SV-COMP's single-language, single-semantics C setting:
+coverage of \emph{graphical} Ladder Diagram; a \emph{termination} property class discharged by a
+scan-cycle watchdog rather than an assertion; and a \emph{per-tool-verdict} stance for benchmarks
+whose verdict depends on a tool's scan-cycle timing semantics. For IEC~61131-3 specifically, the closest prior
 effort is the PLCOpen benchmark suite of \citet{ukegbu_benchmarks_2023}, which pairs
 programs with properties but covers Structured Text only. Our suite differs in two respects: it
 targets graphical Ladder Diagram---the encoding real programs are exchanged in and the one no
