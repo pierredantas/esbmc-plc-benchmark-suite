@@ -64,8 +64,9 @@ unexamined guess.
     competition category.
   \item \textbf{Cross-tool baseline results} (\S\ref{sec:eval}) on the full suite: all 25
     graphical benchmarks are verified by ESBMC-PLC~v8.4 (43/45 accepted variants match ground
-    truth), and an independent model checker (nuXmv) agrees on all 24 interlock variants, an
-    architecturally independent confirmation of the ground truth. The evaluation also quantifies
+    truth), and an independent model checker (nuXmv) agrees on all 24 interlock variants and resolves two
+    stateful benchmarks that ESBMC-PLC leaves unknown---an independent confirmation of the
+    ground truth and a demonstration that the suite discriminates between tools. The evaluation also quantifies
     the input-format fragmentation that today prevents any single tool from running on all
     programs.
 \end{itemize}
@@ -405,33 +406,43 @@ translated from PLCopen~XML into an SMV module (inputs as free Boolean variables
 defined functions, the safety property as an \texttt{INVARSPEC})---a translation that is
 itself an instance of the fragmentation this suite documents. On all \textbf{24 variants
 nuXmv agrees with ESBMC-PLC and with the recorded ground truth}: every safe variant is
-proved and every faulted variant refuted (Table~\ref{tab:crosstool}). Two mature tools with
-independent decision procedures reaching identical verdicts is the strongest evidence
-available that the ground truth for these benchmarks is tool-neutral, not an artefact of the
-tool that helped establish it.
+proved and every faulted variant refuted. We additionally modelled three \emph{stateful}
+benchmarks---a seal-in latch and two edge detectors---as SMV transition systems that mirror
+the scan cycle (a persistent state variable per retained output, updated by \texttt{next()}).
+nuXmv proves all three safe and, tellingly, \textbf{resolves the two edge-detector benchmarks
+that ESBMC-PLC's $k$-induction reports as \textsc{unknown}} (Table~\ref{tab:crosstool}). This
+is the clearest possible demonstration that the suite serves its purpose: two mature tools
+with independent decision procedures reaching identical verdicts is strong evidence that the
+ground truth is tool-neutral rather than an artefact of the tool that helped establish it; and
+where the two tools \emph{differ}---one proving what the other leaves open---the suite has
+discriminated between them, which is exactly what a benchmark is for.
 
 \begin{table}[t]
   \centering\small
-  \caption{Cross-tool verdicts on the 12 combinational interlock benchmarks (24 variants).}
+  \caption{Cross-tool verdicts. Both tools agree with the ground truth wherever both conclude;
+           nuXmv proves two edge-detector benchmarks that ESBMC-PLC's $k$-induction leaves open.}
   \label{tab:crosstool}
   \begin{tabular}{@{}lccc@{}}
     \toprule
     & \textbf{ESBMC-PLC v8.4} & \textbf{nuXmv 2.2.0} & \textbf{Ground truth}\\
     & (SMT-BMC/$k$-ind., native XML) & (BDD/IC3, translated SMV) & \\
     \midrule
-    safe variants (12)      & 12 proved   & 12 proved   & \textsc{safe}\\
-    faulted variants (12)   & 12 refuted  & 12 refuted  & \textsc{violation}\\
-    agreement               & \multicolumn{2}{c}{\textbf{24/24 (100\%)}} & ---\\
+    interlocks: safe (12)        & 12 proved   & 12 proved   & \textsc{safe}\\
+    interlocks: faulted (12)     & 12 refuted  & 12 refuted  & \textsc{violation}\\
+    stateful: seal-in (1)        & proved      & proved      & \textsc{safe}\\
+    stateful: edge detectors (2) & \emph{unknown} ($k$-ind.) & \textbf{proved} & \textsc{safe}\\
     \bottomrule
   \end{tabular}
 \end{table}
 
 \paragraph{Scope of these numbers.}
-The cross-tool agreement covers the twelve interlock benchmarks that translate to finite-state
-SMV invariants. The termination and stateful benchmarks are not expressible as such without
-further encoding and remain single-tool; and PLCverif, which consumes Structured Text rather
-than PLCopen~XML, likewise requires translation. A complete multi-tool matrix across all three
-languages---and the PLCopen~XML normalisation that would let each tool ingest the whole
+The cross-tool comparison covers the fifteen graphical benchmarks whose logic is finite-state
+(combinational interlocks and the seal-in/edge-detector automata). The remaining ten graphical
+benchmarks are the non-terminating-loop tank controllers, whose defect is a liveness property
+over unbounded arithmetic that we do not encode as a finite-state SMV model; they, and the
+textual-LD and ST benchmarks, remain single-tool. PLCverif, which consumes Structured Text
+rather than PLCopen~XML, likewise requires translation. A complete multi-tool matrix across all
+three languages---and the PLCopen~XML normalisation that would let each tool ingest the whole
 suite---is the principal item of remaining work, and is exactly the fragmentation the suite is
 built to make measurable.
 

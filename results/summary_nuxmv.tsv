@@ -23,3 +23,6 @@ g_conveyor_interlock	clean	nuxmv	SAFE	SAFE	OK
 g_conveyor_interlock	bomb	nuxmv	VIOLATION	VIOLATION	OK
 g_motor_interlock	clean	nuxmv	SAFE	SAFE	OK
 g_motor_interlock	bomb	nuxmv	VIOLATION	VIOLATION	OK
+g_seal_in	program	nuxmv	SAFE	SAFE	OK
+g_rtrig_edge	program	nuxmv	SAFE	SAFE	OK_resolves_esbmc_unknown
+g_ftrig_edge	program	nuxmv	SAFE	SAFE	OK_resolves_esbmc_unknown
