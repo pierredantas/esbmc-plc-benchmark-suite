@@ -76,22 +76,22 @@ archived under a citable DOI at the tool commit used for the baseline (\S\ref{se
 \label{sec:related}
 
 \paragraph{Formal verification of IEC~61131-3.}
-A growing set of tools verifies PLC logic. The ESBMC-PLC line~\cite{dantas_esbmc-plc_2026-3,dantas_esbmc-graphplc_2026,dantas_esbmc-plc_2026-1}
+A growing set of tools verifies PLC logic. The ESBMC-PLC line~\citep{dantas_esbmc-plc_2026-3,dantas_esbmc-graphplc_2026,dantas_esbmc-plc_2026-1}
 provides an SMT-based bounded-model-checking and $k$-induction frontend for Ladder Diagram and
-Structured Text; PLCverif~\cite{tournier_plcverif_2022,fink_verifying_2024} at CERN targets Structured Text and drives
-several back-end checkers; and general model checkers such as nuXmv~\cite{cavada_nuxmv_2014} and deductive
-tools such as Why3~\cite{why3} have been applied through translation. These are the tools our
+Structured Text; PLCverif~\citep{tournier_plcverif_2022,fink_verifying_2024} at CERN targets Structured Text and drives
+several back-end checkers; and general model checkers such as nuXmv~\citep{cavada_nuxmv_2014} and deductive
+tools such as Why3~\citep{why3} have been applied through translation. These are the tools our
 suite is built to serve. Their evaluations, however, use private or mutually incomparable
 program sets with ad hoc properties, so cross-tool claims cannot be checked---precisely the gap
 a shared, property-bearing suite closes. Our work is complementary rather than competing: we
 provide the common target and, in \S\ref{sec:eval}, run several of these tools on it.
 
 \paragraph{Benchmark suites and verification competitions.}
-In software verification for C, SV-COMP~\cite{beyer_state_2024} and Test-Comp~\cite{testcomp} show how a
+In software verification for C, SV-COMP~\citep{beyer_state_2024} and Test-Comp~\citep{testcomp} show how a
 standard suite with explicit expected verdicts, machine-readable task definitions, and validated
 witnesses can turn isolated tools into a comparable, cumulatively improving community. We adopt
 that task model and adapt it to PLC verification. For IEC~61131-3 specifically, the closest prior
-effort is the PLCOpen benchmark suite of Ukegbu and Mehrpouyan~\cite{ukegbu_benchmarks_2023}, which pairs
+effort is the PLCOpen benchmark suite of \citet{ukegbu_benchmarks_2023}, which pairs
 programs with properties but covers Structured Text only. Our suite differs in two respects: it
 targets graphical Ladder Diagram---the encoding real programs are exchanged in and the one no
 prior suite addresses---and it makes ground-truth provenance an explicit, recorded part of every
@@ -99,10 +99,10 @@ task (\S\ref{sec:groundtruth}) rather than an implicit assumption.
 
 \paragraph{PLC program corpora and ICS security datasets.}
 Several program collections exist but are not verification tasks. The PLC-LD tank-control
-dataset~\cite{iacobelli_detection_2024} and the SWaT testbed corpus~\cite{rinieri_plc_defuser_2024} (which we ingest via the
+dataset~\citep{iacobelli_detection_2024} and the SWaT testbed corpus~\citep{rinieri_plc_defuser_2024} (which we ingest via the
 PLC\_Defuser distribution) supply ``legitimate''/``malicious'' program pairs but no formal
 properties or expected verdicts; the malicious variants realise the Ladder Logic Bomb threat
-model of Govil et al.~\cite{govil_ladder_2017}. The PPU pick-and-place clone-detection corpus~\cite{ppu}
+model of \citet{govil_ladder_2017}. The PPU pick-and-place clone-detection corpus~\citep{ppu}
 provides graphical programs for a different task entirely (clone detection) and likewise ships no
 properties. We reuse programs from all three, but our contribution is orthogonal to theirs: we
 attach a formal property and a triangulated expected verdict to each, converting a program corpus
@@ -112,8 +112,8 @@ into a verification suite. This step is where the non-terminating-loop finding o
 
 \paragraph{Formal semantics of IEC~61131-3.}
 Our properties are stated over a per-scan execution model whose semantics rests on prior
-formalisation work: the K-ST executable semantics of Wang et al.~\cite{wang_k-st_2023}, the LD translation
-rules of Ebnenasir~\cite{ebnenasir_formalizing_2023}, and the MATIEC compiler~\cite{de_sousa_matiec_2014} used by several
+formalisation work: the K-ST executable semantics of \citet{wang_k-st_2023}, the LD translation
+rules of \citet{ebnenasir_formalizing_2023}, and the MATIEC compiler~\citep{de_sousa_matiec_2014} used by several
 toolchains. The 15 feature micro-benchmarks in our suite are drawn from an independent executable
 LD-semantics effort, which is why we treat their verdicts as tool-independent
 (\S\ref{sec:groundtruth}). That line of work targets the \emph{meaning} of the languages; ours
