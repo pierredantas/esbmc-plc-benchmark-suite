@@ -8,6 +8,7 @@ source:
   reference: "K-LD executable-semantics feature suite (rung10_wp2/family)"
   license: CC-BY-4.0
 properties_file: props.yaml
+validation_status: candidate
 variants:
   - file: tp_pulse.ld
     expected_verdict: true

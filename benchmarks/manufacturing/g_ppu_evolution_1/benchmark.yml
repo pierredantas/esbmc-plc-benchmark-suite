@@ -8,6 +8,7 @@ source:
   reference: "IEC 61131-3 clone-detection corpus (PPU, TwinCAT export), LD_EVOLUTION_1"
   license: CC-BY-4.0
 properties_file: props.yaml
+validation_status: validated
 variants:
   - file: evolution_1.xml
     expected_verdict: true

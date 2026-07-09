@@ -8,6 +8,7 @@ source:
   reference: "ESBMC-PLC-Sec curated benchmark"
   license: CC-BY-4.0
 properties_file: props.yaml
+validation_status: candidate
 variants:
   - file: clean.st
     expected_verdict: true

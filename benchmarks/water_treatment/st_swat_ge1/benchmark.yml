@@ -8,6 +8,7 @@ source:
   reference: "SWaT testbed via PLC_Defuser dataset; legitimate/malicious LLB pair"
   license: CC-BY-4.0
 properties_file: props.yaml
+validation_status: candidate
 variants:
   - file: sleg_GE1_0.st
     expected_verdict: true

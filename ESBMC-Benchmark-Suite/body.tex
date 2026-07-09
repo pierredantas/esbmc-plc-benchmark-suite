@@ -446,6 +446,22 @@ three languages---and the PLCopen~XML normalisation that would let each tool ing
 suite---is the principal item of remaining work, and is exactly the fragmentation the suite is
 built to make measurable.
 
+\paragraph{Validation coverage.}
+We record in the schema (\texttt{validation\_status}) whether each benchmark's verdict is
+\emph{tool-confirmed} or \emph{candidate}---established by construction or fault injection but
+not yet independently checked by a model checker. Of the 50 benchmarks, \textbf{31 are
+validated}: the 25 graphical benchmarks (ESBMC-PLC, 15 also confirmed by nuXmv) and the six
+semantics-independent textual-LD benchmarks (Boolean and edge/latch logic, confirmed by nuXmv).
+The remaining \textbf{19 are candidate}: the nine timer/counter/latch feature benchmarks, whose
+verdicts are \emph{semantics-dependent}---our porting experiments show a standard timer's verdict
+can change across tools' scan-cycle timing models---and the ten Structured-Text programs, whose
+non-termination and multi-POU structure we do not yet encode for a second checker. The empirical
+claims above concern the validated set; the candidate verdicts are flagged as such so that no
+result rests on an unconfirmed label, and their tool-confirmation follows the porting protocol
+released with the suite. Marking semantics-dependent verdicts \emph{candidate} rather than
+forcing them through one tool's timer model is itself a consequence of the paper's thesis: where
+tools disagree on meaning, a single ``ground truth'' is the wrong abstraction.
+
 \section{Threats to Validity}
 \label{sec:threats}
 
@@ -477,8 +493,11 @@ require independent agreement plus manual audit. The non-terminating-loop episod
 (\S\ref{sec:groundtruth}) is evidence the audit process catches mislabelling that a
 plausible-but-wrong property would have introduced. Two residual risks remain. First,
 the expert and fault-injection labels rely on our reading of the programs; we mitigate by
-publishing every justification and witness so they are independently checkable, and by the
-end-to-end re-check below. Second, a \emph{consensus} \textsc{safe} label and the
+publishing every justification and witness so they are independently checkable, by the
+end-to-end re-check below, and by explicitly marking as \emph{candidate} the 19 benchmarks
+whose verdicts are not yet tool-confirmed (\S\ref{sec:eval})---so the 31 validated verdicts,
+on which the empirical claims rest, are separated in the schema from those established by
+authorial judgement alone. Second, a \emph{consensus} \textsc{safe} label and the
 tool under evaluation are not fully independent: ESBMC-PLC+ participates both in
 establishing consensus and in the baseline. We limit this by requiring at least one
 tool-independent basis (by-construction or a second, architecturally different checker)

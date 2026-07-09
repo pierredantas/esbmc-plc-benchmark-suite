@@ -8,6 +8,7 @@ source:
   reference: "PLC-LD-dataset (Iacobelli et al.); legitimate/malicious LLB pair, PLCopen XML"
   license: CC-BY-4.0
 properties_file: props.yaml
+validation_status: validated
 variants:
   - file: legitimate_lstop_ge.xml
     expected_verdict: true

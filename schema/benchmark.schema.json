@@ -30,6 +30,11 @@
     },
     "properties_file": { "type": "string" },
     "syntax_pair_of": { "type": "string", "description": "id of the twin benchmark in the other syntax, if this is a syntax-coverage pair" },
+    "validation_status": {
+      "type": "string",
+      "enum": ["validated", "candidate"],
+      "description": "validated = expected verdict tool-confirmed by >=1 model checker; candidate = established by construction/fault-injection, not yet independently tool-confirmed (e.g. semantics-dependent timers/counters or liveness)"
+    },
     "variants": {
       "type": "array",
       "minItems": 1,

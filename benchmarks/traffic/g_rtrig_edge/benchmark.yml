@@ -8,6 +8,7 @@ source:
   reference: "Graphical PLCopen XML twin of the K-LD textual benchmark (syntax-coverage pair)"
   license: CC-BY-4.0
 properties_file: props.yaml
+validation_status: validated
 syntax_pair_of: ld_rtrig_edge
 variants:
   - file: program.xml

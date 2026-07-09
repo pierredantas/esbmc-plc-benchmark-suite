@@ -8,6 +8,7 @@ source:
   reference: "Authored for the P6 suite to cover this domain with genuine control logic"
   license: CC-BY-4.0
 properties_file: props.yaml
+validation_status: validated
 variants:
   - file: clean.xml
     expected_verdict: true

@@ -8,6 +8,7 @@ source:
   reference: "Graphical PLCopen XML twin of benchmark 'motor_interlock' (syntax-coverage pair)"
   license: CC-BY-4.0
 properties_file: ../motor_interlock/props.yaml   # inherited from the textual twin
+validation_status: validated
 syntax_pair_of: motor_interlock
 variants:
   - file: clean.xml
