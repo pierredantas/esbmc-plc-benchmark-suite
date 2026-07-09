@@ -394,11 +394,44 @@ timer is not agreed---and both motivate the suite carrying every program in vend
 PLCopen~XML \emph{with per-tool verdicts where the semantics diverge}, which is the principal item
 of remaining work.
 
+\paragraph{Cross-tool confirmation.}
+A verdict established partly by the tool under evaluation is only as convincing as its
+independence. We therefore re-verified the twelve combinational interlock benchmarks with
+\textbf{nuXmv~2.2.0}~\citep{cavada_nuxmv_2014}, whose BDD/IC3 decision procedure is unrelated to ESBMC's SMT-based
+bounded model checking. Because nuXmv accepts only its own SMV language, each program was
+translated from PLCopen~XML into an SMV module (inputs as free Boolean variables, coils as
+defined functions, the safety property as an \texttt{INVARSPEC})---a translation that is
+itself an instance of the fragmentation this suite documents. On all \textbf{24 variants
+nuXmv agrees with ESBMC-PLC and with the recorded ground truth}: every safe variant is
+proved and every faulted variant refuted (Table~\ref{tab:crosstool}). Two mature tools with
+independent decision procedures reaching identical verdicts is the strongest evidence
+available that the ground truth for these benchmarks is tool-neutral, not an artefact of the
+tool that helped establish it.
+
+\begin{table}[t]
+  \centering\small
+  \caption{Cross-tool verdicts on the 12 combinational interlock benchmarks (24 variants).}
+  \label{tab:crosstool}
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+    & \textbf{ESBMC-PLC v8.4} & \textbf{nuXmv 2.2.0} & \textbf{Ground truth}\\
+    & (SMT-BMC/$k$-ind., native XML) & (BDD/IC3, translated SMV) & \\
+    \midrule
+    safe variants (12)      & 12 proved   & 12 proved   & \textsc{safe}\\
+    faulted variants (12)   & 12 refuted  & 12 refuted  & \textsc{violation}\\
+    agreement               & \multicolumn{2}{c}{\textbf{24/24 (100\%)}} & ---\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
 \paragraph{Scope of these numbers.}
-These verdicts establish an ESBMC-PLC reference column, not yet a cross-tool comparison.
-Running PLCverif and nuXmv on the same programs requires their respective input formats (SCL
-and SMV), reinforcing the same fragmentation point; that multi-tool baseline, and the
-PLCopen~XML normalisation that enables it, are the immediate next steps.
+The cross-tool agreement covers the twelve interlock benchmarks that translate to finite-state
+SMV invariants. The termination and stateful benchmarks are not expressible as such without
+further encoding and remain single-tool; and PLCverif, which consumes Structured Text rather
+than PLCopen~XML, likewise requires translation. A complete multi-tool matrix across all three
+languages---and the PLCopen~XML normalisation that would let each tool ingest the whole
+suite---is the principal item of remaining work, and is exactly the fragmentation the suite is
+built to make measurable.
 
 \section{Threats to Validity}
 \label{sec:threats}
