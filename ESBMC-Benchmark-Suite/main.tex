@@ -1,0 +1,93 @@
+% =============================================================================
+% Empirical Software Engineering (Springer) submission — svjour3 class.
+% On Overleaf: start from the "Springer SVJour3" template (it provides svjour3.cls
+% and spbasic.bst — Springer does not distribute these via CTAN), then replace its
+% main.tex with this file and upload body.tex + refs.bib.
+% =============================================================================
+\documentclass[smallextended]{svjour3}   % onecolumn review layout
+\smartqed  % flush right qed marks
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+\journalname{Empirical Software Engineering}
+
+\begin{document}
+
+\title{A Benchmark Suite and Ground-Truth Methodology for Formal Verification of
+       IEC~61131-3 Ladder Diagram Programs}
+
+\author{Pierre Dantas \and Lucas C. Cordeiro \and Waldir Junior}
+% Author metadata reused from the group's ACM/TOSEM K-LD paper. NOTE: Waldir Junior is
+% carried over from that paper's author list -- remove him here if he is not a P6 co-author.
+
+\institute{
+  P. Dantas \at
+    Department of Computer Science, University of Manchester, Manchester, UK \\
+    \email{pierre.dantas@manchester.ac.uk} \\
+    ORCID: 0000-0001-6390-9340
+  \and
+  L. C. Cordeiro \at
+    Department of Computer Science, University of Manchester, Manchester, UK \\
+    \email{lucas.cordeiro@manchester.ac.uk} \\
+    ORCID: 0000-0002-6235-4272
+  \and
+  W. Junior \at
+    Electrical Engineering, Federal University of Amazonas (UFAM), Manaus, AM, Brazil \\
+    \email{waldirjr@ufam.edu.br} \\
+    ORCID: 0000-0003-3095-0042
+}
+
+\titlerunning{A Benchmark Suite for Formal Verification of IEC~61131-3 LD}
+\authorrunning{P. Dantas et al.}
+
+\date{Received: date / Accepted: date}
+
+\maketitle
+
+\begin{abstract}
+Programmable Logic Controllers govern safety-critical physical infrastructure, and a
+growing set of tools now applies formal verification to their IEC~61131-3 programs. Yet
+the field has no standard benchmark suite, so tools are evaluated on private, incomparable
+program sets and progress cannot be measured. Existing resources are either program corpora
+without formal properties or expected verdicts, or a single Structured-Text suite that omits
+the graphical Ladder Diagram encoding in which real programs are exchanged. We present a
+benchmark suite of \textbf{50 programs over 83 variants}, spanning textual and graphical
+Ladder Diagram and Structured Text across ten industrial domains, each in standard
+PLCopen~XML or ST and paired with a formal property, a machine-checkable expected verdict,
+and---for every violation---a triggering witness, in an SV-COMP--compatible layout. Our
+central contribution is a \emph{ground-truth methodology}: every verdict is established by
+one of three recorded methods (construction, fault injection, or audited cross-tool
+consensus), a discipline motivated by a concrete episode in which the ``obvious'' safety
+property would have mislabelled every attack in two public logic-bomb corpora as safe,
+because the injected defect is a non-terminating loop that the obvious property cannot see.
+We establish reference verdicts with a from-source build of ESBMC-PLC~v8.4: all 25 graphical
+benchmarks run, and 43 of 45 accepted variants match the recorded verdict with no
+disagreements. Porting the textual and Structured-Text benchmarks surfaces a
+\emph{format-and-semantics} fragmentation---one tool's front-end admits a single
+serialization, and even the meaning of a standard timer is not agreed across tools---which
+is itself the phenomenon the suite is designed to expose. The corpus, schema, validator,
+and re-check harness are released as an open artifact.
+\keywords{Formal verification \and Programmable logic controllers \and IEC~61131-3 \and
+Ladder Diagram \and Benchmark suite \and Ground truth \and Bounded model checking}
+\end{abstract}
+
+\input{body}
+
+\begin{acknowledgements}
+% TODO: funding / S3 Group / collaborators as appropriate.
+\end{acknowledgements}
+
+\section*{Declarations}
+\noindent\textbf{Data availability.} The complete benchmark suite, property files,
+witnesses, schema, validator, and re-check harness are archived under a citable DOI (see
+\S\ref{sec:eval}). % TODO: insert Zenodo DOI.\\
+\textbf{Competing interests.} The authors declare no competing interests. % TODO: confirm.
+
+\bibliographystyle{spbasic}   % Springer basic (author-year) — ships with svjour3 template
+\bibliography{refs}
+
+\end{document}

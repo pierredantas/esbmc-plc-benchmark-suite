@@ -3,3 +3,10 @@ results/logs/
 results/esbmc-plc+/
 __pycache__/
 *.props.yaml.tmp
+
+# Paper: Springer class files are copyright (licensed only for submission, not redistribution)
+svjour3.cls
+svglov3.clo
+sp*.bst
+LaTeX_DL_*/
+__MACOSX/
