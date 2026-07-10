@@ -473,18 +473,19 @@ discriminated between them, which is exactly what a benchmark is for.
 
 \begin{table}[t]
   \centering\small
-  \caption{Cross-tool verdicts. Both tools agree with the ground truth wherever both conclude;
-           nuXmv proves two edge-detector benchmarks that ESBMC-PLC's $k$-induction leaves open.}
+  \caption{Cross-tool verdicts. ESBMC-PLC~v8.4 (SMT-BMC/$k$-induction, native PLCopen~XML) and
+           nuXmv~2.2.0 (BDD/IC3, on translated SMV) agree with the ground truth wherever both
+           conclude; nuXmv proves two edge-detector benchmarks that ESBMC-PLC's $k$-induction
+           leaves open.}
   \label{tab:crosstool}
   \begin{tabular}{@{}lccc@{}}
     \toprule
-    & \textbf{ESBMC-PLC v8.4} & \textbf{nuXmv 2.2.0} & \textbf{Ground truth}\\
-    & (SMT-BMC/$k$-ind., native XML) & (BDD/IC3, translated SMV) & \\
+    & \textbf{ESBMC-PLC} & \textbf{nuXmv} & \textbf{Ground truth}\\
     \midrule
-    interlocks: safe (12)        & 12 proved   & 12 proved   & \textsc{safe}\\
-    interlocks: faulted (12)     & 12 refuted  & 12 refuted  & \textsc{violation}\\
-    stateful: seal-in (1)        & proved      & proved      & \textsc{safe}\\
-    stateful: edge detectors (2) & \emph{unknown} ($k$-ind.) & \textbf{proved} & \textsc{safe}\\
+    interlocks: safe (12)        & 12 proved      & 12 proved       & \textsc{safe}\\
+    interlocks: faulted (12)     & 12 refuted     & 12 refuted      & \textsc{violation}\\
+    stateful: seal-in (1)        & proved         & proved          & \textsc{safe}\\
+    stateful: edge detectors (2) & \emph{unknown} & \textbf{proved} & \textsc{safe}\\
     \bottomrule
   \end{tabular}
 \end{table}
