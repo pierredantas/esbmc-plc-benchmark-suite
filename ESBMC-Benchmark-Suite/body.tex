@@ -199,9 +199,54 @@ dropping the task, keeping coverage honest.
 \section{The Benchmark Suite}
 \label{sec:suite}
 
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+  font=\footnotesize, >={Stealth[length=2.2mm]},
+  task/.style={draw, rounded corners=2pt, fill=black!5,  align=left,   inner sep=4pt, text width=58mm},
+  val/.style ={draw, rounded corners=2pt, fill=black!5,  align=center, inner sep=3pt, text width=22mm},
+  hub/.style ={draw, rounded corners=2pt, fill=black!12, align=center, inner sep=3pt, minimum width=50mm, minimum height=6mm},
+  tool/.style={draw, rounded corners=2pt, fill=blue!8,   align=center, inner sep=3pt, text width=31mm, minimum height=11mm},
+  result/.style ={draw, rounded corners=2pt, fill=green!10, align=center, inner sep=4pt, text width=100mm},
+]
+\node[tool] (t1) {\textbf{ESBMC-PLC} v8.4\\[1pt]\emph{native} PLCopen~XML};
+\node[tool, right=6mm of t1] (t2) {\textbf{nuXmv}\\[1pt]translate $\to$ SMV};
+\node[tool, right=6mm of t2] (t3) {\textbf{PLCverif}\\[1pt]translate $\to$ ST};
+\node[hub, above=9mm of t2] (hub) {runner / one-command re-check harness};
+\node[task, above=8mm of hub, xshift=-19mm, anchor=south] (task) {%
+  \textbf{Benchmark task} (SV-COMP--compatible)\\[2pt]
+  program: PLCopen~XML \emph{or} ST \ \textbullet\ \ witness\\
+  property: YAML $\langle$invariant, mutual\_excl.,\\
+  \hspace*{1.1em}reachability, termination$\rangle$\\
+  machine-checkable \textbf{expected verdict}};
+\node[val, right=4mm of task, anchor=west] (val) {JSON-Schema\\validator};
+\node[result, below=8mm of t2] (out) {%
+  verdict $\in \{\textsc{safe},\ \textsc{violation},\ \textsc{unknown}\}$\ \ vs.\ recorded ground truth\\
+  $\Rightarrow$\ \textbf{agreement} (tool-neutral verdict) \ and \ \textbf{discrimination}
+  (one tool resolves another's \textsc{unknown})};
+\draw[->] (task.east) -- (val.west);
+\draw[->] (task) -- (hub);
+\draw[->] (hub) -- (t1.north);
+\draw[->,dashed] (hub) -- (t2.north);
+\draw[->,dashed] (hub) -- (t3.north);
+\draw[->] (t1.south) -- (t1.south |- out.north);
+\draw[->] (t2.south) -- (out.north);
+\draw[->] (t3.south) -- (t3.south |- out.north);
+\end{tikzpicture}
+\caption{A benchmark task and the cross-tool runner. Each task pairs a program
+(PLCopen~XML or ST) with a formal property, a machine-checkable expected verdict, and a
+witness, validated against a JSON-Schema. The runner dispatches each task to a tool through
+an adapter: ESBMC-PLC ingests PLCopen~XML \emph{natively} (solid), whereas nuXmv and PLCverif
+require translation to SMV and ST (dashed)---the format fragmentation the suite makes
+measurable. Each tool's verdict is compared to the recorded ground truth, yielding the
+cross-tool agreement and discrimination results of \S\ref{sec:eval}.}
+\label{fig:pipeline}
+\end{figure}
+
 The suite comprises \textbf{50 benchmarks} over \textbf{83 program variants},
 each an IEC~61131-3 program in standard PLCopen~XML (Ladder Diagram) or Structured
-Text, paired with a machine-checkable property file and an expected verdict. A
+Text, paired with a machine-checkable property file and an expected verdict
+(Fig.~\ref{fig:pipeline}). A
 \emph{benchmark} is a verification task; a \emph{variant} is one program file under
 that task (30~benchmarks bundle a safe program with one or more faulted counterparts,
 \S\ref{sec:groundtruth}). Every benchmark validates against the suite's JSON-Schema
