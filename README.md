@@ -1,4 +1,4 @@
-# IEC 61131-3 Formal Verification Benchmark Suite (P6)
+# IEC 61131-3 Formal Verification Benchmark Suite
 
 A community suite of **50 IEC 61131-3 programs** (25 textual LD · 20 graphical LD · 5 ST)
 across **10 industrial domains**, in PLCopen XML / ST, each with formal safety properties
