@@ -5,7 +5,7 @@ across **10 industrial domains**, in PLCopen XML / ST, each with formal safety p
 (YAML), machine-checkable expected verdicts, and baseline results from ESBMC-PLC+, PLCverif,
 and nuXmv. SV-COMP–compatible so the artifact feeds a future SV-COMP PLC/ICS category.
 
-Paper P6 of the ESBMC-PLC publication program. Target venue: ISSTA/FSE 2027 + arXiv cs.SE.
+Accompanying artifact for a manuscript under review; baseline results are produced with ESBMC-PLC, PLCverif, and nuXmv.
 
 ## Layout
 ```
