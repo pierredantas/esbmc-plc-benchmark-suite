@@ -5,7 +5,7 @@ domain: manufacturing
 language: LD-graphical
 source:
   origin: authored
-  reference: "Authored for the P6 suite to cover this domain with genuine control logic"
+  reference: "Authored for this suite to cover this domain with genuine control logic"
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: validated

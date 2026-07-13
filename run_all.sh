@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# run_all.sh — run every P6 benchmark variant through ESBMC-PLC+ and check the
+# run_all.sh — run every benchmark variant through ESBMC-PLC+ and check the
 # result against its expected_verdict. Reproduces the suite's baseline column.
 #
 #   ESBMC=/path/to/esbmc/build/src/esbmc/esbmc ./run_all.sh

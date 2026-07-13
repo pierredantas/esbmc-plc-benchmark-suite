@@ -1,4 +1,4 @@
-# P6 Benchmark Suite — Format & Schema Specification (v0.1 draft)
+# Benchmark Suite — Format & Schema Specification (v0.1 draft)
 
 **Suite:** 50 IEC 61131-3 programs for formal verification of PLCs
 **Goal of this spec:** a stable, SV-COMP-compatible layout so (a) every program is labeled

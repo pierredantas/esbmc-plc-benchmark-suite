@@ -1,4 +1,4 @@
-# P6 Suite Index (50 benchmarks / 83 variants)
+# Suite Index (50 benchmarks / 83 variants)
 
 Auto-generated. Composition: 15 LD-textual · 25 LD-graphical · 10 ST across 10 domains.
 

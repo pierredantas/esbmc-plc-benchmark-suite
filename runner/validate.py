@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate every P6 benchmark: schema-check benchmark.yml + props.yaml, confirm
+"""Validate every benchmark: schema-check benchmark.yml + props.yaml, confirm
 referenced program files exist and (for XML) are well-formed. Exit non-zero on any error.
 
 Usage:  python3 runner/validate.py            # validate whole suite

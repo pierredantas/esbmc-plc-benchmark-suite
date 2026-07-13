@@ -1,4 +1,4 @@
-# P6 — Finalized 50-program selection (v1.0)
+# Finalized 50-program selection (v1.0)
 
 **Composition:** 25 textual LD · 20 graphical LD · 5 ST — across **10 industrial domains**.
 **Distinct programs:** 41 (9 provided in BOTH textual + graphical form as deliberate

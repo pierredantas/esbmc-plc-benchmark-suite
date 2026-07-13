@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://esbmc-plc.org/p6/properties.schema.json",
-  "title": "P6 property file (props.yaml)",
+  "$id": "https://example.org/plc-benchmark-suite/properties.schema.json",
+  "title": "property file (props.yaml)",
   "type": "object",
   "required": ["format_version", "properties"],
   "additionalProperties": false,

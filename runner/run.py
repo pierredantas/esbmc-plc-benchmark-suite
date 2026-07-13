@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""P6 runner (skeleton). For each (benchmark variant, tool), invoke the tool adapter,
+"""Benchmark suite runner (skeleton). For each (benchmark variant, tool), invoke the tool adapter,
 map its output to {true,false,unknown}, compare to expected_verdict, and record a
 result JSON. Honest-coverage rule: an unsupported input format is recorded as
 status=error/reason=unsupported_format, never silently dropped.

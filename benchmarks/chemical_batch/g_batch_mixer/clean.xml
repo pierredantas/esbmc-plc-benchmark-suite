@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="S3 Group, University of Manchester" productName="ESBMC-PLC P6 Suite" productVersion="1.0" creationDateTime="2026-07-09T00:00:00" />
+  <fileHeader companyName="Anonymous" productName="Benchmark Suite" productVersion="1.0" creationDateTime="2026-07-09T00:00:00" />
   <contentHeader name="g_batch_mixer_clean"><coordinateInfo><ld><scaling x="1" y="1" /></ld></coordinateInfo></contentHeader>
   <types><dataTypes /><pous><pou name="g_batch_mixer_clean" pouType="program">
     <interface><inputVars><variable name="mix_cmd"><type><BOOL /></type></variable><variable name="lid_open"><type><BOOL /></type></variable><variable name="enable"><type><BOOL /></type></variable><variable name="maint"><type><BOOL /></type></variable></inputVars><outputVars><variable name="mixer"><type><BOOL /></type></variable><variable name="alarm"><type><BOOL /></type></variable></outputVars></interface>

@@ -4,8 +4,7 @@ version: "1.0.0-dev"
 license: CC-BY-4.0                    # suite-level; per-program license in each benchmark.yml
 zenodo_doi: "TBD"
 maintainers:
-  - "Pierre Dantas"
-  - "Lucas Cordeiro"
+  - "Withheld for double-blind review"
 domains:
   - water_treatment
   - motor_control

@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://esbmc-plc.org/p6/benchmark.schema.json",
-  "title": "P6 benchmark descriptor (benchmark.yml)",
+  "$id": "https://example.org/plc-benchmark-suite/benchmark.schema.json",
+  "title": "benchmark descriptor (benchmark.yml)",
   "type": "object",
   "required": ["format_version", "id", "name", "domain", "language", "source", "properties_file", "variants"],
   "additionalProperties": false,
