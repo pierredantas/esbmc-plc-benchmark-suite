@@ -1,0 +1,60 @@
+{
+  "title": "A Benchmark Suite and Ground-Truth Methodology for Formal Verification of IEC 61131-3 Ladder Diagram Programs",
+  "upload_type": "dataset",
+  "access_right": "open",
+  "license": "cc-by-4.0",
+  "language": "eng",
+  "version": "1.0.0",
+  "description": "<p>Reproducibility artifact for the manuscript <em>A Benchmark Suite and Ground-Truth Methodology for Formal Verification of IEC 61131-3 Ladder Diagram Programs</em>.</p><p>The suite contains <strong>50 benchmarks over 83 program variants</strong> (15 textual Ladder Diagram, 25 graphical Ladder Diagram, 10 Structured Text) across ten industrial domains, each an IEC 61131-3 program in standard PLCopen XML or Structured Text paired with a formal safety property, a machine-checkable expected verdict, a recorded ground-truth method, and, for every violation, a triggering witness. It is, to our knowledge, the first formal-verification benchmark suite to cover graphical Ladder Diagram, the encoding in which real programs are exchanged.</p><p>Ground truth for every verdict is established by one of three methods &mdash; construction (expert), fault injection, or audited cross-tool consensus &mdash; and the method used is recorded per variant. Each benchmark also records a <code>validation_status</code>: 31 benchmarks are tool-confirmed (ESBMC-PLC+ and/or nuXmv) and 19 are candidates whose verdicts are semantics-dependent or not yet encoded for a second checker.</p><p>The corpus is packaged in an SV-COMP-compatible layout and ships with a JSON Schema, a schema validator (<code>runner/validate.py</code>), tool adapters, and a one-command re-check harness, so a new tool is added through an adapter rather than by reformatting the corpus.</p><p>Benchmark data are released under CC BY 4.0; the schema, validator, runner, and adapters are released under the MIT licence.</p>",
+  "creators": [
+    {
+      "name": "Dantas, Pierre",
+      "affiliation": "Department of Computer Science, University of Manchester, Manchester, UK",
+      "orcid": "0000-0001-6390-9340"
+    },
+    {
+      "name": "Cordeiro, Lucas C.",
+      "affiliation": "Department of Computer Science, University of Manchester, Manchester, UK",
+      "orcid": "0000-0002-6235-4272"
+    },
+    {
+      "name": "Junior, Waldir",
+      "affiliation": "Electrical Engineering, Federal University of Amazonas (UFAM), Manaus, AM, Brazil",
+      "orcid": "0000-0003-3095-0042"
+    }
+  ],
+  "keywords": [
+    "formal verification",
+    "benchmark suite",
+    "IEC 61131-3",
+    "Ladder Diagram",
+    "PLCopen XML",
+    "Structured Text",
+    "programmable logic controller",
+    "industrial control systems",
+    "model checking",
+    "bounded model checking",
+    "ESBMC",
+    "nuXmv",
+    "ground truth",
+    "SV-COMP"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/pierredantas/esbmc-plc-benchmark-suite",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
+  "grants": [
+    {
+      "id": "10.13039/501100000266::EP/T026995/1"
+    },
+    {
+      "id": "10.13039/501100000266::EP/V000497/1"
+    },
+    {
+      "id": "10.13039/501100000266::EP/X037290/1"
+    }
+  ]
+}
