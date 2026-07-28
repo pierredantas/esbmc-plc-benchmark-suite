@@ -6,7 +6,7 @@ message: >-
   If you use this benchmark suite, please cite both the
   accompanying paper and this artifact.
 type: dataset
-version: 1.0.0
+version: 1.0.1
 license: CC-BY-4.0
 repository-code: https://github.com/pierredantas/esbmc-plc-benchmark-suite
 abstract: >-
