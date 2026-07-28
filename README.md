@@ -1,5 +1,9 @@
 # IEC 61131-3 Formal Verification Benchmark Suite
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21642385.svg)](https://doi.org/10.5281/zenodo.21642385)
+[![License: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/code-MIT-green.svg)](LICENSE-CODE)
+
 A community suite of **50 IEC 61131-3 benchmarks over 83 program variants**
 (15 textual LD · 25 graphical LD · 10 ST) across **10 industrial domains**, in PLCopen XML / ST,
 each with formal safety properties (YAML), machine-checkable expected verdicts, witnesses, and
@@ -72,6 +76,20 @@ Per-program licenses are declared in each `benchmark.yml` (`source.license`);
 redistribution-restricted programs use `link-only` with a URL instead of a bundled file.
 
 ## Citation
+Please cite both the paper and the archived artifact.
+
+```bibtex
+@dataset{dantas2026suite,
+  title     = {A Benchmark Suite and Ground-Truth Methodology for Formal Verification
+               of {IEC} 61131-3 Ladder Diagram Programs},
+  author    = {Dantas, Pierre and Cordeiro, Lucas C. and Junior, Waldir},
+  year      = {2026},
+  publisher = {Zenodo},
+  version   = {1.0.1},
+  doi       = {10.5281/zenodo.21642385}
+}
+```
+
 ```bibtex
 @article{dantas2026benchmark,
   title   = {A Benchmark Suite and Ground-Truth Methodology for Formal Verification

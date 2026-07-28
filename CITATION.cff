@@ -8,7 +8,15 @@ message: >-
 type: dataset
 version: 1.0.1
 license: CC-BY-4.0
+doi: 10.5281/zenodo.21642385
 repository-code: https://github.com/pierredantas/esbmc-plc-benchmark-suite
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21642385
+    description: Version-independent DOI, always resolving to the latest release
+  - type: doi
+    value: 10.5281/zenodo.21642386
+    description: DOI of the archived v1.0.1 release
 abstract: >-
   A suite of 50 IEC 61131-3 benchmarks over 83 program variants
   (15 textual Ladder Diagram, 25 graphical Ladder Diagram, 10
