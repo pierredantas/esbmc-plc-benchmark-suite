@@ -1,6 +1,6 @@
 format_version: "0.1"
 id: g_busbar_interlock
-name: "busbar interlock interlock (graphical LD)"
+name: "busbar interlock (graphical LD)"
 domain: power_substation
 language: LD-graphical
 source:

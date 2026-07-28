@@ -11,3 +11,7 @@ sp*.bst
 LaTeX_DL_*/
 __MACOSX/
 results/nuxmv_smv_models/
+
+# Manuscript working copies (not part of the artifact)
+ESBMC_Benchmark_Suite*/
+arxiv/
