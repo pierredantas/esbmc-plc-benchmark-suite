@@ -1,0 +1,49 @@
+{
+  "schema_version": "0.1",
+  "program": "demo2/sealin.ld",
+  "properties_file": "demo2/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(Run && EStop)",
+      "justification": "The motor must never run while the emergency stop is pressed."
+    }
+  ],
+  "tool": {
+    "name": "esbmc-plc",
+    "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+    "version": "8.4.0",
+    "platform": "aarch64 macos"
+  },
+  "expected_verdict": "true",
+  "status": "correct",
+  "encoding": {
+    "assignments": [
+      "rounding_mode=0",
+      "Start=0",
+      "EStop=0",
+      "Run=0",
+      "Start=NONDET(_Bool)",
+      "EStop=NONDET(_Bool)",
+      "Run=1 && Start && !EStop",
+      "Run=1 && Run && !EStop"
+    ],
+    "property_variables": [
+      "EStop",
+      "Run"
+    ],
+    "assignment_counts": {
+      "rounding_mode": 1,
+      "Start": 2,
+      "EStop": 2,
+      "Run": 3
+    },
+    "not_driven_by_body": [],
+    "gate": "pass"
+  },
+  "command": "/Users/user/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc demo2/sealin.ld --ld-props demo2/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
+  "verdict": "true",
+  "cpu_time_s": 0.015,
+  "counterexample": null
+}
