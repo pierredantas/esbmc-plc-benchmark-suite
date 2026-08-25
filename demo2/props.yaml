@@ -1,0 +1,5 @@
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(Run && EStop)"
+    justification: "The motor must never run while the emergency stop is pressed."

@@ -1,0 +1,5 @@
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(Run && !B)"
+    justification: "Discriminator. True OR => A=1,B=0 gives Run=1 with B=0, so this FAILS. Last-branch-wins => Run==B, so this HOLDS."
