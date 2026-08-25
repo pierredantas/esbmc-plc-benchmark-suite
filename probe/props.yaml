@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [Motor_A, Motor_B]
+    justification: "Forward/reverse contactors must never be energised together."

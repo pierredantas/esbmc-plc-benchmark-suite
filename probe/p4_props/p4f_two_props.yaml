@@ -1,0 +1,9 @@
+# Probes whether both properties are checked, or only the first.
+# P2 is FALSE on clean.xml by construction (Motor_B := rev is satisfiable).
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [Motor_A, Motor_B]
+  - id: P2
+    kind: invariant
+    expression: "!Motor_B"

@@ -1,0 +1,7 @@
+# Probes whether --ld-props accepts `reachability`, which run_v84.py drops before
+# calling ESBMC. NOTE: v8.4 requires a `justification` field for this kind.
+properties:
+  - id: P1
+    kind: reachability
+    expression: "Motor_A && Motor_B"
+    justification: "Witness recovers the knock combination that violates the interlock."

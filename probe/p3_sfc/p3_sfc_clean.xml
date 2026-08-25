@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="Anonymous" productName="Benchmark Suite" productVersion="1.0" creationDateTime="2026-08-25T00:00:00" />
+  <contentHeader name="p3_sfc_clean">
+    <coordinateInfo>
+      <ld><scaling x="1" y="1" /></ld>
+      <fbd><scaling x="1" y="1" /></fbd>
+      <sfc><scaling x="1" y="1" /></sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="drive" pouType="program">
+        <interface>
+          <inputVars>
+            <variable name="fwd"><type><BOOL /></type></variable>
+            <variable name="rev"><type><BOOL /></type></variable>
+            <variable name="maint"><type><BOOL /></type></variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Motor_A"><type><BOOL /></type></variable>
+            <variable name="Motor_B"><type><BOOL /></type></variable>
+          </outputVars>
+        </interface>
+        <actions>
+          <action name="Act_A">
+            <body><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">Motor_A := TRUE;</xhtml></ST></body>
+          </action>
+          <action name="Act_B">
+            <body><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">Motor_B := TRUE;</xhtml></ST></body>
+          </action>
+          <action name="Act_Both">
+            <body><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">Motor_A := TRUE;
+Motor_B := TRUE;</xhtml></ST></body>
+          </action>
+        </actions>
+        <body>
+          <SFC>
+            <step localId="1" name="Idle" initialStep="true">
+              <position x="200" y="20" />
+              <connectionPointIn><relPosition x="20" y="0" /></connectionPointIn>
+              <connectionPointOut><relPosition x="20" y="40" /></connectionPointOut>
+            </step>
+            <selectionDivergence localId="2">
+              <position x="100" y="80" />
+              <connectionPointIn><relPosition x="0" y="0" /><connection refLocalId="1" /></connectionPointIn>
+              <connectionPointOut formalParameter="0"><relPosition x="20" y="0" /></connectionPointOut>
+              <connectionPointOut formalParameter="1"><relPosition x="220" y="0" /></connectionPointOut>
+
+            </selectionDivergence>
+
+            <transition localId="3">
+              <position x="120" y="110" />
+              <connectionPointIn><relPosition x="0" y="0" /><connection refLocalId="2" formalParameter="0" /></connectionPointIn>
+              <connectionPointOut><relPosition x="0" y="10" /></connectionPointOut>
+              <condition><inline><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">fwd AND NOT rev</xhtml></ST></inline></condition>
+            </transition>
+            <step localId="4" name="Forward">
+              <position x="100" y="150" />
+              <connectionPointIn><relPosition x="20" y="0" /><connection refLocalId="3" /></connectionPointIn>
+              <connectionPointOut><relPosition x="20" y="40" /></connectionPointOut>
+              <connectionPointOutAction><relPosition x="60" y="20" /></connectionPointOutAction>
+            </step>
+            <actionBlock localId="14">
+              <position x="180" y="150" />
+              <connectionPointIn><relPosition x="0" y="20" /><connection refLocalId="4" /></connectionPointIn>
+              <action localId="15" qualifier="N"><reference name="Act_A" /></action>
+            </actionBlock>
+
+            <transition localId="5">
+              <position x="320" y="110" />
+              <connectionPointIn><relPosition x="0" y="0" /><connection refLocalId="2" formalParameter="1" /></connectionPointIn>
+              <connectionPointOut><relPosition x="0" y="10" /></connectionPointOut>
+              <condition><inline><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">rev</xhtml></ST></inline></condition>
+            </transition>
+            <step localId="6" name="Reverse">
+              <position x="300" y="150" />
+              <connectionPointIn><relPosition x="20" y="0" /><connection refLocalId="5" /></connectionPointIn>
+              <connectionPointOut><relPosition x="20" y="40" /></connectionPointOut>
+              <connectionPointOutAction><relPosition x="60" y="20" /></connectionPointOutAction>
+            </step>
+            <actionBlock localId="16">
+              <position x="380" y="150" />
+              <connectionPointIn><relPosition x="0" y="20" /><connection refLocalId="6" /></connectionPointIn>
+              <action localId="17" qualifier="N"><reference name="Act_B" /></action>
+            </actionBlock>
+
+
+            <transition localId="7">
+              <position x="120" y="200" />
+              <connectionPointIn><relPosition x="0" y="0" /><connection refLocalId="4" /></connectionPointIn>
+              <connectionPointOut><relPosition x="0" y="10" /></connectionPointOut>
+              <condition><inline><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">NOT fwd</xhtml></ST></inline></condition>
+            </transition>
+            <transition localId="8">
+              <position x="320" y="200" />
+              <connectionPointIn><relPosition x="0" y="0" /><connection refLocalId="6" /></connectionPointIn>
+              <connectionPointOut><relPosition x="0" y="10" /></connectionPointOut>
+              <condition><inline><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">NOT rev</xhtml></ST></inline></condition>
+            </transition>
+            <selectionConvergence localId="9">
+              <position x="100" y="240" />
+              <connectionPointIn formalParameter="0"><relPosition x="20" y="0" /><connection refLocalId="7" /></connectionPointIn>
+              <connectionPointIn formalParameter="1"><relPosition x="220" y="0" /><connection refLocalId="8" /></connectionPointIn>
+
+              <connectionPointOut><relPosition x="20" y="10" /></connectionPointOut>
+            </selectionConvergence>
+            <jumpStep localId="10" targetName="Idle">
+              <position x="100" y="280" />
+              <connectionPointIn><relPosition x="20" y="0" /><connection refLocalId="9" /></connectionPointIn>
+            </jumpStep>
+          </SFC>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations>
+      <configuration name="Config0">
+        <resource name="Res0">
+          <task name="tcyclic" interval="PT0.01S" priority="0">
+            <pouInstance name="inst0" typeName="drive" />
+          </task>
+        </resource>
+      </configuration>
+    </configurations>
+  </instances>
+</project>

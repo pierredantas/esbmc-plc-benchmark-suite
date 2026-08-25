@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="Anonymous" productName="Benchmark Suite" productVersion="1.0" creationDateTime="2026-08-25T00:00:00" />
+  <contentHeader name="p2_fbd_clean">
+    <coordinateInfo>
+      <ld><scaling x="1" y="1" /></ld>
+      <fbd><scaling x="1" y="1" /></fbd>
+      <sfc><scaling x="1" y="1" /></sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="drive" pouType="program">
+        <interface>
+          <inputVars>
+            <variable name="fwd"><type><BOOL /></type></variable>
+            <variable name="rev"><type><BOOL /></type></variable>
+            <variable name="maint"><type><BOOL /></type></variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Motor_A"><type><BOOL /></type></variable>
+            <variable name="Motor_B"><type><BOOL /></type></variable>
+          </outputVars>
+        </interface>
+        <body>
+          <FBD>
+            <inVariable localId="1" height="20" width="60">
+              <position x="20" y="20" />
+              <connectionPointOut><relPosition x="60" y="10" /></connectionPointOut>
+              <expression>fwd</expression>
+            </inVariable>
+            <inVariable localId="2" height="20" width="60">
+              <position x="20" y="60" />
+              <connectionPointOut><relPosition x="60" y="10" /></connectionPointOut>
+              <expression>rev</expression>
+            </inVariable>
+            <block localId="3" width="60" height="40" typeName="NOT">
+              <position x="120" y="60" />
+              <inputVariables>
+                <variable formalParameter="IN">
+                  <connectionPointIn><relPosition x="0" y="20" /><connection refLocalId="2" /></connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables />
+              <outputVariables>
+                <variable formalParameter="OUT">
+                  <connectionPointOut><relPosition x="60" y="20" /></connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <block localId="4" width="60" height="60" typeName="AND">
+              <position x="220" y="20" />
+              <inputVariables>
+                <variable formalParameter="IN1">
+                  <connectionPointIn><relPosition x="0" y="20" /><connection refLocalId="1" /></connectionPointIn>
+                </variable>
+                <variable formalParameter="IN2">
+                  <connectionPointIn><relPosition x="0" y="40" /><connection refLocalId="3" formalParameter="OUT" /></connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables />
+              <outputVariables>
+                <variable formalParameter="OUT">
+                  <connectionPointOut><relPosition x="60" y="20" /></connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <outVariable localId="5" height="20" width="60">
+              <position x="340" y="30" />
+              <connectionPointIn><relPosition x="0" y="10" /><connection refLocalId="4" formalParameter="OUT" /></connectionPointIn>
+              <expression>Motor_A</expression>
+            </outVariable>
+            <outVariable localId="6" height="20" width="60">
+              <position x="340" y="70" />
+              <connectionPointIn><relPosition x="0" y="10" /><connection refLocalId="2" /></connectionPointIn>
+              <expression>Motor_B</expression>
+            </outVariable>
+          </FBD>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations>
+      <configuration name="Config0">
+        <resource name="Res0">
+          <task name="tcyclic" interval="PT0.01S" priority="0">
+            <pouInstance name="inst0" typeName="drive" />
+          </task>
+        </resource>
+      </configuration>
+    </configurations>
+  </instances>
+</project>
