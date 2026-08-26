@@ -177,18 +177,6 @@ def tabs(pairs):
     return "\n".join(out)
 
 
-def shown_trace(trace, limit=90):
-    """A trace short enough to sit on a page, with the cut marked."""
-    lines = trace.splitlines()
-    if len(lines) <= limit:
-        return trace
-    keep = limit // 2
-    omitted = len(lines) - 2 * keep
-    return "\n".join(lines[:keep]
-                     + ["", f"... {omitted} further lines, see the record file ...", ""]
-                     + lines[-keep:])
-
-
 def render_record(arg, _ctx):
     """{{record: interlock_viol}} renders results/records/interlock_viol.json in full."""
     rec = json.loads((RECORDS / (arg.strip() + ".json")).read_text(encoding="utf-8"))
@@ -236,11 +224,12 @@ def render_record(arg, _ctx):
                 tabs([(label, "\n".join(run["encoding"]["scan_body"]))
                       for label, run in runs.items()])]
 
-    traces = [(label, shown_trace(run["counterexample"])) for label, run in runs.items()
+    traces = [(label, run["counterexample"]) for label, run in runs.items()
               if run.get("counterexample")]
     if traces:
-        out += ["**Counterexample, verbatim.** ESBMC's own output, with long traces "
-                "elided in the middle and the omission marked.\n", tabs(traces)]
+        out += ["**Counterexample.** ESBMC's own output. A trace long enough to need it "
+                "is elided in the middle, and the omission is marked and counted where it "
+                "happens.\n", tabs(traces)]
     return "\n".join(out)
 
 
