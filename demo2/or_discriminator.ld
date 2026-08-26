@@ -35,6 +35,6 @@
     </pou>
   </pous></types>
   <instances><configurations><configuration name="C"><resource name="R">
-    <task name="t" interval="PT0.01S" priority="0"><pouInstance name="i" typeName="drive" /></task>
+    <task name="t" interval="T#10ms" priority="0"><pouInstance name="i" typeName="drive" /></task>
   </resource></configuration></configurations></instances>
 </project>

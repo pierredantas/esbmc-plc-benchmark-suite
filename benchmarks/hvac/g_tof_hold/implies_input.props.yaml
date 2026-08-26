@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!Light || Pir || Button"
+    justification: "The off-delay light is on only due to the PIR (held) or the manual button."

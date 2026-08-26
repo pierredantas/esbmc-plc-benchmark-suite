@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!Out || Trig"
+    justification: "The pulse output is asserted only in response to a trigger."

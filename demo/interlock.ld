@@ -73,7 +73,7 @@
     </pous>
   </types>
   <instances><configurations><configuration name="Config0"><resource name="Res0">
-    <task name="tcyclic" interval="PT0.01S" priority="0">
+    <task name="tcyclic" interval="T#10ms" priority="0">
       <pouInstance name="inst0" typeName="drive" />
     </task>
   </resource></configuration></configurations></instances>

@@ -1,0 +1,24 @@
+format_version: "0.1"
+id: g_ctd_load
+name: "ctd load (graphical LD twin)"
+domain: elevator
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Graphical twin of ld_ctd_load. The IEC LD pin is wired but the graphical front end reads only R, so the modelled counter never reloads"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+syntax_pair_of: ld_ctd_load
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+metrics:
+  rungs: 2
+  pous: 1
+  variables: 5
+features: [contacts, coils, counter_ctd, load_pin]
+difficulty: medium
+tags: [feature, semantics, syntax-pair, counter]

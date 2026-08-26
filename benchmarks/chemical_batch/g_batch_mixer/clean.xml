@@ -10,5 +10,5 @@
       <rightPowerRail localId="2147483646"><position x="400" y="0" /><connectionPointIn /></rightPowerRail>
     </LD></body>
   </pou></pous></types>
-  <instances><configurations><configuration name="Config0"><resource name="Res0"><task name="tcyclic" interval="PT0.01S" priority="0"><pouInstance name="inst0" typeName="g_batch_mixer_clean" /></task></resource></configuration></configurations></instances>
+  <instances><configurations><configuration name="Config0"><resource name="Res0"><task name="tcyclic" interval="T#10ms" priority="0"><pouInstance name="inst0" typeName="g_batch_mixer_clean" /></task></resource></configuration></configurations></instances>
 </project>

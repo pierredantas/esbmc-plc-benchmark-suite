@@ -54,17 +54,21 @@ of a three-input AND, with `Y` high only for `A=B=C=1`. The ladder runs.
 
 ## Two interoperability defects found on the way
 
-**The task interval does not survive the round trip.** PLCopen XML writes a task period
-as an ISO 8601 duration, `interval="PT0.01S"`, which is what the schema requires. Beremiz
-passes that string straight into the generated ST, and `iec2c` rejects it:
+**The task interval was written in the wrong notation, and that was our defect.** These
+programs used to declare `interval="PT0.01S"`, the ISO 8601 spelling. The TC6 schema types
+the attribute as a string and annotates it *"Either a constant duration as defined in the
+IEC or variable name"*, which means `T#10ms`. Beremiz passed the ISO form through
+unchanged, correctly, and `iec2c` rejected it:
 
 ```
 error: invalid task initialization in task declaration.
 ```
 
-ST wants `T#10ms`. Substituting it by hand makes the file compile. This is a Beremiz
-issue rather than a defect in the programs here, but it blocks any automated round trip
-until it is worked around.
+Worse, ESBMC did not reject it. Its front end reads the interval with a parser that
+requires the IEC `#` form, found none, and fell back to a one millisecond tick, so every
+timer preset in the suite was ten times longer than intended with no diagnostic. All 43
+programs were corrected to `T#10ms` on 2026-08-26, after which the round trip below runs
+with no hand patching.
 
 **Namespace version.** Programs here declare `tc6_0200` while the published schema
 targets `tc6_0201`. The element vocabulary is the same, so validation and generation both

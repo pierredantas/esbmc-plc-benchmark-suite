@@ -1,0 +1,24 @@
+format_version: "0.1"
+id: g_ton_single
+name: "ton single (graphical LD twin)"
+domain: hvac
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Graphical PLCopen XML twin of the K-LD textual benchmark; PT is a duration literal resolved against the task interval"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+syntax_pair_of: ld_ton_single
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+metrics:
+  rungs: 2
+  pous: 1
+  variables: 4
+features: [contacts, coils, timer_ton]
+difficulty: easy
+tags: [feature, semantics, syntax-pair, timer]
