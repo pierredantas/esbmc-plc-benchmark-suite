@@ -252,6 +252,7 @@ def build_nav(parts):
             for les in part["lessons"]]})
     nav = [{"Home": "index.md"},
            {"The five languages": "languages.md"},
+           {"How ESBMC-PLC works": "how-esbmc-plc-works.md"},
            {"Lessons": lessons},
            {"Benchmarks": "benchmarks/index.md"},
            {"Reproducing": "reproducing.md"},
