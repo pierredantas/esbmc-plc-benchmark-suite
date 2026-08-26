@@ -1,0 +1,24 @@
+format_version: "0.1"
+id: g_comb_mixed
+name: "comb mixed (graphical LD twin)"
+domain: building_automation
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Graphical PLCopen XML twin of the K-LD textual benchmark (syntax-coverage pair)"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+syntax_pair_of: ld_comb_mixed
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+metrics:
+  rungs: 1
+  pous: 1
+  variables: 4
+features: [contacts, coils, parallel_branch, negated_contact]
+difficulty: easy
+tags: [feature, semantics, syntax-pair]
