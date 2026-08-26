@@ -216,8 +216,31 @@ The two are `g_ftrig_edge/program.xml` and `g_rtrig_edge/program.xml`: expected 
 `validated`, `unknown` on v8.4, **VIOL** on master. Every other verdict survives the
 encoding change, but survival is not confirmation, for the reason given above.
 
-## Coverage gap in this comparison
+## The termination slice, run with the scan watchdog
 
-16 of the 45 graphical files were skipped: their only property is `kind: termination`,
-which `--ld-props` rejects because the scan watchdog handles it instead. They need a
-separate comparison run with `--ld-scan-watchdog`, not a property file.
+The other 16 graphical files carry `kind: termination` only, which `--ld-props` rejects
+because the scan watchdog carries the property instead. Run with `--only watchdog`, so
+`--ld-props` is omitted and `--ld-scan-watchdog --ld-scan-budget 8` does the work:
+
+| | |
+|---|---|
+| tasks | 16 |
+| verdict changed | **0** |
+| encoding changed | 14 |
+
+All 16 are correct on both versions. The two whose encoding did not move are the
+`g_tank_substitution_coil` pair. This slice is the water_treatment corpus, the
+over-represented domain, and it is stable across the two versions.
+
+## Complete picture, all 45 graphical files
+
+| slice | tasks | encoding changed | verdict changed |
+|---|---|---|---|
+| property-based (`--ld-props`) | 29 | 29 | 2 |
+| termination (`--ld-scan-watchdog`) | 16 | 14 | 0 |
+| **total** | **45** | **43** | **2** |
+
+The two verdict changes are `g_ftrig_edge` and `g_rtrig_edge`, both explained by
+Finding 4. Everything else holds its label across a near-total change of encoding,
+which is reassuring for the corpus and says nothing about whether each encoding
+matches its documented rung.

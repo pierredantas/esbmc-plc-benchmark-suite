@@ -47,10 +47,14 @@ def translate_props(props, out_path):
 
 
 def verdict(esbmc, program, props_path, expected, timeout=120):
-    """Run one task and return (verdict, gate)."""
+    """Run one task and return (verdict, assignment counts).
+
+    props_path None means a termination-only task: the scan watchdog carries the
+    property and --ld-props is omitted, as tools/BUILD_AND_RUN.md specifies.
+    """
     mode = ["--k-induction"] if expected else ["--incremental-bmc", "--unwind", "20"]
-    args = [esbmc, program, "--ld-props", props_path, *mode, *WATCHDOG,
-            "--timeout", f"{timeout}s"]
+    props = ["--ld-props", props_path] if props_path else []
+    args = [esbmc, program, *props, *mode, *WATCHDOG, "--timeout", f"{timeout}s"]
     out = subprocess.run(args, capture_output=True, text=True, check=False)
     txt = (out.stdout or "") + (out.stderr or "")
     if re.search(r"verification successful", txt, re.I):
@@ -80,10 +84,11 @@ def tasks():
         pp = os.path.normpath(os.path.join(d, b.get("properties_file", "props.yaml")))
         with open(pp, encoding="utf-8") as fh:
             props = yaml.safe_load(fh)
+        kinds = {p["kind"] for p in props.get("properties", [])}
         for v in b["variants"]:
             if v["file"].endswith(".xml"):
                 yield (f"{b['id']}/{v['file']}", os.path.join(d, v["file"]),
-                       props, bool(v["expected_verdict"]))
+                       props, bool(v["expected_verdict"]), kinds == {"termination"})
 
 
 def main():
@@ -92,14 +97,22 @@ def main():
     ap.add_argument("--b", required=True)
     ap.add_argument("--label-a", default="A")
     ap.add_argument("--label-b", default="B")
+    ap.add_argument("--only", choices=["props", "watchdog"])
     args = ap.parse_args()
 
     tmp = tempfile.mkdtemp()
     rows, diffs = [], []
-    for tid, xml, props, expected in tasks():
-        ppath = translate_props(props, os.path.join(tmp, "p.yaml"))
-        if ppath is None:
+    for tid, xml, props, expected, watchdog_only in tasks():
+        if args.only == "props" and watchdog_only:
             continue
+        if args.only == "watchdog" and not watchdog_only:
+            continue
+        if watchdog_only:
+            ppath = None
+        else:
+            ppath = translate_props(props, os.path.join(tmp, "p.yaml"))
+            if ppath is None:
+                continue
         ld = os.path.join(tmp, "t.ld")
         shutil.copyfile(xml, ld)
         va, ca = verdict(args.a, ld, ppath, expected)
