@@ -53,4 +53,8 @@ parts:
         number: "2.2"
         title: "A reactor that keeps feeding under pressure"
         summary: "The same bypass in a chemical plant, where the relief vent still works and makes the attack look like a functioning protection system. Then a reasonable-sounding weakening of the property that lets the bomb through."
+      - slug: traffic-light
+        number: "2.3"
+        title: "A junction that shows two greens"
+        summary: "The bypass a third time, and a careful account of what conflict-freedom leaves open: no intergreen, no minimum green, and a stuck detector that starves one arm forever."
 
