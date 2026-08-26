@@ -6,9 +6,7 @@
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
   <fileHeader companyName="Anonymous" productName="Benchmark Suite" productVersion="1.0" creationDateTime="2026-08-26T00:00:00" />
   <contentHeader name="fbd_reactor_2oo3_clean">
-    <coordinateInfo>
-      <fbd><scaling x="1" y="1" /></fbd>
-    </coordinateInfo>
+    <coordinateInfo><fbd><scaling x="1" y="1" /></fbd><ld><scaling x="1" y="1" /></ld><sfc><scaling x="1" y="1" /></sfc></coordinateInfo>
   </contentHeader>
   <types>
     <dataTypes />

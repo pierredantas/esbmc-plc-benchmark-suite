@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Two parallel branches into one coil:   Run := A OR B
-     A ---| |---+---( Run )
-                |
-     B ---| |---+                                                    -->
+<!-- Two parallel branches into one coil:  Run := A OR B
+     An A contact and a B contact each run from the left rail into one
+     junction, and the junction drives the Run coil.
+-->
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
   <fileHeader companyName="x" productName="x" productVersion="1" creationDateTime="2026-01-01T00:00:00" />
-  <contentHeader name="ortest"><coordinateInfo><ld><scaling x="1" y="1" /></ld></coordinateInfo></contentHeader>
+  <contentHeader name="ortest"><coordinateInfo><fbd><scaling x="1" y="1" /></fbd><ld><scaling x="1" y="1" /></ld><sfc><scaling x="1" y="1" /></sfc></coordinateInfo></contentHeader>
   <types><dataTypes /><pous>
     <pou name="drive" pouType="program">
       <interface>

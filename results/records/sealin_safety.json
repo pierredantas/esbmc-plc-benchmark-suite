@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-26T10:21:56Z",
+  "recorded_at": "2026-08-26T15:07:13Z",
   "program": "demo2/sealin.ld",
   "properties_file": "demo2/props.yaml",
   "properties": [
@@ -98,7 +98,7 @@
       "command": "esbmc demo2/sealin.ld --ld-props demo2/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.018,
+      "cpu_time_s": 0.019,
       "counterexample": null
     }
   }

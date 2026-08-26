@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-26T12:08:20Z",
+  "recorded_at": "2026-08-26T15:07:14Z",
   "program": "benchmarks/building_automation/g_comb_or/program.ld",
   "properties_file": "benchmarks/building_automation/g_comb_or/branch_check.props.yaml",
   "properties": [
@@ -47,7 +47,7 @@
       "command": "esbmc benchmarks/building_automation/g_comb_or/program.ld --ld-props benchmarks/building_automation/g_comb_or/branch_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.014,
+      "cpu_time_s": 0.015,
       "counterexample": null
     },
     "master": {
@@ -96,7 +96,7 @@
       "command": "esbmc benchmarks/building_automation/g_comb_or/program.ld --ld-props benchmarks/building_automation/g_comb_or/branch_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.011,
+      "cpu_time_s": 0.016,
       "counterexample": "State 1  thread 0\n----------------------------------------------------\n  A = 1\n\nState 2  thread 0\n----------------------------------------------------\n  B = 0\n\nState 3  thread 0\n----------------------------------------------------\n  Y = 1\n\nState 4 file benchmarks/building_automation/g_comb_or/program.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/building_automation/g_comb_or/program.ld\n  P1\n  !Y || B\n\n\n** Results:\nbenchmarks/building_automation/g_comb_or/program.ld\n  FAILED       [global.assertion.1]  line 0  P1\n\n** 1 of 1 properties failed"
     }
   }

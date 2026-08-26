@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-26T12:28:26Z",
+  "recorded_at": "2026-08-26T15:07:14Z",
   "program": "benchmarks/traffic/g_rtrig_edge/program.ld",
   "properties_file": "benchmarks/traffic/g_rtrig_edge/props.yaml",
   "properties": [
@@ -48,7 +48,7 @@
       "command": "esbmc benchmarks/traffic/g_rtrig_edge/program.ld --ld-props benchmarks/traffic/g_rtrig_edge/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
       "verdict": "unknown",
       "proof": null,
-      "cpu_time_s": 0.201,
+      "cpu_time_s": 0.193,
       "counterexample": null
     },
     "master": {
@@ -106,7 +106,7 @@
       "command": "esbmc benchmarks/traffic/g_rtrig_edge/program.ld --ld-props benchmarks/traffic/g_rtrig_edge/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.012,
+      "cpu_time_s": 0.013,
       "counterexample": "State 1  thread 0\n----------------------------------------------------\n  Sig = 1\n\nState 2  thread 0\n----------------------------------------------------\n  Rise = 1\n\nState 3  thread 0\n----------------------------------------------------\n  Sig = 0\n\nState 4  thread 0\n----------------------------------------------------\n  Rise__prev = 1\n\nState 5  thread 0\n----------------------------------------------------\n  OneShot = 1\n\nState 6 file benchmarks/traffic/g_rtrig_edge/program.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/traffic/g_rtrig_edge/program.ld\n  P1\n  !OneShot || Sig\n\n\n** Results:\n  NOT CHECKED  [global.assertion.1]  line 0  unwinding assertion loop 1\nbenchmarks/traffic/g_rtrig_edge/program.ld\n  FAILED       [global.assertion.2]  line 0  P1\n\n** 1 of 2 properties failed, 1 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
     }
   }

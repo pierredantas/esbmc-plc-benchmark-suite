@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-26T12:08:20Z",
+  "recorded_at": "2026-08-26T15:07:14Z",
   "program": "benchmarks/building_automation/g_comb_mixed/program.ld",
   "properties_file": "benchmarks/building_automation/g_comb_mixed/props.yaml",
   "properties": [
@@ -50,7 +50,7 @@
       "command": "esbmc benchmarks/building_automation/g_comb_mixed/program.ld --ld-props benchmarks/building_automation/g_comb_mixed/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.014,
+      "cpu_time_s": 0.02,
       "counterexample": null
     },
     "master": {
@@ -106,7 +106,7 @@
       "command": "esbmc benchmarks/building_automation/g_comb_mixed/program.ld --ld-props benchmarks/building_automation/g_comb_mixed/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.015,
+      "cpu_time_s": 0.016,
       "counterexample": null
     }
   }

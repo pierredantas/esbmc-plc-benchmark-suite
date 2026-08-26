@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
   <fileHeader companyName="Anonymous" productName="Benchmark Suite" productVersion="1.0" creationDateTime="2026-07-09T00:00:00" />
-  <contentHeader name="g_elevator_door_bomb"><coordinateInfo><ld><scaling x="1" y="1" /></ld></coordinateInfo></contentHeader>
+  <contentHeader name="g_elevator_door_bomb"><coordinateInfo><fbd><scaling x="1" y="1" /></fbd><ld><scaling x="1" y="1" /></ld><sfc><scaling x="1" y="1" /></sfc></coordinateInfo></contentHeader>
   <types><dataTypes /><pous>
     <pou name="g_elevator_door_bomb" pouType="program">
       <interface><inputVars><variable name="open_req"><type><BOOL /></type></variable><variable name="move_req"><type><BOOL /></type></variable><variable name="at_floor"><type><BOOL /></type></variable><variable name="maint"><type><BOOL /></type></variable></inputVars><outputVars><variable name="door_open"><type><BOOL /></type></variable><variable name="drive"><type><BOOL /></type></variable></outputVars></interface>

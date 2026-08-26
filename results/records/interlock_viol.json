@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-26T10:21:56Z",
+  "recorded_at": "2026-08-26T15:07:13Z",
   "program": "demo/interlock_bug.ld",
   "properties_file": "demo/props.yaml",
   "properties": [
@@ -51,7 +51,7 @@
       "command": "esbmc demo/interlock_bug.ld --ld-props demo/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.011,
+      "cpu_time_s": 0.014,
       "counterexample": "State 1  thread 0\n----------------------------------------------------\n  fwd = 1\n\nState 2  thread 0\n----------------------------------------------------\n  rev = 1\n\nState 3  thread 0\n----------------------------------------------------\n  KM_CCW = 1\n\nState 4  thread 0\n----------------------------------------------------\n  KM_CW = 1\n\nState 5 file demo/interlock_bug.ld thread 0\n----------------------------------------------------\nViolated property:\n  file demo/interlock_bug.ld\n  P1\n  !(KM_CW && KM_CCW)"
     },
     "master": {
@@ -95,7 +95,7 @@
       "command": "esbmc demo/interlock_bug.ld --ld-props demo/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.011,
+      "cpu_time_s": 0.017,
       "counterexample": "State 1  thread 0\n----------------------------------------------------\n  fwd = 1\n\nState 2  thread 0\n----------------------------------------------------\n  rev = 1\n\nState 3  thread 0\n----------------------------------------------------\n  KM_CCW = 1\n\nState 4  thread 0\n----------------------------------------------------\n  KM_CW = 1\n\nState 5 file demo/interlock_bug.ld thread 0\n----------------------------------------------------\nViolated property:\n  file demo/interlock_bug.ld\n  P1\n  !(KM_CW && KM_CCW)\n\n\n** Results:\ndemo/interlock_bug.ld\n  FAILED       [global.assertion.1]  line 0  P1\n\n** 1 of 1 properties failed"
     }
   }

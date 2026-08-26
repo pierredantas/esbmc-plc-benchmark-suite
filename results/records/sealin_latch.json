@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-26T10:21:56Z",
+  "recorded_at": "2026-08-26T15:07:13Z",
   "program": "demo2/sealin.ld",
   "properties_file": "demo2/latch_check.props.yaml",
   "properties": [
@@ -47,7 +47,7 @@
       "command": "esbmc demo2/sealin.ld --ld-props demo2/latch_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.015,
+      "cpu_time_s": 0.026,
       "counterexample": null
     },
     "master": {
@@ -98,7 +98,7 @@
       "command": "esbmc demo2/sealin.ld --ld-props demo2/latch_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.018,
+      "cpu_time_s": 0.019,
       "counterexample": "State 1  thread 0\n----------------------------------------------------\n  Start = 1\n\nState 2  thread 0\n----------------------------------------------------\n  EStop = 0\n\nState 3  thread 0\n----------------------------------------------------\n  Run = 1\n\nState 5  thread 0\n----------------------------------------------------\n  Start = 0\n\nState 6  thread 0\n----------------------------------------------------\n  EStop = 0\n\nState 7  thread 0\n----------------------------------------------------\n  Run__prev = 1\n\nState 8  thread 0\n----------------------------------------------------\n  Run = 1\n\nState 9 file demo2/sealin.ld thread 0\n----------------------------------------------------\nViolated property:\n  file demo2/sealin.ld\n  P1\n  !Run || Start\n\n\n** Results:\n  NOT CHECKED  [global.assertion.1]  line 0  unwinding assertion loop 1\ndemo2/sealin.ld\n  FAILED       [global.assertion.2]  line 0  P1\n\n** 1 of 2 properties failed, 1 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
     }
   }
