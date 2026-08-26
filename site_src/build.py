@@ -42,11 +42,25 @@ VERDICT = {True: "SAFE", False: "VIOLATION"}
 STATS = {"pages": 0, "files": 0}
 
 
-def write(path, text):
-    """One generated page, banner first."""
+def write(path, title, body):
+    """One generated page.
+
+    The title is explicit because every page here is an index.md, and MkDocs falls
+    back to the filename whenever it cannot read an H1 as the document's first
+    element. The banner that warns against editing is exactly such an element.
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(BANNER + "\n\n" + text.rstrip("\n") + "\n", encoding="utf-8")
+    front = f"---\ntitle: {json.dumps(title)}\n---\n\n{BANNER}\n\n"
+    path.write_text(front + body.rstrip("\n") + "\n", encoding="utf-8")
     STATS["pages"] += 1
+
+
+def page_title(text, default):
+    """The H1 a hand-written page already carries."""
+    for line in text.splitlines():
+        if line.startswith("# "):
+            return line[2:].strip()
+    return default
 
 
 def digest(path):
@@ -198,12 +212,13 @@ def build_lessons():
         dest = OUT / "lessons" / lesson["slug"]
         body = (SRC / "lessons" / (lesson["slug"] + ".md")).read_text(encoding="utf-8")
         ctx = {"dir": dest, "name": lesson["slug"]}
-        write(dest / "index.md", f'# {lesson["title"]}\n\n{expand(body, ctx)}')
+        write(dest / "index.md", lesson["title"],
+              f'# {lesson["title"]}\n\n{expand(body, ctx)}')
 
     rows = ["| lesson | what it shows |", "|---|---|"]
     rows += [f'| [{les["title"]}]({les["slug"]}/index.md) | {les["summary"]} |'
              for les in lessons]
-    write(OUT / "lessons" / "index.md",
+    write(OUT / "lessons" / "index.md", "Lessons",
           "# Lessons\n\nEach lesson runs one ladder program past ESBMC and shows what came "
           "back, including what the front end encoded before the solver saw it. Work through "
           "them in order; each assumes the one before.\n\n" + "\n".join(rows))
@@ -262,7 +277,8 @@ def build_benchmark(meta, recorded):
     body.append("\n".join(f"- `{name}`" for name in runs) if runs else
                 "No ESBMC run is recorded against this task yet. The lessons carry the "
                 "recorded runs; see [Reproducing](../../../reproducing.md) to make your own.")
-    write(dest / "index.md", f'# {meta.get("name", meta["id"])}\n\n' + "\n".join(body))
+    write(dest / "index.md", meta["id"],
+          f'# {meta.get("name", meta["id"])}\n\n' + "\n".join(body))
 
 
 def tally(metas, field):
@@ -301,7 +317,7 @@ def build_benchmarks():
                         f'| {meta.get("name", "")} | {meta.get("language", "")} '
                         f'| {meta.get("difficulty", "")} '
                         f'| {meta.get("validation_status", "")} |')
-    write(OUT / "benchmarks" / "index.md", "\n".join(page))
+    write(OUT / "benchmarks" / "index.md", "Benchmarks", "\n".join(page))
     return metas
 
 
@@ -309,10 +325,12 @@ def build_static():
     """Hand-written pages, plus anything already documented elsewhere in the repo."""
     for path in sorted((SRC / "pages").glob("*.md")):
         ctx = {"dir": OUT, "name": path.name}
-        write(OUT / path.name, expand(path.read_text(encoding="utf-8"), ctx))
+        text = path.read_text(encoding="utf-8")
+        write(OUT / path.name, page_title(text, path.stem), expand(text, ctx))
     macos = ROOT / "docs" / "BUILD_MACOS.md"
     if macos.exists():
-        write(OUT / "build-macos.md", macos.read_text(encoding="utf-8"))
+        text = macos.read_text(encoding="utf-8")
+        write(OUT / "build-macos.md", "Building ESBMC on macOS", text)
     for css in (SRC / "stylesheets").glob("*.css"):
         dest = OUT / "stylesheets" / css.name
         dest.parent.mkdir(parents=True, exist_ok=True)
