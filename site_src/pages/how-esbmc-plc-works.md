@@ -160,3 +160,93 @@ different program that still verifies, and the verdict looks identical either wa
 and still reporting SUCCESSFUL. [Lesson 1.4](lessons/seal-in/index.md) shows the same
 thing costing a latch. Neither is visible in the verdict, and both are obvious in the
 scan body.
+
+## What about the other four languages?
+
+Everything above describes one front end reading one notation. IEC 61131-3 has five, and
+a suite meant for validating tools has to say plainly how much of that any given tool
+covers. For ESBMC the answer is narrow, and it is worth stating before explaining how to
+get past it.
+
+`langapi/mode.cpp` registers a single IEC extension:
+
+```c
+static const char *const extensions_ld[] = {"ld", nullptr};
+```
+
+There is no `st`, no `il`, no `xml`. One combination works: a file **named** `.ld`,
+whose **content** is PLCopen XML, whose **body** is `<LD>`.
+
+| you hand it | what happens |
+|---|---|
+| `program.ld` holding PLCopen XML with an `<LD>` body | read, and modelled |
+| `program.ld` holding PLCopen XML with `<FBD>` or `<SFC>` | file parses, body discarded, no diagnostic |
+| `program.xml` | not recognized; the extension decides the front end |
+| `program.st`, `program.il` | `failed to figure out type of file` |
+| a K-LD textual rung in a bare `.ld` file | `No document element found`, because the file is XML-parsed |
+
+The second row is the one that costs you. The file is accepted, an empty scan loop is
+built, and a verdict comes back about a program that no longer contains the logic under
+test. Every FBD and SFC variant in this suite fails the ingestion gate on both builds for
+that reason, and a `SUCCESSFUL` there means nothing was checked rather than nothing is
+wrong.
+
+## Reading every format anyway
+
+There is a second path to the same engine, and it does not require ESBMC to learn a new
+language. Two independent projects already do the translation:
+[Beremiz](https://github.com/beremiz/beremiz) turns a PLCopen body of any kind into
+Structured Text, and [MatIEC](https://github.com/beremiz/matiec) compiles Structured Text
+or Instruction List into C. ESBMC has had a C front end since long before it had a ladder
+one.
+
+<svg class="diagram" viewBox="0 0 620 330" role="img" aria-label="Two routes into the same engine: the LD front end reads an LD body directly, while Beremiz and MatIEC translate any body through Structured Text and C into the C front end; both meet at goto-symex"><defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs><g stroke="currentColor" fill="none" stroke-width="1.4"><rect x="30" y="20" width="240" height="38" rx="3"/><rect x="330" y="20" width="260" height="38" rx="3"/><rect x="60" y="96" width="180" height="38" rx="3"/><rect x="330" y="96" width="260" height="38" rx="3"/><rect x="330" y="152" width="260" height="38" rx="3"/><rect x="60" y="208" width="180" height="38" rx="3"/><rect x="330" y="208" width="260" height="38" rx="3"/><rect x="170" y="272" width="280" height="40" rx="3"/></g><g stroke="currentColor" fill="none" stroke-width="1.4" marker-end="url(#ar3)"><path d="M150 58 V94"/><path d="M460 58 V94"/><path d="M460 134 V150"/><path d="M460 190 V206"/><path d="M150 134 V206"/><path d="M150 246 V272 H168"/><path d="M460 246 V272 H452"/></g><g fill="currentColor" font-size="12.5" text-anchor="middle"><text x="150" y="44">program.ld  (LD body)</text><text x="460" y="44">any body: LD, FBD, SFC, ST, IL</text><text x="150" y="120">ld-frontend</text><text x="460" y="120">Beremiz → Structured Text</text><text x="460" y="176">MatIEC iec2c → C</text><text x="150" y="232">GOTO</text><text x="460" y="232">clang-c-frontend → GOTO</text><text x="310" y="296">goto-symex → SMT → verdict</text></g></svg>
+
+The two routes answer different questions, and keeping them apart matters. The left one
+asks *does ESBMC's ladder front end read this correctly*. The right one asks *is this
+program correct*, and it reaches every notation the standard defines.
+
+### It works, and it is not vacuous
+
+Carried end to end on `g_comb_and`, the three-contact rung from
+[lesson 1.1](lessons/one-rung/index.md): Beremiz produced `Y := C AND B AND A;`, MatIEC
+compiled it, and ESBMC verified the result against an assertion written over the
+generated C variables.
+
+```
+** 0 of 14 properties failed, 14 passed
+VERIFICATION SUCCESSFUL
+Solution found by the forward condition; all states are reachable (k = 4)
+```
+
+A passing property proves nothing on its own, so the same harness was rerun with an
+assertion that has to fail, `A alone implies Y`:
+
+```
+Violated property:
+  A alone implies Y (must fail)
+VERIFICATION FAILED
+```
+
+The harness is sensitive. On a project where several `SUCCESSFUL` verdicts turned out to
+mean "the body was never read", that second run is not a formality.
+
+### What it costs
+
+Three things join the trusted base, and a reviewer will ask about each. MatIEC's
+translation of IEC semantics into C is now part of what you are relying on. So is
+Beremiz's rendering of a graphical body into text. And the property moves out of the YAML
+file and into an assertion over generated C identifiers, written against a harness that
+drives the scan loop explicitly rather than against `--ld-props`.
+
+That is a real cost, and it buys something the ladder front end cannot: coverage of ST,
+IL, FBD and SFC using tools that are maintained by other people and can be cited.
+
+### Status
+
+One program has been carried the whole way. Extending it is open work: Beremiz's
+generator needs a fuller controller object than the minimal one used here before FBD
+bodies convert, and each language needs its own harness pattern. The procedure, the two
+interoperability defects found while establishing it, and the per-stage results are
+recorded in
+[docs/INTEROP.md](https://github.com/pierredantas/esbmc-plc-benchmark-suite/blob/main/docs/INTEROP.md).
