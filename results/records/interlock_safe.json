@@ -1,5 +1,6 @@
 {
-  "schema_version": "0.2",
+  "schema_version": "0.3",
+  "recorded_at": "2026-08-26T10:21:56Z",
   "program": "demo/interlock.ld",
   "properties_file": "demo/props.yaml",
   "properties": [
@@ -24,6 +25,7 @@
         "path": "/Users/user/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
+        "commit": "61172c6f",
         "platform": "aarch64 macos"
       },
       "status": "correct",
@@ -49,7 +51,7 @@
       "command": "esbmc demo/interlock.ld --ld-props demo/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.016,
+      "cpu_time_s": 0.034,
       "counterexample": null
     },
     "master": {
@@ -57,6 +59,7 @@
         "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
+        "commit": "d88a9fa4",
         "platform": "aarch64 macos"
       },
       "status": "correct",
@@ -97,7 +100,7 @@
       "command": "esbmc demo/interlock.ld --ld-props demo/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.018,
+      "cpu_time_s": 0.032,
       "counterexample": null
     }
   }

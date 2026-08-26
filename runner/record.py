@@ -13,6 +13,7 @@ Exit status is 1 when any tool's ingestion gate rejects the record, so this doub
 as a CI check.
 """
 import argparse
+import datetime
 import json
 import os
 import re
@@ -34,12 +35,29 @@ def run_esbmc(esbmc, args):
     return (out.stdout or "") + (out.stderr or "")
 
 
+def build_commit(esbmc):
+    """Short commit of the source tree this binary was built from.
+
+    Both local builds answer --version with 8.4.0, so the version string cannot
+    tell them apart. The commit is what makes a recorded run identifiable.
+    """
+    path = os.path.dirname(os.path.abspath(esbmc))
+    while path not in ("/", ""):
+        if os.path.exists(os.path.join(path, ".git")):  # a worktree has .git as a file
+            out = subprocess.run(["git", "-C", path, "rev-parse", "--short", "HEAD"],
+                                 capture_output=True, text=True, check=False)
+            return out.stdout.strip() or None
+        path = os.path.dirname(path)
+    return None
+
+
 def tool_info(esbmc):
-    """Version and platform of one build."""
+    """Version, build commit, and platform of one build."""
     raw = run_esbmc(esbmc, ["--version"]).strip()
     m = re.search(r"ESBMC version (\S+) .*?(\S+ \S+)$", raw)
     return {"path": esbmc, "raw": raw,
             "version": m.group(1) if m else None,
+            "commit": build_commit(esbmc),
             "platform": m.group(2) if m else None}
 
 
@@ -86,11 +104,18 @@ def check_gate(counts, pvars):
     return missing, ("pass" if counts and not missing else "fail")
 
 
-def verify(esbmc, program, props_path, expected, timeout):
+def resolve_mode(mode, expected):
+    """k-induction proves an expected-SAFE program; BMC hunts for the counterexample."""
+    if mode != "auto":
+        return mode
+    return "kinduction" if expected else "bmc"
+
+
+def verify(esbmc, program, props_path, timeout, mode):
     """Run the verification and classify the outcome."""
-    mode = ["--k-induction"] if expected else ["--incremental-bmc", "--unwind", "20"]
+    flags = ["--k-induction"] if mode == "kinduction" else ["--incremental-bmc", "--unwind", "20"]
     props = ["--ld-props", props_path] if props_path else []
-    args = [program, *props, *mode, *WATCHDOG, "--timeout", f"{timeout}s"]
+    args = [program, *props, *flags, *WATCHDOG, "--timeout", f"{timeout}s"]
     start = time.time()
     txt = run_esbmc(esbmc, args)
     if re.search(r"verification successful", txt, re.I):
@@ -118,8 +143,10 @@ def record_one(label, esbmc, args, props_path, pvars):
     """Everything one build has to say about this task."""
     lines, counts = encoding(esbmc, args.program)
     missing, gate = check_gate(counts, pvars)
-    result = verify(esbmc, args.program, props_path, args.expected == "true", args.timeout)
-    expected_v = "SAFE" if args.expected == "true" else "VIOLATION"
+    expected = args.expected == "true"
+    result = verify(esbmc, args.program, props_path, args.timeout,
+                    resolve_mode(args.mode, expected))
+    expected_v = "SAFE" if expected else "VIOLATION"
     if result["verdict"] in ("error", "unknown"):
         status = result["verdict"]
     else:
@@ -137,6 +164,11 @@ def main():
     ap.add_argument("props")
     ap.add_argument("expected", choices=["true", "false"])
     ap.add_argument("--tool", action="append", required=True, metavar="LABEL=PATH")
+    ap.add_argument("--mode", choices=["auto", "kinduction", "bmc"], default="auto",
+                    help="auto picks k-induction for an expected-SAFE task and "
+                         "incremental BMC otherwise. Force k-induction on a "
+                         "discriminator, where SUCCESSFUL has to be a proof and "
+                         "not a bounded silence.")
     ap.add_argument("--watchdog-only", action="store_true",
                     help="termination task: omit --ld-props, the watchdog carries it")
     ap.add_argument("-o", "--out")
@@ -152,7 +184,8 @@ def main():
                 for t in args.tool)
 
     record = {
-        "schema_version": "0.2",
+        "schema_version": "0.3",
+        "recorded_at": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "program": os.path.relpath(args.program),
         "properties_file": os.path.relpath(args.props),
         "properties": props.get("properties", []),
