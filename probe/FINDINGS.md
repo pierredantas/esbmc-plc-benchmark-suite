@@ -7,6 +7,20 @@ for the six build blockers and their fixes.
 **Caveat:** this is not the binary that produced `results/summary_v84_full.tsv`
 (that was linux/amd64 with LLVM 22.1.6). P0 below exists to bound that risk.
 
+## Upstream status, 2026-08-27
+
+| finding | upstream |
+|---|---|
+| 1 — only `<LD>` bodies are read, and the front end fails open | **not filed.** Approved for filing; still outstanding. |
+| 2 — property tier wider than documented | documentation, not filed |
+| 3 — parallel branches as last-branch-wins | fixed on master, nothing to file |
+| 4 — rung evaluation order | [esbmc/esbmc#7352](https://github.com/esbmc/esbmc/issues/7352) |
+
+Two further defects were found after this document was written and are filed:
+[esbmc/esbmc#7353](https://github.com/esbmc/esbmc/issues/7353), graphical CTD counters
+are never reloaded, and [beremiz/beremiz#83](https://github.com/beremiz/beremiz/issues/83),
+`FactorizePaths` raising `TypeError` on Python 3 for unequal-length parallel branches.
+
 ## Results
 
 | Probe | Verdict | Answer |
@@ -158,8 +172,27 @@ bodies are still discarded silently, and the false SAFE still occurs. Worth fili
 
 ## Finding 4 — rung evaluation order does not follow IEC 61131-3
 
-Both versions emit rungs in **reverse** document order. They differ in what they do
-about it.
+Both versions emit rungs in an order the file never specifies. They differ in what they
+do about it.
+
+**Correction, 2026-08-27.** This section first said the order was *reverse document
+order*. That was wrong, and it was wrong in the way a small sample makes things wrong:
+every file examined at the time happened to come out reversed. The order is neither
+document order nor its reverse. `plcopen_xml_parser.cpp` emits one sink per coil in
+right-power-rail order and, for coils that rail does not enumerate, falls back to
+iterating `std::unordered_map<int, GNode>`. The scan order is then hash iteration order.
+
+Two files differing by a single deleted contact execute their coils in opposite orders:
+
+| file | coil localIds | executed |
+|---|---|---|
+| `demo/interlock.ld` | 12, 21 | `KM_CW` then `KM_CCW` |
+| `demo/interlock_bug.ld` (same file, one contact removed) | 12, 21 | `KM_CCW` then `KM_CW` |
+
+Deleting a contact changes the element count, which changes the bucket layout, which
+changes the scan order. Filed upstream as
+[esbmc/esbmc#7352](https://github.com/esbmc/esbmc/issues/7352), where 35 of 57 graphical
+programs in this corpus are shown to take the fallback path.
 
 `g_ftrig_edge` is a falling-edge one-shot. Source order (identical in the graphical
 XML and its textual twin):
@@ -170,7 +203,7 @@ OneShot  := Fall
 Sig_prev := Sig
 ```
 
-**v8.4** emits the reverse with no snapshots:
+**v8.4** emits the rungs in that order with no snapshots:
 
 ```
 Sig_prev = Sig
@@ -182,7 +215,7 @@ so `Fall = !Sig && Sig`, which is false in every scan. Confirmed: the invariant
 `!Fall` is **proved** on v8.4. The falling-edge benchmark cannot fire its edge, so on
 v8.4 it tests nothing. Its recorded result is `unknown`, which concealed this.
 
-**master** emits the reverse but snapshots every variable at scan top, giving a
+**master** reorders too, but snapshots every variable at scan top, giving a
 coherent *simultaneous* model:
 
 ```
@@ -201,8 +234,10 @@ written in rung 1 is visible to rung 2 in that same scan. Under those semantics
 That matches the benchmark's `expert` label and nuXmv's SAFE.
 
 **Neither version implements IEC sequential rung semantics.** v8.4 is incoherent;
-master is coherent but synchronous. This is worth reporting upstream, and it is the
-kind of disagreement the suite exists to surface.
+master is coherent but synchronous. Reported upstream as
+[esbmc/esbmc#7352](https://github.com/esbmc/esbmc/issues/7352), which covers the ordering
+and notes that fixing it alone will not address the snapshot behaviour, since the two
+interact. This is the kind of disagreement the suite exists to surface.
 
 ## Verdict drift across the 29 comparable tasks
 
