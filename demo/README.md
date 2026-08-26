@@ -9,10 +9,15 @@ ESBMC=/path/to/esbmc ./run.sh
 
 ## The ladder (`interlock.ld`)
 
+A **reversing starter**: one motor, two contactors. `KM_CW` closes to run it clockwise,
+`KM_CCW` counter-clockwise (ACW in British schematics). Closing both at once shorts two
+supply phases straight through the reversing contacts, so this interlock is wiring
+protection rather than a process preference.
+
 ```
-Rung 1:  fwd ---| |----|/|--- ( Motor_A )     Motor_A := fwd AND NOT rev
+Rung 1:  fwd ---| |----|/|--- ( KM_CW )      KM_CW  := fwd AND NOT rev
                        rev
-Rung 2:  rev ---| |------------( Motor_B )     Motor_B := rev
+Rung 2:  rev ---| |------------( KM_CCW )     KM_CCW := rev
 ```
 
 **The file extension must be `.ld`, but the content is PLCopen XML.** ESBMC-PLC v8.4
@@ -25,7 +30,7 @@ rejected; a textual-LD DSL or a raw `.st` file is also rejected.
 properties:
   - id: P1
     kind: mutual_exclusion
-    variables: [Motor_A, Motor_B]
+    variables: [KM_CW, KM_CCW]
     justification: "Forward and reverse contactors must never be energised together."
 ```
 
@@ -43,17 +48,17 @@ every scan, not just up to a bound.
 ## Falsifying the broken version
 
 `interlock_bug.ld` is the same file with the `|/| rev` contact deleted from rung 1, so
-`Motor_A := fwd` and nothing stops both contactors closing.
+`KM_CW := fwd` and nothing stops both contactors closing.
 
 ```
 $ esbmc interlock_bug.ld --ld-props props.yaml --incremental-bmc --unwind 20
 State 1   fwd = 1
 State 2   rev = 1
-State 3   Motor_B = 1
-State 4   Motor_A = 1
+State 3   KM_CCW = 1
+State 4   KM_CW = 1
 Violated property:
   P1
-  !(Motor_A && Motor_B)
+  !(KM_CW && KM_CCW)
 VERIFICATION FAILED
 Bug found (k = 1)
 ```
@@ -66,7 +71,7 @@ counterexample and prints the input assignment that reaches the bad state.
 | Kind | Required fields | Notes |
 |---|---|---|
 | `mutual_exclusion` | `variables` | |
-| `invariant` | `expression` | Compound formulas work: `!(Motor_A && Motor_B)`. Must use **C** operators, not `AND`/`NOT` |
+| `invariant` | `expression` | Compound formulas work: `!(KM_CW && KM_CCW)`. Must use **C** operators, not `AND`/`NOT` |
 | `reachability` | `expression`, `justification` | |
 | `absence` | `subtype`, `expression` | |
 

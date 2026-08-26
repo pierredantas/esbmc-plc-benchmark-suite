@@ -1,5 +1,5 @@
 properties:
   - id: P1
     kind: mutual_exclusion
-    variables: [Motor_A, Motor_B]
-    justification: "Forward and reverse contactors must never be energised together."
+    variables: [KM_CW, KM_CCW]
+    justification: "Both contactors must never close together: that shorts two supply phases across the reversing contacts."
