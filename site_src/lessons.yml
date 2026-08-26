@@ -95,4 +95,8 @@ parts:
         number: "3.3"
         title: "When the fuse outruns the checker"
         summary: "Five identical bombs at fuse widths from 255 to 32767 scans, all found, at 0.9 seconds and 406 seconds respectively, and why unwinding further is a race the defender loses."
+      - slug: non-termination
+        number: "3.4"
+        title: "The payload that produces no output"
+        summary: "A loop whose counter is never advanced, entered at one sensor value, and the scan watchdog that catches it. Plus the flag combination that reports the hang as proved."
 
