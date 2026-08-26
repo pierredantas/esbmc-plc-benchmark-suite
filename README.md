@@ -4,8 +4,7 @@
 [![License: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-blue.svg)](LICENSE)
 [![License: MIT](https://img.shields.io/badge/code-MIT-green.svg)](LICENSE-CODE)
 
-A community suite of **50 IEC 61131-3 benchmarks over 83 program variants**
-(15 textual LD · 25 graphical LD · 10 ST) across **10 industrial domains**, in PLCopen XML / ST,
+A community suite of IEC 61131-3 benchmarks across **10 industrial domains**, in PLCopen XML / ST,
 each with formal safety properties (YAML), machine-checkable expected verdicts, witnesses, and
 baseline results from ESBMC-PLC+ and nuXmv. SV-COMP–compatible so the artifact feeds a future
 SV-COMP PLC/ICS category.
@@ -33,6 +32,16 @@ results/<tool>/                per-run verdict/time/status records
 ```
 
 ## Status
+
+> **Released version and working tree differ.** The archived release **v1.0.1**
+> ([DOI 10.5281/zenodo.21642386](https://doi.org/10.5281/zenodo.21642386)) holds
+> **50 benchmarks over 83 program variants** in 15 LD-textual, 25 LD-graphical and
+> 10 ST. Those are the numbers the accompanying paper reports, and they are what you
+> should cite. This branch has grown since: as of 2026-08-26 it holds **62 tasks
+> over 99 variants** (2 FBD · 33 LD-graphical · 15 LD-textual · 2 SFC · 10 ST). The
+> [benchmarks catalog](https://pierredantas.github.io/esbmc-plc-benchmark-suite/benchmarks/)
+> carries live counts. Everything below this note describes v1.0.1.
+
 50 benchmarks / 83 variants across 10 domains, all passing `runner/validate.py`.
 Composition: **15 LD-textual · 25 LD-graphical · 10 ST**.
 Verdicts: 49 SAFE / 34 VIOLATION. Ground truth: 36 expert · 29 fault-injection · 18 cross-tool-consensus.

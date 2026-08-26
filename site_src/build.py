@@ -265,12 +265,28 @@ def build_nav(parts):
 
 
 def program_index():
-    """Which recorded runs, if any, used a given program file."""
+    """Which recorded runs, if any, used a given program file.
+
+    A record names the .ld copy the run was made against, because ESBMC picks its
+    front end from the extension while the catalog stores graphical programs as
+    .xml. Both spellings map to the same task.
+    """
     index = {}
     for path in sorted(RECORDS.glob("*.json")):
         rec = json.loads(path.read_text(encoding="utf-8"))
-        index.setdefault(rec["program"], []).append(path.stem)
+        program = rec["program"]
+        index.setdefault(program, []).append(path.stem)
+        if program.endswith(".ld"):
+            index.setdefault(program[:-3] + ".xml", []).append(path.stem)
     return index
+
+
+def record_line(name):
+    """One recorded run, summarised: what was asked and what each build answered."""
+    rec = json.loads((RECORDS / (name + ".json")).read_text(encoding="utf-8"))
+    verdicts = ", ".join(f"{label} `{run['verdict']}`" for label, run in rec["runs"].items())
+    props = pathlib.Path(rec["properties_file"]).name
+    return f'- `{name}` ({props}, expected `{rec["expected_verdict"]}`): {verdicts}'
 
 
 def sibling_links(text, meta):
@@ -313,7 +329,7 @@ def build_benchmark(meta, recorded):
     runs = [name for var in meta.get("variants", []) for name in
             recorded.get(f'benchmarks/{meta["domain"]}/{meta["id"]}/{var["file"]}', [])]
     body.append("\n## Recorded runs\n")
-    body.append("\n".join(f"- `{name}`" for name in runs) if runs else
+    body.append("\n".join(record_line(name) for name in sorted(set(runs))) if runs else
                 "No ESBMC run is recorded against this task yet. The lessons carry the "
                 "recorded runs; see [Reproducing](../../../reproducing.md) to make your own.")
     write(dest / "index.md", meta["id"],
