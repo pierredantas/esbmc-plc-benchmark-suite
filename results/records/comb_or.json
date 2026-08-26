@@ -1,0 +1,104 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-08-26T12:08:20Z",
+  "program": "benchmarks/building_automation/g_comb_or/program.ld",
+  "properties_file": "benchmarks/building_automation/g_comb_or/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!Y || A || B",
+      "justification": "Output Y is energised only when contact A or B is closed."
+    }
+  ],
+  "property_variables": [
+    "A",
+    "B",
+    "Y"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "61172c6f",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN A=NONDET(_Bool);",
+          "        ASSIGN B=NONDET(_Bool);",
+          "        ASSIGN Y=1 && A;",
+          "        ASSIGN Y=1 && B;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "A": 1,
+          "B": 1,
+          "Y": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "esbmc benchmarks/building_automation/g_comb_or/program.ld --ld-props benchmarks/building_automation/g_comb_or/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.019,
+      "counterexample": null
+    },
+    "master": {
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "d88a9fa4",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 9",
+          "        ASSIGN A=NONDET(_Bool);",
+          "        ASSIGN B=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf4=0;",
+          "     2: IF !(1 && B) THEN GOTO 3",
+          "        ASSIGN pf4=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf3=0;",
+          "     4: IF !(1 && A) THEN GOTO 5",
+          "        ASSIGN pf3=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN Y__pf0=0;",
+          "     6: IF !(1 && pf4) THEN GOTO 7",
+          "        ASSIGN Y__pf0=1;",
+          "     7: IF !(1 && pf3) THEN GOTO 8",
+          "        ASSIGN Y__pf0=1;",
+          "     8: ASSIGN Y=1 && Y__pf0;",
+          "        GOTO 1",
+          "     9:"
+        ],
+        "assignment_counts": {
+          "A": 1,
+          "B": 1,
+          "pf4": 2,
+          "pf3": 2,
+          "Y__pf0": 3,
+          "Y": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "esbmc benchmarks/building_automation/g_comb_or/program.ld --ld-props benchmarks/building_automation/g_comb_or/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.016,
+      "counterexample": null
+    }
+  }
+}

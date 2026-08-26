@@ -10,6 +10,10 @@ parts:
         number: "1.1"
         title: "One rung: contacts and a coil"
         summary: "The smallest ladder that verifies. Three contacts in series, one coil, one property, one proof."
+      - slug: series-parallel
+        number: "1.2"
+        title: "Series, parallel, and the wired OR"
+        summary: "Two branches into one coil. Both builds prove the shipped property, and only one of them encoded the second branch at all."
       - slug: interlock
         number: "1.3"
         title: "A reversing starter, proved and broken"
