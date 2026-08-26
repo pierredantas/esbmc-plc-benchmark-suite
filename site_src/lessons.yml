@@ -61,4 +61,8 @@ parts:
         number: "2.4"
         title: "A car that moves with its door open"
         summary: "The same machine as a rung and as a chart. One bomb adds a branch, the other changes a single letter, and only one of them is caught."
+      - slug: hvac-fan
+        number: "2.5"
+        title: "An air handler whose name promises a timer"
+        summary: "Heating and cooling interlocked correctly, a bypass that defeats it, and a benchmark called fan_delay whose program contains no block at all."
 
