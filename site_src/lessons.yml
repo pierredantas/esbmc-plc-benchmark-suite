@@ -22,3 +22,7 @@ parts:
         number: "1.4"
         title: "A seal-in latch, where the verdict hides the encoding"
         summary: "Two ESBMC builds agree the circuit is safe. Only one of them encoded a latch, and it takes a second property to find out which."
+      - slug: edges-and-scan-order
+        number: "1.5"
+        title: "Edges, and the order rungs run in"
+        summary: "Three rungs whose order is the design. Both builds run them in an order the file never specified, and the standard says the benchmark is right."
