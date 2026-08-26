@@ -45,6 +45,8 @@
       "additionalProperties": false,
       "properties": {
         "rungs": { "type": "integer" },
+        "blocks": { "type": "integer" },
+        "steps": { "type": "integer" },
         "loc": { "type": "integer" },
         "pous": { "type": "integer" },
         "variables": { "type": "integer" }

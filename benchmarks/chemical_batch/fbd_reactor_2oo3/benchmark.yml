@@ -1,0 +1,31 @@
+format_version: "0.1"
+id: fbd_reactor_2oo3
+name: "Two-out-of-three overpressure trip (FBD)"
+domain: chemical_batch
+language: FBD
+source:
+  origin: authored
+  reference: "Voted trip logic, authored for FBD language coverage"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+  - file: bomb.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.xml
+      seeded_defect: "The (ps1 AND ps3) leg was dropped from the vote, so the outer switches cannot trip on their own."
+      witness: "ps1=1, ps2=0, ps3=1 leaves trip=0 with two switches high."
+metrics:
+  pous: 1
+  blocks: 4
+  variables: 4
+features: [blocks, voting, fan_in]
+difficulty: medium
+tags: [safety, voting, language-coverage]

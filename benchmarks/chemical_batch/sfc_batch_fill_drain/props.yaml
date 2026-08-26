@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [fill_valve, drain_valve]
+    justification: "Fill and drain must never be open together: unreacted feed reaches the effluent line, which is a loss of containment rather than a lost batch."
