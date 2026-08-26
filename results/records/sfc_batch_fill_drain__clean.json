@@ -1,0 +1,98 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-08-26T18:58:13Z",
+  "program": "benchmarks/chemical_batch/sfc_batch_fill_drain/clean.ld",
+  "properties_file": "benchmarks/chemical_batch/sfc_batch_fill_drain/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "mutual_exclusion",
+      "variables": [
+        "fill_valve",
+        "drain_valve"
+      ],
+      "justification": "Fill and drain must never be open together: unreacted feed reaches the effluent line, which is a loss of containment rather than a lost batch."
+    }
+  ],
+  "property_variables": [
+    "drain_valve",
+    "fill_valve"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "61172c6f",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN start=NONDET(_Bool);",
+          "        ASSIGN level_high=NONDET(_Bool);",
+          "        ASSIGN reaction_done=NONDET(_Bool);",
+          "        ASSIGN level_low=NONDET(_Bool);",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "start": 1,
+          "level_high": 1,
+          "reaction_done": 1,
+          "level_low": 1
+        },
+        "not_driven_by_body": [
+          "drain_valve",
+          "fill_valve"
+        ],
+        "gate": "fail"
+      },
+      "command": "esbmc /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/chemical_batch/sfc_batch_fill_drain/clean.ld --ld-props /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/chemical_batch/sfc_batch_fill_drain/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 25s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.011,
+      "counterexample": null
+    },
+    "master": {
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "d88a9fa4",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN start=NONDET(_Bool);",
+          "        ASSIGN level_high=NONDET(_Bool);",
+          "        ASSIGN reaction_done=NONDET(_Bool);",
+          "        ASSIGN level_low=NONDET(_Bool);",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "start": 1,
+          "level_high": 1,
+          "reaction_done": 1,
+          "level_low": 1
+        },
+        "not_driven_by_body": [
+          "drain_valve",
+          "fill_valve"
+        ],
+        "gate": "fail"
+      },
+      "command": "esbmc /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/chemical_batch/sfc_batch_fill_drain/clean.ld --ld-props /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/chemical_batch/sfc_batch_fill_drain/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 25s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.012,
+      "counterexample": null
+    }
+  }
+}

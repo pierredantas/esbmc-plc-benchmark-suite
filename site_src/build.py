@@ -271,10 +271,16 @@ def program_index():
     front end from the extension while the catalog stores graphical programs as
     .xml. Both spellings map to the same task.
     """
-    index = {}
-    for path in sorted(RECORDS.glob("*.json")):
+    index, seen = {}, {}
+    for path in sorted(RECORDS.glob("*.json"), key=lambda q: (len(q.stem), q.stem)):
         rec = json.loads(path.read_text(encoding="utf-8"))
         program = rec["program"]
+        # record_all.py and the per-lesson records can cover the same pair; the
+        # shorter name wins, because that is the one a lesson cites.
+        key = (program, rec["properties_file"])
+        if key in seen:
+            continue
+        seen[key] = path.stem
         index.setdefault(program, []).append(path.stem)
         if program.endswith(".ld"):
             index.setdefault(program[:-3] + ".xml", []).append(path.stem)
@@ -286,7 +292,13 @@ def record_line(name):
     rec = json.loads((RECORDS / (name + ".json")).read_text(encoding="utf-8"))
     verdicts = ", ".join(f"{label} `{run['verdict']}`" for label, run in rec["runs"].items())
     props = pathlib.Path(rec["properties_file"]).name
-    return f'- `{name}` ({props}, expected `{rec["expected_verdict"]}`): {verdicts}'
+    # A failed gate means the property's variables were never assigned in the scan
+    # loop, so that build's verdict is about a program missing the part under test.
+    dropped = [label for label, run in rec["runs"].items()
+               if run["encoding"]["gate"] != "pass"]
+    note = f" — ingestion gate failed on {', '.join(dropped)}" if dropped else ""
+    return (f'- `{name}` ({props}, expected `{rec["expected_verdict"]}`): '
+            f"{verdicts}{note}")
 
 
 def sibling_links(text, meta):

@@ -1,0 +1,117 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-08-26T18:58:12Z",
+  "program": "benchmarks/chemical_batch/g_batch_mixer/clean.ld",
+  "properties_file": "benchmarks/chemical_batch/g_batch_mixer/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(mixer && lid_open)",
+      "justification": "The mixer must never run while the lid is open."
+    }
+  ],
+  "property_variables": [
+    "lid_open",
+    "mixer"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "61172c6f",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN mix_cmd=NONDET(_Bool);",
+          "        ASSIGN lid_open=NONDET(_Bool);",
+          "        ASSIGN enable=NONDET(_Bool);",
+          "        ASSIGN maint=NONDET(_Bool);",
+          "        ASSIGN alarm=1 && lid_open;",
+          "        ASSIGN mixer=1 && !lid_open && mix_cmd && enable;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "mix_cmd": 1,
+          "lid_open": 1,
+          "enable": 1,
+          "maint": 1,
+          "alarm": 1,
+          "mixer": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "esbmc /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/chemical_batch/g_batch_mixer/clean.ld --ld-props /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/chemical_batch/g_batch_mixer/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 25s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.015,
+      "counterexample": null
+    },
+    "master": {
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "d88a9fa4",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 10",
+          "        ASSIGN mix_cmd=NONDET(_Bool);",
+          "        ASSIGN lid_open=NONDET(_Bool);",
+          "        ASSIGN enable=NONDET(_Bool);",
+          "        ASSIGN maint=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf7=0;",
+          "     2: IF !(1 && lid_open) THEN GOTO 3",
+          "        ASSIGN pf7=1;",
+          "     3: ASSIGN alarm=1 && pf7;",
+          "        IF !1 THEN GOTO 4",
+          "        ASSIGN pf3=0;",
+          "     4: IF !(1 && !lid_open) THEN GOTO 5",
+          "        ASSIGN pf3=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN pf4=0;",
+          "     6: IF !(1 && pf3 && mix_cmd) THEN GOTO 7",
+          "        ASSIGN pf4=1;",
+          "     7: IF !1 THEN GOTO 8",
+          "        ASSIGN pf5=0;",
+          "     8: IF !(1 && pf4 && enable) THEN GOTO 9",
+          "        ASSIGN pf5=1;",
+          "     9: ASSIGN mixer=1 && pf5;",
+          "        GOTO 1",
+          "    10:"
+        ],
+        "assignment_counts": {
+          "mix_cmd": 1,
+          "lid_open": 1,
+          "enable": 1,
+          "maint": 1,
+          "pf7": 2,
+          "alarm": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "pf5": 2,
+          "mixer": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "esbmc /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/chemical_batch/g_batch_mixer/clean.ld --ld-props /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/chemical_batch/g_batch_mixer/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 25s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.016,
+      "counterexample": null
+    }
+  }
+}
