@@ -43,7 +43,7 @@
               <position x="140" y="100" />
               <inputVariables>
                 <variable formalParameter="IN">
-                  <connectionPointIn><relPosition x="0" y="20" /><connection refLocalId="3" /></connectionPointIn>
+                  <connectionPointIn><relPosition x="0" y="20" /><connection refLocalId="3" ><position x="0" y="0" /><position x="0" y="0" /></connection></connectionPointIn>
                 </variable>
               </inputVariables>
               <inOutVariables />
@@ -57,13 +57,13 @@
               <position x="240" y="20" />
               <inputVariables>
                 <variable formalParameter="IN1">
-                  <connectionPointIn><relPosition x="0" y="20" /><connection refLocalId="1" /></connectionPointIn>
+                  <connectionPointIn><relPosition x="0" y="20" /><connection refLocalId="1" ><position x="0" y="0" /><position x="0" y="0" /></connection></connectionPointIn>
                 </variable>
                 <variable formalParameter="IN2">
-                  <connectionPointIn><relPosition x="0" y="40" /><connection refLocalId="2" /></connectionPointIn>
+                  <connectionPointIn><relPosition x="0" y="40" /><connection refLocalId="2" ><position x="0" y="0" /><position x="0" y="0" /></connection></connectionPointIn>
                 </variable>
                 <variable formalParameter="IN3">
-                  <connectionPointIn><relPosition x="0" y="60" /><connection refLocalId="4" formalParameter="OUT" /></connectionPointIn>
+                  <connectionPointIn><relPosition x="0" y="60" /><connection refLocalId="4" formalParameter="OUT" ><position x="0" y="0" /><position x="0" y="0" /></connection></connectionPointIn>
                 </variable>
               </inputVariables>
               <inOutVariables />
@@ -75,7 +75,7 @@
             </block>
             <outVariable localId="6" height="20" width="80">
               <position x="380" y="40" />
-              <connectionPointIn><relPosition x="0" y="10" /><connection refLocalId="5" formalParameter="OUT" /></connectionPointIn>
+              <connectionPointIn><relPosition x="0" y="10" /><connection refLocalId="5" formalParameter="OUT" ><position x="0" y="0" /><position x="0" y="0" /></connection></connectionPointIn>
               <expression>fan</expression>
             </outVariable>
           </FBD>
