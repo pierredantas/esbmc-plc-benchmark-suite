@@ -117,4 +117,8 @@ parts:
         number: "4.1"
         title: "The one file nobody here wrote"
         summary: "A 2019 TwinCAT export: the only program of fifty-five that passed the PLCopen schema, and the one where nothing is where the standard says it should be."
+      - slug: real-code-costs
+        number: "4.2"
+        title: "What real plant code costs"
+        summary: "Six SWaT benchmarks with no verdict, and the four measured reasons: vendor extensions, four POUs, a trigger behind a clock nothing advances, and a fuse half a million scans deep."
 
