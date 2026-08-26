@@ -26,3 +26,16 @@ parts:
         number: "1.5"
         title: "Edges, and the order rungs run in"
         summary: "Three rungs whose order is the design. Both builds run them in an order the file never specified, and the standard says the benchmark is right."
+      - slug: timers
+        number: "1.6"
+        title: "Timers, and the tick they count"
+        summary: "A preset is measured in scans. One build models the timer, the other drops the block, and the benchmark's own property turns out to be false of an off-delay."
+      - slug: counters
+        number: "1.7"
+        title: "Counters, and a pin that is not read"
+        summary: "CTU counts and resets. CTD wires its IEC load pin, the front end reads only R, and the modelled counter never reloads."
+      - slug: memory-and-time
+        number: "1.8"
+        title: "Memory and time together"
+        summary: "A timer sets a latched alarm and an acknowledgement clears it. Reset dominance is correct here, and the reason it is correct is an accident of emission order."
+
