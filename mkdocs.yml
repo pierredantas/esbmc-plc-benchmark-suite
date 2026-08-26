@@ -59,6 +59,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - The five languages: languages.md
   - Lessons:
       - lessons/index.md
       - lessons/01-interlock/index.md
