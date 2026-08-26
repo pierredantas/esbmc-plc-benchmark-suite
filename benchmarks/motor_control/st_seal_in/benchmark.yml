@@ -1,0 +1,23 @@
+format_version: "0.1"
+id: st_seal_in
+name: "seal in (Structured Text rendering)"
+domain: motor_control
+language: ST
+source:
+  origin: authored
+  reference: "One of five renderings of the same seal-in latch, for cross-language comparison"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+syntax_pair_of: ld_seal_in
+variants:
+  - file: seal_in.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+metrics:
+  pous: 1
+  variables: 3
+features: [latch, assignment]
+difficulty: easy
+tags: [feature, semantics, syntax-pair, language-coverage]

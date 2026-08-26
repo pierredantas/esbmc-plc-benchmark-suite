@@ -1,0 +1,85 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-08-26T19:18:59Z",
+  "program": "benchmarks/motor_control/fbd_seal_in/program.ld",
+  "properties_file": "benchmarks/motor_control/fbd_seal_in/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!Run || !Stop",
+      "justification": "Stop always drops the seal-in coil: Run and Stop never hold together."
+    }
+  ],
+  "property_variables": [
+    "Run",
+    "Stop"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "61172c6f",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN Start=NONDET(_Bool);",
+          "        ASSIGN Stop=NONDET(_Bool);",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "Start": 1,
+          "Stop": 1
+        },
+        "not_driven_by_body": [
+          "Run"
+        ],
+        "gate": "fail"
+      },
+      "command": "esbmc benchmarks/motor_control/fbd_seal_in/program.ld --ld-props benchmarks/motor_control/fbd_seal_in/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.013,
+      "counterexample": null
+    },
+    "master": {
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "d88a9fa4",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN Start=NONDET(_Bool);",
+          "        ASSIGN Stop=NONDET(_Bool);",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "Start": 1,
+          "Stop": 1
+        },
+        "not_driven_by_body": [
+          "Run"
+        ],
+        "gate": "fail"
+      },
+      "command": "esbmc benchmarks/motor_control/fbd_seal_in/program.ld --ld-props benchmarks/motor_control/fbd_seal_in/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.014,
+      "counterexample": null
+    }
+  }
+}

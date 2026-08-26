@@ -14,7 +14,7 @@
       "enum": ["water_treatment", "motor_control", "manufacturing", "chemical_batch",
                "hvac", "packaging", "elevator", "traffic", "building_automation", "power_substation"]
     },
-    "language": { "type": "string", "enum": ["LD-textual", "LD-graphical", "ST", "FBD", "SFC"] },
+    "language": { "type": "string", "enum": ["LD-textual", "LD-graphical", "ST", "FBD", "SFC", "IL"] },
     "source": {
       "type": "object",
       "required": ["origin", "license"],

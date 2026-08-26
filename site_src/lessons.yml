@@ -39,3 +39,13 @@ parts:
         title: "Memory and time together"
         summary: "A timer sets a latched alarm and an acknowledgement clears it. Reset dominance is correct here, and the reason it is correct is an accident of emission order."
 
+  - title: The language tour
+    blurb: >-
+      One circuit, written five ways, and an honest account of how much of that a
+      verifier actually reads.
+    lessons:
+      - slug: five-renderings
+        number: "2.1"
+        title: "The same program, five ways"
+        summary: "A seal-in latch as a drawn rung, as textual ladder, as PLCopen XML, as structured text, as a block diagram and as instruction list."
+
