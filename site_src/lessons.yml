@@ -108,3 +108,13 @@ parts:
         title: "What a property has to say"
         summary: "Eight things the failures on this site have in common, from naming a consequence to carrying the bound, and the twenty-six recorded runs whose verdict meant nothing."
 
+  - title: Code from the plant
+    blurb: >-
+      Programs neither of us wrote: what a real engineering tool emits, and what it
+      costs to verify code that arrived from somewhere else.
+    lessons:
+      - slug: real-export
+        number: "4.1"
+        title: "The one file nobody here wrote"
+        summary: "A 2019 TwinCAT export: the only program of fifty-five that passed the PLCopen schema, and the one where nothing is where the standard says it should be."
+

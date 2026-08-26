@@ -82,10 +82,15 @@ block, in exactly the sense lesson 1.2 used one for a dropped branch.
 ## The trap that cost this suite a factor of ten
 
 PLCopen types the task interval as a string and the TC6 schema annotates it: *"Either a
-constant duration as defined in the IEC or variable name"*. That means `T#10ms`. Every
-program in this suite used to declare `interval="PT0.01S"`, the ISO 8601 spelling, which
-the front end does not recognise. It then falls back to a one millisecond tick, silently,
-and every preset in the suite was ten times longer than intended.
+constant duration as defined in the IEC or variable name"*, which reads as `T#10ms`.
+Every program in this suite used to declare `interval="PT0.01S"`, the ISO 8601 spelling,
+which the front end does not parse. It then falls back to a one millisecond tick,
+silently, and every preset in the suite was ten times longer than intended.
+
+Calling that purely our mistake would be too generous to the tooling. The one file in
+this catalog exported by a real engineering tool writes `interval="PT0S"`, ISO 8601 as
+well, so a genuine TwinCAT project hits this same silent fallback.
+[Lesson 4.1](../real-export/index.md) has the comparison.
 
 Nothing failed. No warning was printed. A `T#30ms` preset simply became 30 scans instead
 of 3, and every timer benchmark still verified. It was fixed across all 43 programs on
