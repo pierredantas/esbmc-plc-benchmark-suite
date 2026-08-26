@@ -21,16 +21,17 @@ theme:
     - navigation.indexes
     - search.highlight
     - toc.follow
+  # Light by default for every reader, rather than following the OS setting: the
+  # scan bodies and counterexamples are read as printed output, and that is what
+  # printed output looks like.
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
+    - scheme: default
       primary: teal
       accent: teal
       toggle:
         icon: material/weather-night
         name: Dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
+    - scheme: slate
       primary: teal
       accent: teal
       toggle:
