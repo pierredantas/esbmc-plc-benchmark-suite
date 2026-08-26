@@ -77,7 +77,7 @@ def encoding(esbmc, program):
 
     Keeps the branch guards. An ASSIGN-only view hides them, which makes guarded
     accumulators look like unconditional constants and invites a wrong reading of
-    what the tool did (see probe/FINDINGS.md).
+    what the tool did.
     """
     txt = run_esbmc(esbmc, [program, "--goto-functions-only"])
     marker = "scan_loop (ld::scan_loop):"
@@ -97,8 +97,7 @@ def check_gate(counts, pvars):
 
     Counts come from the scan body only, so the zero-initialisers emitted outside
     it do not qualify. A silently dropped body leaves those initialisers behind and
-    an empty scan loop, at which point every safety property holds vacuously
-    (probe/FINDINGS.md, Finding 1).
+    an empty scan loop, at which point every safety property holds vacuously.
     """
     missing = [v for v in pvars if counts.get(v, 0) < 1]
     return missing, ("pass" if counts and not missing else "fail")

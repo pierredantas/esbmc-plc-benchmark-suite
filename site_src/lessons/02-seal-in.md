@@ -70,7 +70,7 @@ Two builds agreed on the safety verdict. One of them verified a seal-in. Neither
 verdict nor the property could tell you which, because the property was insensitive to
 the one feature the benchmark is named for.
 
-That is the argument for publishing the encoding beside the label. It also puts the
-suite's own `g_seal_in` in question, because that task carries
-`validation_status: validated` on evidence produced by v8.4, and v8.4 encoded no latch
-at all for the rung the task is named after. The recheck is in `probe/FINDINGS.md`.
+That is the argument for publishing the encoding beside the label. It also sets a bar
+for any task named after a feature: the recorded evidence has to show that the front
+end encoded the feature, not merely that some tool returned the verdict the task
+expected. Auditing the graphical tasks against that bar is in progress.
