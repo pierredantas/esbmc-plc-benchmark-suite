@@ -217,10 +217,14 @@ def verify(esbmc, generated, expected, timeout, scans):
 
     The harness loop is a fixed count, so the unwinding bound has to clear it or a
     bomb on a long fuse is simply never reached and the run reports SAFE.
+
+    Plain unwinding rather than incremental BMC, because the loop is already finite:
+    incremental mode stops when its forward condition cannot prove completeness and
+    reports UNKNOWN, which on a 255-scan fuse it does in two seconds while plain
+    unwinding finds the violation in one.
     """
     harness_file, outdir = generated
-    mode = (["--k-induction"] if expected
-            else ["--incremental-bmc", "--unwind", str(scans + 2)])
+    mode = (["--k-induction"] if expected else ["--unwind", str(scans + 2)])
     args = [str(harness_file), "-I", str(TOOLS / "matiec" / "lib" / "C"),
             "-I", str(outdir), *mode, "--timeout", f"{timeout}s"]
     start = time.time()
