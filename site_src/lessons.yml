@@ -87,4 +87,8 @@ parts:
         number: "3.1"
         title: "What a logic-level bomb is"
         summary: "Trigger, payload and dormancy, the three trigger shapes the catalog carries, and why sampling cannot find any of them."
+      - slug: fuses
+        number: "3.2"
+        title: "Bombs that wait"
+        summary: "A fifty-scan fuse, SAFE at eight scans and VIOLATION at sixty-four, and why the first answer is a correct proof about the wrong program."
 
