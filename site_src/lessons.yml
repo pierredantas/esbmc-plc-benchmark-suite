@@ -49,4 +49,8 @@ parts:
         number: "2.1"
         title: "A conveyor that ignores its emergency stop"
         summary: "One added branch, conducting only when the E-stop is pressed and a maintenance key is turned, and the counterexample that hands you the combination."
+      - slug: batch-reactor
+        number: "2.2"
+        title: "A reactor that keeps feeding under pressure"
+        summary: "The same bypass in a chemical plant, where the relief vent still works and makes the attack look like a functioning protection system. Then a reasonable-sounding weakening of the property that lets the bomb through."
 
