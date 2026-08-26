@@ -2,7 +2,7 @@ format_version: "0.1"
 properties:
   - id: P1
     kind: invariant
-    expression: "reported_open = valve_open"
+    expression: "reported_open == valve_open"
     justification: "HMI-reported valve state must always match the real actuator command (anti-spoofing integrity)."
   - id: P2
     kind: reachability
