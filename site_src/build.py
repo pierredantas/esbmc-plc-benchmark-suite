@@ -152,7 +152,7 @@ def render_coverage(_arg, _ctx):
 
 def tool_label(run):
     """Both local builds answer 8.4.0, so the commit is what identifies a column."""
-    tool = run["tool"]
+    tool = run.get("tool") or {}
     version = tool.get("version") or "?"
     return f'{version} `{tool["commit"]}`' if tool.get("commit") else version
 
@@ -176,15 +176,24 @@ def render_record(arg, _ctx):
     if len(set(commands.values())) == 1:
         out += [f"Recorded {when}. Every build ran the same command.\n",
                 fence(next(iter(commands.values())), "text"), ""]
+    if rec.get("route") == "via-c":
+        solver = {run.get("solver_command") for run in runs.values() if run.get("solver_command")}
+        if len(solver) == 1:
+            out += ["which generates the C below and hands it to ESBMC as:\n",
+                    fence(next(iter(solver)), "text"), ""]
     else:
         out += [f"Recorded {when}.\n", tabs(list(commands.items()))]
 
-    out += ["| build | ESBMC | verdict | expected | outcome | ingestion gate | cpu |",
-            "|---|---|---|---|---|---|---|"]
+    gated = rec.get("route") != "via-c"
+    header = "| build | ESBMC | verdict | expected | outcome |"
+    header += " ingestion gate |" if gated else ""
+    out += [header + " cpu |", "|---|---|---|---|---|" + ("---|" if gated else "") + "---|"]
     for label, run in runs.items():
-        out.append(f"| {label} | {tool_label(run)} | `{run['verdict']}` "
-                   f"| `{rec['expected_verdict']}` | {run['status']} "
-                   f"| {run['encoding']['gate']} | {run['cpu_time_s']:.3f} s |")
+        row = (f"| {label} | {tool_label(run)} | `{run['verdict']}` "
+               f"| `{rec['expected_verdict']}` | {run['status']} |")
+        if gated:
+            row += f" {run['encoding']['gate']} |"
+        out.append(row + f" {run['cpu_time_s']:.3f} s |")
     out.append("")
 
     proofs = [f"`{label}` found its solution by {run['proof']}."
@@ -192,11 +201,16 @@ def render_record(arg, _ctx):
     if proofs:
         out.append("\n".join(proofs) + "\n")
 
-    out += ["**What the front end encoded.** The scan body as the solver receives it, "
-            "branch guards kept. An assignment-only view hides the guards and makes a "
-            "guarded accumulator read as a constant.\n",
-            tabs([(label, "\n".join(run["encoding"]["scan_body"]))
-                  for label, run in runs.items()])]
+    if rec.get("route") == "via-c":
+        out += ["**What ESBMC was given.** The harness the adapter generated, with the "
+                "property written over the variables MatIEC emitted.\n",
+                fence(rec.get("generated_c", "").rstrip(), "c")]
+    else:
+        out += ["**What the front end encoded.** The scan body as the solver receives it, "
+                "branch guards kept. An assignment-only view hides the guards and makes a "
+                "guarded accumulator read as a constant.\n",
+                tabs([(label, "\n".join(run["encoding"]["scan_body"]))
+                      for label, run in runs.items()])]
 
     traces = [(label, run["counterexample"]) for label, run in runs.items()
               if run.get("counterexample")]
@@ -295,9 +309,10 @@ def record_line(name):
     # A failed gate means the property's variables were never assigned in the scan
     # loop, so that build's verdict is about a program missing the part under test.
     dropped = [label for label, run in rec["runs"].items()
-               if run["encoding"]["gate"] != "pass"]
+               if run.get("encoding", {}).get("gate", "pass") != "pass"]
     note = f" — ingestion gate failed on {', '.join(dropped)}" if dropped else ""
-    return (f'- `{name}` ({props}, expected `{rec["expected_verdict"]}`): '
+    route = " via C" if rec.get("route") == "via-c" else ""
+    return (f'- `{name}`{route} ({props}, expected `{rec["expected_verdict"]}`): '
             f"{verdicts}{note}")
 
 

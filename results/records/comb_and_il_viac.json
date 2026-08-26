@@ -1,0 +1,35 @@
+{
+  "schema_version": "0.3",
+  "route": "via-c",
+  "recorded_at": "2026-08-26T19:46:05Z",
+  "program": "benchmarks/manufacturing/il_comb_and/comb_and.il",
+  "properties_file": "benchmarks/manufacturing/il_comb_and/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!Y || (A && B && C)",
+      "justification": "Output Y is energised only when all series contacts A, B and C are closed."
+    }
+  ],
+  "expected_verdict": "SAFE",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  DRIVE_data__ d = {0};\n  DRIVE_init__(&d, 0);\n  for (int scan = 0; scan < 3; scan++) {\n    __SET_VAR(d., A, , nondet_bool());\n    __SET_VAR(d., B, , nondet_bool());\n    __SET_VAR(d., C, , nondet_bool());\n    DRIVE_body__(&d);\n    __ESBMC_assert(!__GET_VAR(d.Y,) || (__GET_VAR(d.A,) && __GET_VAR(d.B,) && __GET_VAR(d.C,)), \"P1\");\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the forward condition; all states are reachable (k = 4)",
+      "cpu_time_s": 0.84,
+      "counterexample": null,
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/manufacturing/il_comb_and/comb_and.il benchmarks/manufacturing/il_comb_and/props.yaml true --tool master=<path-to-esbmc>",
+      "status": "correct"
+    }
+  }
+}

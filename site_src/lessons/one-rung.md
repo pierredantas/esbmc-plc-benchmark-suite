@@ -71,6 +71,79 @@ On this rung the two are the same function. The accumulators exist because a rea
 ladder has branches, and a branch needs somewhere to put a partial result. Lesson 1.4
 is where that difference stops being cosmetic and starts changing the verdict.
 
+## The same rung in the other languages
+
+The rung above is ladder, and ladder is one of five notations the standard defines. The
+same three-input conjunction can be written in any of them, and the suite ships all four
+spellings of this one program so a tool's coverage can be measured rather than assumed.
+
+=== "Structured text"
+
+    ```pascal
+    Y := A AND B AND C;
+    ```
+
+=== "Instruction list"
+
+    ```
+          LD    A
+          AND   B
+          AND   C
+          ST    Y
+    ```
+
+=== "Function block diagram"
+
+    Three inVariables into one variadic AND block, its output wired to an outVariable.
+    Beremiz renders that graph back to text as `_TMP_AND4_OUT := AND(A, B, C);`.
+
+{{files: benchmarks/manufacturing/st_comb_and/comb_and.st | benchmarks/manufacturing/il_comb_and/comb_and.il | benchmarks/manufacturing/fbd_comb_and/program.xml | benchmarks/manufacturing/ld_comb_and/comb_and.ld}}
+
+ESBMC's LD front end reads none of them. It registers one extension, `ld`, and one body
+type, so a structured text file is `failed to figure out type of file` and an FBD body
+inside a `.ld` file is discarded without a diagnostic. That is not a gap you can close by
+writing the property differently.
+
+## Real verdicts for all four, through C
+
+There is a second route to the same solver, described in full on
+[How ESBMC-PLC works](../../how-esbmc-plc-works/). Beremiz renders any PLCopen body as
+structured text, MatIEC compiles structured text or instruction list to C, and ESBMC has
+read C for years. Every rendering below was verified that way, on this machine, against
+the property this lesson already uses.
+
+### Structured text
+
+{{record: comb_and_st_viac}}
+
+### Instruction list
+
+{{record: comb_and_il_viac}}
+
+### Function block diagram
+
+{{record: comb_and_fbd_viac}}
+
+### Ladder, for comparison
+
+{{record: comb_and_ld_viac}}
+
+Four notations, one program, four proofs, all closing by the forward condition at k = 4.
+The ladder column is the interesting one: it is the same file the panel further up this
+page verified through the LD front end, and it now has a second verdict reached without
+that front end at all. Two independent routes agreeing is worth more than one route
+insisting.
+
+Read the generated harness in any of those panels. The property is not carried over from
+the YAML file: it is written out over the C variables MatIEC emitted, which is the price
+of this route and the reason it answers *is this program correct* rather than *does the
+ladder front end read it correctly*.
+
+One notation is missing from the four. The K-LD textual rung, `OTE(Y) := XIC(A) * XIC(B)
+* XIC(C);`, is in the download table and no tool here reads it: ESBMC XML-parses the file
+and fails, and Beremiz only reads PLCopen. It was validated with nuXmv, which is why the
+suite keeps more than one tool in view.
+
 ## Try it
 
 Change the property and predict the answer before you run it.
