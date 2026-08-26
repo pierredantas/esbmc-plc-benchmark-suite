@@ -136,6 +136,20 @@ def render_citation(arg, _ctx):
     return "\n".join(rows) + "\n\n" + fence(bib, "bibtex")
 
 
+def render_coverage(_arg, _ctx):
+    """{{coverage: benchmarks}} tallies the catalog by language at build time."""
+    rows = {}
+    for path in sorted((ROOT / "benchmarks").glob("*/*/benchmark.yml")):
+        meta = yaml.safe_load(path.read_text(encoding="utf-8"))
+        tasks, variants = rows.get(meta.get("language", "unspecified"), (0, 0))
+        rows[meta["language"]] = (tasks + 1, variants + len(meta.get("variants", [])))
+    out = ["| language | tasks | variants |", "|---|---|---|"]
+    out += [f"| {lang} | {t} | {v} |" for lang, (t, v) in sorted(rows.items())]
+    out.append(f"| total | {sum(t for t, _ in rows.values())} "
+               f"| {sum(v for _, v in rows.values())} |")
+    return "\n".join(out)
+
+
 def tool_label(run):
     """Both local builds answer 8.4.0, so the commit is what identifies a column."""
     tool = run["tool"]
@@ -192,7 +206,8 @@ def render_record(arg, _ctx):
 
 
 HANDLERS = {"files": render_files, "code": render_code, "show": render_show,
-            "record": render_record, "citation": render_citation}
+            "record": render_record, "citation": render_citation,
+            "coverage": render_coverage}
 
 
 def expand(text, ctx):
@@ -303,7 +318,9 @@ def build_benchmarks():
     domains = sorted({m["domain"] for m in metas})
     page = ["# Benchmarks\n",
             f"{len(metas)} tasks across {len(domains)} domains. A task's URL is its suite "
-            "id and does not move, because published results cite it.\n",
+            "id and does not move, because published results cite it. The catalog "
+            "tracks the working tree; the archived release carries its own counts, "
+            "listed under [Citing](../citing.md).\n",
             "| language | tasks |", "|---|---|"]
     page += [f"| {k} | {v} |" for k, v in sorted(tally(metas, "language").items())]
     page += ["\n| validation status | tasks |", "|---|---|"]

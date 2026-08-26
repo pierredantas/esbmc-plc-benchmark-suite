@@ -160,12 +160,11 @@ extension. [Lesson 1](lessons/01-interlock/index.md) has the full file to read.
 
 ## What this suite covers today
 
-| language | tasks |
-|---|---|
-| LD-graphical | 25 |
-| LD-textual | 15 |
-| ST | 10 |
+{{coverage: benchmarks}}
 
-Fifty tasks, no FBD, no SFC, no IL. That is a coverage gap rather than a judgment about
-the languages, and closing it is planned work. The [benchmarks catalog](benchmarks/index.md)
-carries the live counts.
+Those counts are generated from the catalog when the site builds, so they cannot drift
+from it. FBD and SFC entered the suite on 2026-08-26 for language coverage: two tasks
+each, a clean and a seeded variant apiece, with ground truth established by
+construction rather than by a tool run, which is why they carry
+`validation_status: candidate`. IL has none and none is planned, since edition 4.0
+removed it. The [benchmarks catalog](benchmarks/index.md) lists every task.
