@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Forward/reverse motor interlock, 2 rungs of ladder.
-     Rung 1:  fwd ---| |----|/|--- ( Motor_A )      Motor_A := fwd            <-- BUG: interlock removed
+<!-- Reversing starter: ONE motor, TWO contactors.
+     KM_CW  closes to run the motor clockwise
+     KM_CCW closes to run it counter-clockwise (anticlockwise)
+     Closing both at once shorts two supply phases through the reversing
+     contacts, so the interlock below is a wiring-protection requirement,
+     not a process preference.
+
+     Rung 1:  fwd ---| |----|/|--- ( KM_CW )     KM_CW  := fwd AND NOT rev
                             rev
-     Rung 2:  rev ---| |------------( Motor_B )      Motor_B := rev
+     Rung 2:  rev ---| |------------( KM_CCW )    KM_CCW := rev
+
+     BUG: the |/rev| contact is deleted from rung 1, so KM_CW := fwd.
      NOTE: ESBMC-PLC v8.4 requires the .ld extension, but the CONTENT is PLCopen XML. -->
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
   <fileHeader companyName="Demo" productName="Demo" productVersion="1" creationDateTime="2026-08-26T00:00:00" />
@@ -19,8 +27,8 @@
             <variable name="rev"><type><BOOL /></type></variable>
           </inputVars>
           <outputVars>
-            <variable name="Motor_A"><type><BOOL /></type></variable>
-            <variable name="Motor_B"><type><BOOL /></type></variable>
+            <variable name="KM_CW"><type><BOOL /></type></variable>
+            <variable name="KM_CCW"><type><BOOL /></type></variable>
           </outputVars>
         </interface>
         <body>
@@ -38,7 +46,7 @@
             <coil localId="12" negated="false" storage="none">
               <position x="60" y="10" />
               <connectionPointIn><connection refLocalId="10" /></connectionPointIn>
-              <connectionPointOut /><variable>Motor_A</variable>
+              <connectionPointOut /><variable>KM_CW</variable>
             </coil>
 
             <!-- Rung 2 -->
@@ -50,7 +58,7 @@
             <coil localId="21" negated="false" storage="none">
               <position x="60" y="30" />
               <connectionPointIn><connection refLocalId="20" /></connectionPointIn>
-              <connectionPointOut /><variable>Motor_B</variable>
+              <connectionPointOut /><variable>KM_CCW</variable>
             </coil>
 
             <rightPowerRail localId="2147483646">
