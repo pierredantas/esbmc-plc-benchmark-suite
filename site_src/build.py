@@ -281,6 +281,7 @@ def build_nav(parts):
     nav = [{"Home": "index.md"},
            {"The five languages": "languages.md"},
            {"How ESBMC-PLC works": "how-esbmc-plc-works.md"},
+           {"The tools underneath": "the-tools-underneath.md"},
            {"Lessons": lessons},
            {"Benchmarks": "benchmarks/index.md"},
            {"Reproducing": "reproducing.md"},
