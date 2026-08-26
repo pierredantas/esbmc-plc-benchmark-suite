@@ -19,3 +19,5 @@ arxiv/
 # Portal build products
 portal/
 _site/
+
+nav.generated.yml

@@ -1,3 +1,5 @@
+INHERIT: nav.generated.yml
+
 site_name: IEC 61131-3 Verification Benchmark Suite
 site_description: Ladder programs, safety properties, and recorded ESBMC runs for verifying PLC code.
 site_url: https://pierredantas.github.io/esbmc-plc-benchmark-suite/
@@ -16,9 +18,7 @@ theme:
   features:
     - content.code.copy
     - content.tabs.link
-    - navigation.sections
     - navigation.top
-    - navigation.indexes
     - search.highlight
     - toc.follow
   # One palette, no toggle. A second palette puts a reader's choice in localStorage,
@@ -48,14 +48,3 @@ markdown_extensions:
   - toc:
       permalink: true
 
-nav:
-  - Home: index.md
-  - The five languages: languages.md
-  - Lessons:
-      - lessons/index.md
-      - lessons/01-interlock/index.md
-      - lessons/02-seal-in/index.md
-  - Benchmarks: benchmarks/index.md
-  - Reproducing: reproducing.md
-  - Building ESBMC on macOS: build-macos.md
-  - Citing: citing.md

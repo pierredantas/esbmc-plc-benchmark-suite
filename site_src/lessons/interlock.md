@@ -60,7 +60,7 @@ Compare the two tabs above. v8.4 writes `ASSIGN KM_CW=1 && fwd;` and moves on. m
 builds a guarded accumulator, `pf10`, sets it to 1 only when the branch conducts, and
 then assigns `KM_CW=1 && pf10`, which on this rung means exactly what v8.4 means,
 because only one path runs through it. Put two paths in parallel and that difference
-decides the verdict. Lesson 2 is [where it does](../02-seal-in/index.md).
+decides the verdict. Lesson 2 is [where it does](../seal-in/index.md).
 
 Watch the ingestion gate column as well. It reports whether the property's variables
 were assigned anywhere inside the scan loop. A front end that drops a body silently

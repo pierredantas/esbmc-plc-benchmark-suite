@@ -1,7 +1,20 @@
-lessons:
-  - slug: 01-interlock
-    title: "A reversing starter, proved and broken"
-    summary: "One motor, two contactors, one property. A k-induction proof, then the same ladder with a contact deleted and the counterexample that follows."
-  - slug: 02-seal-in
-    title: "A seal-in latch, where the verdict hides the encoding"
-    summary: "Two ESBMC builds agree the circuit is safe. Only one of them encoded a latch, and it takes a second property to find out which."
+# Teaching order lives here, never in a slug. A lesson can be renumbered or moved to
+# another part without changing its URL, which is what published links depend on.
+parts:
+  - title: Foundations
+    blurb: >-
+      Small synthetic ladders, one idea each. Every program here is a few elements
+      long, so the encoding ESBMC produces is short enough to read line by line.
+    lessons:
+      - slug: one-rung
+        number: "1.1"
+        title: "One rung: contacts and a coil"
+        summary: "The smallest ladder that verifies. Three contacts in series, one coil, one property, one proof."
+      - slug: interlock
+        number: "1.3"
+        title: "A reversing starter, proved and broken"
+        summary: "One motor, two contactors, one property. A k-induction proof, then the same ladder with a contact deleted and the counterexample that follows."
+      - slug: seal-in
+        number: "1.4"
+        title: "A seal-in latch, where the verdict hides the encoding"
+        summary: "Two ESBMC builds agree the circuit is safe. Only one of them encoded a latch, and it takes a second property to find out which."

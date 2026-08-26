@@ -28,6 +28,6 @@ next to the verdict: the exact command, the scan body the front end produced, an
 ingestion gate that fails when the property's variables were never assigned inside the
 scan loop.
 
-[Lesson 2](lessons/02-seal-in/index.md) is the case that motivates the whole arrangement. Two
+[Lesson 2](lessons/seal-in/index.md) is the case that motivates the whole arrangement. Two
 builds return the same verdict on the same file, and only one of them verified the
 circuit that file describes.

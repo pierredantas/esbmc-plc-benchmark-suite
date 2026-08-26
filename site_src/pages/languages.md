@@ -38,7 +38,7 @@ Run := (Start OR Run) AND NOT EStop
 
 Press Start and the motor runs. Release Start and it keeps running, because `Run`
 feeds itself. Press EStop and it drops out. That is a seal-in latch, and
-[lesson 2](lessons/02-seal-in/index.md) verifies exactly this circuit.
+[lesson 2](lessons/seal-in/index.md) verifies exactly this circuit.
 
 ## Ladder diagram
 
@@ -156,7 +156,7 @@ Textual bodies are simpler: the source sits inside the element as text.
 
 Every graphical program in this suite is PLCopen XML. The files carry a `.ld`
 extension while their content is XML, because the verifier keys its front end off the
-extension. [Lesson 1](lessons/01-interlock/index.md) has the full file to read.
+extension. [Lesson 1](lessons/interlock/index.md) has the full file to read.
 
 ## What this suite covers today
 
