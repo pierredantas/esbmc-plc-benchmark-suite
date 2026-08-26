@@ -40,6 +40,22 @@ file.
 `record.py` exits 1 when any build's ingestion gate fails, so it drops into CI as it
 stands.
 
+## Check a program against the PLCopen schema
+
+Well-formed XML is not the same as a file another vendor's tool will open. ESBMC parses
+with pugixml, which is forgiving; an importer validates against PLCopen's own XSD, which
+is not.
+
+```bash
+python3 runner/schema_check.py            # benchmarks/, demo/, demo2/
+python3 runner/schema_check.py -q         # failures only
+```
+
+The schema is fetched once into `~/.cache/plcopen` rather than vendored here, because
+redistributing it is PLCopen's call. Run this before adding a program: a file that fails
+verifies perfectly well under ESBMC and will still be rejected by the first engineering
+tool someone tries to open it in.
+
 ## Rebuild this site
 
 ```bash
