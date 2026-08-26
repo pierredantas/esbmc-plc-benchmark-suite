@@ -9,7 +9,7 @@ throughout is deliberately unflattering in places. That is the job.
 
 ## Start here
 
-**[Lessons](lessons/index.md)** are the way in. Twenty-three of them, in four parts, each
+**[Lessons](lessons/index.md)** are the way in. Twenty-four of them, in four parts, each
 built on one program and the runs recorded against it.
 
 | part | what it covers |
@@ -29,9 +29,10 @@ that established it.
 
 ## Recorded, not live
 
-Nothing runs when you load a page. Every verdict, scan body and counterexample came out of
-a command printed beside it, from an ESBMC build named by its commit. Copy the command and
-you get the same output. Disbelieve the page and you can check it.
+Nothing runs when you load a page. Every verdict, scan body and counterexample on this
+site came out of a command printed beside it, run against an ESBMC build named by its
+commit hash, so copying that command back into a shell gives you the same output. Disbelieve
+the page and you can check it.
 
 That trade gives up interactivity and buys what a benchmark needs: results that do not
 move under the reader.
@@ -44,12 +45,36 @@ next to its verdict: the exact command, the scan body the front end produced, an
 ingestion gate that fails when the property's variables were never assigned inside the
 scan loop.
 
-**Twenty-six of the 210 recorded runs here fail that gate.** Every one of them reports
-`SAFE`, and every one of them is worthless.
+Of the 166 runs that reach the ladder front end, **26 fail that gate**. Fifteen of the 26
+report `SAFE`, seven report `unknown`, and four report a violation. The verdicts disagree
+with each other, which is the point: what they have in common is not the answer they give
+but that none of them is an answer about the program in the file. A violation raised
+inside an empty scan loop is worth no more than a proof found there.
 
-[Lesson 1.4](lessons/seal-in/index.md) is the case that motivates the arrangement: two
+[Lesson 1.4](lessons/seal-in/index.md) is the case that motivates the arrangement. Two
 builds return the same verdict on the same file, and only one of them verified the circuit
 that file describes.
+
+## What it found
+
+Four defects, each filed upstream with a reproducer:
+
+| issue | defect |
+|---|---|
+| [esbmc#7354](https://github.com/esbmc/esbmc/issues/7354) | the ladder front end discards `ST`, `FBD` and `SFC` bodies, then reports `SUCCESSFUL` on the empty program that remains |
+| [esbmc#7352](https://github.com/esbmc/esbmc/issues/7352) | scan order comes from hash iteration order when the right power rail is unwired |
+| [esbmc#7353](https://github.com/esbmc/esbmc/issues/7353) | graphical `CTD` counters are never reloaded, because the load pin is not read |
+| [beremiz#83](https://github.com/beremiz/beremiz/issues/83) | `FactorizePaths` raises `TypeError` on Python 3 for unequal-length parallel branches |
+
+Three of the four are soundness bugs, which is to say the tool answers `SAFE` for a
+program that plainly breaks its property, and that is the one kind of wrong answer a
+verifier is never allowed to give.
+
+None of the four came from reading the tool's source. Each surfaced because a benchmark
+carried an expected verdict established without that tool, and the run disagreed with it.
+That is the entire argument for building a catalog this way, and it is why the expected
+verdicts here are derived from the standard and from a second toolchain rather than from
+the checker under test.
 
 ## What it is for
 
