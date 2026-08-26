@@ -57,4 +57,8 @@ parts:
         number: "2.3"
         title: "A junction that shows two greens"
         summary: "The bypass a third time, and a careful account of what conflict-freedom leaves open: no intergreen, no minimum green, and a stuck detector that starves one arm forever."
+      - slug: elevator-door
+        number: "2.4"
+        title: "A car that moves with its door open"
+        summary: "The same machine as a rung and as a chart. One bomb adds a branch, the other changes a single letter, and only one of them is caught."
 
