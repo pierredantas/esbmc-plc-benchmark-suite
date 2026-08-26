@@ -38,3 +38,15 @@ parts:
         number: "1.8"
         title: "Memory and time together"
         summary: "A timer sets a latched alarm and an acknowledgement clears it. Reset dominance is correct here, and the reason it is correct is an accident of emission order."
+
+  - title: Machines and their hazards
+    blurb: >-
+      Real plants, one industrial domain at a time. Each lesson names the machine, the
+      thing that must never happen to it, and what a verifier does with a program in
+      which someone hid a way to make it happen.
+    lessons:
+      - slug: conveyor
+        number: "2.1"
+        title: "A conveyor that ignores its emergency stop"
+        summary: "One added branch, conducting only when the E-stop is pressed and a maintenance key is turned, and the counterexample that hands you the combination."
+
