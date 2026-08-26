@@ -107,7 +107,7 @@ writing the property differently.
 ## Real verdicts for all four, through C
 
 There is a second route to the same solver, described in full on
-[How ESBMC-PLC works](../../how-esbmc-plc-works/). Beremiz renders any PLCopen body as
+[How ESBMC-PLC works](../../how-esbmc-plc-works.md). Beremiz renders any PLCopen body as
 structured text, MatIEC compiles structured text or instruction list to C, and ESBMC has
 read C for years. Every rendering below was verified that way, on this machine, against
 the property this lesson already uses.

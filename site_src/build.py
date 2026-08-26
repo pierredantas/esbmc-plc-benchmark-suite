@@ -34,7 +34,8 @@ DIRECTIVE = re.compile(r"^\{\{\s*(\w+)\s*:\s*(.*?)\s*\}\}[ \t]*$", re.M)
 KIND = {".ld": "ladder program, PLCopen XML", ".xml": "ladder program, PLCopen XML",
         ".st": "structured text", ".yaml": "property file",
         ".yml": "benchmark metadata", ".md": "notes", ".sh": "run script",
-        ".smv": "nuXmv model", ".json": "run record"}
+        ".smv": "nuXmv model", ".json": "run record",
+        ".il": "instruction list"}
 LANG = {".ld": "xml", ".xml": "xml", ".yaml": "yaml", ".yml": "yaml",
         ".st": "text", ".sh": "bash", ".json": "json"}
 VERDICT = {True: "SAFE", False: "VIOLATION"}
@@ -81,10 +82,15 @@ def kind_of(path):
 
 
 def offer(paths, dest_dir, link_prefix="files"):
-    """Copy files next to the page that teaches them and tabulate the downloads."""
+    """Copy files next to the page that teaches them and tabulate the downloads.
+
+    The copy always lands in <page>/files/. The link may need a different spelling,
+    because MkDocs resolves it against the source file's directory, and a top-level
+    page sits one level above the directory it is served from.
+    """
     rows = ["| file | what it is | size | sha256 |", "|---|---|---|---|"]
     for src in paths:
-        dest = dest_dir / link_prefix / src.name
+        dest = dest_dir / "files" / src.name
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(src, dest)
         STATS["files"] += 1
@@ -95,8 +101,14 @@ def offer(paths, dest_dir, link_prefix="files"):
 
 
 def render_files(arg, ctx):
-    """{{files: a/b.ld | a/props.yaml}}"""
-    return offer([ROOT / p.strip() for p in arg.split("|") if p.strip()], ctx["dir"])
+    """{{files: a/b.ld | a/props.yaml}}
+
+    MkDocs resolves the link against the page's URL, so "files/x" is right whether
+    the page is portal/x.md or portal/lessons/x/index.md, as long as the copies land
+    beside where the page is served from.
+    """
+    paths = [ROOT / p.strip() for p in arg.split("|") if p.strip()]
+    return offer(paths, ctx["dir"], ctx.get("link_prefix", "files"))
 
 
 def render_code(arg, _ctx):
@@ -412,7 +424,10 @@ def build_benchmarks():
 def build_static():
     """Hand-written pages, plus anything already documented elsewhere in the repo."""
     for path in sorted((SRC / "pages").glob("*.md")):
-        ctx = {"dir": OUT, "name": path.name}
+        # a page at portal/x.md is served from /x/, so its downloads belong in
+        # portal/x/files/ rather than at the site root
+        ctx = {"dir": OUT / path.stem, "name": path.name,
+               "link_prefix": f"{path.stem}/files"}
         text = path.read_text(encoding="utf-8")
         write(OUT / path.name, page_title(text, path.stem), expand(text, ctx))
     macos = ROOT / "docs" / "BUILD_MACOS.md"
