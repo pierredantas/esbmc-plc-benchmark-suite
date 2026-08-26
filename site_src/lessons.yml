@@ -91,4 +91,8 @@ parts:
         number: "3.2"
         title: "Bombs that wait"
         summary: "A fifty-scan fuse, SAFE at eight scans and VIOLATION at sixty-four, and why the first answer is a correct proof about the wrong program."
+      - slug: scale
+        number: "3.3"
+        title: "When the fuse outruns the checker"
+        summary: "Five identical bombs at fuse widths from 255 to 32767 scans, all found, at 0.9 seconds and 406 seconds respectively, and why unwinding further is a race the defender loses."
 
