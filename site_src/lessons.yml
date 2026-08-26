@@ -99,4 +99,8 @@ parts:
         number: "3.4"
         title: "The payload that produces no output"
         summary: "A loop whose counter is never advanced, entered at one sensor value, and the scan watchdog that catches it. Plus the flag combination that reports the hang as proved."
+      - slug: trigger-synthesis
+        number: "3.5"
+        title: "The counterexample as the recovered knock"
+        summary: "A reachability property inverted into an assertion, unreachable on the clean program and recovering fwd, rev and maint on the bombed one, which is exactly what was planted."
 
