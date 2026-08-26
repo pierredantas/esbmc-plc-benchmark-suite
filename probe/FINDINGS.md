@@ -11,7 +11,7 @@ for the six build blockers and their fixes.
 
 | finding | upstream |
 |---|---|
-| 1 — only `<LD>` bodies are read, and the front end fails open | **not filed.** Approved for filing; still outstanding. |
+| 1 — only `<LD>` bodies are read, and the front end fails open | [esbmc/esbmc#7354](https://github.com/esbmc/esbmc/issues/7354) |
 | 2 — property tier wider than documented | documentation, not filed |
 | 3 — parallel branches as last-branch-wins | fixed on master, nothing to file |
 | 4 — rung evaluation order | [esbmc/esbmc#7352](https://github.com/esbmc/esbmc/issues/7352) |
