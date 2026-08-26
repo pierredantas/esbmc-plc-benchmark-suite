@@ -194,6 +194,34 @@ def build(program, props_path, workdir, scans):
     return harness_file, outdir
 
 
+def elide(trace, head=60, tail=60):
+    """Keep the ends that carry evidence and mark what was dropped.
+
+    Unwinding a 32767-scan fuse produces a quarter of a million trace lines, nearly
+    all of them identical scans. What a reader needs is the opening assignments and
+    the violated-property block; the middle is volume. Storing it whole made one
+    record 14 MB and the page that showed it 37 MB.
+
+    The tail is taken from the violated-property block rather than from the end of
+    the output, because ESBMC prints its per-claim summary after it and that summary
+    would otherwise crowd out the finding.
+    """
+    if trace is None:
+        return None
+    lines = trace.splitlines()
+    if len(lines) <= head + tail:
+        return trace
+    marks = [i for i, ln in enumerate(lines) if ln.strip().startswith("Violated property")]
+    start = max(marks[-1] - 6, head) if marks else max(len(lines) - tail, head)
+    kept = lines[start:start + tail] if marks else lines[-tail:]
+    omitted = start - head
+    if omitted <= 0:
+        return trace
+    return "\n".join(lines[:head]
+                     + ["", f"... {omitted} lines omitted from the middle of the trace "
+                            f"({len(lines)} lines in total) ...", ""]
+                     + kept)
+
 def tool_info(esbmc):
     """Version, build commit and platform, so a column names a specific binary."""
     _, raw = run([esbmc, "--version"])
@@ -235,7 +263,7 @@ def verify(esbmc, generated, expected, timeout, scans):
     trace = None
     if verdict == "VIOLATION":
         match = re.search(r"^State 1.*?(?=\n+VERIFICATION)", out, re.S | re.M)
-        trace = match.group(0).strip() if match else None
+        trace = elide(match.group(0).strip()) if match else None
     proof = re.search(r"Solution found by (.+)", out)
     shown = list(args)
     shown[0] = "<generated>/harness.c"
