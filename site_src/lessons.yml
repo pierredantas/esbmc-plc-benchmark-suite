@@ -78,3 +78,13 @@ parts:
         title: "The family, and what it does not cover"
         summary: "All twelve machines in one table, what is identical and what changes across them, and the trigger shapes this part never showed."
 
+  - title: Logic-level bombs
+    blurb: >-
+      The same programs, organized by the shape of the attack rather than by the plant
+      it was fitted to, and the trigger shapes that defeat testing by construction.
+    lessons:
+      - slug: what-is-an-llb
+        number: "3.1"
+        title: "What a logic-level bomb is"
+        summary: "Trigger, payload and dormancy, the three trigger shapes the catalog carries, and why sampling cannot find any of them."
+
