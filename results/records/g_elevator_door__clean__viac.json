@@ -2,7 +2,7 @@
   "schema_version": "0.3",
   "route": "via-c",
   "scans": 8,
-  "recorded_at": "2026-08-26T20:59:30Z",
+  "recorded_at": "2026-08-26T23:13:42Z",
   "program": "benchmarks/elevator/g_elevator_door/clean.xml",
   "properties_file": "benchmarks/elevator/g_elevator_door/props.yaml",
   "properties": [
@@ -20,10 +20,10 @@
   "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  G_ELEVATOR_DOOR_CLEAN_data__ d = {0};\n  G_ELEVATOR_DOOR_CLEAN_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., OPEN_REQ, , nondet_bool());\n    __SET_VAR(d., MOVE_REQ, , nondet_bool());\n    __SET_VAR(d., AT_FLOOR, , nondet_bool());\n    __SET_VAR(d., MAINT, , nondet_bool());\n    G_ELEVATOR_DOOR_CLEAN_body__(&d);\n    __ESBMC_assert(!(__GET_VAR(d.DOOR_OPEN,) && __GET_VAR(d.DRIVE,)), \"P1\");\n  }\n  return 0;\n}",
   "runs": {
     "master": {
-      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 45s",
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 60s",
       "verdict": "SAFE",
       "proof": "the forward condition; all states are reachable (k = 9)",
-      "cpu_time_s": 1.601,
+      "cpu_time_s": 1.723,
       "counterexample": null,
       "tool": {
         "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",

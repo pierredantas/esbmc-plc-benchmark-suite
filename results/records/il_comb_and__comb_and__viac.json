@@ -2,7 +2,7 @@
   "schema_version": "0.3",
   "route": "via-c",
   "scans": 8,
-  "recorded_at": "2026-08-26T21:00:01Z",
+  "recorded_at": "2026-08-26T23:14:05Z",
   "program": "benchmarks/manufacturing/il_comb_and/comb_and.il",
   "properties_file": "benchmarks/manufacturing/il_comb_and/props.yaml",
   "properties": [
@@ -17,10 +17,10 @@
   "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  DRIVE_data__ d = {0};\n  DRIVE_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., A, , nondet_bool());\n    __SET_VAR(d., B, , nondet_bool());\n    __SET_VAR(d., C, , nondet_bool());\n    DRIVE_body__(&d);\n    __ESBMC_assert(!__GET_VAR(d.Y,) || (__GET_VAR(d.A,) && __GET_VAR(d.B,) && __GET_VAR(d.C,)), \"P1\");\n  }\n  return 0;\n}",
   "runs": {
     "master": {
-      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 45s",
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 60s",
       "verdict": "SAFE",
       "proof": "the forward condition; all states are reachable (k = 9)",
-      "cpu_time_s": 1.168,
+      "cpu_time_s": 1.208,
       "counterexample": null,
       "tool": {
         "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",

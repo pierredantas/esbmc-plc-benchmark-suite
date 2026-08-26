@@ -2,7 +2,7 @@
   "schema_version": "0.3",
   "route": "via-c",
   "scans": 8,
-  "recorded_at": "2026-08-26T21:02:13Z",
+  "recorded_at": "2026-08-26T23:14:32Z",
   "program": "benchmarks/water_treatment/sensor_forge/clean.st",
   "properties_file": "benchmarks/water_treatment/sensor_forge/props.yaml",
   "properties": [
@@ -26,7 +26,7 @@
       "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 60s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.793,
+      "cpu_time_s": 0.795,
       "counterexample": null,
       "tool": {
         "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",

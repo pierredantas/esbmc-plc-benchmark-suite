@@ -1,5 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
-<project xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<!-- fileHeader and contentHeader synthesised 2026-08-27. The program arrived
+     from the PLC_Defuser dataset with neither, and without the PLCopen
+     namespace, so no conforming importer would recognise it as PLCopen XML.
+     Only these headers and the namespace were added; the POUs, the ladder
+     bodies and the configuration are untouched. -->
+<project xmlns="http://www.plcopen.org/xml/tc6_0200" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <fileHeader companyName="Unknown" productName="PLC_Defuser dataset" productVersion="1.0" creationDateTime="2019-01-01T00:00:00" />
+  <contentHeader name="malicious_mvalves_handler">
+    <coordinateInfo>
+      <fbd><scaling x="1" y="1" /></fbd>
+      <ld><scaling x="1" y="1" /></ld>
+      <sfc><scaling x="1" y="1" /></sfc>
+    </coordinateInfo>
+  </contentHeader>
   <types>
     <dataTypes/>
    <pous>
