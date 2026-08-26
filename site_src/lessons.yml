@@ -1,0 +1,7 @@
+lessons:
+  - slug: 01-interlock
+    title: "A reversing starter, proved and broken"
+    summary: "One motor, two contactors, one property. A k-induction proof, then the same ladder with a contact deleted and the counterexample that follows."
+  - slug: 02-seal-in
+    title: "A seal-in latch, where the verdict hides the encoding"
+    summary: "Two ESBMC builds agree the circuit is safe. Only one of them encoded a latch, and it takes a second property to find out which."

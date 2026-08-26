@@ -1,0 +1,13 @@
+:root {
+  --md-code-font: "SFMono-Regular", "Menlo", "Consolas", monospace;
+}
+
+/* Scan bodies and counterexamples are wide and must not wrap: a rewrapped GOTO
+   line reads as a different program from the one that was verified. */
+.md-typeset pre > code {
+  white-space: pre;
+}
+
+.md-typeset table:not([class]) td code {
+  white-space: nowrap;
+}

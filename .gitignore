@@ -15,3 +15,7 @@ results/nuxmv_smv_models/
 # Manuscript working copies (not part of the artifact)
 ESBMC_Benchmark_Suite*/
 arxiv/
+
+# Portal build products
+portal/
+_site/
