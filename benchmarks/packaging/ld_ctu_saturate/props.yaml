@@ -2,5 +2,5 @@ format_version: "0.1"
 properties:
   - id: P1
     kind: invariant
-    expression: "!(Done AND Reset)"
+    expression: "!(Done && Reset)"
     justification: "Reset is dominant: the count-up Done flag and Reset never hold together."

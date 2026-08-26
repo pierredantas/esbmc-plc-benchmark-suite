@@ -2,5 +2,5 @@ format_version: "0.1"
 properties:
   - id: P1
     kind: invariant
-    expression: "!(Empty AND Load)"
+    expression: "!(Empty && Load)"
     justification: "Load is dominant: the count-down Empty flag and Load never hold together."

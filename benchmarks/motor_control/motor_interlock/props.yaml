@@ -7,5 +7,5 @@ properties:
     justification: "Forward/reverse contactors must never be energised together (contactor short / mechanical damage)."
   - id: P2
     kind: reachability
-    expression: "Motor_A AND Motor_B"
+    expression: "Motor_A && Motor_B"
     justification: "Trigger synthesis: a witness recovers the secret-knock input combination that violates the interlock."

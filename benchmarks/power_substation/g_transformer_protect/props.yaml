@@ -2,5 +2,5 @@ format_version: "0.1"
 properties:
   - id: P1
     kind: invariant
-    expression: "!(transformer_on AND oil_temp_high)"
+    expression: "!(transformer_on && oil_temp_high)"
     justification: "The transformer must never be energised while oil temperature is high."

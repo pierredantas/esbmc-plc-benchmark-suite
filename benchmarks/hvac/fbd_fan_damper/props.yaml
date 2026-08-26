@@ -2,9 +2,9 @@ format_version: "0.1"
 properties:
   - id: P1
     kind: invariant
-    expression: "!(fan AND NOT damper_open)"
+    expression: "!(fan && !damper_open)"
     justification: "The fan must never run against a shut damper: the duct sees full fan static as vacuum and can collapse."
   - id: P2
     kind: invariant
-    expression: "!(fan AND smoke)"
+    expression: "!(fan && smoke)"
     justification: "A running fan distributes smoke through the served zones, so a duct smoke alarm must drop the fan."

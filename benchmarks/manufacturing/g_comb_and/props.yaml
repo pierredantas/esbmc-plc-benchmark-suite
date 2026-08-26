@@ -2,5 +2,5 @@ format_version: "0.1"
 properties:
   - id: P1
     kind: invariant
-    expression: "!Y OR (A AND B AND C)"
+    expression: "!Y || (A && B && C)"
     justification: "Output Y is energised only when all series contacts A, B and C are closed."
