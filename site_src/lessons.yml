@@ -65,4 +65,16 @@ parts:
         number: "2.5"
         title: "An air handler whose name promises a timer"
         summary: "Heating and cooling interlocked correctly, a bypass that defeats it, and a benchmark called fan_delay whose program contains no block at all."
+      - slug: substation
+        number: "2.6"
+        title: "A substation, three interlocks and one key"
+        summary: "Busbar, breaker and transformer defeated by the same input, and the protection layer the attacker deliberately leaves working."
+      - slug: lighting-override
+        number: "2.7"
+        title: "The override you cannot tell from the attack"
+        summary: "The same branch is a legitimate maintenance override or a bomb, and nothing in the program decides which. The property does."
+      - slug: machine-family
+        number: "2.8"
+        title: "The family, and what it does not cover"
+        summary: "All twelve machines in one table, what is identical and what changes across them, and the trigger shapes this part never showed."
 
