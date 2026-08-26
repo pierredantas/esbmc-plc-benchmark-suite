@@ -124,3 +124,100 @@ Each needs its GOTO encoding compared against its documented rung before the
 
 This is a second, independent reason the v2.0 runner needs rung R0: an ingestion gate must
 check not only that the body was read, but that what was encoded matches what was written.
+
+---
+
+# Two-version comparison — v8.4 `61172c6f` vs master `d88a9fa4`
+
+Both built identically (LLVM 18.1.8, Z3 4.13.3, arm64 macOS), so the only variable
+is ESBMC itself. Run with `probe/compare_versions.py`.
+
+## Finding 3 is FIXED on master
+
+The parallel-branch defect is gone. Master synthesises an accumulator per junction:
+
+```
+pf11 = B ;  pf10 = A
+Run__pf0 = 0
+IF pf11 THEN Run__pf0 = 1
+IF pf10 THEN Run__pf0 = 1
+Run = 1 && Run__pf0            <-- a genuine disjunction
+```
+
+The discriminator in `demo2/or_discriminator.ld` returns SUCCESSFUL on v8.4 (wrong)
+and FAILED on master (right). Do not file Finding 3 upstream; it is already fixed.
+
+**Caution when reading GOTO dumps.** Master's encoding is guarded, so grepping only
+`ASSIGN` lines hides the conditions and makes the accumulators look like unconditional
+constants. Always read the full `--goto-functions-only` output, guards included.
+
+## Finding 1 is NOT fixed on master
+
+The probe pack returns identical results on both binaries. `<ST>`, `<FBD>` and `<SFC>`
+bodies are still discarded silently, and the false SAFE still occurs. Worth filing.
+
+## Finding 4 — rung evaluation order does not follow IEC 61131-3
+
+Both versions emit rungs in **reverse** document order. They differ in what they do
+about it.
+
+`g_ftrig_edge` is a falling-edge one-shot. Source order (identical in the graphical
+XML and its textual twin):
+
+```
+Fall     := !Sig AND Sig_prev
+OneShot  := Fall
+Sig_prev := Sig
+```
+
+**v8.4** emits the reverse with no snapshots:
+
+```
+Sig_prev = Sig
+OneShot  = Fall
+Fall     = !Sig && Sig_prev      <-- Sig_prev was overwritten above
+```
+
+so `Fall = !Sig && Sig`, which is false in every scan. Confirmed: the invariant
+`!Fall` is **proved** on v8.4. The falling-edge benchmark cannot fire its edge, so on
+v8.4 it tests nothing. Its recorded result is `unknown`, which concealed this.
+
+**master** emits the reverse but snapshots every variable at scan top, giving a
+coherent *simultaneous* model:
+
+```
+Fall__prev = Fall ; Sig_prev__prev = Sig_prev      <-- snapshot
+Sig_prev = Sig
+OneShot  = Fall__prev                              <-- one scan late
+Fall     = !Sig && Sig_prev__prev
+```
+
+`!Fall` is now refuted, so the edge fires. But `OneShot` lags a scan, and by then
+`Sig` may be high again, so `!OneShot || !Sig` is violated.
+
+IEC 61131-3 evaluates rungs sequentially, top to bottom, within one scan: a coil
+written in rung 1 is visible to rung 2 in that same scan. Under those semantics
+`OneShot` fires in the scan of the fall, while `Sig` is low, and the property holds.
+That matches the benchmark's `expert` label and nuXmv's SAFE.
+
+**Neither version implements IEC sequential rung semantics.** v8.4 is incoherent;
+master is coherent but synchronous. This is worth reporting upstream, and it is the
+kind of disagreement the suite exists to surface.
+
+## Verdict drift across the 29 comparable tasks
+
+| | |
+|---|---|
+| tasks compared | 29 |
+| encoding changed | 29 (all) |
+| verdict changed | 2 |
+
+The two are `g_ftrig_edge/program.xml` and `g_rtrig_edge/program.xml`: expected SAFE,
+`validated`, `unknown` on v8.4, **VIOL** on master. Every other verdict survives the
+encoding change, but survival is not confirmation, for the reason given above.
+
+## Coverage gap in this comparison
+
+16 of the 45 graphical files were skipped: their only property is `kind: termination`,
+which `--ld-props` rejects because the scan watchdog handles it instead. They need a
+separate comparison run with `--ld-scan-watchdog`, not a property file.
