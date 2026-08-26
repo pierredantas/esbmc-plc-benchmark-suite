@@ -1,0 +1,8 @@
+# Discriminator, not a safety requirement. A genuine seal-in latches, so Run can
+# hold while Start is released, which VIOLATES this. A tool that proves it has
+# encoded no latch at all.
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!Run || Start"
+    justification: "Run implies Start. A real seal-in must refute this."
