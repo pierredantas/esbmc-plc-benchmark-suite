@@ -1,0 +1,36 @@
+{
+  "schema_version": "0.3",
+  "route": "via-c",
+  "scans": 8,
+  "recorded_at": "2026-08-26T21:00:12Z",
+  "program": "benchmarks/motor_control/st_seal_in/seal_in.st",
+  "properties_file": "benchmarks/motor_control/st_seal_in/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!Run || !Stop",
+      "justification": "Stop always drops the seal-in coil: Run and Stop never hold together."
+    }
+  ],
+  "expected_verdict": "SAFE",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  DRIVE_data__ d = {0};\n  DRIVE_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., START, , nondet_bool());\n    __SET_VAR(d., STOP, , nondet_bool());\n    DRIVE_body__(&d);\n    __ESBMC_assert(!__GET_VAR(d.RUN,) || !__GET_VAR(d.STOP,), \"P1\");\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 45s",
+      "verdict": "SAFE",
+      "proof": "the forward condition; all states are reachable (k = 9)",
+      "cpu_time_s": 0.934,
+      "counterexample": null,
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/motor_control/st_seal_in/seal_in.st benchmarks/motor_control/st_seal_in/props.yaml true --tool master=<path-to-esbmc>",
+      "status": "correct"
+    }
+  }
+}

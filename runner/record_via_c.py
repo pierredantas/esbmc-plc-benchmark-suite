@@ -31,7 +31,14 @@ import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TOOLS = pathlib.Path(os.environ.get("PLC_TOOLS", pathlib.Path.home() / "plc-tools"))
-DECL = re.compile(r"__DECLARE_VAR\((\w+),\s*(\w+)\)")
+DECL = re.compile(r"__DECLARE_(VAR|LOCATED)\((\w+),\s*(\w+)\)")
+LOCATED = re.compile(r"(\w+)\s+AT\s+%([IQM])", re.I)
+VAR_BLOCK = re.compile(r"( *VAR(?:_INPUT|_OUTPUT|_IN_OUT)?\b[^\n]*)\n(.*?)\n( *END_VAR)", re.S)
+# What an unconstrained input of each IEC type looks like to the solver.
+NONDET = {"BOOL": "nondet_bool()", "SINT": "nondet_char()", "INT": "nondet_int()",
+          "DINT": "nondet_int()", "LINT": "nondet_long()", "UINT": "nondet_uint()",
+          "UDINT": "nondet_uint()", "REAL": "nondet_float()", "LREAL": "nondet_double()",
+          "TIME": "nondet_int()", "WORD": "nondet_uint()", "BYTE": "nondet_uint()"}
 
 
 def run(cmd, **kw):
@@ -43,7 +50,7 @@ def run(cmd, **kw):
 def to_st(program, workdir):
     """Structured Text for this program, translating a graphical body if needed."""
     if program.suffix in (".st", ".il"):
-        return program.read_text(encoding="utf-8")
+        return split_var_blocks(program.read_text(encoding="utf-8"))
     xml = workdir / "in.xml"
     xml.write_text(program.read_text(encoding="utf-8").replace("tc6_0200", "tc6_0201"),
                    encoding="utf-8")
@@ -54,8 +61,30 @@ def to_st(program, workdir):
 
 
 def declared_vars(header):
-    """Every variable MatIEC put in the POU instance struct, in declaration order."""
+    """Every variable in the POU struct: (storage, type, name), declaration order.
+
+    MatIEC uppercases identifiers and gives a located variable a pointer rather than
+    a value, so a harness has to know which is which before it can read one.
+    """
     return list(DECL.findall(header))
+
+
+def split_var_blocks(text):
+    """Give located declarations a block of their own.
+
+    MatIEC rejects a VAR block that mixes `x AT %IX0.0 : BOOL;` with a plain
+    declaration, which several benchmarks here do. Splitting is a rewrite of the
+    declaration only; no statement and no initial value changes.
+    """
+    def fix(match):
+        head, body, tail = match.groups()
+        located = [ln for ln in body.splitlines() if LOCATED.search(ln)]
+        plain = [ln for ln in body.splitlines() if ln.strip() and not LOCATED.search(ln)]
+        if not located or not plain:
+            return match.group(0)
+        return (f"{head}\n" + "\n".join(located) + f"\n{tail}\n{head}\n"
+                + "\n".join(plain) + f"\n{tail}")
+    return VAR_BLOCK.sub(fix, text)
 
 
 def inputs_of(program):
@@ -65,39 +94,80 @@ def inputs_of(program):
         block = re.search(r"<inputVars>(.*?)</inputVars>", text, re.S)
         return re.findall(r'<variable name="(\w+)"', block.group(1)) if block else []
     block = re.search(r"VAR_INPUT(.*?)END_VAR", text, re.S)
-    return re.findall(r"^\s*(\w+)\s*:", block.group(1), re.M) if block else []
+    names = re.findall(r"^\s*(\w+)\s*:", block.group(1), re.M) if block else []
+    # A variable mapped to an input image is driven by the plant, not the program.
+    names += [name for name, direction in LOCATED.findall(text) if direction.upper() == "I"]
+    return names
 
 
 def harness(pou, variables, ins, expressions, scans):
     """A C main that drives the scan loop and asserts the properties every scan."""
     struct, prefix = pou
+    storage = {name: kind for kind, _type, name in variables}
+    types = {name: iec for _kind, iec, name in variables}
 
-    def ref(name):
-        return f"__GET_VAR(d.{name},)"
+    def resolve(name):
+        """Source spelling to the identifier MatIEC emitted."""
+        return name.upper() if name.upper() in storage else name
 
-    body = ['#include "iec_std_lib.h"', '#include "POUS.h"', '#include "POUS.c"', "",
-            "int main(void) {", f"  {struct} d = {{0}};", f"  {prefix}_init__(&d, 0);",
-            f"  for (int scan = 0; scan < {scans}; scan++) {{"]
-    body += [f"    __SET_VAR(d., {name}, , nondet_bool());" for name in ins]
+    def read(name):
+        target = resolve(name)
+        macro = "__GET_LOCATED" if storage.get(target) == "LOCATED" else "__GET_VAR"
+        return f"{macro}(d.{target},)"
+
+    def write(name, value):
+        target = resolve(name)
+        macro = "__SET_LOCATED" if storage.get(target) == "LOCATED" else "__SET_VAR"
+        return f"    {macro}(d., {target}, , {value});"
+
+    body = ['#include "iec_std_lib.h"', '#include "POUS.h"', '#include "POUS.c"', ""]
+    if any(kind == "LOCATED" for kind, _t, _n in variables):
+        # A located variable points into the I/O image, which the runtime normally
+        # supplies by expanding this header. Standing in for the runtime is what
+        # lets the program run without one.
+        body += ["#define __LOCATED_VAR(type, name, ...) \\",
+                 "  type name##__image; type *name = &name##__image;",
+                 '#include "LOCATED_VARIABLES.h"', "#undef __LOCATED_VAR", ""]
+    body += ["int main(void) {", f"  {struct} d = {{0}};",
+             f"  {prefix}_init__(&d, 0);",
+             f"  for (int scan = 0; scan < {scans}; scan++) {{"]
+    body += [write(name, NONDET.get(types.get(resolve(name), "BOOL"), "nondet_int()"))
+             for name in ins]
     body.append(f"    {prefix}_body__(&d);")
     for prop_id, expr in expressions:
         rendered = expr
-        for _, name in sorted(variables, key=lambda v: -len(v[1])):
-            rendered = re.sub(rf"\b{name}\b", ref(name), rendered)
+        for name in sorted({n for _k, _t, n in variables} | {n.upper() for n in ins},
+                           key=len, reverse=True):
+            rendered = re.sub(rf"\b{name}\b", read(name), rendered, flags=re.I)
         body.append(f'    __ESBMC_assert({rendered}, "{prop_id}");')
     body += ["  }", "  return 0;", "}"]
     return "\n".join(body)
 
 
 def properties(props_path):
-    """The invariant expressions this benchmark states, in C form."""
+    """Each property as an assertion over the program's variables.
+
+    Reachability inverts: the claim is written so that reaching the state fails it,
+    which makes ESBMC's counterexample the witness. Termination is not expressible
+    as an assertion inside a bounded scan harness, so it is left to the scan
+    watchdog on the ladder route.
+    """
     props = yaml.safe_load(props_path.read_text(encoding="utf-8"))
-    out = []
+    out, skipped = [], []
     for prop in props.get("properties", []):
-        if prop.get("kind") == "invariant" and prop.get("expression"):
-            out.append((prop["id"], prop["expression"]))
-        elif prop.get("kind") == "mutual_exclusion":
+        kind, expr = prop.get("kind"), prop.get("expression")
+        if kind == "invariant" and expr:
+            out.append((prop["id"], expr))
+        elif kind == "absence" and expr:
+            out.append((prop["id"], f"!({expr})"))
+        elif kind == "reachability" and expr:
+            out.append((prop["id"], f"!({expr})"))
+        elif kind == "mutual_exclusion":
             out.append((prop["id"], "!(" + " && ".join(prop["variables"]) + ")"))
+        else:
+            skipped.append(f'{prop["id"]}:{kind}')
+    if not out:
+        raise RuntimeError("no property this route can express: " + ", ".join(skipped))
     return out
 
 
@@ -142,9 +212,15 @@ def tool_info(esbmc):
             "platform": match.group(2) if match else None}
 
 
-def verify(esbmc, harness_file, outdir, expected, timeout):
-    """Run ESBMC over the generated C and classify the outcome."""
-    mode = ["--k-induction"] if expected else ["--incremental-bmc", "--unwind", "10"]
+def verify(esbmc, generated, expected, timeout, scans):
+    """Run ESBMC over the generated C and classify the outcome.
+
+    The harness loop is a fixed count, so the unwinding bound has to clear it or a
+    bomb on a long fuse is simply never reached and the run reports SAFE.
+    """
+    harness_file, outdir = generated
+    mode = (["--k-induction"] if expected
+            else ["--incremental-bmc", "--unwind", str(scans + 2)])
     args = [str(harness_file), "-I", str(TOOLS / "matiec" / "lib" / "C"),
             "-I", str(outdir), *mode, "--timeout", f"{timeout}s"]
     start = time.time()
@@ -167,13 +243,15 @@ def verify(esbmc, harness_file, outdir, expected, timeout):
             "cpu_time_s": round(time.time() - start, 3), "counterexample": trace}
 
 
-def build_record(args, program, props_path, harness_file, outdir):
+def build_record(args, paths, generated):
     """Every build's answer, plus what it was asked."""
+    program, props_path = paths
+    harness_file, outdir = generated
     expected = args.expected == "true"
     runs = {}
     for spec in args.tool:
         label, path = spec.split("=", 1)
-        result = verify(path, harness_file, outdir, expected, args.timeout)
+        result = verify(path, (harness_file, outdir), expected, args.timeout, args.scans)
         result["tool"] = tool_info(path)
         result["command"] = (
             f"runner/record_via_c.py {os.path.relpath(program, ROOT)} "
@@ -204,9 +282,9 @@ def main():
 
     with tempfile.TemporaryDirectory() as tmp:
         harness_file, outdir = build(program, props_path, pathlib.Path(tmp), args.scans)
-        runs = build_record(args, program, props_path, harness_file, outdir)
+        runs = build_record(args, (program, props_path), (harness_file, outdir))
         record = {
-            "schema_version": "0.3", "route": "via-c",
+            "schema_version": "0.3", "route": "via-c", "scans": args.scans,
             "recorded_at": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
             "program": os.path.relpath(program, ROOT),
             "properties_file": os.path.relpath(props_path, ROOT),

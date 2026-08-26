@@ -1,0 +1,42 @@
+{
+  "schema_version": "0.3",
+  "route": "via-c",
+  "scans": 8,
+  "recorded_at": "2026-08-26T20:59:33Z",
+  "program": "benchmarks/hvac/fbd_fan_damper/clean.xml",
+  "properties_file": "benchmarks/hvac/fbd_fan_damper/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(fan && !damper_open)",
+      "justification": "The fan must never run against a shut damper: the duct sees full fan static as vacuum and can collapse."
+    },
+    {
+      "id": "P2",
+      "kind": "invariant",
+      "expression": "!(fan && smoke)",
+      "justification": "A running fan distributes smoke through the served zones, so a duct smoke alarm must drop the fan."
+    }
+  ],
+  "expected_verdict": "SAFE",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  AIR_HANDLER_data__ d = {0};\n  AIR_HANDLER_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., FAN_CMD, , nondet_bool());\n    __SET_VAR(d., DAMPER_OPEN, , nondet_bool());\n    __SET_VAR(d., SMOKE, , nondet_bool());\n    AIR_HANDLER_body__(&d);\n    __ESBMC_assert(!(__GET_VAR(d.FAN,) && !__GET_VAR(d.DAMPER_OPEN,)), \"P1\");\n    __ESBMC_assert(!(__GET_VAR(d.FAN,) && __GET_VAR(d.SMOKE,)), \"P2\");\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 45s",
+      "verdict": "SAFE",
+      "proof": "the forward condition; all states are reachable (k = 9)",
+      "cpu_time_s": 1.514,
+      "counterexample": null,
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/hvac/fbd_fan_damper/clean.xml benchmarks/hvac/fbd_fan_damper/props.yaml true --tool master=<path-to-esbmc>",
+      "status": "correct"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": "0.3",
+  "route": "via-c",
+  "scans": 64,
+  "recorded_at": "2026-08-26T20:59:47Z",
+  "program": "benchmarks/manufacturing/counter_scalability/bomb_N04095.st",
+  "properties_file": "benchmarks/manufacturing/counter_scalability/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(pump && level_high)",
+      "justification": "Overflow guard; here evaluated across counter-fuse widths to measure detection cost vs. scale."
+    }
+  ],
+  "expected_verdict": "VIOLATION",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\n#define __LOCATED_VAR(type, name, ...) \\\n  type name##__image; type *name = &name##__image;\n#include \"LOCATED_VARIABLES.h\"\n#undef __LOCATED_VAR\n\nint main(void) {\n  TANK_data__ d = {0};\n  TANK_init__(&d, 0);\n  for (int scan = 0; scan < 64; scan++) {\n    __SET_LOCATED(d., LEVEL_HIGH, , nondet_bool());\n    __SET_LOCATED(d., START, , nondet_bool());\n    TANK_body__(&d);\n    __ESBMC_assert(!(__GET_LOCATED(d.PUMP,) && __GET_LOCATED(d.LEVEL_HIGH,)), \"P1\");\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --incremental-bmc --unwind 66 --timeout 135s",
+      "verdict": "unknown",
+      "proof": null,
+      "cpu_time_s": 2.382,
+      "counterexample": null,
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/manufacturing/counter_scalability/bomb_N04095.st benchmarks/manufacturing/counter_scalability/props.yaml false --tool master=<path-to-esbmc>",
+      "status": "unknown"
+    }
+  }
+}

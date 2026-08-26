@@ -291,7 +291,7 @@ def program_index():
         program = rec["program"]
         # record_all.py and the per-lesson records can cover the same pair; the
         # shorter name wins, because that is the one a lesson cites.
-        key = (program, rec["properties_file"])
+        key = (program, rec["properties_file"], rec.get("route", "ld"))
         if key in seen:
             continue
         seen[key] = path.stem
@@ -356,6 +356,10 @@ def build_benchmark(meta, recorded):
     runs = [name for var in meta.get("variants", []) for name in
             recorded.get(f'benchmarks/{meta["domain"]}/{meta["id"]}/{var["file"]}', [])]
     body.append("\n## Recorded runs\n")
+    body.append("A task can carry two routes. `ld` is ESBMC's ladder front end reading the "
+                "program directly. `via C` is the same solver reached through Beremiz and "
+                "MatIEC, which is the only route that reaches ST, IL, FBD and SFC; see "
+                "[How ESBMC-PLC works](../../../how-esbmc-plc-works.md).\n")
     body.append("\n".join(record_line(name) for name in sorted(set(runs))) if runs else
                 "No ESBMC run is recorded against this task yet. The lessons carry the "
                 "recorded runs; see [Reproducing](../../../reproducing.md) to make your own.")

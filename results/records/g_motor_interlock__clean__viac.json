@@ -1,0 +1,45 @@
+{
+  "schema_version": "0.3",
+  "route": "via-c",
+  "scans": 8,
+  "recorded_at": "2026-08-26T21:00:06Z",
+  "program": "benchmarks/motor_control/g_motor_interlock/clean.xml",
+  "properties_file": "benchmarks/motor_control/motor_interlock/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "mutual_exclusion",
+      "variables": [
+        "Motor_A",
+        "Motor_B"
+      ],
+      "justification": "Forward/reverse contactors must never be energised together (contactor short / mechanical damage)."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "Motor_A && Motor_B",
+      "justification": "Trigger synthesis: a witness recovers the secret-knock input combination that violates the interlock."
+    }
+  ],
+  "expected_verdict": "SAFE",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  DRIVE_data__ d = {0};\n  DRIVE_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., FWD, , nondet_bool());\n    __SET_VAR(d., REV, , nondet_bool());\n    __SET_VAR(d., MAINT, , nondet_bool());\n    DRIVE_body__(&d);\n    __ESBMC_assert(!(__GET_VAR(d.MOTOR_A,) && __GET_VAR(d.MOTOR_B,)), \"P1\");\n    __ESBMC_assert(!(__GET_VAR(d.MOTOR_A,) && __GET_VAR(d.MOTOR_B,)), \"P2\");\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 45s",
+      "verdict": "SAFE",
+      "proof": "the forward condition; all states are reachable (k = 9)",
+      "cpu_time_s": 1.217,
+      "counterexample": null,
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/motor_control/g_motor_interlock/clean.xml benchmarks/motor_control/motor_interlock/props.yaml true --tool master=<path-to-esbmc>",
+      "status": "correct"
+    }
+  }
+}

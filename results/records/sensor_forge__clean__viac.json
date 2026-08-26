@@ -1,0 +1,42 @@
+{
+  "schema_version": "0.3",
+  "route": "via-c",
+  "scans": 8,
+  "recorded_at": "2026-08-26T21:02:13Z",
+  "program": "benchmarks/water_treatment/sensor_forge/clean.st",
+  "properties_file": "benchmarks/water_treatment/sensor_forge/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "reported_open == valve_open",
+      "justification": "HMI-reported valve state must always match the real actuator command (anti-spoofing integrity)."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "reported_open && !valve_open",
+      "justification": "Witness for the VIOLATION variant: 'reports open while physically closed' recovers the stealth bomb's arming."
+    }
+  ],
+  "expected_verdict": "SAFE",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\n#define __LOCATED_VAR(type, name, ...) \\\n  type name##__image; type *name = &name##__image;\n#include \"LOCATED_VARIABLES.h\"\n#undef __LOCATED_VAR\n\nint main(void) {\n  RELIEF_data__ d = {0};\n  RELIEF_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_LOCATED(d., OVER_PRESS, , nondet_bool());\n    RELIEF_body__(&d);\n    __ESBMC_assert(__GET_LOCATED(d.REPORTED_OPEN,) == __GET_LOCATED(d.VALVE_OPEN,), \"P1\");\n    __ESBMC_assert(!(__GET_LOCATED(d.REPORTED_OPEN,) && !__GET_LOCATED(d.VALVE_OPEN,)), \"P2\");\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 60s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.793,
+      "counterexample": null,
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/water_treatment/sensor_forge/clean.st benchmarks/water_treatment/sensor_forge/props.yaml true --tool master=<path-to-esbmc>",
+      "status": "correct"
+    }
+  }
+}
