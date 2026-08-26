@@ -21,22 +21,13 @@ theme:
     - navigation.indexes
     - search.highlight
     - toc.follow
-  # Light by default for every reader, rather than following the OS setting: the
-  # scan bodies and counterexamples are read as printed output, and that is what
-  # printed output looks like.
+  # One palette, no toggle. A second palette puts a reader's choice in localStorage,
+  # where it outlives any change made here, so the only way to guarantee light for
+  # everyone is to leave the dark scheme undefined.
   palette:
-    - scheme: default
-      primary: teal
-      accent: teal
-      toggle:
-        icon: material/weather-night
-        name: Dark mode
-    - scheme: slate
-      primary: teal
-      accent: teal
-      toggle:
-        icon: material/weather-sunny
-        name: Light mode
+    scheme: default
+    primary: teal
+    accent: teal
 
 extra_css:
   - stylesheets/extra.css
