@@ -11,10 +11,13 @@ ST and IL skip the first hop, because MatIEC compiles them as they stand.
 
     record_via_c.py <program> <props.yaml> <true|false> --tool LABEL=PATH [-o out.json]
 
-The record uses the same schema as record.py, with route "via-c", so a benchmark page
-can show both routes side by side. What this asks is "is the program correct", not
-"does the LD front end read it correctly": MatIEC's semantics and, for graphical
-bodies, Beremiz's rendering both join the trusted base.
+The record follows record.py's schema with route "via-c", so a benchmark page can show
+both routes side by side, and adds a "toolchain" block naming the Beremiz and MatIEC
+checkouts that produced the C. That block is why via-c records are schema 0.4.
+
+What this asks is "is the program correct", not "does the LD front end read it
+correctly": MatIEC's semantics and, for graphical bodies, Beremiz's rendering both
+join the trusted base.
 """
 import argparse
 import datetime
@@ -240,6 +243,30 @@ def tool_info(esbmc):
             "platform": match.group(2) if match else None}
 
 
+def repo_state(path):
+    """Short commit and working-tree cleanliness for one dependency checkout."""
+    real = os.path.realpath(path)
+    if not os.path.exists(os.path.join(real, ".git")):
+        return {"path": real, "commit": None, "dirty": None}
+    code, commit = run(["git", "-C", real, "rev-parse", "--short", "HEAD"])
+    if code != 0:
+        return {"path": real, "commit": None, "dirty": None}
+    _, status = run(["git", "-C", real, "status", "--porcelain"])
+    return {"path": real, "commit": commit.strip(), "dirty": bool(status.strip())}
+
+
+def toolchain_info():
+    """Beremiz and MatIEC, which rewrite the program before ESBMC ever sees it.
+
+    A via-C verdict rests on that translation as much as on the solver, so a record
+    naming only the ESBMC commit cannot be reproduced. `dirty` carries the case that
+    bites in practice: a locally patched generator emits different ST from the commit
+    it reports, and nothing else in the record would show it.
+    """
+    return {"beremiz": repo_state(TOOLS / "beremiz"),
+            "matiec": repo_state(TOOLS / "matiec")}
+
+
 def verify(esbmc, generated, expected, timeout, scans):
     """Run ESBMC over the generated C and classify the outcome.
 
@@ -316,7 +343,8 @@ def main():
         harness_file, outdir = build(program, props_path, pathlib.Path(tmp), args.scans)
         runs = build_record(args, (program, props_path), (harness_file, outdir))
         record = {
-            "schema_version": "0.3", "route": "via-c", "scans": args.scans,
+            "schema_version": "0.4", "route": "via-c", "scans": args.scans,
+            "toolchain": toolchain_info(),
             "recorded_at": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
             "program": os.path.relpath(program, ROOT),
             "properties_file": os.path.relpath(props_path, ROOT),

@@ -1,7 +1,20 @@
 {
-  "schema_version": "0.3",
+  "schema_version": "0.4",
   "route": "via-c",
-  "recorded_at": "2026-08-26T19:46:05Z",
+  "scans": 3,
+  "toolchain": {
+    "beremiz": {
+      "path": "/private/tmp/claude-502/-Users-user-Claude-Overleaf-Projects--2-items--ESBMC-Benchmark-Suite--P6-/5e348bf4-11e3-4fee-af86-26b838a68105/scratchpad/beremiz",
+      "commit": "aeb89e8",
+      "dirty": false
+    },
+    "matiec": {
+      "path": "/private/tmp/claude-502/-Users-user-Claude-Overleaf-Projects--2-items--ESBMC-Benchmark-Suite--P6-/5e348bf4-11e3-4fee-af86-26b838a68105/scratchpad/matiec",
+      "commit": "7949c0b",
+      "dirty": false
+    }
+  },
+  "recorded_at": "2026-08-27T10:49:54Z",
   "program": "benchmarks/manufacturing/il_comb_and/comb_and.il",
   "properties_file": "benchmarks/manufacturing/il_comb_and/props.yaml",
   "properties": [
@@ -19,7 +32,7 @@
       "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 120s",
       "verdict": "SAFE",
       "proof": "the forward condition; all states are reachable (k = 4)",
-      "cpu_time_s": 0.84,
+      "cpu_time_s": 0.869,
       "counterexample": null,
       "tool": {
         "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",

@@ -177,6 +177,27 @@ def tabs(pairs):
     return "\n".join(out)
 
 
+def generator_line(rec):
+    """Name the Beremiz and MatIEC that produced the C, when the record carries them.
+
+    A via-C verdict depends on the translation, so a panel that shows only the ESBMC
+    commit is under-reporting what the reader is being asked to trust.
+    """
+    chain = rec.get("toolchain")
+    if not chain:
+        return []
+    parts = []
+    for name, label in (("beremiz", "Beremiz"), ("matiec", "MatIEC")):
+        state = chain.get(name) or {}
+        if not state.get("commit"):
+            continue
+        marked = state["commit"] + (", patched" if state.get("dirty") else "")
+        parts.append(f"{label} `{marked}`")
+    if not parts:
+        return []
+    return [f"Translated by {' and '.join(parts)}.\n"]
+
+
 def render_record(arg, _ctx):
     """{{record: interlock_viol}} renders results/records/interlock_viol.json in full."""
     rec = json.loads((RECORDS / (arg.strip() + ".json")).read_text(encoding="utf-8"))
@@ -193,6 +214,7 @@ def render_record(arg, _ctx):
         if len(solver) == 1:
             out += ["which generates the C below and hands it to ESBMC as:\n",
                     fence(next(iter(solver)), "text"), ""]
+        out += generator_line(rec)
     else:
         out += [f"Recorded {when}.\n", tabs(list(commands.items()))]
 

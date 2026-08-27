@@ -1,8 +1,20 @@
 {
-  "schema_version": "0.3",
+  "schema_version": "0.4",
   "route": "via-c",
   "scans": 8,
-  "recorded_at": "2026-08-26T23:14:13Z",
+  "toolchain": {
+    "beremiz": {
+      "path": "/private/tmp/claude-502/-Users-user-Claude-Overleaf-Projects--2-items--ESBMC-Benchmark-Suite--P6-/5e348bf4-11e3-4fee-af86-26b838a68105/scratchpad/beremiz",
+      "commit": "aeb89e8",
+      "dirty": false
+    },
+    "matiec": {
+      "path": "/private/tmp/claude-502/-Users-user-Claude-Overleaf-Projects--2-items--ESBMC-Benchmark-Suite--P6-/5e348bf4-11e3-4fee-af86-26b838a68105/scratchpad/matiec",
+      "commit": "7949c0b",
+      "dirty": false
+    }
+  },
+  "recorded_at": "2026-08-27T10:48:13Z",
   "program": "benchmarks/motor_control/motor_interlock/clean.st",
   "properties_file": "benchmarks/motor_control/motor_interlock/props.yaml",
   "properties": [
@@ -26,10 +38,10 @@
   "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\n#define __LOCATED_VAR(type, name, ...) \\\n  type name##__image; type *name = &name##__image;\n#include \"LOCATED_VARIABLES.h\"\n#undef __LOCATED_VAR\n\nint main(void) {\n  DRIVE_data__ d = {0};\n  DRIVE_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_LOCATED(d., FWD, , nondet_bool());\n    __SET_LOCATED(d., REV, , nondet_bool());\n    __SET_LOCATED(d., MAINT, , nondet_bool());\n    DRIVE_body__(&d);\n    __ESBMC_assert(!(__GET_LOCATED(d.MOTOR_A,) && __GET_LOCATED(d.MOTOR_B,)), \"P1\");\n    __ESBMC_assert(!(__GET_LOCATED(d.MOTOR_A,) && __GET_LOCATED(d.MOTOR_B,)), \"P2\");\n  }\n  return 0;\n}",
   "runs": {
     "master": {
-      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 60s",
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 30s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.793,
+      "cpu_time_s": 0.824,
       "counterexample": null,
       "tool": {
         "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
