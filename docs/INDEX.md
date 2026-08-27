@@ -1,6 +1,12 @@
 # Suite Index (50 benchmarks / 83 variants)
 
-Auto-generated. Composition: 15 LD-textual · 25 LD-graphical · 10 ST across 10 domains.
+**This table describes the archived release v1.0.1, not the working tree.** The tree has
+grown to 68 tasks over 105 variants and gained FBD, SFC and IL programs. For current
+figures read the
+[benchmarks catalog](https://pierredantas.github.io/esbmc-plc-benchmark-suite/benchmarks/),
+which is generated from `benchmarks/**/benchmark.yml` every time the portal builds.
+
+Composition at v1.0.1: 15 LD-textual · 25 LD-graphical · 10 ST across 10 domains.
 
 | domain | language | id | variants | verdicts | difficulty |
 |---|---|---|---|---|---|

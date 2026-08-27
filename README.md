@@ -4,10 +4,17 @@
 [![License: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-blue.svg)](LICENSE)
 [![License: MIT](https://img.shields.io/badge/code-MIT-green.svg)](LICENSE-CODE)
 
-A community suite of IEC 61131-3 benchmarks across **10 industrial domains**, in PLCopen XML / ST,
-each with formal safety properties (YAML), machine-checkable expected verdicts, witnesses, and
-baseline results from ESBMC-PLC+ and nuXmv. SV-COMP–compatible so the artifact feeds a future
-SV-COMP PLC/ICS category.
+A community suite of IEC 61131-3 benchmarks across **10 industrial domains**, written in all
+five languages of the standard and carried as PLCopen XML or plain text, each with formal
+safety properties (YAML), machine-checkable expected verdicts, witnesses, and baseline results
+from ESBMC-PLC+ and nuXmv. SV-COMP–compatible so the artifact feeds a future SV-COMP PLC/ICS
+category.
+
+**[Read it as a course](https://pierredantas.github.io/esbmc-plc-benchmark-suite/)** —
+thirty-two lessons in six parts, each built on one program and the runs recorded against
+it. Nothing on that site runs live: every verdict, scan body and counterexample came out
+of a command printed beside it, and its counts are tallied from `results/records/` when
+the pages are built.
 
 This repository is the reproducibility artifact for:
 
@@ -27,8 +34,14 @@ benchmarks/<domain>/<id>/      one directory per benchmark task
   ├── <variant>.st|.xml        program variant(s) — the system under test
   └── README.md                optional notes / provenance
 runner/validate.py             schema + file + XML validation (CI gate)
-runner/run.py                  tool-runner skeleton (adapters WIP)
-results/<tool>/                per-run verdict/time/status records
+runner/schema_check.py         PLCopen TC6 XSD validation via xmllint
+runner/record.py               one recorded run through ESBMC's LD front end
+runner/record_via_c.py         the same question through Beremiz -> MatIEC -> C
+runner/record_all.py           drives either route over the whole catalog
+runner/record_custom.py        the records whose names the catalog does not derive
+results/records/*.json         one record per task: command, encoding, verdict, trace
+site_src/                      portal sources; build.py renders them into portal/
+docs/INTEROP.md                the second verification route and what it costs
 ```
 
 ## Status
@@ -37,10 +50,11 @@ results/<tool>/                per-run verdict/time/status records
 > ([DOI 10.5281/zenodo.21642386](https://doi.org/10.5281/zenodo.21642386)) holds
 > **50 benchmarks over 83 program variants** in 15 LD-textual, 25 LD-graphical and
 > 10 ST. Those are the numbers the accompanying paper reports, and they are what you
-> should cite. This branch has grown since: as of 2026-08-26 it holds **62 tasks
-> over 99 variants** (2 FBD · 33 LD-graphical · 15 LD-textual · 2 SFC · 10 ST). The
-> [benchmarks catalog](https://pierredantas.github.io/esbmc-plc-benchmark-suite/benchmarks/)
-> carries live counts. Everything below this note describes v1.0.1.
+> should cite. This branch has grown since: as of 2026-08-27 it holds **68 tasks
+> over 105 variants** (53 LD-graphical · 25 ST · 15 LD-textual · 6 FBD · 4 SFC · 2 IL).
+> The [benchmarks catalog](https://pierredantas.github.io/esbmc-plc-benchmark-suite/benchmarks/)
+> computes its counts from the files at build time, so read current figures there rather
+> than here. Everything below this note describes v1.0.1.
 
 50 benchmarks / 83 variants across 10 domains, all passing `runner/validate.py`.
 Composition: **15 LD-textual · 25 LD-graphical · 10 ST**.
