@@ -125,12 +125,62 @@ Not a deeper bound. Two things, both of which the suite already demonstrates els
 this exact payload in the eight `g_tank_*` benchmarks, in milliseconds, because it does
 not chase the trigger at all. It instruments the loop and asserts the iteration count
 stays in budget, which is true or false regardless of how the program got there. Those
-eight have verdicts on this site and these six do not, and the difference is the
+eight have verdicts on this site and these six did not, and the difference is the
 instrument rather than the difficulty.
 
 **An inductive argument.** A proof that never mentions the timer's value holds for every
 scan at once, which is what `--k-induction` does for the expected-SAFE tasks throughout
 this site, closing at k = 2 whatever the program's horizon.
+
+## One of the six now has a verdict
+
+Writing that advice down was enough to act on it. Termination is not an assertion over
+variables, which is why the C route refused these files, but ESBMC already answers the
+question a different way: an unwinding assertion fails when a loop cannot be closed within
+the bound. That is the same shape as the ladder route's watchdog, expressed with the tool
+the C route already runs.
+
+The runner now accepts `kind: termination` on that basis, and the `timer1` pair, the one
+portable pair of the six, comes back as a pair:
+
+{{record: st_swat_timer1__smal_timer1_0__viac}}
+
+The witness is `unwinding assertion loop 8`, and its legitimate twin verifies. Read the
+claim carefully, because it is weaker than it looks: an unwinding assertion also fails on a
+loop that merely runs deeper than the bound. It is evidence of non-termination, not a proof,
+which is why the record carries the bound it used. For `while i< 4 do OUT:=FALSE;` with `i`
+never assigned, the evidence is about as strong as evidence gets.
+
+The same change reached the eight `g_tank_*` pairs, whose properties are also termination.
+Their legitimate halves now carry an independent `SAFE` from the C route alongside the
+ladder verdict they already had, while the bombs time out, so refuting those still rests on
+the watchdog alone.
+
+## The other five cannot be ported, and that is the finding
+
+Obstacle 1 looked like a syntax problem. It is not. Look at where the bomb lives:
+
+```pascal
+__TRY
+  OUT:=FALSE;
+  IF IN1=IN2 then OUT:=TRUE; END_IF;
+  IN1 : = IN2/IN1;          (* divides by zero when IN1 = 0 *)
+__CATCH(exc)
+  i:=IN1;
+  WHILE i<4 do i := i * i; End_WHILE;   (* 0*0 = 0, so this never exits *)
+__ENDTRY
+```
+
+The trigger is a division by zero and the payload is in the exception handler. All five
+non-timer pairs share that shape. So the CODESYS extension is not packaging around the
+attack, it **is** the attack: strip `__TRY` and `__CATCH` to make the file portable and you
+have deleted the bomb along with them.
+
+That is worth more than a verdict. An entire class of attack here is written in a vendor's
+exception mechanism, which IEC 61131-3 does not define and no conforming tool implements,
+so no standards-conforming verifier can read it, let alone refute it. A tool that only
+accepts portable Structured Text cannot see this bug, and cannot tell you it could not see
+it.
 
 Both amount to the same advice: stop reasoning about when the trigger fires, and reason
 about what the program does when it does.

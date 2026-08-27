@@ -14,7 +14,7 @@
       "dirty": false
     }
   },
-  "recorded_at": "2026-08-27T16:37:13Z",
+  "recorded_at": "2026-08-27T19:18:43Z",
   "program": "benchmarks/elevator/sfc_elevator_door/bomb.xml",
   "properties_file": "benchmarks/elevator/sfc_elevator_door/props.yaml",
   "properties": [
@@ -32,7 +32,7 @@
       "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --unwind 10 --timeout 30s",
       "verdict": "timeout",
       "proof": null,
-      "cpu_time_s": 30.047,
+      "cpu_time_s": 30.056,
       "counterexample": null,
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",

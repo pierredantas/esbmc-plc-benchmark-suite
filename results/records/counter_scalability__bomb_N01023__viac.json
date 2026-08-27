@@ -14,7 +14,7 @@
       "dirty": false
     }
   },
-  "recorded_at": "2026-08-27T16:37:24Z",
+  "recorded_at": "2026-08-27T19:18:54Z",
   "program": "benchmarks/manufacturing/counter_scalability/bomb_N01023.st",
   "properties_file": "benchmarks/manufacturing/counter_scalability/props.yaml",
   "properties": [
@@ -32,7 +32,7 @@
       "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --unwind 66 --timeout 90s",
       "verdict": "SAFE",
       "proof": null,
-      "cpu_time_s": 0.822,
+      "cpu_time_s": 0.968,
       "counterexample": null,
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",

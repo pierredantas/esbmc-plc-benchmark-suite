@@ -14,7 +14,7 @@
       "dirty": false
     }
   },
-  "recorded_at": "2026-08-27T16:36:09Z",
+  "recorded_at": "2026-08-27T19:17:39Z",
   "program": "benchmarks/chemical_batch/sfc_batch_fill_drain/bomb.xml",
   "properties_file": "benchmarks/chemical_batch/sfc_batch_fill_drain/props.yaml",
   "properties": [
@@ -35,7 +35,7 @@
       "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --unwind 10 --timeout 30s",
       "verdict": "timeout",
       "proof": null,
-      "cpu_time_s": 30.047,
+      "cpu_time_s": 30.058,
       "counterexample": null,
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",

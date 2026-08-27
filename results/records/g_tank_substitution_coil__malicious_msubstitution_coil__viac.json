@@ -1,0 +1,47 @@
+{
+  "schema_version": "0.4",
+  "route": "via-c",
+  "scans": 8,
+  "toolchain": {
+    "beremiz": {
+      "path": "~/plc-tools/beremiz",
+      "commit": "df4370c",
+      "dirty": false
+    },
+    "matiec": {
+      "path": "~/plc-tools/matiec",
+      "commit": "7949c0b",
+      "dirty": false
+    }
+  },
+  "recorded_at": "2026-08-27T19:22:50Z",
+  "program": "benchmarks/water_treatment/g_tank_substitution_coil/malicious_msubstitution_coil.xml",
+  "properties_file": "benchmarks/water_treatment/g_tank_substitution_coil/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "termination",
+      "justification": "Every PLC scan cycle must complete (no non-terminating loop). The malicious variant injects a Govil et al. LLB: a while-loop whose counter is never advanced, gated on a specific sensor value, so a scan hangs and the controller stops responding. Program context: Coil-substitution variant of the valve logic."
+    }
+  ],
+  "expected_verdict": "VIOLATION",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  PROGRAM0_data__ d = {0};\n  PROGRAM0_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., TLB2, , nondet_int());\n    __SET_VAR(d., TLB1, , nondet_int());\n    __SET_VAR(d., STOP, , nondet_bool());\n    __SET_VAR(d., START, , nondet_bool());\n    __SET_VAR(d., VALUE, , nondet_int());\n    PROGRAM0_body__(&d);\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --unwind 10 --timeout 30s",
+      "verdict": "timeout",
+      "proof": null,
+      "cpu_time_s": 30.024,
+      "counterexample": null,
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/water_treatment/g_tank_substitution_coil/malicious_msubstitution_coil.xml benchmarks/water_treatment/g_tank_substitution_coil/props.yaml false --tool master=<path-to-esbmc>",
+      "status": "wrong"
+    }
+  }
+}

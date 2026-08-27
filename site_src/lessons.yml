@@ -120,7 +120,7 @@ parts:
       - slug: real-code-costs
         number: "4.2"
         title: "What real plant code costs"
-        summary: "Six SWaT benchmarks with no verdict, and the four measured reasons: vendor extensions, four POUs, a trigger behind a clock nothing advances, and a fuse half a million scans deep."
+        summary: "Five SWaT benchmarks that cannot be ported without deleting the bomb, because the attack is written in a vendor exception mechanism. The sixth now has a verdict, once termination stopped being treated as inexpressible."
 
   - title: Bombs from a public dataset
     blurb: >-

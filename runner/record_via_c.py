@@ -140,6 +140,8 @@ def harness(pou, variables, ins, expressions, scans):
              for name in ins]
     body.append(f"    {prefix}_body__(&d);")
     for prop_id, expr in expressions:
+        if expr is None:   # termination: the unwinding assertion carries it
+            continue
         rendered = expr
         for name in sorted({n for _k, _t, n in variables} | {n.upper() for n in ins},
                            key=len, reverse=True):
@@ -149,13 +151,23 @@ def harness(pou, variables, ins, expressions, scans):
     return "\n".join(body)
 
 
+def is_termination(props_path):
+    """True when the file's only claim is that every scan finishes."""
+    props = yaml.safe_load(props_path.read_text(encoding="utf-8"))
+    kinds = {prop.get("kind") for prop in props.get("properties", [])}
+    return kinds == {"termination"}
+
+
 def properties(props_path):
     """Each property as an assertion over the program's variables.
 
     Reachability inverts: the claim is written so that reaching the state fails it,
-    which makes ESBMC's counterexample the witness. Termination is not expressible
-    as an assertion inside a bounded scan harness, so it is left to the scan
-    watchdog on the ladder route.
+    which makes ESBMC's counterexample the witness.
+
+    Termination is not an assertion over variables, so it returns none and relies on
+    ESBMC's unwinding assertions instead: a loop that cannot be unwound within the
+    bound fails the run. That is evidence rather than proof, since a merely deep loop
+    fails the same way, which is why the caller records the bound it used.
     """
     props = yaml.safe_load(props_path.read_text(encoding="utf-8"))
     out, skipped = [], []
@@ -169,11 +181,33 @@ def properties(props_path):
             out.append((prop["id"], f"!({expr})"))
         elif kind == "mutual_exclusion":
             out.append((prop["id"], "!(" + " && ".join(prop["variables"]) + ")"))
+        elif kind == "termination":
+            out.append((prop["id"], None))
         else:
             skipped.append(f'{prop["id"]}:{kind}')
     if not out:
         raise RuntimeError("no property this route can express: " + ", ".join(skipped))
     return out
+
+
+def entry_struct(program, header):
+    """The generated struct for the POU whose inputs the harness drives.
+
+    MatIEC emits function blocks before the program that calls them, so taking the
+    first struct picked `valves_handler` while `inputs_of` read `program0`'s interface,
+    and the harness then assigned variables the struct does not declare.
+    """
+    structs = re.findall(r"\}\s*(\w+_data__);", header)
+    if not structs:
+        raise RuntimeError("no POU instance struct in the generated header")
+    if program.suffix == ".xml":
+        named = re.search(r'<pou name="(\w+)" pouType="program"',
+                          program.read_text(encoding="utf-8"))
+        if named:
+            want = named.group(1).upper() + "_data__"
+            if want in structs:
+                return want
+    return structs[0]
 
 
 def build(program, props_path, workdir, scans):
@@ -188,10 +222,7 @@ def build(program, props_path, workdir, scans):
     if code != 0:
         raise RuntimeError(f"iec2c rejected the program: {out.strip()[-200:]}")
     header = (outdir / "POUS.h").read_text(encoding="utf-8")
-    struct = re.search(r"\}\s*(\w+_data__);", header)
-    if not struct:
-        raise RuntimeError("no POU instance struct in the generated header")
-    struct_name = struct.group(1)
+    struct_name = entry_struct(program, header)
     harness_file = outdir / "harness.c"
     pou = (struct_name, struct_name[: -len("_data__")])
     harness_file.write_text(harness(pou, declared_vars(header), inputs_of(program),
@@ -269,8 +300,11 @@ def toolchain_info():
             "matiec": repo_state(TOOLS / "matiec")}
 
 
-def verify(esbmc, generated, expected, timeout, scans):
+def verify(esbmc, generated, task, timeout, scans):
     """Run ESBMC over the generated C and classify the outcome.
+
+    `task` is (expected, termination): whether the program should verify, and whether
+    the only claim is that every scan finishes.
 
     The harness loop is a fixed count, so the unwinding bound has to clear it or a
     bomb on a long fuse is simply never reached and the run reports SAFE.
@@ -281,7 +315,12 @@ def verify(esbmc, generated, expected, timeout, scans):
     unwinding finds the violation in one.
     """
     harness_file, outdir = generated
-    mode = (["--k-induction"] if expected else ["--unwind", str(scans + 2)])
+    expected, termination = task
+    # A termination task is decided by the unwinding assertions, so it always takes a
+    # plain bound: k-induction would prove the property without ever reporting that a
+    # loop failed to close.
+    mode = (["--unwind", str(scans + 2)] if termination or not expected
+            else ["--k-induction"])
     args = [str(harness_file), "-I", str(TOOLS / "matiec" / "lib" / "C"),
             "-I", str(outdir), *mode, "--timeout", f"{timeout}s"]
     start = time.time()
@@ -319,7 +358,8 @@ def build_record(args, paths, generated):
     runs = {}
     for spec in args.tool:
         label, path = spec.split("=", 1)
-        result = verify(path, (harness_file, outdir), expected, args.timeout, args.scans)
+        result = verify(path, (harness_file, outdir),
+                        (expected, is_termination(props_path)), args.timeout, args.scans)
         result["tool"] = tool_info(path)
         result["command"] = (
             f"runner/record_via_c.py {os.path.relpath(program, ROOT)} "
