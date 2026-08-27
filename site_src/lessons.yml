@@ -166,3 +166,7 @@ parts:
         number: "6.3"
         title: "Four charts and no verdict"
         summary: "Every SFC benchmark fails the ingestion gate, two while reporting SAFE and status correct. Pointing the second route at them broke in three different layers, and the third one has not been cleared."
+      - slug: textual-ladder
+        number: "6.4"
+        title: "The spelling nothing here reads"
+        summary: "Ladder written as text rather than drawn. Fifteen programs, no recorded run on either route, and twelve graphical twins that verify while the files beside them cannot be checked at all."
