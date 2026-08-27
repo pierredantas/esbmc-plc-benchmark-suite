@@ -91,6 +91,19 @@ about valves, which is a bound artifact and not a verdict.
 So the answer changed from "no route reaches these" to "the route reaches them and runs out
 of budget". That is progress worth having, and it is still not a verdict.
 
+Three attempts to make it cheaper all failed, which is worth recording so nobody spends the
+day twice. Assuming the one-hot step invariant, deleting the stored-action bookkeeping that
+an `N` qualifier never uses, and pinning the step and action counts the loops read from the
+instance each left the run timing out at four scans. Verification conditions grow roughly
+linearly with depth, from 322 at two scans to 1984 at eight, while the solving time does
+not, so the cost is in how hard each condition is rather than how many there are.
+
+The depth that matters is fixed by the attack, not by us. Reaching Draining takes `start`,
+then `level_high`, then `reaction_done`, so any honest run has to survive at least four
+scans, and two is the most this encoding affords. Reporting a verdict at two scans would put
+`SAFE` against the bombed chart as well as the clean one, which is the failure this whole
+part is about.
+
 ## What this part is for
 
 A benchmark suite is allowed to have holes. It is not allowed to hide them behind a column
