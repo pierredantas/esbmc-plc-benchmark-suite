@@ -93,6 +93,20 @@ Expected verdicts are established by `expert` proof/audit, `cross-tool-consensus
 `fault-injection` (a mutant of a known-SAFE base with a documented seeded defect and
 witness). ~24 of the 50 tasks arrive with fault-injection pairs.
 
+## Contributing
+
+`main` is protected: the `validate` job has to pass before a commit lands there. It runs
+the schema check, the PLCopen TC6 check, and `runner/build_index.py --check`, so a
+benchmark added without regenerating `docs/INDEX.md` is rejected rather than merged.
+
+Run the same three checks before pushing:
+
+```bash
+python3 runner/validate.py
+python3 runner/schema_check.py      # needs xmllint
+python3 runner/build_index.py       # regenerate the index if you changed benchmarks/
+```
+
 ## License
 Property files, witnesses, documentation, and every program authored for this suite are
 released under **CC-BY-4.0** (see [`LICENSE`](LICENSE)). The schema, validator, runner, and
