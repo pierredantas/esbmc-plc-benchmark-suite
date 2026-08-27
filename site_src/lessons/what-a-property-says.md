@@ -91,7 +91,7 @@ The ingestion gate on every recorded run asks a mechanical question: were the pr
 variables assigned anywhere inside the scan loop? A front end that discards a body leaves
 an empty loop, and an empty loop satisfies every safety property ever written.
 
-**Thirty of the 227 recorded runs on this site fail that gate.** Every FBD and SFC
+**{{stat: gate.fail|Words}} of the {{stat: runs.total}} recorded runs on this site fail that gate.** Every FBD and SFC
 variant, on both builds, because ESBMC consumes an `<LD>` body and nothing else. Several
 timer and counter benchmarks on v8.4, because that build drops function-block bodies
 outright. In each case the verdict is `SAFE` and the verdict is worthless.

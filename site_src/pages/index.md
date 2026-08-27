@@ -9,7 +9,7 @@ throughout is deliberately unflattering in places. That is the job.
 
 ## Start here
 
-**[Lessons](lessons/index.md)** are the way in. Twenty-four of them, in four parts, each
+**[Lessons](lessons/index.md)** are the way in. {{stat: lessons.count|Words}} of them, in {{stat: lessons.parts|words}} parts, each
 built on one program and the runs recorded against it.
 
 | part | what it covers |
@@ -19,7 +19,7 @@ built on one program and the runs recorded against it.
 | [Logic-level bombs](lessons/what-is-an-llb/index.md) | triggers, fuses, denial of control, and recovering the trigger from a counterexample |
 | [Code from the plant](lessons/real-export/index.md) | programs neither of us wrote, and what they cost |
 
-**[Benchmarks](benchmarks/index.md)** is the catalog: 68 tasks across ten industrial
+**[Benchmarks](benchmarks/index.md)** is the catalog: {{stat: benchmarks.tasks}} tasks across {{stat: benchmarks.domains|words}} industrial
 domains and five IEC languages, each with its files, its expected verdict, and the method
 that established it.
 
@@ -45,8 +45,10 @@ next to its verdict: the exact command, the scan body the front end produced, an
 ingestion gate that fails when the property's variables were never assigned inside the
 scan loop.
 
-Of the 170 runs that reach the ladder front end, **30 fail that gate**. Nineteen of the 30
-report `SAFE`, seven report `unknown`, and four report a violation. The verdicts disagree
+Of the {{stat: runs.ladder}} runs that reach the ladder front end, **{{stat: gate.fail}} fail
+that gate**. {{stat: gate.fail.safe|Words}} of the {{stat: gate.fail}} report `SAFE`,
+{{stat: gate.fail.unknown|words}} report `unknown`, and {{stat: gate.fail.violation|words}}
+report a violation. The verdicts disagree
 with each other, which is the point: what they have in common is not the answer they give
 but that none of them is an answer about the program in the file. A violation raised
 inside an empty scan loop is worth no more than a proof found there.

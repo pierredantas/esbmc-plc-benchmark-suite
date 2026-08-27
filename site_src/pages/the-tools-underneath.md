@@ -170,6 +170,6 @@ route reads the same file through Beremiz, compiles it with MatIEC, and returns
 `VIOLATION` with a counterexample. One route could not see the program, and the other
 refuted it.
 
-Of the 227 recorded runs, 170 take the ladder route and 57 take the via-C route, covering
-LD, ST, IL and FBD sources. The procedure and its per-stage results are in
+Of the {{stat: runs.total}} recorded runs, {{stat: runs.ladder}} take the ladder route and
+{{stat: runs.viac}} take the via-C route, covering LD, ST, IL and FBD sources. The procedure and its per-stage results are in
 [docs/INTEROP.md](https://github.com/pierredantas/esbmc-plc-benchmark-suite/blob/main/docs/INTEROP.md).

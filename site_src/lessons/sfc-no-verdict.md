@@ -74,5 +74,5 @@ and both are open work rather than opinion: ESBMC reading `<SFC>` bodies, which 
 a chart through Beremiz.
 
 Until one of them happens, the SFC rows are here to be counted against the tool rather than
-for it. [Lesson 3.6](../what-a-property-says/index.md) collects the thirty recorded runs whose
-verdict meant nothing. Eight of them are on this page.
+for it. [Lesson 3.6](../what-a-property-says/index.md) collects the {{stat: gate.fail|words}}
+recorded runs whose verdict meant nothing. Eight of them are on this page.

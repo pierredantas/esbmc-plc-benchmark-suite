@@ -92,8 +92,9 @@ the evidence: same machine, same property, one added branch, and a verdict that 
 
 ## What the catalog carries
 
-Thirty of the 68 benchmark tasks are tagged `llb`, spanning 63 program variants across ten
-industrial domains. All thirty carry the `security` tag as well.
+{{stat: llb.tasks|Words}} of the {{stat: benchmarks.tasks}} benchmark tasks are tagged
+`llb`, spanning {{stat: llb.programs}} program variants across
+{{stat: benchmarks.domains|words}} industrial domains. All thirty carry the `security` tag as well.
 
 The paper sorts payloads into three classes, and the suite carries all three:
 
