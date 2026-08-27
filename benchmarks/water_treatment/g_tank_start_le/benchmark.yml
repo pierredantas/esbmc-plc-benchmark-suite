@@ -5,8 +5,8 @@ domain: water_treatment
 language: LD-graphical
 source:
   origin: plc-ld-dataset
-  reference: "PLC-LD-dataset (Iacobelli et al.); legitimate/malicious LLB pair, PLCopen XML"
-  license: CC-BY-4.0
+  reference: "PLC-LD-dataset, github.com/UniboSecurityResearch/PLC-LD-dataset (Iacobelli et al., ICPS 2024, doi:10.1109/ICPS59941.2024.10639995); legitimate/malicious LLB pair, PLCopen XML"
+  license: "GPL-3.0"
 properties_file: props.yaml
 validation_status: validated
 variants:

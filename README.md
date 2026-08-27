@@ -78,11 +78,16 @@ Expected verdicts are established by `expert` proof/audit, `cross-tool-consensus
 witness). ~24 of the 50 tasks arrive with fault-injection pairs.
 
 ## License
-Benchmarks, property files, witnesses, and documentation are released under
-**CC-BY-4.0** (see [`LICENSE`](LICENSE)). The schema, validator, runner, and adapters are
-released under the **MIT License** (see [`LICENSE-CODE`](LICENSE-CODE), inherited from ESBMC).
-Per-program licenses are declared in each `benchmark.yml` (`source.license`);
-redistribution-restricted programs use `link-only` with a URL instead of a bundled file.
+Property files, witnesses, documentation, and every program authored for this suite are
+released under **CC-BY-4.0** (see [`LICENSE`](LICENSE)). The schema, validator, runner, and
+adapters are released under the **MIT License** (see [`LICENSE-CODE`](LICENSE-CODE),
+inherited from ESBMC).
+
+Imported programs keep their upstream license, declared per program in `benchmark.yml`
+(`source.license`). The eight `g_tank_*` programs come from the PLC-LD-dataset and are
+**GPL-3.0**, so redistributing them carries that obligation rather than CC-BY-4.0. Check
+`source.license` before reusing a program, and note that redistribution-restricted
+programs use `link-only` with a URL instead of a bundled file.
 
 ## Citation
 Please cite both the paper and the archived artifact.
