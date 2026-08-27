@@ -12,7 +12,7 @@ for the six build blockers and their fixes.
 | finding | upstream |
 |---|---|
 | 1 — only `<LD>` bodies are read, and the front end fails open | [esbmc/esbmc#7354](https://github.com/esbmc/esbmc/issues/7354) |
-| 2 — property tier wider than documented | our own `tools/BUILD_AND_RUN.md` was wrong, now fixed; ESBMC's `docs/safe-ld-property-format.md` documents the tier correctly |
+| 2 — property tier wider than documented | our own `tools/BUILD_AND_RUN.md` was wrong, now fixed; ESBMC's `docs/safe-ld-property-format.md` documents the tier correctly. The probe's P4c row, IEC spelling reported as an undeclared variable, is filed as [esbmc/esbmc#7371](https://github.com/esbmc/esbmc/issues/7371) |
 | 3 — parallel branches as last-branch-wins | fixed on master, nothing to file |
 | 4 — rung evaluation order | [esbmc/esbmc#7352](https://github.com/esbmc/esbmc/issues/7352) |
 
