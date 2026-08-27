@@ -1,7 +1,7 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-26T18:58:19Z",
-  "program": "benchmarks/water_treatment/g_tank_start_le/malicious_mstart_le.ld",
+  "recorded_at": "2026-08-27T11:34:47Z",
+  "program": "benchmarks/water_treatment/g_tank_start_le/malicious_mstart_le.xml",
   "properties_file": "benchmarks/water_treatment/g_tank_start_le/props.yaml",
   "properties": [
     {
@@ -15,7 +15,7 @@
   "runs": {
     "v8.4": {
       "tool": {
-        "path": "/Users/user/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
         "commit": "61172c6f",
@@ -95,15 +95,15 @@
         "not_driven_by_body": [],
         "gate": "pass"
       },
-      "command": "esbmc /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/water_treatment/g_tank_start_le/malicious_mstart_le.ld --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 25s",
+      "command": "cp benchmarks/water_treatment/g_tank_start_le/malicious_mstart_le.xml benchmarks/water_treatment/g_tank_start_le/malicious_mstart_le.ld\nesbmc benchmarks/water_treatment/g_tank_start_le/malicious_mstart_le.ld --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.032,
+      "cpu_time_s": 0.037,
       "counterexample": "State 1  thread 0\n----------------------------------------------------\n  LE_00__IN1 = 12 (00000000 00000000 00000000 00001100)\n\nState 2  thread 0\n----------------------------------------------------\nViolated property:\n  assertion LE_00____wd0 <= 8\n  LE_00____wd0 <= 8"
     },
     "master": {
       "tool": {
-        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
         "commit": "d88a9fa4",
@@ -195,10 +195,10 @@
         "not_driven_by_body": [],
         "gate": "pass"
       },
-      "command": "esbmc /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/water_treatment/g_tank_start_le/malicious_mstart_le.ld --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 25s",
+      "command": "cp benchmarks/water_treatment/g_tank_start_le/malicious_mstart_le.xml benchmarks/water_treatment/g_tank_start_le/malicious_mstart_le.ld\nesbmc benchmarks/water_treatment/g_tank_start_le/malicious_mstart_le.ld --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.033,
+      "cpu_time_s": 0.04,
       "counterexample": "State 1  thread 0\n----------------------------------------------------\n  LE_00__IN1 = 12 (00000000 00000000 00000000 00001100)\n\nState 2  thread 0\n----------------------------------------------------\nViolated property:\n  assertion LE_00____wd0 <= 8\n  LE_00____wd0 <= 8\n\n\n** Results:\n  FAILED       [global.assertion.1]  line 0  assertion LE_00____wd0 <= 8\n  NOT CHECKED  [global.assertion.2]  line 0  unwinding assertion loop 1\n  NOT CHECKED  [global.assertion.3]  line 0  unwinding assertion loop 2\n\n** 1 of 3 properties failed, 2 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
     }
   }

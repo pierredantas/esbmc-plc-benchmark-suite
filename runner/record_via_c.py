@@ -32,6 +32,8 @@ import time
 
 import yaml
 
+from paths import portable
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TOOLS = pathlib.Path(os.environ.get("PLC_TOOLS", pathlib.Path.home() / "plc-tools"))
 DECL = re.compile(r"__DECLARE_(VAR|LOCATED)\((\w+),\s*(\w+)\)")
@@ -238,7 +240,7 @@ def tool_info(esbmc):
             commit = out.strip() or None
             break
         path = os.path.dirname(path)
-    return {"path": esbmc, "raw": raw, "commit": commit,
+    return {"path": portable(esbmc), "raw": raw, "commit": commit,
             "version": match.group(1) if match else None,
             "platform": match.group(2) if match else None}
 
@@ -247,12 +249,12 @@ def repo_state(path):
     """Short commit and working-tree cleanliness for one dependency checkout."""
     real = os.path.realpath(path)
     if not os.path.exists(os.path.join(real, ".git")):
-        return {"path": real, "commit": None, "dirty": None}
+        return {"path": portable(real), "commit": None, "dirty": None}
     code, commit = run(["git", "-C", real, "rev-parse", "--short", "HEAD"])
     if code != 0:
-        return {"path": real, "commit": None, "dirty": None}
+        return {"path": portable(real), "commit": None, "dirty": None}
     _, status = run(["git", "-C", real, "status", "--porcelain"])
-    return {"path": real, "commit": commit.strip(), "dirty": bool(status.strip())}
+    return {"path": portable(real), "commit": commit.strip(), "dirty": bool(status.strip())}
 
 
 def toolchain_info():
@@ -291,6 +293,9 @@ def verify(esbmc, generated, expected, timeout, scans):
     if verdict == "VIOLATION":
         match = re.search(r"^State 1.*?(?=\n+VERIFICATION)", out, re.S | re.M)
         trace = elide(match.group(0).strip()) if match else None
+        if trace:
+            trace = trace.replace(str(outdir), "<generated>")
+            trace = trace.replace(str(TOOLS), "$PLC_TOOLS")
     proof = re.search(r"Solution found by (.+)", out)
     shown = list(args)
     shown[0] = "<generated>/harness.c"

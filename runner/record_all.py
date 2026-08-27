@@ -78,7 +78,8 @@ def record(task, tools, timeout):
     copy = program.with_suffix(".ld")
     shutil.copyfile(program, copy)
     args = [sys.executable, str(ROOT / "runner" / "record.py"), str(copy), str(props),
-            "true" if task["expected"] else "false", "--timeout", str(timeout)]
+            "true" if task["expected"] else "false", "--timeout", str(timeout),
+            "--source", str(program)]
     if is_termination(props):
         args.append("--watchdog-only")
     for tool in tools:

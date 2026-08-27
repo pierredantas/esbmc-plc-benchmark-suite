@@ -4,17 +4,17 @@
   "scans": 8,
   "toolchain": {
     "beremiz": {
-      "path": "/private/tmp/claude-502/-Users-user-Claude-Overleaf-Projects--2-items--ESBMC-Benchmark-Suite--P6-/5e348bf4-11e3-4fee-af86-26b838a68105/scratchpad/berpr",
+      "path": "~/plc-tools/beremiz",
       "commit": "df4370c",
       "dirty": false
     },
     "matiec": {
-      "path": "/private/tmp/claude-502/-Users-user-Claude-Overleaf-Projects--2-items--ESBMC-Benchmark-Suite--P6-/5e348bf4-11e3-4fee-af86-26b838a68105/scratchpad/matiec",
+      "path": "~/plc-tools/matiec",
       "commit": "7949c0b",
       "dirty": false
     }
   },
-  "recorded_at": "2026-08-27T10:53:40Z",
+  "recorded_at": "2026-08-27T11:35:01Z",
   "program": "benchmarks/chemical_batch/fbd_reactor_2oo3/clean.xml",
   "properties_file": "benchmarks/chemical_batch/fbd_reactor_2oo3/props.yaml",
   "properties": [
@@ -38,10 +38,10 @@
       "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 30s",
       "verdict": "SAFE",
       "proof": "the forward condition; all states are reachable (k = 9)",
-      "cpu_time_s": 3.264,
+      "cpu_time_s": 2.907,
       "counterexample": null,
       "tool": {
-        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "commit": "d88a9fa4",
         "version": "8.4.0",

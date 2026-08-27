@@ -23,6 +23,8 @@ import time
 
 import yaml
 
+from paths import ROOT, portable
+
 WATCHDOG = ["--ld-scan-watchdog", "--ld-scan-budget", "8"]
 IDENT = re.compile(r"[A-Za-z_][A-Za-z_0-9]*")
 KEYWORDS = {"true", "false", "TRUE", "FALSE", "AND", "OR", "NOT"}
@@ -55,7 +57,7 @@ def tool_info(esbmc):
     """Version, build commit, and platform of one build."""
     raw = run_esbmc(esbmc, ["--version"]).strip()
     m = re.search(r"ESBMC version (\S+) .*?(\S+ \S+)$", raw)
-    return {"path": esbmc, "raw": raw,
+    return {"path": portable(esbmc), "raw": raw,
             "version": m.group(1) if m else None,
             "commit": build_commit(esbmc),
             "platform": m.group(2) if m else None}
@@ -138,8 +140,38 @@ def resolve_mode(mode, expected):
     return "kinduction" if expected else "bmc"
 
 
-def verify(esbmc, program, props_path, timeout, mode):
-    """Run the verification and classify the outcome."""
+def counterexample(txt):
+    """The violated-property trace, elided, with repository paths made relative.
+
+    ESBMC names the file it read absolutely, which is the machine that recorded the
+    run rather than anything a reader can act on.
+    """
+    match = re.search(r"^State 1.*?(?=\n+VERIFICATION)", txt, re.S | re.M)
+    if not match:
+        return None
+    return elide(match.group(0).strip()).replace(str(ROOT) + os.sep, "")
+
+
+def command_line(esbmc, args, program, source):
+    """The command a reader can replay, including the copy ESBMC's extension forces.
+
+    ESBMC picks its LD front end from the file extension, so a PLCopen `.xml` is
+    copied to `.ld` for the run and removed afterwards. A command that omits the copy
+    names a file the repository does not contain.
+    """
+    shown = " ".join([os.path.basename(esbmc), *(portable(a) for a in args)])
+    if source and source != program:
+        return f"cp {portable(source)} {portable(program)}\n{shown}"
+    return shown
+
+
+def verify(esbmc, paths, props_path, timeout, mode):
+    """Run the verification and classify the outcome.
+
+    `paths` is (program, source): the file ESBMC reads, and the file that lives in the
+    repository. They differ whenever a `.ld` copy was made purely for the extension.
+    """
+    program, source = paths
     flags = ["--k-induction"] if mode == "kinduction" else ["--incremental-bmc", "--unwind", "20"]
     props = ["--ld-props", props_path] if props_path else []
     args = [program, *props, *flags, *WATCHDOG, "--timeout", f"{timeout}s"]
@@ -153,16 +185,10 @@ def verify(esbmc, program, props_path, timeout, mode):
         verdict = "error"
     else:
         verdict = "unknown"
-    trace = None
-    if verdict == "VIOLATION":
-        m = re.search(r"^State 1.*?(?=\n+VERIFICATION)", txt, re.S | re.M)
-        trace = elide(m.group(0).strip()) if m else None
-    proof = None
-    m = re.search(r"Solution found by (.+)", txt)
-    if m:
-        proof = m.group(1).strip()
-    return {"command": " ".join([os.path.basename(esbmc), *args]),
-            "verdict": verdict, "proof": proof,
+    trace = counterexample(txt) if verdict == "VIOLATION" else None
+    proof = re.search(r"Solution found by (.+)", txt)
+    return {"command": command_line(esbmc, args, program, source),
+            "verdict": verdict, "proof": proof.group(1).strip() if proof else None,
             "cpu_time_s": round(time.time() - start, 3), "counterexample": trace}
 
 
@@ -171,7 +197,7 @@ def record_one(label, esbmc, args, props_path, pvars):
     lines, counts = encoding(esbmc, args.program)
     missing, gate = check_gate(counts, pvars)
     expected = args.expected == "true"
-    result = verify(esbmc, args.program, props_path, args.timeout,
+    result = verify(esbmc, (args.program, args.source), props_path, args.timeout,
                     resolve_mode(args.mode, expected))
     expected_v = "SAFE" if expected else "VIOLATION"
     if result["verdict"] in ("error", "unknown"):
@@ -190,6 +216,8 @@ def main():
     ap.add_argument("program")
     ap.add_argument("props")
     ap.add_argument("expected", choices=["true", "false"])
+    ap.add_argument("--source", help="the repository file this run was copied from, when "
+                                     "the copy exists only to give ESBMC a .ld extension")
     ap.add_argument("--tool", action="append", required=True, metavar="LABEL=PATH")
     ap.add_argument("--mode", choices=["auto", "kinduction", "bmc"], default="auto",
                     help="auto picks k-induction for an expected-SAFE task and "
@@ -213,7 +241,7 @@ def main():
     record = {
         "schema_version": "0.3",
         "recorded_at": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "program": os.path.relpath(args.program),
+        "program": os.path.relpath(args.source or args.program),
         "properties_file": os.path.relpath(args.props),
         "properties": props.get("properties", []),
         "property_variables": pvars,

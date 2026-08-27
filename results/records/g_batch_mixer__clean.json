@@ -1,7 +1,7 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-26T18:58:12Z",
-  "program": "benchmarks/chemical_batch/g_batch_mixer/clean.ld",
+  "recorded_at": "2026-08-27T11:34:39Z",
+  "program": "benchmarks/chemical_batch/g_batch_mixer/clean.xml",
   "properties_file": "benchmarks/chemical_batch/g_batch_mixer/props.yaml",
   "properties": [
     {
@@ -19,7 +19,7 @@
   "runs": {
     "v8.4": {
       "tool": {
-        "path": "/Users/user/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
         "commit": "61172c6f",
@@ -49,15 +49,15 @@
         "not_driven_by_body": [],
         "gate": "pass"
       },
-      "command": "esbmc /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/chemical_batch/g_batch_mixer/clean.ld --ld-props /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/chemical_batch/g_batch_mixer/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 25s",
+      "command": "cp benchmarks/chemical_batch/g_batch_mixer/clean.xml benchmarks/chemical_batch/g_batch_mixer/clean.ld\nesbmc benchmarks/chemical_batch/g_batch_mixer/clean.ld --ld-props benchmarks/chemical_batch/g_batch_mixer/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.015,
+      "cpu_time_s": 0.017,
       "counterexample": null
     },
     "master": {
       "tool": {
-        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
         "commit": "d88a9fa4",
@@ -107,10 +107,10 @@
         "not_driven_by_body": [],
         "gate": "pass"
       },
-      "command": "esbmc /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/chemical_batch/g_batch_mixer/clean.ld --ld-props /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/chemical_batch/g_batch_mixer/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 25s",
+      "command": "cp benchmarks/chemical_batch/g_batch_mixer/clean.xml benchmarks/chemical_batch/g_batch_mixer/clean.ld\nesbmc benchmarks/chemical_batch/g_batch_mixer/clean.ld --ld-props benchmarks/chemical_batch/g_batch_mixer/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.016,
+      "cpu_time_s": 0.018,
       "counterexample": null
     }
   }

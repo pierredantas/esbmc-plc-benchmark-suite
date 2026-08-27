@@ -1,19 +1,21 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-27T11:34:51Z",
-  "program": "benchmarks/motor_control/fbd_seal_in/program.xml",
-  "properties_file": "benchmarks/motor_control/fbd_seal_in/props.yaml",
+  "recorded_at": "2026-08-27T11:34:42Z",
+  "program": "benchmarks/manufacturing/fbd_comb_and/program.xml",
+  "properties_file": "benchmarks/manufacturing/fbd_comb_and/props.yaml",
   "properties": [
     {
       "id": "P1",
       "kind": "invariant",
-      "expression": "!Run || !Stop",
-      "justification": "Stop always drops the seal-in coil: Run and Stop never hold together."
+      "expression": "!Y || (A && B && C)",
+      "justification": "Output Y is energised only when all series contacts A, B and C are closed."
     }
   ],
   "property_variables": [
-    "Run",
-    "Stop"
+    "A",
+    "B",
+    "C",
+    "Y"
   ],
   "expected_verdict": "SAFE",
   "runs": {
@@ -29,24 +31,26 @@
       "encoding": {
         "scan_body": [
           "     1: IF !1 THEN GOTO 2",
-          "        ASSIGN Start=NONDET(_Bool);",
-          "        ASSIGN Stop=NONDET(_Bool);",
+          "        ASSIGN A=NONDET(_Bool);",
+          "        ASSIGN B=NONDET(_Bool);",
+          "        ASSIGN C=NONDET(_Bool);",
           "        GOTO 1",
           "     2:"
         ],
         "assignment_counts": {
-          "Start": 1,
-          "Stop": 1
+          "A": 1,
+          "B": 1,
+          "C": 1
         },
         "not_driven_by_body": [
-          "Run"
+          "Y"
         ],
         "gate": "fail"
       },
-      "command": "cp benchmarks/motor_control/fbd_seal_in/program.xml benchmarks/motor_control/fbd_seal_in/program.ld\nesbmc benchmarks/motor_control/fbd_seal_in/program.ld --ld-props benchmarks/motor_control/fbd_seal_in/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "command": "cp benchmarks/manufacturing/fbd_comb_and/program.xml benchmarks/manufacturing/fbd_comb_and/program.ld\nesbmc benchmarks/manufacturing/fbd_comb_and/program.ld --ld-props benchmarks/manufacturing/fbd_comb_and/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.013,
+      "cpu_time_s": 0.014,
       "counterexample": null
     },
     "master": {
@@ -61,21 +65,23 @@
       "encoding": {
         "scan_body": [
           "     1: IF !1 THEN GOTO 2",
-          "        ASSIGN Start=NONDET(_Bool);",
-          "        ASSIGN Stop=NONDET(_Bool);",
+          "        ASSIGN A=NONDET(_Bool);",
+          "        ASSIGN B=NONDET(_Bool);",
+          "        ASSIGN C=NONDET(_Bool);",
           "        GOTO 1",
           "     2:"
         ],
         "assignment_counts": {
-          "Start": 1,
-          "Stop": 1
+          "A": 1,
+          "B": 1,
+          "C": 1
         },
         "not_driven_by_body": [
-          "Run"
+          "Y"
         ],
         "gate": "fail"
       },
-      "command": "cp benchmarks/motor_control/fbd_seal_in/program.xml benchmarks/motor_control/fbd_seal_in/program.ld\nesbmc benchmarks/motor_control/fbd_seal_in/program.ld --ld-props benchmarks/motor_control/fbd_seal_in/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "command": "cp benchmarks/manufacturing/fbd_comb_and/program.xml benchmarks/manufacturing/fbd_comb_and/program.ld\nesbmc benchmarks/manufacturing/fbd_comb_and/program.ld --ld-props benchmarks/manufacturing/fbd_comb_and/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
       "cpu_time_s": 0.014,
