@@ -2,21 +2,13 @@ name: validate
 
 # No verifier runs here. These checks read the catalog and its metadata, so they need
 # neither ESBMC nor a recorded run, and they finish in seconds.
+# No path filter. A required status check has to report on every commit, and a filtered
+# workflow simply never runs on the ones it skips, leaving the branch waiting for a result
+# that will not arrive. The job is half a minute, so running it always is the cheap answer.
 on:
   push:
     branches: [main, portal]
-    paths:
-      - 'benchmarks/**'
-      - 'schema/**'
-      - 'runner/**'
-      - 'docs/INDEX.md'
-      - '.github/workflows/validate.yml'
   pull_request:
-    paths:
-      - 'benchmarks/**'
-      - 'schema/**'
-      - 'runner/**'
-      - 'docs/INDEX.md'
   workflow_dispatch:
 
 jobs:
