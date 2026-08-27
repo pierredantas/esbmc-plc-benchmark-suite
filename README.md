@@ -84,10 +84,11 @@ adapters are released under the **MIT License** (see [`LICENSE-CODE`](LICENSE-CO
 inherited from ESBMC).
 
 Imported programs keep their upstream license, declared per program in `benchmark.yml`
-(`source.license`). The eight `g_tank_*` programs come from the PLC-LD-dataset and are
-**GPL-3.0**, so redistributing them carries that obligation rather than CC-BY-4.0. Check
-`source.license` before reusing a program, and note that redistribution-restricted
-programs use `link-only` with a URL instead of a bundled file.
+(`source.license`). Fourteen are **GPL-3.0**: the eight `g_tank_*` programs from
+PLC-LD-dataset and the six `st_swat_*` programs from PLC_Defuser, both published by
+UniboSecurityResearch. Redistributing those carries the GPL obligation rather than
+CC-BY-4.0. Check `source.license` before reusing a program, and note that
+redistribution-restricted programs use `link-only` with a URL instead of a bundled file.
 
 ## Citation
 Please cite both the paper and the archived artifact.

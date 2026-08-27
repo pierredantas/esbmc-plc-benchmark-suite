@@ -5,8 +5,8 @@ domain: water_treatment
 language: ST
 source:
   origin: swat
-  reference: "SWaT testbed via PLC_Defuser dataset; legitimate/malicious LLB pair"
-  license: CC-BY-4.0
+  reference: "SWaT testbed via PLC_Defuser, github.com/UniboSecurityResearch/PLC_Defuser (Datasets/SWAT); legitimate/malicious LLB pair"
+  license: "GPL-3.0"
 properties_file: props.yaml
 validation_status: candidate
 variants:
