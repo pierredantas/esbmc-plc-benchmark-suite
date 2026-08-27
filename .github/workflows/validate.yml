@@ -1,0 +1,46 @@
+name: validate
+
+# No verifier runs here. These checks read the catalog and its metadata, so they need
+# neither ESBMC nor a recorded run, and they finish in seconds.
+on:
+  push:
+    branches: [main, portal]
+    paths:
+      - 'benchmarks/**'
+      - 'schema/**'
+      - 'runner/**'
+      - 'docs/INDEX.md'
+      - '.github/workflows/validate.yml'
+  pull_request:
+    paths:
+      - 'benchmarks/**'
+      - 'schema/**'
+      - 'runner/**'
+      - 'docs/INDEX.md'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install pyyaml jsonschema
+
+      # schema_check.py shells out to xmllint, which is not on the runner by default
+      - run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      - name: benchmark.yml and props.yaml against the schemas
+        run: python3 runner/validate.py
+
+      - name: programs against the PLCopen TC6 schema
+        run: python3 runner/schema_check.py
+
+      # A benchmark added without regenerating the index leaves the two disagreeing,
+      # which is the drift this job exists to catch.
+      - name: docs/INDEX.md matches benchmarks/
+        run: python3 runner/build_index.py --check
