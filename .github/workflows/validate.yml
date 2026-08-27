@@ -5,9 +5,14 @@ name: validate
 # No path filter. A required status check has to report on every commit, and a filtered
 # workflow simply never runs on the ones it skips, leaving the branch waiting for a result
 # that will not arrive. The job is half a minute, so running it always is the cheap answer.
+# Not on pushes to main. A check run belongs to a commit rather than a branch, so a
+# commit validated on portal still satisfies the required check when main fast-forwards
+# onto it, and triggering on both branches only ran the same SHA twice. Work reaches main
+# through portal or a pull request; a commit pushed straight to main has no check and the
+# branch protection will refuse it, which is the intended answer.
 on:
   push:
-    branches: [main, portal]
+    branches: [portal]
   pull_request:
   workflow_dispatch:
 
