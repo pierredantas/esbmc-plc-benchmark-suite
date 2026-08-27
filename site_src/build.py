@@ -7,7 +7,9 @@ copied from the path the record names, so a page cannot drift from the artifact 
 teaches.
 
 Counts obey the same rule: {{stat: gate.fail}} and friends are tallied from the records
-at build time rather than written into the prose. Figures like these move on every
+at build time rather than written into the prose, and {{predict: <record>}} reads
+an exercise's answer out of the same file the lesson is quizzing the reader
+about. Figures like these move on every
 re-recording, and hand-written ones had twice fallen behind the corpus they described.
 
     python3 site_src/build.py     # site_src/ + benchmarks/ + results/ -> portal/
@@ -303,6 +305,40 @@ def generator_line(rec):
     return [f"Translated by {' and '.join(parts)}.\n"]
 
 
+def render_predict(arg, _ctx):
+    """{{predict: g_conveyor_interlock__bomb}} asks the reader before showing the record.
+
+    The answer is read out of results/records rather than written into the lesson, so an
+    exercise cannot come to disagree with the run it is quizzing the reader about. The
+    prompt after a pipe overrides the default question.
+    """
+    name, _, prompt = arg.partition("|")
+    rec = json.loads((RECORDS / (name.strip() + ".json")).read_text(encoding="utf-8"))
+    runs = rec["runs"]
+    gated = rec.get("route") != "via-c"
+    program = pathlib.Path(rec["program"]).name
+    prompt = prompt.strip() or (
+        f"`{program}` carries the property below. Will the "
+        + ("ladder front end" if gated else "C route")
+        + " report `SAFE` or `VIOLATION`"
+        + (", and does the ingestion gate pass?" if gated else "?"))
+
+    head = "| build | verdict | expected |" + (" ingestion gate |" if gated else "")
+    rule = "|---|---|---|" + ("---|" if gated else "")
+    rows = []
+    for label, run in runs.items():
+        row = f"| {label} | `{run['verdict']}` | `{rec['expected_verdict']}` |"
+        if gated:
+            row += f" {run['encoding']['gate']} |"
+        rows.append(row)
+
+    out = ['!!! question "Predict the verdict"', "", f"    {prompt}", "",
+           '??? success "Answer"', ""]
+    out += ["    " + line for line in [head, rule, *rows]]
+    out.append("")
+    return "\n".join(out)
+
+
 def render_record(arg, _ctx):
     """{{record: interlock_viol}} renders results/records/interlock_viol.json in full."""
     rec = json.loads((RECORDS / (arg.strip() + ".json")).read_text(encoding="utf-8"))
@@ -362,7 +398,8 @@ def render_record(arg, _ctx):
 
 HANDLERS = {"files": render_files, "code": render_code, "show": render_show,
             "record": render_record, "citation": render_citation,
-            "coverage": render_coverage}
+            "coverage": render_coverage,
+            "predict": render_predict}
 
 
 STAT = re.compile(r"\{\{\s*stat\s*:\s*([\w.|]+)\s*\}\}")

@@ -32,6 +32,11 @@ normally through commissioning. Only the outer pair is deaf: `ps1=1, ps2=0, ps3=
 
 ## The correct program, refuted
 
+Before reading on, commit to an answer. The file is the clean one, the vote is implemented
+correctly, and both properties hold of the program as written.
+
+{{predict: fbd_reactor_2oo3__clean | The vote above is correct and satisfies both properties. What does the ladder front end say about it, and what does the gate say?}}
+
 {{record: fbd_reactor_2oo3__clean}}
 
 `VIOLATION`, on both builds, with `status: wrong`.

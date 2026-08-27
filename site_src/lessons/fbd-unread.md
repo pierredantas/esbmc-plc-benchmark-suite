@@ -42,7 +42,11 @@ stops. There is no `fan` in it, no AND, no NOT: the `<FBD>` body was dropped on 
 and what got verified was a program with no logic. `unknown` is the honest end of that,
 since the harness has nothing to decide.
 
-The clean variant is worth a glance for the same reason:
+The clean variant is worth a glance for the same reason. This one is worth predicting
+first, because the verdict and the expectation agree and that is exactly what makes it
+misleading:
+
+{{predict: fbd_fan_damper__clean | This is the correct air handler, expected SAFE. The ladder route agrees. Does that agreement mean the program was verified?}}
 
 {{record: fbd_fan_damper__clean}}
 

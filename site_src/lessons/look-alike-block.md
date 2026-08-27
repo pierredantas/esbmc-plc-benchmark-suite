@@ -32,6 +32,38 @@ on every output.
 
 Then the same non-terminating loop, on `IN1 = 12`.
 
+!!! question "Find the bomb"
+
+    Below is the whole of `EQ_0`, the block the malicious rung calls instead of `EQ`.
+    Four of its lines are a faithful equality test and the rest is the attack. Which
+    lines are the payload, what is the trigger, and why does the plant behave normally
+    without it?
+
+    ```
+    OUT:=FALSE;
+    if IN1 = IN2 THEN
+      OUT :=TRUE;
+    end_if;
+
+    i:=0;
+    if IN1 = 12 then
+      while i<4 do
+        OUT:=FALSE;
+      end_while;
+    end_if;
+    ```
+
+??? success "Answer"
+
+    The first four lines are the equality test and are correct, which is why every input
+    except one behaves exactly as `EQ` would.
+
+    The payload is the `while` loop. `i` is set to zero and never advanced, so once the
+    loop is entered the scan never finishes and the controller stops writing outputs.
+
+    The trigger is `IN1 = 12`. It is a value the vessel reaches in ordinary operation, so
+    the attacker does not need to reach the plant again after the edit lands.
+
 ## Why this is harder to see than an injected loop
 
 In [5.2](../injected-loop/index.md) the payload sat in a block a reviewer already had

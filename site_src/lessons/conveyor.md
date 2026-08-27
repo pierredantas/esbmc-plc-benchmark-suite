@@ -48,6 +48,8 @@ The added path conducts precisely when the emergency stop *is* pressed and a mai
 key is turned. Everywhere else in the input space the two programs behave identically.
 Run the machine normally, for years, and you will never see the difference.
 
+{{predict: g_conveyor_interlock__bomb | You have the rung and the property. Before scrolling, decide what the two builds report and whether the gate passes.}}
+
 {{record: g_conveyor_interlock__bomb}}
 
 ## Read the counterexample
