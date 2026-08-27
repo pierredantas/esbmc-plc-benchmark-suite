@@ -83,9 +83,32 @@ def fence(text, lang="", indent=0):
     return f"{pad}```{lang}\n{body}\n{pad}```"
 
 
+def is_plcopen(path):
+    """True when a .ld holds PLCopen XML rather than the textual ladder DSL.
+
+    Both spellings use the extension, because ESBMC selects its LD front end from it,
+    but only one of them is XML. Labelling by suffix alone told readers that a file of
+    `XIC(Btn)` lines was PLCopen, and highlighted it as XML.
+    """
+    try:
+        with path.open(encoding="utf-8", errors="replace") as handle:
+            return handle.read(256).lstrip().startswith("<?xml")
+    except OSError:
+        return True
+
+
 def kind_of(path):
     """What a reader is about to download."""
+    if path.suffix == ".ld" and not is_plcopen(path):
+        return "ladder program, textual DSL"
     return KIND.get(path.suffix, "file")
+
+
+def lang_of(path):
+    """The highlighter for a file, which the textual DSL does not share with XML."""
+    if path.suffix == ".ld" and not is_plcopen(path):
+        return "text"
+    return LANG.get(path.suffix, "text")
 
 
 def offer(paths, dest_dir, link_prefix="files"):
@@ -197,7 +220,7 @@ def render_code(arg, _ctx):
     """{{code: a/b.ld}}, collapsed so a long file never crowds the prose."""
     parts = [p.strip() for p in arg.split("|")]
     src = ROOT / parts[0]
-    lang = parts[1] if len(parts) > 1 else LANG.get(src.suffix, "")
+    lang = parts[1] if len(parts) > 1 else lang_of(src)
     size = src.stat().st_size / 1024.0
     block = fence(src.read_text(encoding="utf-8"), lang, indent=4)
     return f'??? example "{parts[0]} ({kind_of(src)}, {size:.1f} KB)"\n\n{block}'
@@ -207,7 +230,7 @@ def render_show(arg, _ctx):
     """{{show: a/props.yaml}} for a file short enough to read in place."""
     src = ROOT / arg.strip()
     body = src.read_text(encoding="utf-8").rstrip("\n")
-    return f'```{LANG.get(src.suffix, "")} title="{arg.strip()}"\n{body}\n```'
+    return f'```{lang_of(src)} title="{arg.strip()}"\n{body}\n```'
 
 
 def render_citation(arg, _ctx):
