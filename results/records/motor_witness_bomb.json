@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-27T11:34:50Z",
+  "recorded_at": "2026-08-27T16:34:51Z",
   "program": "benchmarks/motor_control/g_motor_interlock/bomb.xml",
   "properties_file": "benchmarks/motor_control/g_motor_interlock/witness.props.yaml",
   "properties": [
@@ -51,7 +51,7 @@
       "command": "cp benchmarks/motor_control/g_motor_interlock/bomb.xml benchmarks/motor_control/g_motor_interlock/bomb.ld\nesbmc benchmarks/motor_control/g_motor_interlock/bomb.ld --ld-props benchmarks/motor_control/g_motor_interlock/witness.props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.013,
+      "cpu_time_s": 0.011,
       "counterexample": "State 1  thread 0\n----------------------------------------------------\n  fwd = 1\n\nState 2  thread 0\n----------------------------------------------------\n  rev = 1\n\nState 3  thread 0\n----------------------------------------------------\n  maint = 1\n\nState 4  thread 0\n----------------------------------------------------\n  Motor_B = 1\n\nState 5  thread 0\n----------------------------------------------------\n  Motor_A = 1\n\nState 6 file benchmarks/motor_control/g_motor_interlock/bomb.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/motor_control/g_motor_interlock/bomb.ld\n  P2\n  !(Motor_A && Motor_B)"
     },
     "master": {
@@ -114,7 +114,7 @@
       "command": "cp benchmarks/motor_control/g_motor_interlock/bomb.xml benchmarks/motor_control/g_motor_interlock/bomb.ld\nesbmc benchmarks/motor_control/g_motor_interlock/bomb.ld --ld-props benchmarks/motor_control/g_motor_interlock/witness.props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.013,
+      "cpu_time_s": 0.011,
       "counterexample": "State 1  thread 0\n----------------------------------------------------\n  fwd = 1\n\nState 2  thread 0\n----------------------------------------------------\n  rev = 1\n\nState 3  thread 0\n----------------------------------------------------\n  maint = 1\n\nState 4  thread 0\n----------------------------------------------------\n  Motor_B = 1\n\nState 5  thread 0\n----------------------------------------------------\n  Motor_A = 1\n\nState 6 file benchmarks/motor_control/g_motor_interlock/bomb.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/motor_control/g_motor_interlock/bomb.ld\n  P2\n  !(Motor_A && Motor_B)\n\n\n** Results:\nbenchmarks/motor_control/g_motor_interlock/bomb.ld\n  FAILED       [global.assertion.1]  line 0  P2\n\n** 1 of 1 properties failed"
     }
   }

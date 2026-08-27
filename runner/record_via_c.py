@@ -286,8 +286,12 @@ def verify(esbmc, generated, expected, timeout, scans):
             "-I", str(outdir), *mode, "--timeout", f"{timeout}s"]
     start = time.time()
     _, out = run([esbmc, *args])
+    # A timeout prints "ERROR: Timed out", but running out of budget is not the same
+    # thing as a malformed program, and a table that calls it an error says the suite
+    # produced something ESBMC could not read.
     verdict = ("SAFE" if "VERIFICATION SUCCESSFUL" in out else
                "VIOLATION" if "VERIFICATION FAILED" in out else
+               "timeout" if "Timed out" in out else
                "error" if "ERROR" in out else "unknown")
     trace = None
     if verdict == "VIOLATION":

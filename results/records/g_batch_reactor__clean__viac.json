@@ -14,7 +14,7 @@
       "dirty": false
     }
   },
-  "recorded_at": "2026-08-27T11:35:07Z",
+  "recorded_at": "2026-08-27T16:35:07Z",
   "program": "benchmarks/chemical_batch/g_batch_reactor/clean.xml",
   "properties_file": "benchmarks/chemical_batch/g_batch_reactor/props.yaml",
   "properties": [
@@ -32,7 +32,7 @@
       "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 30s",
       "verdict": "SAFE",
       "proof": "the forward condition; all states are reachable (k = 9)",
-      "cpu_time_s": 1.654,
+      "cpu_time_s": 1.563,
       "counterexample": null,
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",

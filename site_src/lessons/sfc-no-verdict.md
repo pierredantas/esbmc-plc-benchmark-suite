@@ -52,15 +52,44 @@ uniform:
 
 Eight runs across two builds, eight gate failures. Two of them say `SAFE`.
 
-## No second opinion either
+## The second route reaches them, and still cannot answer
 
-The C route rescued the FBD programs in the last two lessons. It cannot rescue these.
+The C route rescued the FBD programs in the last two lessons. Pointing it at these charts
+took three attempts, and each failure was a different layer.
 
-Beremiz renders ladder and function block diagrams to Structured Text, and the suite's
-adapter carries LD, ST, IL and FBD sources through to a verdict. SFC is the gap: no
-sequential function chart in this catalog has been carried through, so there are zero via-C
-records for any of them. The route that exists precisely to answer what the ladder front end
-cannot has not been extended to the one language where it is needed most.
+**The files were unreadable.** Beremiz extracts inline text with an XPath for an
+`xhtml:p` element. These four charts wrote their transition conditions as
+`<xhtml xmlns="...">start</xhtml>`, text directly inside the wrapper with no paragraph,
+which satisfies the TC6 schema and is why `schema_check.py` never complained. Beremiz
+raised `IndexError` on the empty XPath result. A file can be valid PLCopen and still be
+unreadable by the reference open-source toolchain, and nothing in the schema will tell
+you.
+
+**MatIEC then emitted C that does not compile.** The elevator chart has a step named
+`Moving` and an output named `moving`. MatIEC uppercases identifiers, so both became
+`MOVING`, and the generated code applied the variable macro to a step struct:
+
+```
+./POUS.c:194:24: error: no member named 'flags' in 'STEP'
+```
+
+`iec2c` exited 0 while writing that file. A compiler that reports success and produces
+uncompilable output is the same failure this suite keeps finding in front ends, one layer
+down. Renaming the step clears it.
+
+**ESBMC cannot decide the result.** With both fixed, all four charts now reach the solver:
+
+{{record: sfc_batch_fill_drain__clean__viac}}
+
+`timeout`. MatIEC compiles an SFC into a state machine whose transition scan is itself a
+loop, so the harness nests that inside its own scan loop. The smallest bound that still
+carries an honest unwinding assertion generates around a thousand verification conditions
+that Z3 does not discharge in eight minutes. Dropping the bound low enough to finish makes
+the run report a violated unwinding assertion in `BATCH_CYCLE_init__` rather than anything
+about valves, which is a bound artifact and not a verdict.
+
+So the answer changed from "no route reaches these" to "the route reaches them and runs out
+of budget". That is progress worth having, and it is still not a verdict.
 
 ## What this part is for
 
@@ -70,8 +99,9 @@ that says `SAFE`.
 Four benchmarks here carry a green verdict and a failing gate, and the honest reading is
 that the suite ships SFC programs it cannot currently verify. Two things would change that,
 and both are open work rather than opinion: ESBMC reading `<SFC>` bodies, which is
-[#7354](https://github.com/esbmc/esbmc/issues/7354), or the via-C adapter learning to carry
-a chart through Beremiz.
+[#7354](https://github.com/esbmc/esbmc/issues/7354), or the generated state machine
+becoming tractable, which probably means a harness that drives the chart's own step
+variable instead of nesting two loops.
 
 Until one of them happens, the SFC rows are here to be counted against the tool rather than
 for it. [Lesson 3.6](../what-a-property-says/index.md) collects the {{stat: gate.fail|words}}

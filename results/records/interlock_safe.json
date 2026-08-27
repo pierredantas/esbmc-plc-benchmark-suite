@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-27T11:34:50Z",
+  "recorded_at": "2026-08-27T16:34:51Z",
   "program": "demo/interlock.ld",
   "properties_file": "demo/props.yaml",
   "properties": [
@@ -51,7 +51,7 @@
       "command": "esbmc demo/interlock.ld --ld-props demo/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.017,
+      "cpu_time_s": 0.014,
       "counterexample": null
     },
     "master": {
@@ -100,7 +100,7 @@
       "command": "esbmc demo/interlock.ld --ld-props demo/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.017,
+      "cpu_time_s": 0.015,
       "counterexample": null
     }
   }

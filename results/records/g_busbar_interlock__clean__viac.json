@@ -14,7 +14,7 @@
       "dirty": false
     }
   },
-  "recorded_at": "2026-08-27T11:35:58Z",
+  "recorded_at": "2026-08-27T16:37:56Z",
   "program": "benchmarks/power_substation/g_busbar_interlock/clean.xml",
   "properties_file": "benchmarks/power_substation/g_busbar_interlock/props.yaml",
   "properties": [
@@ -35,7 +35,7 @@
       "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 30s",
       "verdict": "SAFE",
       "proof": "the forward condition; all states are reachable (k = 9)",
-      "cpu_time_s": 1.424,
+      "cpu_time_s": 1.345,
       "counterexample": null,
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",

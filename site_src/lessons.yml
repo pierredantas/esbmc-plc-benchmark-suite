@@ -165,4 +165,4 @@ parts:
       - slug: sfc-no-verdict
         number: "6.3"
         title: "Four charts and no verdict"
-        summary: "Every SFC benchmark in the catalog fails the ingestion gate, two of them while reporting SAFE and status correct, and the second route has never been extended to reach them."
+        summary: "Every SFC benchmark fails the ingestion gate, two while reporting SAFE and status correct. Pointing the second route at them broke in three different layers, and the third one has not been cleared."

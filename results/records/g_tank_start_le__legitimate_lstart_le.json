@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-27T11:34:47Z",
+  "recorded_at": "2026-08-27T16:34:48Z",
   "program": "benchmarks/water_treatment/g_tank_start_le/legitimate_lstart_le.xml",
   "properties_file": "benchmarks/water_treatment/g_tank_start_le/props.yaml",
   "properties": [
@@ -81,7 +81,7 @@
       "command": "cp benchmarks/water_treatment/g_tank_start_le/legitimate_lstart_le.xml benchmarks/water_treatment/g_tank_start_le/legitimate_lstart_le.ld\nesbmc benchmarks/water_treatment/g_tank_start_le/legitimate_lstart_le.ld --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.017,
+      "cpu_time_s": 0.012,
       "counterexample": null
     },
     "master": {
@@ -164,7 +164,7 @@
       "command": "cp benchmarks/water_treatment/g_tank_start_le/legitimate_lstart_le.xml benchmarks/water_treatment/g_tank_start_le/legitimate_lstart_le.ld\nesbmc benchmarks/water_treatment/g_tank_start_le/legitimate_lstart_le.ld --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.016,
+      "cpu_time_s": 0.013,
       "counterexample": null
     }
   }

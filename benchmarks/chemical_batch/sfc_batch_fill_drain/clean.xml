@@ -3,7 +3,7 @@
      fill_valve is held while Filling, drain_valve while Draining.
      Opening both at once dumps unreacted feed straight to the effluent
      line, which is a loss of containment rather than a lost batch. -->
-<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+<project xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.plcopen.org/xml/tc6_0200">
   <fileHeader companyName="Anonymous" productName="Benchmark Suite" productVersion="1.0" creationDateTime="2026-08-26T00:00:00" />
   <contentHeader name="sfc_batch_fill_drain_clean">
     <coordinateInfo><fbd><scaling x="1" y="1" /></fbd><ld><scaling x="1" y="1" /></ld><sfc><scaling x="1" y="1" /></sfc></coordinateInfo>
@@ -35,7 +35,7 @@
               <position x="200" y="80" />
               <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="1" /></connectionPointIn>
               <connectionPointOut><relPosition x="40" y="10" /></connectionPointOut>
-              <condition><inline name="cond"><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">start</xhtml></ST></inline></condition>
+              <condition><inline name="cond"><ST><xhtml:p><![CDATA[start]]></xhtml:p></ST></inline></condition>
             </transition>
             <step localId="3" name="Filling">
               <position x="200" y="120" />
@@ -52,7 +52,7 @@
               <position x="200" y="180" />
               <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="3" /></connectionPointIn>
               <connectionPointOut><relPosition x="40" y="10" /></connectionPointOut>
-              <condition><inline name="cond"><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">level_high</xhtml></ST></inline></condition>
+              <condition><inline name="cond"><ST><xhtml:p><![CDATA[level_high]]></xhtml:p></ST></inline></condition>
             </transition>
             <step localId="6" name="Reacting">
               <position x="200" y="220" />
@@ -63,7 +63,7 @@
               <position x="200" y="280" />
               <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="6" /></connectionPointIn>
               <connectionPointOut><relPosition x="40" y="10" /></connectionPointOut>
-              <condition><inline name="cond"><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">reaction_done</xhtml></ST></inline></condition>
+              <condition><inline name="cond"><ST><xhtml:p><![CDATA[reaction_done]]></xhtml:p></ST></inline></condition>
             </transition>
             <step localId="8" name="Draining">
               <position x="200" y="320" />
@@ -80,7 +80,7 @@
               <position x="200" y="380" />
               <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="8" /></connectionPointIn>
               <connectionPointOut><relPosition x="40" y="10" /></connectionPointOut>
-              <condition><inline name="cond"><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">level_low</xhtml></ST></inline></condition>
+              <condition><inline name="cond"><ST><xhtml:p><![CDATA[level_low]]></xhtml:p></ST></inline></condition>
             </transition>
             <jumpStep localId="11" targetName="Idle">
               <position x="200" y="420" />

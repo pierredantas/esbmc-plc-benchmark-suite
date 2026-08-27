@@ -14,7 +14,7 @@
       "dirty": false
     }
   },
-  "recorded_at": "2026-08-27T11:36:27Z",
+  "recorded_at": "2026-08-27T16:38:23Z",
   "program": "benchmarks/water_treatment/sensor_forge/bomb.st",
   "properties_file": "benchmarks/water_treatment/sensor_forge/props.yaml",
   "properties": [
@@ -38,7 +38,7 @@
       "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --unwind 10 --timeout 120s",
       "verdict": "SAFE",
       "proof": null,
-      "cpu_time_s": 0.808,
+      "cpu_time_s": 0.789,
       "counterexample": null,
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",

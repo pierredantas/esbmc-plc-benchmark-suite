@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Elevator car door cycle: Idle -> Opening -> Closing -> Moving -> Idle.
-     door_open is held while Opening, moving while Moving.
+<!-- Elevator car door cycle: Idle -> Opening -> Closing -> Travelling -> Idle.
+     door_open is held while Opening, moving while Travelling.
      A car that travels with the door open exposes the open shaft to
      anyone standing in the doorway. -->
-<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+<project xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.plcopen.org/xml/tc6_0200">
   <fileHeader companyName="Anonymous" productName="Benchmark Suite" productVersion="1.0" creationDateTime="2026-08-26T00:00:00" />
   <contentHeader name="sfc_elevator_door_clean">
     <coordinateInfo><fbd><scaling x="1" y="1" /></fbd><ld><scaling x="1" y="1" /></ld><sfc><scaling x="1" y="1" /></sfc></coordinateInfo>
@@ -35,7 +35,7 @@
               <position x="200" y="80" />
               <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="1" /></connectionPointIn>
               <connectionPointOut><relPosition x="40" y="10" /></connectionPointOut>
-              <condition><inline name="cond"><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">call</xhtml></ST></inline></condition>
+              <condition><inline name="cond"><ST><xhtml:p><![CDATA[call]]></xhtml:p></ST></inline></condition>
             </transition>
             <step localId="3" name="Opening">
               <position x="200" y="120" />
@@ -52,7 +52,7 @@
               <position x="200" y="180" />
               <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="3" /></connectionPointIn>
               <connectionPointOut><relPosition x="40" y="10" /></connectionPointOut>
-              <condition><inline name="cond"><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">dwell_done</xhtml></ST></inline></condition>
+              <condition><inline name="cond"><ST><xhtml:p><![CDATA[dwell_done]]></xhtml:p></ST></inline></condition>
             </transition>
             <step localId="6" name="Closing">
               <position x="200" y="220" />
@@ -63,9 +63,9 @@
               <position x="200" y="280" />
               <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="6" /></connectionPointIn>
               <connectionPointOut><relPosition x="40" y="10" /></connectionPointOut>
-              <condition><inline name="cond"><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">door_closed</xhtml></ST></inline></condition>
+              <condition><inline name="cond"><ST><xhtml:p><![CDATA[door_closed]]></xhtml:p></ST></inline></condition>
             </transition>
-            <step localId="8" name="Moving">
+            <step localId="8" name="Travelling">
               <position x="200" y="320" />
               <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="7" /></connectionPointIn>
               <connectionPointOut formalParameter="none"><relPosition x="40" y="40" /></connectionPointOut>
@@ -80,7 +80,7 @@
               <position x="200" y="380" />
               <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="8" /></connectionPointIn>
               <connectionPointOut><relPosition x="40" y="10" /></connectionPointOut>
-              <condition><inline name="cond"><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">at_floor</xhtml></ST></inline></condition>
+              <condition><inline name="cond"><ST><xhtml:p><![CDATA[at_floor]]></xhtml:p></ST></inline></condition>
             </transition>
             <jumpStep localId="11" targetName="Idle">
               <position x="200" y="420" />

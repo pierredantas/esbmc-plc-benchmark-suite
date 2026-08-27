@@ -14,7 +14,7 @@
       "dirty": false
     }
   },
-  "recorded_at": "2026-08-27T11:35:49Z",
+  "recorded_at": "2026-08-27T16:37:47Z",
   "program": "benchmarks/motor_control/motor_interlock/clean.st",
   "properties_file": "benchmarks/motor_control/motor_interlock/props.yaml",
   "properties": [
@@ -41,7 +41,7 @@
       "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 30s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.872,
+      "cpu_time_s": 0.805,
       "counterexample": null,
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",

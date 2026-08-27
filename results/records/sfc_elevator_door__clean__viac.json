@@ -1,0 +1,48 @@
+{
+  "schema_version": "0.4",
+  "route": "via-c",
+  "scans": 8,
+  "toolchain": {
+    "beremiz": {
+      "path": "~/plc-tools/beremiz",
+      "commit": "df4370c",
+      "dirty": false
+    },
+    "matiec": {
+      "path": "~/plc-tools/matiec",
+      "commit": "7949c0b",
+      "dirty": false
+    }
+  },
+  "recorded_at": "2026-08-27T16:36:42Z",
+  "program": "benchmarks/elevator/sfc_elevator_door/clean.xml",
+  "properties_file": "benchmarks/elevator/sfc_elevator_door/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(moving && door_open)",
+      "justification": "The car must never travel with the door open: anyone standing in the doorway is exposed to the running shaft."
+    }
+  ],
+  "expected_verdict": "SAFE",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  CAR_CONTROL_data__ d = {0};\n  CAR_CONTROL_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., CALL, , nondet_bool());\n    __SET_VAR(d., DWELL_DONE, , nondet_bool());\n    __SET_VAR(d., DOOR_CLOSED, , nondet_bool());\n    __SET_VAR(d., AT_FLOOR, , nondet_bool());\n    CAR_CONTROL_body__(&d);\n    __ESBMC_assert(!(__GET_VAR(d.MOVING,) && __GET_VAR(d.DOOR_OPEN,)), \"P1\");\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 30s",
+      "verdict": "timeout",
+      "proof": null,
+      "cpu_time_s": 30.039,
+      "counterexample": null,
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/elevator/sfc_elevator_door/clean.xml benchmarks/elevator/sfc_elevator_door/props.yaml true --tool master=<path-to-esbmc>",
+      "status": "wrong"
+    }
+  }
+}
