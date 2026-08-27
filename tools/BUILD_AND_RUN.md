@@ -27,7 +27,10 @@ docker run --rm --platform linux/amd64 -v "<suite>":"<suite>" -w "<suite>" esbmc
 ## v8.4 interface notes (IMPORTANT)
 - Input must be **PLCopen XML** with a `.ld` extension (content ST/XML; the frontend XML-parses it).
   Standalone textual-LD DSL and raw `.st` are NOT accepted ("failed to figure out type" / "No document element").
-- `--ld-props <file>`: YAML properties. `invariant.expression` must be a **single boolean variable**
-  (not a compound formula). Kinds: invariant, mutual_exclusion, reachability, absence. NO `termination`.
+- `--ld-props <file>`: YAML properties. `invariant.expression` takes a compound formula,
+  written with **C operators**: `!`, `&&`, `||` and parentheses. IEC spelling is not parsed;
+  `NOT (A AND B)` is read as one variable name and fails with
+  `undeclared variable 'NOT (A AND B)'`. Kinds: invariant, mutual_exclusion, reachability,
+  absence. NO `termination`.
 - Non-termination is caught by `--ld-scan-watchdog --ld-scan-budget N` (no property file needed).
 - `runner/run_v84.py` adapts the suite's schema to these rules at run time.
