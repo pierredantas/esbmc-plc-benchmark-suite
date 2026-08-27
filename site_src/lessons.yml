@@ -147,3 +147,22 @@ parts:
         number: "5.5"
         title: "Eight bombs, one property"
         summary: "Thirty-two runs, both builds agreeing on all sixteen programs in 0.74 seconds, and what termination covers that an interlock property cannot."
+
+  - title: The languages ladder cannot reach
+    blurb: >-
+      Function block diagrams and sequential function charts, where the ladder front end
+      reads nothing and says so in three different ways: a missed defect, a false alarm,
+      and a proof about an empty program.
+    lessons:
+      - slug: fbd-unread
+        number: "6.1"
+        title: "A diagram the checker never read"
+        summary: "An air handler permissive with one wire deleted. The ladder route returns unknown with the gate failing, the C route names the violated property, and the clean variant's SAFE is a proof about nothing."
+      - slug: fbd-false-alarm
+        number: "6.2"
+        title: "The false alarm"
+        summary: "A two-out-of-three vote that works, refuted on both builds with a plausible counterexample, and proved correct through C. The same front end condemns the good program and the broken one."
+      - slug: sfc-no-verdict
+        number: "6.3"
+        title: "Four charts and no verdict"
+        summary: "Every SFC benchmark in the catalog fails the ingestion gate, two of them while reporting SAFE and status correct, and the second route has never been extended to reach them."

@@ -45,7 +45,7 @@ next to its verdict: the exact command, the scan body the front end produced, an
 ingestion gate that fails when the property's variables were never assigned inside the
 scan loop.
 
-Of the 166 runs that reach the ladder front end, **26 fail that gate**. Fifteen of the 26
+Of the 170 runs that reach the ladder front end, **30 fail that gate**. Nineteen of the 30
 report `SAFE`, seven report `unknown`, and four report a violation. The verdicts disagree
 with each other, which is the point: what they have in common is not the answer they give
 but that none of them is an answer about the program in the file. A violation raised
