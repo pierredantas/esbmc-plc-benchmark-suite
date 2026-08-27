@@ -21,7 +21,7 @@
   "runs": {
     "v8.4": {
       "tool": {
-        "path": "/Users/user/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
         "platform": "aarch64 macos"
@@ -54,7 +54,7 @@
     },
     "master": {
       "tool": {
-        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
         "platform": "aarch64 macos"
