@@ -1,0 +1,9 @@
+format_version: "0.1"
+# Discriminator, not a safety requirement. A rung whose two branches are a real OR
+# lets B stay open while A closes, which VIOLATES this. A tool that proves it has
+# encoded only one of the two branches.
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!Y || B"
+    justification: "Y implies B. A rung that ORs its branches must refute this."

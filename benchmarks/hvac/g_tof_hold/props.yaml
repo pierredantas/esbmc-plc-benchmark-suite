@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!Pir || Light"
+    justification: "While the PIR sees motion the lamp must be lit; the off-delay only extends that, it never shortens it."

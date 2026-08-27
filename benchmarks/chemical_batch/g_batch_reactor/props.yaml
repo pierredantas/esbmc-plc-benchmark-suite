@@ -2,5 +2,5 @@ format_version: "0.1"
 properties:
   - id: P1
     kind: invariant
-    expression: "!(feed_valve AND overpressure)"
+    expression: "!(feed_valve && overpressure)"
     justification: "The feed valve must never open while the reactor is over-pressure."

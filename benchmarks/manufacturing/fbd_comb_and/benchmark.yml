@@ -1,0 +1,23 @@
+format_version: "0.1"
+id: fbd_comb_and
+name: "comb and (Function Block Diagram rendering)"
+domain: manufacturing
+language: FBD
+source:
+  origin: authored
+  reference: "Function Block Diagram rendering of the three-contact series rung, for cross-language comparison in lesson 1.1"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+syntax_pair_of: ld_comb_and
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+metrics:
+  pous: 1
+  variables: 4
+features: [blocks, fan_in]
+difficulty: easy
+tags: [feature, semantics, syntax-pair, language-coverage]

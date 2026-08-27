@@ -1,0 +1,48 @@
+{
+  "schema_version": "0.4",
+  "route": "via-c",
+  "scans": 8,
+  "toolchain": {
+    "beremiz": {
+      "path": "~/plc-tools/beremiz",
+      "commit": "df4370c",
+      "dirty": false
+    },
+    "matiec": {
+      "path": "~/plc-tools/matiec",
+      "commit": "7949c0b",
+      "dirty": false
+    }
+  },
+  "recorded_at": "2026-08-27T11:35:32Z",
+  "program": "benchmarks/manufacturing/fbd_comb_and/program.xml",
+  "properties_file": "benchmarks/manufacturing/fbd_comb_and/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!Y || (A && B && C)",
+      "justification": "Output Y is energised only when all series contacts A, B and C are closed."
+    }
+  ],
+  "expected_verdict": "SAFE",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  DRIVE_data__ d = {0};\n  DRIVE_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., A, , nondet_bool());\n    __SET_VAR(d., B, , nondet_bool());\n    __SET_VAR(d., C, , nondet_bool());\n    DRIVE_body__(&d);\n    __ESBMC_assert(!__GET_VAR(d.Y,) || (__GET_VAR(d.A,) && __GET_VAR(d.B,) && __GET_VAR(d.C,)), \"P1\");\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 30s",
+      "verdict": "SAFE",
+      "proof": "the forward condition; all states are reachable (k = 9)",
+      "cpu_time_s": 1.386,
+      "counterexample": null,
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/manufacturing/fbd_comb_and/program.xml benchmarks/manufacturing/fbd_comb_and/props.yaml true --tool master=<path-to-esbmc>",
+      "status": "correct"
+    }
+  }
+}

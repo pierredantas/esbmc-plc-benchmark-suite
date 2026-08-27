@@ -1,0 +1,97 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-08-27T11:34:39Z",
+  "program": "benchmarks/chemical_batch/fbd_reactor_2oo3/clean.xml",
+  "properties_file": "benchmarks/chemical_batch/fbd_reactor_2oo3/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!((ps1 && ps2) || (ps2 && ps3) || (ps1 && ps3)) || trip",
+      "justification": "Any two pressure switches agreeing high must trip the reactor, or the vessel stays pressurised behind a closed relief path."
+    },
+    {
+      "id": "P2",
+      "kind": "invariant",
+      "expression": "!trip || ((ps1 && ps2) || (ps2 && ps3) || (ps1 && ps3))",
+      "justification": "A single stuck-high switch must not trip: spurious trips on a batch plant cost a charge and train operators to bypass the vote."
+    }
+  ],
+  "property_variables": [
+    "ps1",
+    "ps2",
+    "ps3",
+    "trip"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "61172c6f",
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN ps1=NONDET(_Bool);",
+          "        ASSIGN ps2=NONDET(_Bool);",
+          "        ASSIGN ps3=NONDET(_Bool);",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "ps1": 1,
+          "ps2": 1,
+          "ps3": 1
+        },
+        "not_driven_by_body": [
+          "trip"
+        ],
+        "gate": "fail"
+      },
+      "command": "cp benchmarks/chemical_batch/fbd_reactor_2oo3/clean.xml benchmarks/chemical_batch/fbd_reactor_2oo3/clean.ld\nesbmc benchmarks/chemical_batch/fbd_reactor_2oo3/clean.ld --ld-props benchmarks/chemical_batch/fbd_reactor_2oo3/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.018,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  ps1 = 0\n\nState 2  thread 0\n----------------------------------------------------\n  ps2 = 1\n\nState 3  thread 0\n----------------------------------------------------\n  ps3 = 1\n\nState 4 file benchmarks/chemical_batch/fbd_reactor_2oo3/clean.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/chemical_batch/fbd_reactor_2oo3/clean.ld\n  P1\n  !(ps1 && ps2 || ps2 && ps3 || ps1 && ps3) || trip"
+    },
+    "master": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "d88a9fa4",
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN ps1=NONDET(_Bool);",
+          "        ASSIGN ps2=NONDET(_Bool);",
+          "        ASSIGN ps3=NONDET(_Bool);",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "ps1": 1,
+          "ps2": 1,
+          "ps3": 1
+        },
+        "not_driven_by_body": [
+          "trip"
+        ],
+        "gate": "fail"
+      },
+      "command": "cp benchmarks/chemical_batch/fbd_reactor_2oo3/clean.xml benchmarks/chemical_batch/fbd_reactor_2oo3/clean.ld\nesbmc benchmarks/chemical_batch/fbd_reactor_2oo3/clean.ld --ld-props benchmarks/chemical_batch/fbd_reactor_2oo3/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.012,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  ps1 = 0\n\nState 2  thread 0\n----------------------------------------------------\n  ps2 = 1\n\nState 3  thread 0\n----------------------------------------------------\n  ps3 = 1\n\nState 4 file benchmarks/chemical_batch/fbd_reactor_2oo3/clean.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/chemical_batch/fbd_reactor_2oo3/clean.ld\n  P1\n  !(ps1 && ps2 || ps2 && ps3 || ps1 && ps3) || trip\n\n\n** Results:\nbenchmarks/chemical_batch/fbd_reactor_2oo3/clean.ld\n  FAILED       [global.assertion.1]  line 0  P1\n  PASSED       [global.assertion.2]  line 0  P2\n\n** 1 of 2 properties failed, 1 passed"
+    }
+  }
+}

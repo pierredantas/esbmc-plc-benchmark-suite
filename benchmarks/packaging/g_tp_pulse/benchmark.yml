@@ -1,0 +1,24 @@
+format_version: "0.1"
+id: g_tp_pulse
+name: "tp pulse (graphical LD twin)"
+domain: packaging
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Graphical twin of ld_tp_pulse. Expected VIOLATION: a pulse timer holds its output for the full width after the trigger drops, so Out does not imply Trig"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+syntax_pair_of: ld_tp_pulse
+variants:
+  - file: program.xml
+    expected_verdict: false
+    ground_truth:
+      method: expert
+metrics:
+  rungs: 2
+  pous: 1
+  variables: 4
+features: [contacts, coils, timer_tp]
+difficulty: medium
+tags: [feature, semantics, syntax-pair, timer]

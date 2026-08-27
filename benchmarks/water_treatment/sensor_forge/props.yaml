@@ -2,9 +2,9 @@ format_version: "0.1"
 properties:
   - id: P1
     kind: invariant
-    expression: "reported_open = valve_open"
+    expression: "reported_open == valve_open"
     justification: "HMI-reported valve state must always match the real actuator command (anti-spoofing integrity)."
   - id: P2
     kind: reachability
-    expression: "reported_open AND NOT valve_open"
+    expression: "reported_open && !valve_open"
     justification: "Witness for the VIOLATION variant: 'reports open while physically closed' recovers the stealth bomb's arming."

@@ -2,17 +2,7 @@
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
   <fileHeader companyName="Beckhoff Automation GmbH" productName="TwinCAT PLC Control" productVersion="3.5.10.30" creationDateTime="2019-09-26T16:12:41.2429215" />
   <contentHeader name="LD_EVOLUTION_1" modificationDateTime="2019-09-26T16:12:41.2429215">
-    <coordinateInfo>
-      <fbd>
-        <scaling x="1" y="1" />
-      </fbd>
-      <ld>
-        <scaling x="1" y="1" />
-      </ld>
-      <sfc>
-        <scaling x="1" y="1" />
-      </sfc>
-    </coordinateInfo>
+    <coordinateInfo><fbd><scaling x="1" y="1" /></fbd><ld><scaling x="1" y="1" /></ld><sfc><scaling x="1" y="1" /></sfc></coordinateInfo>
     <addData>
       <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
         <ProjectInformation />

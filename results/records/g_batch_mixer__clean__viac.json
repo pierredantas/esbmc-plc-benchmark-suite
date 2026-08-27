@@ -1,0 +1,48 @@
+{
+  "schema_version": "0.4",
+  "route": "via-c",
+  "scans": 8,
+  "toolchain": {
+    "beremiz": {
+      "path": "~/plc-tools/beremiz",
+      "commit": "df4370c",
+      "dirty": false
+    },
+    "matiec": {
+      "path": "~/plc-tools/matiec",
+      "commit": "7949c0b",
+      "dirty": false
+    }
+  },
+  "recorded_at": "2026-08-27T11:35:04Z",
+  "program": "benchmarks/chemical_batch/g_batch_mixer/clean.xml",
+  "properties_file": "benchmarks/chemical_batch/g_batch_mixer/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(mixer && lid_open)",
+      "justification": "The mixer must never run while the lid is open."
+    }
+  ],
+  "expected_verdict": "SAFE",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  G_BATCH_MIXER_CLEAN_data__ d = {0};\n  G_BATCH_MIXER_CLEAN_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., MIX_CMD, , nondet_bool());\n    __SET_VAR(d., LID_OPEN, , nondet_bool());\n    __SET_VAR(d., ENABLE, , nondet_bool());\n    __SET_VAR(d., MAINT, , nondet_bool());\n    G_BATCH_MIXER_CLEAN_body__(&d);\n    __ESBMC_assert(!(__GET_VAR(d.MIXER,) && __GET_VAR(d.LID_OPEN,)), \"P1\");\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 30s",
+      "verdict": "SAFE",
+      "proof": "the forward condition; all states are reachable (k = 9)",
+      "cpu_time_s": 1.806,
+      "counterexample": null,
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/chemical_batch/g_batch_mixer/clean.xml benchmarks/chemical_batch/g_batch_mixer/props.yaml true --tool master=<path-to-esbmc>",
+      "status": "correct"
+    }
+  }
+}

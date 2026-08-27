@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Motor start/stop with seal-in (latching) and an emergency stop.
-     Start ---| |---+---|/|--- ( Run )     Run := (Start OR Run) AND NOT EStop
-                    |   EStop
-     Run   ---| |---+
-     The Run contact feeds the coil's own output back in: that is the seal-in.
-     EStop sits AFTER the OR junction, so it breaks both branches.       -->
+     Run := (Start OR Run) AND NOT EStop
+
+     Two parallel branches feed one junction: a Start contact and a Run
+     contact. The Run contact carries the coil's own output back in, which
+     is the seal-in. A normally closed EStop contact sits after the junction,
+     so it breaks both branches at once.
+-->
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
   <fileHeader companyName="Demo" productName="Demo" productVersion="1" creationDateTime="2026-08-26T00:00:00" />
-  <contentHeader name="sealin"><coordinateInfo><ld><scaling x="1" y="1" /></ld></coordinateInfo></contentHeader>
+  <contentHeader name="sealin"><coordinateInfo><fbd><scaling x="1" y="1" /></fbd><ld><scaling x="1" y="1" /></ld><sfc><scaling x="1" y="1" /></sfc></coordinateInfo></contentHeader>
   <types>
     <dataTypes />
     <pous>
@@ -61,6 +63,6 @@
     </pous>
   </types>
   <instances><configurations><configuration name="Config0"><resource name="Res0">
-    <task name="tcyclic" interval="PT0.01S" priority="0"><pouInstance name="inst0" typeName="drive" /></task>
+    <task name="tcyclic" interval="T#10ms" priority="0"><pouInstance name="inst0" typeName="drive" /></task>
   </resource></configuration></configurations></instances>
 </project>

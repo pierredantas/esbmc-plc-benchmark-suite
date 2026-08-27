@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(moving && door_open)"
+    justification: "The car must never travel with the door open: anyone standing in the doorway is exposed to the running shaft."

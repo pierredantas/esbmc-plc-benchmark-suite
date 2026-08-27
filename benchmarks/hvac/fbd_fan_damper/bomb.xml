@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Supply air fan with a motorised isolation damper and a duct smoke detector.
+     fan := fan_cmd AND damper_open AND NOT smoke
+     Starting the fan against a shut damper pulls the duct into vacuum;
+     running it during a smoke alarm distributes smoke through the building.
+     BOMB: the damper_open wire into the AND was deleted. -->
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="Anonymous" productName="Benchmark Suite" productVersion="1.0" creationDateTime="2026-08-26T00:00:00" />
+  <contentHeader name="fbd_fan_damper_bomb">
+    <coordinateInfo><fbd><scaling x="1" y="1" /></fbd><ld><scaling x="1" y="1" /></ld><sfc><scaling x="1" y="1" /></sfc></coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="air_handler" pouType="program">
+        <interface>
+          <inputVars>
+            <variable name="fan_cmd"><type><BOOL /></type></variable>
+            <variable name="damper_open"><type><BOOL /></type></variable>
+            <variable name="smoke"><type><BOOL /></type></variable>
+          </inputVars>
+          <outputVars>
+            <variable name="fan"><type><BOOL /></type></variable>
+          </outputVars>
+        </interface>
+        <body>
+          <FBD>
+            <inVariable localId="1" height="20" width="80">
+              <position x="20" y="20" />
+              <connectionPointOut><relPosition x="80" y="10" /></connectionPointOut>
+              <expression>fan_cmd</expression>
+            </inVariable>
+            <inVariable localId="3" height="20" width="80">
+              <position x="20" y="100" />
+              <connectionPointOut><relPosition x="80" y="10" /></connectionPointOut>
+              <expression>smoke</expression>
+            </inVariable>
+            <block localId="4" width="60" height="40" typeName="NOT">
+              <position x="140" y="100" />
+              <inputVariables>
+                <variable formalParameter="IN">
+                  <connectionPointIn><relPosition x="0" y="20" /><connection refLocalId="3" ><position x="0" y="0" /><position x="0" y="0" /></connection></connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables />
+              <outputVariables>
+                <variable formalParameter="OUT">
+                  <connectionPointOut><relPosition x="60" y="20" /></connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <block localId="5" width="60" height="60" typeName="AND">
+              <position x="240" y="20" />
+              <inputVariables>
+                <variable formalParameter="IN1">
+                  <connectionPointIn><relPosition x="0" y="20" /><connection refLocalId="1" ><position x="0" y="0" /><position x="0" y="0" /></connection></connectionPointIn>
+                </variable>
+                <variable formalParameter="IN2">
+                  <connectionPointIn><relPosition x="0" y="40" /><connection refLocalId="4" formalParameter="OUT" ><position x="0" y="0" /><position x="0" y="0" /></connection></connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables />
+              <outputVariables>
+                <variable formalParameter="OUT">
+                  <connectionPointOut><relPosition x="60" y="20" /></connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <outVariable localId="6" height="20" width="80">
+              <position x="380" y="40" />
+              <connectionPointIn><relPosition x="0" y="10" /><connection refLocalId="5" formalParameter="OUT" ><position x="0" y="0" /><position x="0" y="0" /></connection></connectionPointIn>
+              <expression>fan</expression>
+            </outVariable>
+          </FBD>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations>
+      <configuration name="Config0">
+        <resource name="Res0">
+          <task name="tcyclic" interval="T#10ms" priority="0">
+            <pouInstance name="inst0" typeName="air_handler" />
+          </task>
+        </resource>
+      </configuration>
+    </configurations>
+  </instances>
+</project>

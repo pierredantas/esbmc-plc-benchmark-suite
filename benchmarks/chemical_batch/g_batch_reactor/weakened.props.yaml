@@ -1,0 +1,10 @@
+format_version: "0.1"
+# A property weakened by accident. "The feed valve is never open under pressure
+# UNLESS the vent is open" sounds like a reasonable allowance for a controlled
+# blowdown, and it excuses the bomb completely: the vent rung is untouched, so the
+# escape clause is true in exactly the scans the attack needs.
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(feed_valve && overpressure) || vent"
+    justification: "Weakened form, kept to show what it costs: the feed valve may be open under pressure provided the vent is open."

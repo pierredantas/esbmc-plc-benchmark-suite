@@ -1,0 +1,31 @@
+format_version: "0.1"
+id: sfc_batch_fill_drain
+name: "Batch fill and drain cycle (SFC)"
+domain: chemical_batch
+language: SFC
+source:
+  origin: authored
+  reference: "Four-step batch cycle, authored for SFC language coverage"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+  - file: bomb.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.xml
+      seeded_defect: "The Draining action block gained a second reference to fill_valve, the classic wrong-paste into a copied action block."
+      witness: "start=1, then level_high=1, then reaction_done=1 reaches Draining with fill_valve and drain_valve both held."
+metrics:
+  pous: 1
+  steps: 4
+  variables: 6
+features: [steps, transitions, action_blocks]
+difficulty: easy
+tags: [safety, sequence, language-coverage]

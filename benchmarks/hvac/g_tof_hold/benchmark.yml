@@ -1,0 +1,24 @@
+format_version: "0.1"
+id: g_tof_hold
+name: "tof hold (graphical LD twin)"
+domain: hvac
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Graphical twin of ld_tof_hold. The textual twin's property, Light implies Pir or Button, is false of an off-delay and is kept as implies_input.props.yaml; props.yaml carries the requirement that does hold"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+syntax_pair_of: ld_tof_hold
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+metrics:
+  rungs: 3
+  pous: 1
+  variables: 5
+features: [contacts, coils, timer_tof, parallel_branch]
+difficulty: medium
+tags: [feature, semantics, syntax-pair, timer]

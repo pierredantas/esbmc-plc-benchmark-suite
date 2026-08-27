@@ -1,0 +1,31 @@
+format_version: "0.1"
+id: fbd_fan_damper
+name: "Fan and damper permissive (FBD)"
+domain: hvac
+language: FBD
+source:
+  origin: authored
+  reference: "Supply air handler permissive, authored for FBD language coverage"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+  - file: bomb.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.xml
+      seeded_defect: "The damper_open wire into the AND block was deleted, leaving fan := fan_cmd AND NOT smoke."
+      witness: "fan_cmd=1, damper_open=0, smoke=0 drives fan=1 with the damper shut."
+metrics:
+  pous: 1
+  blocks: 2
+  variables: 4
+features: [blocks, permissive, negated_input]
+difficulty: easy
+tags: [safety, interlock, language-coverage]

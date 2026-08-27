@@ -1,0 +1,168 @@
+# Teaching order lives here, never in a slug. A lesson can be renumbered or moved to
+# another part without changing its URL, which is what published links depend on.
+parts:
+  - title: Foundations
+    blurb: >-
+      Small synthetic ladders, one idea each. Every program here is a few elements
+      long, so the encoding ESBMC produces is short enough to read line by line.
+    lessons:
+      - slug: one-rung
+        number: "1.1"
+        title: "One rung: contacts and a coil"
+        summary: "The smallest ladder that verifies. Three contacts in series, one coil, one property, one proof."
+      - slug: series-parallel
+        number: "1.2"
+        title: "Series, parallel, and the wired OR"
+        summary: "Two branches into one coil. Both builds prove the shipped property, and only one of them encoded the second branch at all."
+      - slug: interlock
+        number: "1.3"
+        title: "A reversing starter, proved and broken"
+        summary: "One motor, two contactors, one property. A k-induction proof, then the same ladder with a contact deleted and the counterexample that follows."
+      - slug: seal-in
+        number: "1.4"
+        title: "A seal-in latch, where the verdict hides the encoding"
+        summary: "Two ESBMC builds agree the circuit is safe. Only one of them encoded a latch, and it takes a second property to find out which."
+      - slug: edges-and-scan-order
+        number: "1.5"
+        title: "Edges, and the order rungs run in"
+        summary: "Three rungs whose order is the design. Both builds run them in an order the file never specified, and the standard says the benchmark is right."
+      - slug: timers
+        number: "1.6"
+        title: "Timers, and the tick they count"
+        summary: "A preset is measured in scans. One build models the timer, the other drops the block, and the benchmark's own property turns out to be false of an off-delay."
+      - slug: counters
+        number: "1.7"
+        title: "Counters, and a pin that is not read"
+        summary: "CTU counts and resets. CTD wires its IEC load pin, the front end reads only R, and the modelled counter never reloads."
+      - slug: memory-and-time
+        number: "1.8"
+        title: "Memory and time together"
+        summary: "A timer sets a latched alarm and an acknowledgement clears it. Reset dominance is correct here, and the reason it is correct is an accident of emission order."
+
+  - title: Machines and their hazards
+    blurb: >-
+      Real plants, one industrial domain at a time. Each lesson names the machine, the
+      thing that must never happen to it, and what a verifier does with a program in
+      which someone hid a way to make it happen.
+    lessons:
+      - slug: conveyor
+        number: "2.1"
+        title: "A conveyor that ignores its emergency stop"
+        summary: "One added branch, conducting only when the E-stop is pressed and a maintenance key is turned, and the counterexample that hands you the combination."
+      - slug: batch-reactor
+        number: "2.2"
+        title: "A reactor that keeps feeding under pressure"
+        summary: "The same bypass in a chemical plant, where the relief vent still works and makes the attack look like a functioning protection system. Then a reasonable-sounding weakening of the property that lets the bomb through."
+      - slug: traffic-light
+        number: "2.3"
+        title: "A junction that shows two greens"
+        summary: "The bypass a third time, and a careful account of what conflict-freedom leaves open: no intergreen, no minimum green, and a stuck detector that starves one arm forever."
+      - slug: elevator-door
+        number: "2.4"
+        title: "A car that moves with its door open"
+        summary: "The same machine as a rung and as a chart. One bomb adds a branch, the other changes a single letter, and only one of them is caught."
+      - slug: hvac-fan
+        number: "2.5"
+        title: "An air handler whose name promises a timer"
+        summary: "Heating and cooling interlocked correctly, a bypass that defeats it, and a benchmark called fan_delay whose program contains no block at all."
+      - slug: substation
+        number: "2.6"
+        title: "A substation, three interlocks and one key"
+        summary: "Busbar, breaker and transformer defeated by the same input, and the protection layer the attacker deliberately leaves working."
+      - slug: lighting-override
+        number: "2.7"
+        title: "The override you cannot tell from the attack"
+        summary: "The same branch is a legitimate maintenance override or a bomb, and nothing in the program decides which. The property does."
+      - slug: machine-family
+        number: "2.8"
+        title: "The family, and what it does not cover"
+        summary: "All twelve machines in one table, what is identical and what changes across them, and the trigger shapes this part never showed."
+
+  - title: Logic-level bombs
+    blurb: >-
+      The same programs, organized by the shape of the attack rather than by the plant
+      it was fitted to, and the trigger shapes that defeat testing by construction.
+    lessons:
+      - slug: what-is-an-llb
+        number: "3.1"
+        title: "What a logic-level bomb is"
+        summary: "Trigger, payload and dormancy, the three trigger shapes the catalog carries, and why sampling cannot find any of them."
+      - slug: fuses
+        number: "3.2"
+        title: "Bombs that wait"
+        summary: "A fifty-scan fuse, SAFE at eight scans and VIOLATION at sixty-four, and why the first answer is a correct proof about the wrong program."
+      - slug: scale
+        number: "3.3"
+        title: "When the fuse outruns the checker"
+        summary: "Five identical bombs at fuse widths from 255 to 32767 scans, all found, at 0.9 seconds and 406 seconds respectively, and why unwinding further is a race the defender loses."
+      - slug: non-termination
+        number: "3.4"
+        title: "The payload that produces no output"
+        summary: "A loop whose counter is never advanced, entered at one sensor value, and the scan watchdog that catches it. Plus the flag combination that reports the hang as proved."
+      - slug: trigger-synthesis
+        number: "3.5"
+        title: "The counterexample as the recovered knock"
+        summary: "A reachability property inverted into an assertion, unreachable on the clean program and recovering fwd, rev and maint on the bombed one, which is exactly what was planted."
+      - slug: what-a-property-says
+        number: "3.6"
+        title: "What a property has to say"
+        summary: "Eight things the failures on this site have in common, from naming a consequence to carrying the bound, and the twenty-six recorded runs whose verdict meant nothing."
+
+  - title: Code from the plant
+    blurb: >-
+      Programs neither of us wrote: what a real engineering tool emits, and what it
+      costs to verify code that arrived from somewhere else.
+    lessons:
+      - slug: real-export
+        number: "4.1"
+        title: "The one file nobody here wrote"
+        summary: "A 2019 TwinCAT export: the only program of fifty-five that passed the PLCopen schema, and the one where nothing is where the standard says it should be."
+      - slug: real-code-costs
+        number: "4.2"
+        title: "What real plant code costs"
+        summary: "Six SWaT benchmarks with no verdict, and the four measured reasons: vendor extensions, four POUs, a trigger behind a clock nothing advances, and a fuse half a million scans deep."
+
+  - title: Bombs from a public dataset
+    blurb: >-
+      Eight legitimate and malicious pairs of one water tank controller, published by
+      other people with their own labels, and a single property that refutes all eight.
+    lessons:
+      - slug: tank-dataset
+        number: "5.1"
+        title: "A tank, and eight ways to stop it"
+        summary: "The plant, the one property that covers every attack in this part, and why a program that never finishes a scan is worse than one that computes the wrong answer."
+      - slug: injected-loop
+        number: "5.2"
+        title: "The loop that never ends"
+        summary: "Ten lines appended to a working function block, a counter assigned on every pass that never advances, and a trigger whose constant is not the sensor value that fires it."
+      - slug: look-alike-block
+        number: "5.3"
+        title: "A block that is not the block it names"
+        summary: "EQ becomes EQ_0, the replacement reimplements equality correctly, and the payload sits below the part that answers the question a reviewer came with."
+      - slug: inlined-guard
+        number: "5.4"
+        title: "The refactor that carried a payload"
+        summary: "A POU deleted and its logic inlined, which is a large diff with a plausible story attached, and the one attack that names the raw input in its guard."
+      - slug: tank-family
+        number: "5.5"
+        title: "Eight bombs, one property"
+        summary: "Thirty-two runs, both builds agreeing on all sixteen programs in 0.74 seconds, and what termination covers that an interlock property cannot."
+
+  - title: The languages ladder cannot reach
+    blurb: >-
+      Function block diagrams and sequential function charts, where the ladder front end
+      reads nothing and says so in three different ways: a missed defect, a false alarm,
+      and a proof about an empty program.
+    lessons:
+      - slug: fbd-unread
+        number: "6.1"
+        title: "A diagram the checker never read"
+        summary: "An air handler permissive with one wire deleted. The ladder route returns unknown with the gate failing, the C route names the violated property, and the clean variant's SAFE is a proof about nothing."
+      - slug: fbd-false-alarm
+        number: "6.2"
+        title: "The false alarm"
+        summary: "A two-out-of-three vote that works, refuted on both builds with a plausible counterexample, and proved correct through C. The same front end condemns the good program and the broken one."
+      - slug: sfc-no-verdict
+        number: "6.3"
+        title: "Four charts and no verdict"
+        summary: "Every SFC benchmark in the catalog fails the ingestion gate, two of them while reporting SAFE and status correct, and the second route has never been extended to reach them."

@@ -1,0 +1,54 @@
+{
+  "schema_version": "0.4",
+  "route": "via-c",
+  "scans": 8,
+  "toolchain": {
+    "beremiz": {
+      "path": "~/plc-tools/beremiz",
+      "commit": "df4370c",
+      "dirty": false
+    },
+    "matiec": {
+      "path": "~/plc-tools/matiec",
+      "commit": "7949c0b",
+      "dirty": false
+    }
+  },
+  "recorded_at": "2026-08-27T11:35:01Z",
+  "program": "benchmarks/chemical_batch/fbd_reactor_2oo3/clean.xml",
+  "properties_file": "benchmarks/chemical_batch/fbd_reactor_2oo3/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!((ps1 && ps2) || (ps2 && ps3) || (ps1 && ps3)) || trip",
+      "justification": "Any two pressure switches agreeing high must trip the reactor, or the vessel stays pressurised behind a closed relief path."
+    },
+    {
+      "id": "P2",
+      "kind": "invariant",
+      "expression": "!trip || ((ps1 && ps2) || (ps2 && ps3) || (ps1 && ps3))",
+      "justification": "A single stuck-high switch must not trip: spurious trips on a batch plant cost a charge and train operators to bypass the vote."
+    }
+  ],
+  "expected_verdict": "SAFE",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  TRIP_LOGIC_data__ d = {0};\n  TRIP_LOGIC_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., PS1, , nondet_bool());\n    __SET_VAR(d., PS2, , nondet_bool());\n    __SET_VAR(d., PS3, , nondet_bool());\n    TRIP_LOGIC_body__(&d);\n    __ESBMC_assert(!((__GET_VAR(d.PS1,) && __GET_VAR(d.PS2,)) || (__GET_VAR(d.PS2,) && __GET_VAR(d.PS3,)) || (__GET_VAR(d.PS1,) && __GET_VAR(d.PS3,))) || __GET_VAR(d.TRIP,), \"P1\");\n    __ESBMC_assert(!__GET_VAR(d.TRIP,) || ((__GET_VAR(d.PS1,) && __GET_VAR(d.PS2,)) || (__GET_VAR(d.PS2,) && __GET_VAR(d.PS3,)) || (__GET_VAR(d.PS1,) && __GET_VAR(d.PS3,))), \"P2\");\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 30s",
+      "verdict": "SAFE",
+      "proof": "the forward condition; all states are reachable (k = 9)",
+      "cpu_time_s": 2.907,
+      "counterexample": null,
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/chemical_batch/fbd_reactor_2oo3/clean.xml benchmarks/chemical_batch/fbd_reactor_2oo3/props.yaml true --tool master=<path-to-esbmc>",
+      "status": "correct"
+    }
+  }
+}

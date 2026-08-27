@@ -1,0 +1,27 @@
+:root {
+  --md-code-font: "SFMono-Regular", "Menlo", "Consolas", monospace;
+}
+
+/* Scan bodies and counterexamples are wide and must not wrap: a rewrapped GOTO
+   line reads as a different program from the one that was verified. */
+.md-typeset pre > code {
+  white-space: pre;
+}
+
+.md-typeset table:not([class]) td code {
+  white-space: nowrap;
+}
+
+/* Inline SVG figures inherit the text color, so they follow the palette toggle
+   instead of needing a second copy for the dark scheme. */
+.diagram {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  margin: 1.4rem auto;
+  color: var(--md-default-fg-color);
+}
+
+.diagram text {
+  font-family: var(--md-code-font);
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": "0.4",
+  "route": "via-c",
+  "scans": 8,
+  "toolchain": {
+    "beremiz": {
+      "path": "~/plc-tools/beremiz",
+      "commit": "df4370c",
+      "dirty": false
+    },
+    "matiec": {
+      "path": "~/plc-tools/matiec",
+      "commit": "7949c0b",
+      "dirty": false
+    }
+  },
+  "recorded_at": "2026-08-27T11:36:02Z",
+  "program": "benchmarks/power_substation/g_substation_breaker/bomb.xml",
+  "properties_file": "benchmarks/power_substation/g_substation_breaker/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(breaker_closed && fault)",
+      "justification": "The breaker must never be closed into an active fault (protection interlock)."
+    }
+  ],
+  "expected_verdict": "VIOLATION",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  G_SUBSTATION_BREAKER_BOMB_data__ d = {0};\n  G_SUBSTATION_BREAKER_BOMB_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., CLOSE_CMD, , nondet_bool());\n    __SET_VAR(d., FAULT, , nondet_bool());\n    __SET_VAR(d., LOCKOUT, , nondet_bool());\n    __SET_VAR(d., MAINT, , nondet_bool());\n    G_SUBSTATION_BREAKER_BOMB_body__(&d);\n    __ESBMC_assert(!(__GET_VAR(d.BREAKER_CLOSED,) && __GET_VAR(d.FAULT,)), \"P1\");\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --unwind 10 --timeout 30s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.822,
+      "counterexample": "State 1 file <generated>/harness.c line 9 column 15 function main thread 0\n----------------------------------------------------\n  d.CLOSE_CMD.value = { .CLOSE_CMD={ .value=(unsigned char)main::$tmp::return_value$_nondet_bool$1?1!0&0#1, .flags=0 }, .FAULT={ .value = 0 },\n    .LOCKOUT={ .value = 0 }, .MAINT={ .value = 0 },\n    .BREAKER_CLOSED={ .value = 0 }, .ALARM={ .value = 0 } }\n\nState 2 file <generated>/harness.c line 10 column 15 function main thread 0\n----------------------------------------------------\n  d.FAULT.value = { .CLOSE_CMD=d.CLOSE_CMD, .FAULT=1, .LOCKOUT=d.LOCKOUT, .MAINT=d.MAINT,\n    .BREAKER_CLOSED=d.BREAKER_CLOSED, .ALARM=d.ALARM }\n\nState 3 file <generated>/harness.c line 11 column 15 function main thread 0\n----------------------------------------------------\n  d.LOCKOUT.value = { .CLOSE_CMD=d.CLOSE_CMD, .FAULT=d.FAULT, .LOCKOUT=0,\n    .MAINT=d.MAINT, .BREAKER_CLOSED=d.BREAKER_CLOSED, .ALARM=d.ALARM }\n\nState 4 file <generated>/harness.c line 12 column 15 function main thread 0\n----------------------------------------------------\n  d.MAINT.value = { .CLOSE_CMD=d.CLOSE_CMD, .FAULT=d.FAULT, .LOCKOUT=d.LOCKOUT,\n    .MAINT=1, .BREAKER_CLOSED=d.BREAKER_CLOSED, .ALARM=d.ALARM }\n\nState 5 file <generated>/POUS.c line 17 column 13 function G_SUBSTATION_BREAKER_BOMB_body__ thread 0\n----------------------------------------------------\n  data__->BREAKER_CLOSED.value = { .CLOSE_CMD=d.CLOSE_CMD, .FAULT=d.FAULT, .LOCKOUT=d.LOCKOUT,\n    .MAINT=d.MAINT, .BREAKER_CLOSED=(unsigned char)(d.LOCKOUT.value == 0 && (signed int)d.CLOSE_CMD.value != 0 && ((signed int)d.MAINT.value != 0 && (signed int)d.FAULT.value != 0 || d.FAULT.value == 0)), .ALARM=d.ALARM }\n\nState 6 file <generated>/POUS.c line 18 column 13 function G_SUBSTATION_BREAKER_BOMB_body__ thread 0\n----------------------------------------------------\n  data__->ALARM.value = { .CLOSE_CMD=d.CLOSE_CMD, .FAULT=d.FAULT, .LOCKOUT=d.LOCKOUT,\n    .MAINT=d.MAINT, .BREAKER_CLOSED=d.BREAKER_CLOSED, .ALARM=d.FAULT.value }\n\nState 7 file <generated>/harness.c line 14 column 5 function main thread 0\n----------------------------------------------------\nViolated property:\n  file <generated>/harness.c line 14 column 5 function main\n  P1\n  !((_Bool)((signed int)d.BREAKER_CLOSED.value) && (_Bool)((signed int)d.FAULT.value))\n\n\n** Results:\n<generated>/POUS.c, function G_SUBSTATION_BREAKER_BOMB_body__\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_body__.object-out-of-bounds.1]  line 17  dereference failure: Access to object out of bounds\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_body__.assertion.1]             line 17  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_body__.object-out-of-bounds.2]  line 17  dereference failure: Access to object out of bounds\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_body__.assertion.2]             line 17  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_body__.object-out-of-bounds.3]  line 18  dereference failure: Access to object out of bounds\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_body__.assertion.3]             line 18  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_body__.object-out-of-bounds.4]  line 18  dereference failure: Access to object out of bounds\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_body__.assertion.4]             line 18  dereference failure: Incorrect alignment when accessing data object\n<generated>/POUS.c, function G_SUBSTATION_BREAKER_BOMB_init__\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_init__.object-out-of-bounds.1]  line  5  dereference failure: Access to object out of bounds\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_init__.assertion.1]             line  5  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_init__.object-out-of-bounds.2]  line  6  dereference failure: Access to object out of bounds\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_init__.assertion.2]             line  6  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_init__.object-out-of-bounds.3]  line  7  dereference failure: Access to object out of bounds\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_init__.assertion.3]             line  7  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_init__.object-out-of-bounds.4]  line  8  dereference failure: Access to object out of bounds\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_init__.assertion.4]             line  8  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_init__.object-out-of-bounds.5]  line  9  dereference failure: Access to object out of bounds\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_init__.assertion.5]             line  9  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_init__.object-out-of-bounds.6]  line 10  dereference failure: Access to object out of bounds\n  PASSED       [G_SUBSTATION_BREAKER_BOMB_init__.assertion.6]             line 10  dereference failure: Incorrect alignment when accessing data object\n<generated>/harness.c, function main\n  FAILED       [main.assertion.1]                                         line 14  P1\n\n** 1 of 21 properties failed, 20 passed",
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/power_substation/g_substation_breaker/bomb.xml benchmarks/power_substation/g_substation_breaker/props.yaml false --tool master=<path-to-esbmc>",
+      "status": "correct"
+    }
+  }
+}

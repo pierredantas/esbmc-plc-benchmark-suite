@@ -2,9 +2,9 @@ format_version: "0.1"
 properties:
   - id: P1
     kind: invariant
-    expression: "!(pump AND level_high)"
+    expression: "!(pump && level_high)"
     justification: "Fill pump must never run while the tank is full (overflow / actuator-manipulation LLB)."
   - id: P2
     kind: reachability
-    expression: "pump AND level_high"
+    expression: "pump && level_high"
     justification: "Witness (trigger synthesis) for the VIOLATION variant: a trace to this state recovers the bomb's arming sequence."

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Batch vessel cycle: Idle -> Filling -> Reacting -> Draining -> Idle.
+     fill_valve is held while Filling, drain_valve while Draining.
+     Opening both at once dumps unreacted feed straight to the effluent
+     line, which is a loss of containment rather than a lost batch.
+     BOMB: the Draining action block also drives fill_valve. -->
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="Anonymous" productName="Benchmark Suite" productVersion="1.0" creationDateTime="2026-08-26T00:00:00" />
+  <contentHeader name="sfc_batch_fill_drain_bomb">
+    <coordinateInfo><fbd><scaling x="1" y="1" /></fbd><ld><scaling x="1" y="1" /></ld><sfc><scaling x="1" y="1" /></sfc></coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="batch_cycle" pouType="program">
+        <interface>
+          <inputVars>
+            <variable name="start"><type><BOOL /></type></variable>
+            <variable name="level_high"><type><BOOL /></type></variable>
+            <variable name="reaction_done"><type><BOOL /></type></variable>
+            <variable name="level_low"><type><BOOL /></type></variable>
+          </inputVars>
+          <outputVars>
+            <variable name="fill_valve"><type><BOOL /></type></variable>
+            <variable name="drain_valve"><type><BOOL /></type></variable>
+          </outputVars>
+        </interface>
+        <body>
+          <SFC>
+            <step localId="1" name="Idle" initialStep="true">
+              <position x="200" y="20" />
+              <connectionPointIn><relPosition x="40" y="0" /></connectionPointIn>
+              <connectionPointOut formalParameter="none"><relPosition x="40" y="40" /></connectionPointOut>
+            </step>
+            <transition localId="2">
+              <position x="200" y="80" />
+              <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="1" /></connectionPointIn>
+              <connectionPointOut><relPosition x="40" y="10" /></connectionPointOut>
+              <condition><inline name="cond"><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">start</xhtml></ST></inline></condition>
+            </transition>
+            <step localId="3" name="Filling">
+              <position x="200" y="120" />
+              <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="2" /></connectionPointIn>
+              <connectionPointOut formalParameter="none"><relPosition x="40" y="40" /></connectionPointOut>
+              <connectionPointOutAction formalParameter="none"><relPosition x="80" y="20" /></connectionPointOutAction>
+            </step>
+            <actionBlock localId="4">
+              <position x="300" y="120" />
+              <connectionPointIn><relPosition x="0" y="20" /><connection refLocalId="3" /></connectionPointIn>
+              <action localId="40" qualifier="N"><relPosition x="0" y="0" /><reference name="fill_valve" /></action>
+            </actionBlock>
+            <transition localId="5">
+              <position x="200" y="180" />
+              <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="3" /></connectionPointIn>
+              <connectionPointOut><relPosition x="40" y="10" /></connectionPointOut>
+              <condition><inline name="cond"><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">level_high</xhtml></ST></inline></condition>
+            </transition>
+            <step localId="6" name="Reacting">
+              <position x="200" y="220" />
+              <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="5" /></connectionPointIn>
+              <connectionPointOut formalParameter="none"><relPosition x="40" y="40" /></connectionPointOut>
+            </step>
+            <transition localId="7">
+              <position x="200" y="280" />
+              <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="6" /></connectionPointIn>
+              <connectionPointOut><relPosition x="40" y="10" /></connectionPointOut>
+              <condition><inline name="cond"><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">reaction_done</xhtml></ST></inline></condition>
+            </transition>
+            <step localId="8" name="Draining">
+              <position x="200" y="320" />
+              <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="7" /></connectionPointIn>
+              <connectionPointOut formalParameter="none"><relPosition x="40" y="40" /></connectionPointOut>
+              <connectionPointOutAction formalParameter="none"><relPosition x="80" y="20" /></connectionPointOutAction>
+            </step>
+            <actionBlock localId="9">
+              <position x="300" y="320" />
+              <connectionPointIn><relPosition x="0" y="20" /><connection refLocalId="8" /></connectionPointIn>
+              <action localId="90" qualifier="N"><relPosition x="0" y="0" /><reference name="drain_valve" /></action>
+              <action localId="91" qualifier="N"><relPosition x="0" y="0" /><reference name="fill_valve" /></action>
+            </actionBlock>
+            <transition localId="10">
+              <position x="200" y="380" />
+              <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="8" /></connectionPointIn>
+              <connectionPointOut><relPosition x="40" y="10" /></connectionPointOut>
+              <condition><inline name="cond"><ST><xhtml xmlns="http://www.w3.org/1999/xhtml">level_low</xhtml></ST></inline></condition>
+            </transition>
+            <jumpStep localId="11" targetName="Idle">
+              <position x="200" y="420" />
+              <connectionPointIn><relPosition x="40" y="0" /><connection refLocalId="10" /></connectionPointIn>
+            </jumpStep>
+          </SFC>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations>
+      <configuration name="Config0">
+        <resource name="Res0">
+          <task name="tcyclic" interval="T#10ms" priority="0">
+            <pouInstance name="inst0" typeName="batch_cycle" />
+          </task>
+        </resource>
+      </configuration>
+    </configurations>
+  </instances>
+</project>

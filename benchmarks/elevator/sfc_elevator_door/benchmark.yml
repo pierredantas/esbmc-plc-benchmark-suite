@@ -1,0 +1,31 @@
+format_version: "0.1"
+id: sfc_elevator_door
+name: "Car door cycle with a stored action (SFC)"
+domain: elevator
+language: SFC
+source:
+  origin: authored
+  reference: "Four-step door cycle, authored for SFC language coverage"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+  - file: bomb.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.xml
+      seeded_defect: "The Opening action qualifier was changed from N to S, so door_open is stored on entry and no later step resets it."
+      witness: "call=1, then dwell_done=1, then door_closed=1 reaches Moving with door_open still held by the stored action."
+metrics:
+  pous: 1
+  steps: 4
+  variables: 6
+features: [steps, transitions, action_blocks, stored_action]
+difficulty: medium
+tags: [safety, sequence, qualifier, language-coverage]

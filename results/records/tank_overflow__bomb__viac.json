@@ -1,0 +1,54 @@
+{
+  "schema_version": "0.4",
+  "route": "via-c",
+  "scans": 64,
+  "toolchain": {
+    "beremiz": {
+      "path": "~/plc-tools/beremiz",
+      "commit": "df4370c",
+      "dirty": false
+    },
+    "matiec": {
+      "path": "~/plc-tools/matiec",
+      "commit": "7949c0b",
+      "dirty": false
+    }
+  },
+  "recorded_at": "2026-08-27T11:36:22Z",
+  "program": "benchmarks/water_treatment/tank_overflow/bomb.st",
+  "properties_file": "benchmarks/water_treatment/tank_overflow/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(pump && level_high)",
+      "justification": "Fill pump must never run while the tank is full (overflow / actuator-manipulation LLB)."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "pump && level_high",
+      "justification": "Witness (trigger synthesis) for the VIOLATION variant: a trace to this state recovers the bomb's arming sequence."
+    }
+  ],
+  "expected_verdict": "VIOLATION",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\n#define __LOCATED_VAR(type, name, ...) \\\n  type name##__image; type *name = &name##__image;\n#include \"LOCATED_VARIABLES.h\"\n#undef __LOCATED_VAR\n\nint main(void) {\n  TANK_data__ d = {0};\n  TANK_init__(&d, 0);\n  for (int scan = 0; scan < 64; scan++) {\n    __SET_LOCATED(d., LEVEL_HIGH, , nondet_bool());\n    __SET_LOCATED(d., START, , nondet_bool());\n    TANK_body__(&d);\n    __ESBMC_assert(!(__GET_LOCATED(d.PUMP,) && __GET_LOCATED(d.LEVEL_HIGH,)), \"P1\");\n    __ESBMC_assert(!(__GET_LOCATED(d.PUMP,) && __GET_LOCATED(d.LEVEL_HIGH,)), \"P2\");\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --unwind 66 --timeout 90s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.949,
+      "counterexample": "State 1 file <generated>/harness.c line 14 column 5 function main thread 0\n----------------------------------------------------\n  *d.LEVEL_HIGH.value = 0 (00000000)\n\nState 2 file <generated>/harness.c line 15 column 5 function main thread 0\n----------------------------------------------------\n  *d.START.value = 0 (00000000)\n\nState 4 file <generated>/harness.c line 14 column 5 function main thread 0\n----------------------------------------------------\n  *d.LEVEL_HIGH.value = 0 (00000000)\n\nState 5 file <generated>/harness.c line 15 column 5 function main thread 0\n----------------------------------------------------\n  *d.START.value = 0 (00000000)\n\nState 7 file <generated>/harness.c line 14 column 5 function main thread 0\n----------------------------------------------------\n  *d.LEVEL_HIGH.value = 0 (00000000)\n\nState 8 file <generated>/harness.c line 15 column 5 function main thread 0\n----------------------------------------------------\n  *d.START.value = 1 (00000001)\n\nState 10 file <generated>/harness.c line 14 column 5 function main thread 0\n----------------------------------------------------\n  *d.LEVEL_HIGH.value = 0 (00000000)\n\nState 11 file <generated>/harness.c line 15 column 5 function main thread 0\n----------------------------------------------------\n  *d.START.value = 0 (00000000)\n\nState 13 file <generated>/harness.c line 14 column 5 function main thread 0\n----------------------------------------------------\n  *d.LEVEL_HIGH.value = 0 (00000000)\n\nState 14 file <generated>/harness.c line 15 column 5 function main thread 0\n----------------------------------------------------\n  *d.START.value = 0 (00000000)\n\nState 16 file <generated>/harness.c line 14 column 5 function main thread 0\n----------------------------------------------------\n  *d.LEVEL_HIGH.value = 1 (00000001)\n\nState 17 file <generated>/harness.c line 15 column 5 function main thread 0\n----------------------------------------------------\n  *d.START.value = 0 (00000000)\n\nState 19 file <generated>/harness.c line 14 column 5 function main thread 0\n----------------------------------------------------\n  *d.LEVEL_HIGH.value = 0 (00000000)\n\nState 20 file <generated>/harness.c line 15 column 5 function main thread 0\n----------------------------------------------------\n  *d.START.value = 0 (00000000)\n\nState 22 file <generated>/harness.c line 14 column 5 function main thread 0\n----------------------------------------------------\n  *d.LEVEL_HIGH.value = 0 (00000000)\n\n\n... 352 lines omitted from the middle of the trace (475 lines in total) ...\n\nState 155 file <generated>/harness.c line 15 column 5 function main thread 0\n----------------------------------------------------\n  *d.START.value = 0 (00000000)\n\nState 156 file <generated>/harness.c line 17 column 5 function main thread 0\n----------------------------------------------------\nViolated property:\n  file <generated>/harness.c line 17 column 5 function main\n  P1\n  !((_Bool)((signed int)(*d.PUMP.value)) && (_Bool)((signed int)(*d.LEVEL_HIGH.value)))\n\n\n** Results:\n<generated>/POUS.c, function TANK_body__\n  PASSED       [TANK_body__.object-out-of-bounds.1]  line 19  dereference failure: Access to object out of bounds\n  PASSED       [TANK_body__.assertion.1]             line 19  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_body__.object-out-of-bounds.2]  line 19  dereference failure: Access to object out of bounds\n  PASSED       [TANK_body__.assertion.2]             line 19  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_body__.object-out-of-bounds.3]  line 20  dereference failure: Access to object out of bounds\n  PASSED       [TANK_body__.assertion.3]             line 20  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_body__.object-out-of-bounds.4]  line 21  dereference failure: Access to object out of bounds\n  PASSED       [TANK_body__.assertion.4]             line 21  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_body__.object-out-of-bounds.5]  line 21  dereference failure: Access to object out of bounds\n  PASSED       [TANK_body__.assertion.5]             line 21  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_body__.object-out-of-bounds.6]  line 23  dereference failure: Access to object out of bounds\n  PASSED       [TANK_body__.assertion.6]             line 23  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_body__.object-out-of-bounds.7]  line 24  dereference failure: Access to object out of bounds\n  PASSED       [TANK_body__.assertion.7]             line 24  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_body__.object-out-of-bounds.8]  line 26  dereference failure: Access to object out of bounds\n  PASSED       [TANK_body__.assertion.8]             line 26  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_body__.object-out-of-bounds.9]  line 27  dereference failure: Access to object out of bounds\n  PASSED       [TANK_body__.assertion.9]             line 27  dereference failure: Incorrect alignment when accessing data object\n<generated>/POUS.c, function TANK_init__\n  PASSED       [TANK_init__.object-out-of-bounds.1]  line  5  dereference failure: Access to object out of bounds\n  PASSED       [TANK_init__.assertion.1]             line  5  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_init__.object-out-of-bounds.2]  line  6  dereference failure: Access to object out of bounds\n  PASSED       [TANK_init__.assertion.2]             line  6  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_init__.object-out-of-bounds.3]  line  7  dereference failure: Access to object out of bounds\n  PASSED       [TANK_init__.assertion.3]             line  7  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_init__.object-out-of-bounds.4]  line  8  dereference failure: Access to object out of bounds\n  PASSED       [TANK_init__.assertion.4]             line  8  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_init__.object-out-of-bounds.5]  line  9  dereference failure: Access to object out of bounds\n  PASSED       [TANK_init__.assertion.5]             line  9  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_init__.object-out-of-bounds.6]  line 10  dereference failure: Access to object out of bounds\n  PASSED       [TANK_init__.assertion.6]             line 10  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_init__.object-out-of-bounds.7]  line 11  dereference failure: Access to object out of bounds\n  PASSED       [TANK_init__.assertion.7]             line 11  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [TANK_init__.object-out-of-bounds.8]  line 12  dereference failure: Access to object out of bounds\n  PASSED       [TANK_init__.assertion.8]             line 12  dereference failure: Incorrect alignment when accessing data object\n<generated>/harness.c, function main\n  PASSED       [main.object-out-of-bounds.1]         line 14  dereference failure: Access to object out of bounds\n  PASSED       [main.assertion.1]                    line 14  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [main.object-out-of-bounds.2]         line 15  dereference failure: Access to object out of bounds\n  PASSED       [main.assertion.2]                    line 15  dereference failure: Incorrect alignment when accessing data object\n  FAILED       [main.assertion.3]                    line 17  P1\n  PASSED       [main.object-out-of-bounds.3]         line 17  dereference failure: Access to object out of bounds\n  PASSED       [main.assertion.4]                    line 17  dereference failure: Incorrect alignment when accessing data object\n  NOT CHECKED  [main.assertion.5]                    line 18  P2\n  PASSED       [main.object-out-of-bounds.4]         line 18  dereference failure: Access to object out of bounds\n  PASSED       [main.assertion.6]                    line 18  dereference failure: Incorrect alignment when accessing data object",
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/water_treatment/tank_overflow/bomb.st benchmarks/water_treatment/tank_overflow/props.yaml false --tool master=<path-to-esbmc>",
+      "status": "correct"
+    }
+  }
+}

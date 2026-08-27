@@ -1,5 +1,6 @@
 {
-  "schema_version": "0.2",
+  "schema_version": "0.3",
+  "recorded_at": "2026-08-27T11:34:51Z",
   "program": "demo2/sealin.ld",
   "properties_file": "demo2/latch_check.props.yaml",
   "properties": [
@@ -21,9 +22,10 @@
         "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
+        "commit": "61172c6f",
         "platform": "aarch64 macos"
       },
-      "status": "unknown",
+      "status": "wrong",
       "encoding": {
         "scan_body": [
           "     1: IF !1 THEN GOTO 2",
@@ -42,10 +44,10 @@
         "not_driven_by_body": [],
         "gate": "pass"
       },
-      "command": "esbmc demo2/sealin.ld --ld-props demo2/latch_check.props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
-      "verdict": "unknown",
-      "proof": null,
-      "cpu_time_s": 0.137,
+      "command": "esbmc demo2/sealin.ld --ld-props demo2/latch_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.015,
       "counterexample": null
     },
     "master": {
@@ -53,6 +55,7 @@
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
+        "commit": "d88a9fa4",
         "platform": "aarch64 macos"
       },
       "status": "correct",
@@ -92,10 +95,10 @@
         "not_driven_by_body": [],
         "gate": "pass"
       },
-      "command": "esbmc demo2/sealin.ld --ld-props demo2/latch_check.props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
+      "command": "esbmc demo2/sealin.ld --ld-props demo2/latch_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.014,
+      "cpu_time_s": 0.015,
       "counterexample": "State 1  thread 0\n----------------------------------------------------\n  Start = 1\n\nState 2  thread 0\n----------------------------------------------------\n  EStop = 0\n\nState 3  thread 0\n----------------------------------------------------\n  Run = 1\n\nState 5  thread 0\n----------------------------------------------------\n  Start = 0\n\nState 6  thread 0\n----------------------------------------------------\n  EStop = 0\n\nState 7  thread 0\n----------------------------------------------------\n  Run__prev = 1\n\nState 8  thread 0\n----------------------------------------------------\n  Run = 1\n\nState 9 file demo2/sealin.ld thread 0\n----------------------------------------------------\nViolated property:\n  file demo2/sealin.ld\n  P1\n  !Run || Start\n\n\n** Results:\n  NOT CHECKED  [global.assertion.1]  line 0  unwinding assertion loop 1\ndemo2/sealin.ld\n  FAILED       [global.assertion.2]  line 0  P1\n\n** 1 of 2 properties failed, 1 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
     }
   }

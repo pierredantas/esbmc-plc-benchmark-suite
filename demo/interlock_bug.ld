@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Reversing starter: ONE motor, TWO contactors.
-     KM_CW  closes to run the motor clockwise
-     KM_CCW closes to run it counter-clockwise (anticlockwise)
-     Closing both at once shorts two supply phases through the reversing
-     contacts, so the interlock below is a wiring-protection requirement,
-     not a process preference.
+<!-- Reversing starter with the interlock removed.
+     Rung 1 has lost its normally closed rev contact, so KM_CW := fwd and
+     nothing prevents both contactors closing together.
 
-     Rung 1:  fwd ---| |----|/|--- ( KM_CW )     KM_CW  := fwd AND NOT rev
-                            rev
-     Rung 2:  rev ---| |------------( KM_CCW )    KM_CCW := rev
-
-     BUG: the |/rev| contact is deleted from rung 1, so KM_CW := fwd.
-     NOTE: ESBMC-PLC v8.4 requires the .ld extension, but the CONTENT is PLCopen XML. -->
+     Rung 1:  KM_CW  := fwd
+     Rung 2:  KM_CCW := rev
+-->
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
   <fileHeader companyName="Demo" productName="Demo" productVersion="1" creationDateTime="2026-08-26T00:00:00" />
   <contentHeader name="interlock_bug">
-    <coordinateInfo><ld><scaling x="1" y="1" /></ld></coordinateInfo>
+    <coordinateInfo><fbd><scaling x="1" y="1" /></fbd><ld><scaling x="1" y="1" /></ld><sfc><scaling x="1" y="1" /></sfc></coordinateInfo>
   </contentHeader>
   <types>
     <dataTypes />
@@ -70,7 +64,7 @@
     </pous>
   </types>
   <instances><configurations><configuration name="Config0"><resource name="Res0">
-    <task name="tcyclic" interval="PT0.01S" priority="0">
+    <task name="tcyclic" interval="T#10ms" priority="0">
       <pouInstance name="inst0" typeName="drive" />
     </task>
   </resource></configuration></configurations></instances>

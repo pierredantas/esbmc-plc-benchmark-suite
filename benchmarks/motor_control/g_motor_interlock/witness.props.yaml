@@ -1,0 +1,9 @@
+format_version: "0.1"
+# Trigger synthesis, asked on its own. The encoder turns a reachability property into
+# `if (expression) assert(false)`, so a VIOLATION is the proof that the state is
+# reachable and the counterexample is the input combination that reaches it.
+properties:
+  - id: P2
+    kind: reachability
+    expression: "Motor_A && Motor_B"
+    justification: "Recover the input combination that energises both contactors, if one exists."

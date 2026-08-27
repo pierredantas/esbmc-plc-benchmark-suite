@@ -1,0 +1,24 @@
+format_version: "0.1"
+id: g_ctu_saturate
+name: "ctu saturate (graphical LD twin)"
+domain: packaging
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Graphical twin of ld_ctu_saturate; the R pin is driven by a Reset contact"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+syntax_pair_of: ld_ctu_saturate
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+metrics:
+  rungs: 2
+  pous: 1
+  variables: 5
+features: [contacts, coils, counter_ctu, reset_pin]
+difficulty: medium
+tags: [feature, semantics, syntax-pair, counter]
