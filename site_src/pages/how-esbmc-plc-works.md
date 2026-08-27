@@ -244,7 +244,7 @@ IL, FBD and SFC using tools that are maintained by other people and can be cited
 
 ### Status
 
-Forty-four runs now take this route, covering LD, ST, IL and FBD bodies. SFC is the gap:
+Fifty-seven runs now take this route, covering LD, ST, IL and FBD bodies. SFC is the gap:
 no sequential function chart has been carried through yet, and each language still needs
 its own harness pattern. Which tools that puts in the trusted base, and what each of them
 is, is the subject of [The tools underneath](the-tools-underneath.md). The procedure, the

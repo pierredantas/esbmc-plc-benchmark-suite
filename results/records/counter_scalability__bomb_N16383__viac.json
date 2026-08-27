@@ -4,8 +4,8 @@
   "scans": 64,
   "toolchain": {
     "beremiz": {
-      "path": "/private/tmp/claude-502/-Users-user-Claude-Overleaf-Projects--2-items--ESBMC-Benchmark-Suite--P6-/5e348bf4-11e3-4fee-af86-26b838a68105/scratchpad/beremiz",
-      "commit": "aeb89e8",
+      "path": "/private/tmp/claude-502/-Users-user-Claude-Overleaf-Projects--2-items--ESBMC-Benchmark-Suite--P6-/5e348bf4-11e3-4fee-af86-26b838a68105/scratchpad/berpr",
+      "commit": "df4370c",
       "dirty": false
     },
     "matiec": {
@@ -14,7 +14,7 @@
       "dirty": false
     }
   },
-  "recorded_at": "2026-08-27T10:47:54Z",
+  "recorded_at": "2026-08-27T10:54:06Z",
   "program": "benchmarks/manufacturing/counter_scalability/bomb_N16383.st",
   "properties_file": "benchmarks/manufacturing/counter_scalability/props.yaml",
   "properties": [

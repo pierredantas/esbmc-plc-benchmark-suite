@@ -1,0 +1,57 @@
+{
+  "schema_version": "0.4",
+  "route": "via-c",
+  "scans": 8,
+  "toolchain": {
+    "beremiz": {
+      "path": "/private/tmp/claude-502/-Users-user-Claude-Overleaf-Projects--2-items--ESBMC-Benchmark-Suite--P6-/5e348bf4-11e3-4fee-af86-26b838a68105/scratchpad/berpr",
+      "commit": "df4370c",
+      "dirty": false
+    },
+    "matiec": {
+      "path": "/private/tmp/claude-502/-Users-user-Claude-Overleaf-Projects--2-items--ESBMC-Benchmark-Suite--P6-/5e348bf4-11e3-4fee-af86-26b838a68105/scratchpad/matiec",
+      "commit": "7949c0b",
+      "dirty": false
+    }
+  },
+  "recorded_at": "2026-08-27T10:54:22Z",
+  "program": "benchmarks/motor_control/g_motor_interlock/bomb.xml",
+  "properties_file": "benchmarks/motor_control/motor_interlock/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "mutual_exclusion",
+      "variables": [
+        "Motor_A",
+        "Motor_B"
+      ],
+      "justification": "Forward/reverse contactors must never be energised together (contactor short / mechanical damage)."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "Motor_A && Motor_B",
+      "justification": "Trigger synthesis: a witness recovers the secret-knock input combination that violates the interlock."
+    }
+  ],
+  "expected_verdict": "VIOLATION",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  DRIVE_data__ d = {0};\n  DRIVE_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., FWD, , nondet_bool());\n    __SET_VAR(d., REV, , nondet_bool());\n    __SET_VAR(d., MAINT, , nondet_bool());\n    DRIVE_body__(&d);\n    __ESBMC_assert(!(__GET_VAR(d.MOTOR_A,) && __GET_VAR(d.MOTOR_B,)), \"P1\");\n    __ESBMC_assert(!(__GET_VAR(d.MOTOR_A,) && __GET_VAR(d.MOTOR_B,)), \"P2\");\n  }\n  return 0;\n}",
+  "runs": {
+    "master": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --unwind 10 --timeout 30s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.797,
+      "counterexample": "State 1 file /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp1v4yc8cd/c/harness.c line 9 column 15 function main thread 0\n----------------------------------------------------\n  d.FWD.value = { .FWD={ .value=(unsigned char)main::$tmp::return_value$_nondet_bool$1?1!0&0#1, .flags=0 }, .REV={ .value = 0 },\n    .MAINT={ .value = 0 }, .MOTOR_A={ .value = 0 },\n    .MOTOR_B={ .value = 0 } }\n\nState 2 file /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp1v4yc8cd/c/harness.c line 10 column 15 function main thread 0\n----------------------------------------------------\n  d.REV.value = { .FWD=d.FWD, .REV=1, .MAINT=d.MAINT, .MOTOR_A=d.MOTOR_A, .MOTOR_B=d.MOTOR_B }\n\nState 3 file /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp1v4yc8cd/c/harness.c line 11 column 15 function main thread 0\n----------------------------------------------------\n  d.MAINT.value = { .FWD=d.FWD, .REV=d.REV, .MAINT=1, .MOTOR_A=d.MOTOR_A, .MOTOR_B=d.MOTOR_B }\n\nState 4 file /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp1v4yc8cd/c/POUS.c line 16 column 13 function DRIVE_body__ thread 0\n----------------------------------------------------\n  data__->MOTOR_A.value = { .FWD=d.FWD, .REV=d.REV, .MAINT=d.MAINT, .MOTOR_A=(unsigned char)((signed int)d.FWD.value != 0 && ((signed int)d.MAINT.value != 0 && (signed int)d.REV.value != 0 || d.REV.value == 0)),\n    .MOTOR_B=d.MOTOR_B }\n\nState 5 file /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp1v4yc8cd/c/POUS.c line 17 column 13 function DRIVE_body__ thread 0\n----------------------------------------------------\n  data__->MOTOR_B.value = { .FWD=d.FWD, .REV=d.REV, .MAINT=d.MAINT, .MOTOR_A=d.MOTOR_A,\n    .MOTOR_B=d.REV.value }\n\nState 6 file /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp1v4yc8cd/c/harness.c line 13 column 5 function main thread 0\n----------------------------------------------------\nViolated property:\n  file /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp1v4yc8cd/c/harness.c line 13 column 5 function main\n  P1\n  !((_Bool)((signed int)d.MOTOR_A.value) && (_Bool)((signed int)d.MOTOR_B.value))\n\n\n** Results:\n/var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp1v4yc8cd/c/POUS.c, function DRIVE_body__\n  PASSED       [DRIVE_body__.object-out-of-bounds.1]  line 16  dereference failure: Access to object out of bounds\n  PASSED       [DRIVE_body__.assertion.1]             line 16  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [DRIVE_body__.object-out-of-bounds.2]  line 16  dereference failure: Access to object out of bounds\n  PASSED       [DRIVE_body__.assertion.2]             line 16  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [DRIVE_body__.object-out-of-bounds.3]  line 17  dereference failure: Access to object out of bounds\n  PASSED       [DRIVE_body__.assertion.3]             line 17  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [DRIVE_body__.object-out-of-bounds.4]  line 17  dereference failure: Access to object out of bounds\n  PASSED       [DRIVE_body__.assertion.4]             line 17  dereference failure: Incorrect alignment when accessing data object\n/var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp1v4yc8cd/c/POUS.c, function DRIVE_init__\n  PASSED       [DRIVE_init__.object-out-of-bounds.1]  line  5  dereference failure: Access to object out of bounds\n  PASSED       [DRIVE_init__.assertion.1]             line  5  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [DRIVE_init__.object-out-of-bounds.2]  line  6  dereference failure: Access to object out of bounds\n  PASSED       [DRIVE_init__.assertion.2]             line  6  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [DRIVE_init__.object-out-of-bounds.3]  line  7  dereference failure: Access to object out of bounds\n  PASSED       [DRIVE_init__.assertion.3]             line  7  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [DRIVE_init__.object-out-of-bounds.4]  line  8  dereference failure: Access to object out of bounds\n  PASSED       [DRIVE_init__.assertion.4]             line  8  dereference failure: Incorrect alignment when accessing data object\n  PASSED       [DRIVE_init__.object-out-of-bounds.5]  line  9  dereference failure: Access to object out of bounds\n  PASSED       [DRIVE_init__.assertion.5]             line  9  dereference failure: Incorrect alignment when accessing data object\n/var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp1v4yc8cd/c/harness.c, function main\n  FAILED       [main.assertion.1]                     line 13  P1\n  NOT CHECKED  [main.assertion.2]                     line 14  P2\n\n** 1 of 20 properties failed, 18 passed, 1 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)",
+      "tool": {
+        "path": "/Users/user/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "commit": "d88a9fa4",
+        "version": "8.4.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/motor_control/g_motor_interlock/bomb.xml benchmarks/motor_control/motor_interlock/props.yaml false --tool master=<path-to-esbmc>",
+      "status": "correct"
+    }
+  }
+}

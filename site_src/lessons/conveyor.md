@@ -5,7 +5,7 @@ code do" but "what must never happen here".
 ## The machine
 
 A guarded belt conveyor. An operator presses run, the belt moves, and two things can stop
-it: the emergency stop mushroom, and the interlocked guard over the pinch point. The
+it: the emergency stop mushroom, and the interlocked guard over the pinch point. A
 warning beacon lights whenever the emergency stop is latched.
 
 The hazard has a name and it is not abstract. Somebody hits the E-stop because a hand,
@@ -89,11 +89,16 @@ Eleven more benchmarks in this suite carry the same attack fitted to a different
 a busbar, a batch reactor, a traffic junction, an elevator door. The plant changes and
 the shape does not.
 
-## One route reaches this, the other does not
+## Both routes reach this, eventually
 
-The clean program has a verdict from both routes. The bombed one has only the ladder
-verdict, and the reason is worth recording rather than hiding: Beremiz crashes while
-rendering this ladder, in the code that factorizes parallel paths.
+Both programs now carry a verdict from the ladder front end and from the C route, which
+is what an independent check is supposed to look like: the same conclusion arrived at
+through Beremiz and MatIEC rather than through the front end under test.
+
+{{record: g_conveyor_interlock__bomb__viac}}
+
+Getting the second column took a detour worth recording. For a long time this page showed
+one column here, because Beremiz crashed while rendering this ladder:
 
 ```
 File "PLCGenerator.py", line 1079, in FactorizePaths
@@ -101,9 +106,19 @@ File "PLCGenerator.py", line 1079, in FactorizePaths
 TypeError: '<' not supported between instances of 'list' and 'str'
 ```
 
-That is a Python 3 porting defect in Beremiz, not a property of your program, and it is
-why the bomb variant shows one column where the clean one shows two. A benchmark suite
-that records what happened rather than what should have happened will collect these.
+`factorized_paths` holds strings and lists at once and Python 3 declines to order the
+two, so the clean rung came through only because its branches are the same length, while
+this one sets a one-element branch beside a two-element branch and mixes the types in
+precisely the way that sort cannot handle.
+
+The defect is a Python 3 porting bug in Beremiz rather than anything about the conveyor.
+It is filed as [beremiz#83](https://github.com/beremiz/beremiz/issues/83) with a fix in
+[PR #84](https://github.com/beremiz/beremiz/pull/84), and the record above names its
+Beremiz as commit `df4370c`, which is that branch. Until the PR lands, reproducing this
+column means building from it.
+
+A benchmark suite that records what happened rather than what should have happened
+collects these, and occasionally gets to fix one.
 
 ## What to take from this
 

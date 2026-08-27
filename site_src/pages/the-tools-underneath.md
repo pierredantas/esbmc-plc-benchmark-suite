@@ -163,6 +163,13 @@ second route never runs that code. That is the entire value of carrying a progra
 way around, and it is how the suite establishes an expected verdict without asking the
 tool under test what the answer should be.
 
-Of the 210 recorded runs, 166 take the ladder route and 44 take the via-C route, covering
+`fbd_fan_damper` is what that looks like when it pays off. Its bomb is written in FBD, so
+the ladder front end drops the body and the scan loop assigns nothing but three nondet
+inputs; the ingestion gate fails on `fan`, and both builds return `unknown`. The via-C
+route reads the same file through Beremiz, compiles it with MatIEC, and returns
+`VIOLATION` with a counterexample. One route could not see the program, and the other
+refuted it.
+
+Of the 223 recorded runs, 166 take the ladder route and 57 take the via-C route, covering
 LD, ST, IL and FBD sources. The procedure and its per-stage results are in
 [docs/INTEROP.md](https://github.com/pierredantas/esbmc-plc-benchmark-suite/blob/main/docs/INTEROP.md).

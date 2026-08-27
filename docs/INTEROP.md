@@ -76,8 +76,26 @@ work once the namespace is rewritten, which `schema_check.py` does in memory.
 
 ## Coverage
 
-The round trip above was carried out end to end for one program. Running the whole corpus
-through Beremiz's generator with a minimal controller stub produced ST for 21 of 43
-programs; several of the remaining failures are the stub's fault rather than the files'
-(FBD bodies need a block-type lookup the stub does not provide). Extending that stub and
-recording a per-program result is open work.
+Fifty-seven recorded runs now take this route, covering LD, ST, IL and FBD sources.
+Every one names the Beremiz and MatIEC checkout that produced its C, under `toolchain`
+in the record.
+
+Running the 63 PLCopen files in the catalog through Beremiz's generator gives:
+
+| | stock `aeb89e8` | with the #83 fix |
+|---|---|---|
+| ST generated | 36 | 53 |
+| `TypeError` in `FactorizePaths` | 17 | 0 |
+| failed for other reasons | 11 | 11 |
+
+The 36 that already worked generate byte-identical ST either way. The 17 additions are
+the bomb variants, whose rungs put a one-element branch beside a longer one, which is the
+shape that mixes `str` and `list` in the list being sorted. Fix filed as
+[beremiz#83](https://github.com/beremiz/beremiz/issues/83) and
+[PR #84](https://github.com/beremiz/beremiz/pull/84); records produced with it name
+Beremiz commit `df4370c`.
+
+Two limits remain. The 11 other failures are unrelated to that defect and are not yet
+diagnosed per program. Termination properties cannot be expressed on this route at all,
+which skips all 16 `g_tank_*` files: the harness asserts over variables, and "this scan
+finishes" is not a claim about a variable.
