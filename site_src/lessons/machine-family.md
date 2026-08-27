@@ -73,7 +73,7 @@ week three. It can be a comparison against a sensor value that only occurs at a
 particular tank level. It can be a loop that stops terminating, so the payload is not a
 wrong output but a controller that never completes a scan at all.
 
-The suite has all of those. Twenty-four benchmarks carry the `llb` tag, and the twelve
+The suite has all of those. Thirty benchmarks carry the `llb` tag, and the twelve
 here are the simplest twelve. The eight `g_tank_*` programs never terminate,
 `tank_overflow` and `sensor_forge` arm on a fifty-scan fuse, and `counter_scalability`
 sweeps a threshold up to 32767 to find where bounded checking gives out.

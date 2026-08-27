@@ -282,6 +282,7 @@ def build_nav(parts):
            {"The five languages": "languages.md"},
            {"How ESBMC-PLC works": "how-esbmc-plc-works.md"},
            {"The tools underneath": "the-tools-underneath.md"},
+           {"Ladder logic bombs": "ladder-logic-bombs.md"},
            {"Lessons": lessons},
            {"Benchmarks": "benchmarks/index.md"},
            {"Reproducing": "reproducing.md"},
