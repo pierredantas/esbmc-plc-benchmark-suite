@@ -35,6 +35,7 @@ benchmarks/<domain>/<id>/      one directory per benchmark task
   └── README.md                optional notes / provenance
 runner/validate.py             schema + file + XML validation (CI gate)
 runner/schema_check.py         PLCopen TC6 XSD validation via xmllint
+runner/build_index.py          regenerates docs/INDEX.md; --check fails on drift
 runner/record.py               one recorded run through ESBMC's LD front end
 runner/record_via_c.py         the same question through Beremiz -> MatIEC -> C
 runner/record_all.py           drives either route over the whole catalog
@@ -59,7 +60,8 @@ docs/INTEROP.md                the second verification route and what it costs
 50 benchmarks / 83 variants across 10 domains, all passing `runner/validate.py`.
 Composition: **15 LD-textual · 25 LD-graphical · 10 ST**.
 Verdicts: 49 SAFE / 34 VIOLATION. Ground truth: 36 expert · 29 fault-injection · 18 cross-tool-consensus.
-Difficulty: 26 easy · 18 medium · 6 hard. Full list in `docs/INDEX.md`.
+Difficulty: 26 easy · 18 medium · 6 hard. Note that `docs/INDEX.md` now lists the
+working tree rather than this release, since it is generated from `benchmarks/`.
 
 ### Validation status of expected verdicts
 Each benchmark records a `validation_status` field: `validated` (tool-confirmed) or `candidate`.
