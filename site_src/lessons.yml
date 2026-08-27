@@ -122,3 +122,28 @@ parts:
         title: "What real plant code costs"
         summary: "Six SWaT benchmarks with no verdict, and the four measured reasons: vendor extensions, four POUs, a trigger behind a clock nothing advances, and a fuse half a million scans deep."
 
+  - title: Bombs from a public dataset
+    blurb: >-
+      Eight legitimate and malicious pairs of one water tank controller, published by
+      other people with their own labels, and a single property that refutes all eight.
+    lessons:
+      - slug: tank-dataset
+        number: "5.1"
+        title: "A tank, and eight ways to stop it"
+        summary: "The plant, the one property that covers every attack in this part, and why a program that never finishes a scan is worse than one that computes the wrong answer."
+      - slug: injected-loop
+        number: "5.2"
+        title: "The loop that never ends"
+        summary: "Ten lines appended to a working function block, a counter assigned on every pass that never advances, and a trigger whose constant is not the sensor value that fires it."
+      - slug: look-alike-block
+        number: "5.3"
+        title: "A block that is not the block it names"
+        summary: "EQ becomes EQ_0, the replacement reimplements equality correctly, and the payload sits below the part that answers the question a reviewer came with."
+      - slug: inlined-guard
+        number: "5.4"
+        title: "The refactor that carried a payload"
+        summary: "A POU deleted and its logic inlined, which is a large diff with a plausible story attached, and the one attack that names the raw input in its guard."
+      - slug: tank-family
+        number: "5.5"
+        title: "Eight bombs, one property"
+        summary: "Thirty-two runs, both builds agreeing on all sixteen programs in 0.74 seconds, and what termination covers that an interlock property cannot."
