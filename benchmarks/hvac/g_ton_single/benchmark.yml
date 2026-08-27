@@ -20,5 +20,5 @@ metrics:
   pous: 1
   variables: 4
 features: [contacts, coils, timer_ton]
-difficulty: easy
+difficulty: medium
 tags: [feature, semantics, syntax-pair, timer]
