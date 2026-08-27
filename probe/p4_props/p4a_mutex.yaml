@@ -1,0 +1,5 @@
+# CONTROL: the form run_v84.py already emits. Known to work.
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [Motor_A, Motor_B]

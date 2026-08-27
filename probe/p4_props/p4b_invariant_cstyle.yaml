@@ -1,0 +1,7 @@
+# Same meaning as p4a, written as a compound invariant in C syntax
+# (this is what runner/run_v84.py's iec2c() produces).
+# Probes: does --ld-props accept a compound expression, or only a single bool var?
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(Motor_A && Motor_B)"

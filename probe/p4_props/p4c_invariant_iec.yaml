@@ -1,0 +1,6 @@
+# Same meaning again, in IEC operator syntax. Probes whether the translation
+# step in run_v84.py is still necessary.
+properties:
+  - id: P1
+    kind: invariant
+    expression: "NOT (Motor_A AND Motor_B)"

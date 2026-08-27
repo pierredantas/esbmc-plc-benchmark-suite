@@ -1,0 +1,7 @@
+# Probes whether --ld-props accepts `absence`. NOTE: v8.4 requires an `expression`
+# field for this kind, in addition to `subtype`.
+properties:
+  - id: P1
+    kind: absence
+    subtype: overflow
+    expression: "Motor_A"
