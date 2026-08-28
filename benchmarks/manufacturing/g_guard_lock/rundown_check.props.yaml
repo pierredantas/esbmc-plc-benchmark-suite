@@ -1,0 +1,9 @@
+# Discriminator, not a safety requirement. A spindle keeps turning after its contactor
+# drops, so guard locking holds the door for the rundown time and a request does not
+# open it at once. A program that proves this releases the guard on the request alone.
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!OpenReq || Motor || Unlocked"
+    justification: "A request with the drive already stopped always releases the guard. Guard locking must refute this."

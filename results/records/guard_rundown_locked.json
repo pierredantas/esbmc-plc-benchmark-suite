@@ -1,0 +1,131 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-08-28T18:08:19Z",
+  "program": "benchmarks/manufacturing/g_guard_lock/program.xml",
+  "properties_file": "benchmarks/manufacturing/g_guard_lock/rundown_check.props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!OpenReq || Motor || Unlocked",
+      "justification": "A request with the drive already stopped always releases the guard. Guard locking must refute this."
+    }
+  ],
+  "property_variables": [
+    "Motor",
+    "OpenReq",
+    "Unlocked"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "61172c6f",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN OpenReq=NONDET(_Bool);",
+          "        ASSIGN DoorClosed=NONDET(_Bool);",
+          "        ASSIGN RunCmd=NONDET(_Bool);",
+          "        ASSIGN Motor=1 && RunCmd && DoorClosed && !OpenReq;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "OpenReq": 1,
+          "DoorClosed": 1,
+          "RunCmd": 1,
+          "Motor": 1
+        },
+        "not_driven_by_body": [
+          "Unlocked"
+        ],
+        "gate": "fail"
+      },
+      "command": "cp benchmarks/manufacturing/g_guard_lock/program.xml benchmarks/manufacturing/g_guard_lock/program.ld\nesbmc benchmarks/manufacturing/g_guard_lock/program.ld --ld-props benchmarks/manufacturing/g_guard_lock/rundown_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.012,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  OpenReq = 1\n\nState 2  thread 0\n----------------------------------------------------\n  DoorClosed = 0\n\nState 3  thread 0\n----------------------------------------------------\n  RunCmd = 0\n\nState 4  thread 0\n----------------------------------------------------\n  Motor = 0\n\nState 5 file benchmarks/manufacturing/g_guard_lock/program.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/manufacturing/g_guard_lock/program.ld\n  P1\n  !OpenReq || Motor || Unlocked"
+    },
+    "master": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "d88a9fa4",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 15",
+          "        ASSIGN OpenReq=NONDET(_Bool);",
+          "        ASSIGN DoorClosed=NONDET(_Bool);",
+          "        ASSIGN RunCmd=NONDET(_Bool);",
+          "        ASSIGN Motor__prev=1 && Motor;",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf3=0;",
+          "     2: IF !(1 && !Motor__prev) THEN GOTO 3",
+          "        ASSIGN pf3=1;",
+          "     3: ASSIGN Rundown__IN=1 && pf3;",
+          "        IF !Rundown__IN THEN GOTO 5",
+          "        IF !(Rundown__ET < Rundown__PT) THEN GOTO 4",
+          "        ASSIGN Rundown__ET=Rundown__ET + 1;",
+          "     4: GOTO 6",
+          "     5: ASSIGN Rundown__ET=0;",
+          "     6: ASSIGN Rundown__Q=Rundown__IN && Rundown__ET >= Rundown__PT;",
+          "        IF !1 THEN GOTO 7",
+          "        ASSIGN pf6=0;",
+          "     7: IF !(1 && Rundown__Q && OpenReq) THEN GOTO 8",
+          "        ASSIGN pf6=1;",
+          "     8: ASSIGN Unlocked=1 && pf6;",
+          "        IF !1 THEN GOTO 9",
+          "        ASSIGN pf8=0;",
+          "     9: IF !(1 && RunCmd) THEN GOTO 10",
+          "        ASSIGN pf8=1;",
+          "    10: IF !1 THEN GOTO 11",
+          "        ASSIGN pf9=0;",
+          "    11: IF !(1 && pf8 && DoorClosed) THEN GOTO 12",
+          "        ASSIGN pf9=1;",
+          "    12: IF !1 THEN GOTO 13",
+          "        ASSIGN pf10=0;",
+          "    13: IF !(1 && pf9 && !OpenReq) THEN GOTO 14",
+          "        ASSIGN pf10=1;",
+          "    14: ASSIGN Motor=1 && pf10;",
+          "        GOTO 1",
+          "    15:"
+        ],
+        "assignment_counts": {
+          "OpenReq": 1,
+          "DoorClosed": 1,
+          "RunCmd": 1,
+          "Motor__prev": 1,
+          "pf3": 2,
+          "Rundown__IN": 1,
+          "Rundown__ET": 2,
+          "Rundown__Q": 1,
+          "pf6": 2,
+          "Unlocked": 1,
+          "pf8": 2,
+          "pf9": 2,
+          "pf10": 2,
+          "Motor": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/manufacturing/g_guard_lock/program.xml benchmarks/manufacturing/g_guard_lock/program.ld\nesbmc benchmarks/manufacturing/g_guard_lock/program.ld --ld-props benchmarks/manufacturing/g_guard_lock/rundown_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.012,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  OpenReq = 1\n\nState 2  thread 0\n----------------------------------------------------\n  DoorClosed = 0\n\nState 3  thread 0\n----------------------------------------------------\n  RunCmd = 0\n\nState 4  thread 0\n----------------------------------------------------\n  Motor = 0\n\nState 5 file benchmarks/manufacturing/g_guard_lock/program.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/manufacturing/g_guard_lock/program.ld\n  P1\n  !OpenReq || Motor || Unlocked\n\n\n** Results:\nbenchmarks/manufacturing/g_guard_lock/program.ld\n  FAILED       [global.assertion.1]  line 0  P1\n\n** 1 of 1 properties failed"
+    }
+  }
+}

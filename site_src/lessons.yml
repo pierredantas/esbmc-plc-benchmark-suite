@@ -201,7 +201,15 @@ parts:
         number: "7.6"
         title: "The standby pump nobody started"
         summary: "Duty-standby alternation, and the first discriminator in this part that neither build can discharge. A five-line reproducer of a k-induction limit comes with it."
-      - slug: compressor-cycle
+      - slug: guard-lock
         number: "7.7"
+        title: "The guard that waits for the spindle"
+        summary: "ISO 14119 guard locking with a real rundown timer. The discriminator asks whether the program waits rather than whether it remembers, and only one build can read the timer at all."
+      - slug: compressor-cycle
+        number: "7.8"
         title: "The interlock that makes it wait"
-        summary: "A minimum-off interlock against a short-cycling twin, and the table that has been the same in all seven pairs."
+        summary: "A minimum-off interlock against a short-cycling twin, and the table that has been the same in every discriminator pair."
+      - slug: two-hand-fb
+        number: "7.9"
+        title: "The block the checker stops reading"
+        summary: "Lesson 7.2's press moved into a function block. Both builds fail the gate on the correct program and refute a property that holds on the correct variant, because block parameters are never bound and a boolean body loses an operand."

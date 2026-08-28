@@ -52,7 +52,7 @@ is the bad news.
 
 ## Reading the whole part at once
 
-Seven machines, and the same table in every one:
+{{stat: benchmarks.discriminator|Words}} machines, and the same table in every one:
 
 | | the safety property | the discriminator |
 |---|---|---|
@@ -60,7 +60,7 @@ Seven machines, and the same table in every one:
 | the defective program | `SAFE` | `SAFE` |
 
 The left column is what gets written, reviewed, and reported. It is true of both programs
-in all seven pairs. The right column is the one that carries information, and in every
+in every pair. The right column is the one that carries information, and in every
 case it carries it by failing.
 
 There is a habit buried in this. Engineers write properties that say the machine will not

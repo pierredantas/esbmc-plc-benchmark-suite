@@ -76,6 +76,16 @@ records:
   program: benchmarks/packaging/g_ftrig_edge/program.xml
   props: benchmarks/packaging/g_ftrig_edge/props.yaml
   expected: 'true'
+- name: guard_rundown_immediate
+  program: benchmarks/manufacturing/g_guard_lock/no_rundown.xml
+  props: benchmarks/manufacturing/g_guard_lock/rundown_check.props.yaml
+  expected: 'true'
+  mode: kinduction
+- name: guard_rundown_locked
+  program: benchmarks/manufacturing/g_guard_lock/program.xml
+  props: benchmarks/manufacturing/g_guard_lock/rundown_check.props.yaml
+  expected: 'false'
+  mode: kinduction
 - name: interlock_safe
   program: demo/interlock.ld
   props: demo/props.yaml
@@ -153,6 +163,16 @@ records:
 - name: tp_pulse
   program: benchmarks/packaging/g_tp_pulse/program.xml
   props: benchmarks/packaging/g_tp_pulse/props.yaml
+  expected: 'false'
+  mode: kinduction
+- name: twohand_fb_tiedown_i
+  program: benchmarks/manufacturing/g_two_hand_fb/type_i.xml
+  props: benchmarks/manufacturing/g_two_hand_fb/tiedown_check.props.yaml
+  expected: 'true'
+  mode: kinduction
+- name: twohand_fb_tiedown_ii
+  program: benchmarks/manufacturing/g_two_hand_fb/program.xml
+  props: benchmarks/manufacturing/g_two_hand_fb/tiedown_check.props.yaml
   expected: 'false'
   mode: kinduction
 - name: twohand_tiedown_i

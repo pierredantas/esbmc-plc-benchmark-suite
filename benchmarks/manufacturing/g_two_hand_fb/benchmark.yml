@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: g_two_hand_fb
+name: "two-hand control as a function block"
+domain: manufacturing
+language: LD-graphical
+source:
+  origin: authored
+  reference: "The ISO 13851 Type II logic of g_two_hand moved into a reusable function block, the shape certified safety libraries ship it in"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+syntax_pair_of: g_two_hand
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      witness: "Ground truth is the ladder twin g_two_hand, which both builds verify. Here both builds fail the ingestion gate: Stroke is never driven, because the frontend does not bind the block's actual parameters."
+  - file: type_i.xml
+    expected_verdict: true
+    ground_truth:
+      method: fault-injection
+      base_variant: program.xml
+      seeded_defect: "The arming latch is dropped from the block body, leaving the Type I conjunction, exactly as in g_two_hand/type_i.xml."
+      witness: "Expected SAFE by construction and confirmed on the ladder twin. Both builds report VIOLATION here, because a binary boolean in a function-block body is reduced to its first operand."
+features: [function_block, multi_pou, latch]
+difficulty: medium
+tags: [safety-function, frontend-gap, syntax-pair]

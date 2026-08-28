@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(Unlocked && Motor)"
+    justification: "ISO 14119 guard locking: the guard is never released while the drive is energised."

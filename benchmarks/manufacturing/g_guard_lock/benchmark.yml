@@ -1,0 +1,26 @@
+format_version: "0.1"
+id: g_guard_lock
+name: "interlocked guard with rundown timer"
+domain: manufacturing
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored from the guard-locking requirement in ISO 14119: the guard stays locked until the hazardous movement has stopped, not until the drive command drops"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+  - file: no_rundown.xml
+    expected_verdict: true
+    ground_truth:
+      method: fault-injection
+      base_variant: program.xml
+      seeded_defect: "The rundown timer is removed and the guard releases on the request alone, so the door opens while the spindle is still coasting."
+      witness: "Both variants satisfy props.yaml. rundown_check.props.yaml separates them, on master only: v8.4 does not model the TON block, so its gate fails on the timed variant (lesson 1.6)."
+features: [contacts, coils, ton]
+difficulty: easy
+tags: [safety-function, discriminator, iso-14119]

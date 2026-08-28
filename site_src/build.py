@@ -209,6 +209,7 @@ def corpus_stats():
     stat["lessons.count"] = sum(len(part["lessons"]) for part in parts)
 
     domains, llb_tasks, llb_variants, cited = set(), 0, 0, set()
+    discriminator_tasks = 0
     for path in sorted(BENCH.glob("*/*/benchmark.yml")):
         meta = yaml.safe_load(path.read_text(encoding="utf-8"))
         stat["benchmarks.tasks"] += 1
@@ -220,9 +221,12 @@ def corpus_stats():
             stat[f'props.{prop["kind"]}'] += 1
         variants = meta.get("variants") or [meta]
         stat["benchmarks.programs"] += len(variants)
-        if "llb" in set(meta.get("tags") or []):
+        tags = set(meta.get("tags") or [])
+        if "llb" in tags:
             llb_tasks += 1
             llb_variants += len(variants)
+        if "discriminator" in tags:
+            discriminator_tasks += 1
     for extra in sorted(BENCH.glob("*/*/*.yaml")):
         # a property file no benchmark names exists to teach a lesson, not to be run
         if extra.resolve() not in cited:
@@ -230,6 +234,7 @@ def corpus_stats():
     stat["benchmarks.domains"] = len(domains)
     stat["llb.tasks"] = llb_tasks
     stat["llb.programs"] = llb_variants
+    stat["benchmarks.discriminator"] = discriminator_tasks
     return stat
 
 
