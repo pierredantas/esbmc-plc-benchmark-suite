@@ -1,0 +1,20 @@
+format_version: "0.1"
+id: st_pump_alternation
+name: "duty-standby pump station with alternation (ST twin)"
+domain: water_treatment
+language: ST
+source:
+  origin: authored
+  reference: "Structured Text rendering of g_pump_alternation, for cross-language comparison of the same machine"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+syntax_pair_of: g_pump_alternation
+variants:
+  - file: pump_alternation.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [toggle, mutual_exclusion]
+difficulty: medium
+tags: [syntax-pair]

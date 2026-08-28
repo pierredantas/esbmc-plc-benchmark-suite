@@ -170,3 +170,38 @@ parts:
         number: "6.4"
         title: "The spelling nothing here reads"
         summary: "Ladder written as text rather than drawn. Fifteen programs, no recorded run on either route, and twelve graphical twins that verify while the files beside them cannot be checked at all."
+
+  - title: Safety functions from the standards
+    blurb: >-
+      Seven machines whose control logic exists because a clause in a standard asks for
+      it. Each one ships the property an engineer would write, a second program the
+      property cannot tell apart from the first, and the property that can.
+    lessons:
+      - slug: estop-reset
+        number: "7.1"
+        title: "The reset nobody has to press"
+        summary: "A monitored reset and an automatic restart, and one emergency-stop property that is true of both. The discriminator is refuted in the first scan, which is the requirement arriving on time."
+      - slug: two-hand
+        number: "7.2"
+        title: "Both buttons held, and the press stays up"
+        summary: "ISO 13851 Type II against Type I. The obvious property is true of the device you can defeat with tape, and true of it for a stronger reason than of the good one."
+      - slug: star-delta
+        number: "7.3"
+        title: "The gap between two contactors"
+        summary: "Mutual exclusion proved on a starter with a dead time and on one without. What the proof covers is two program variables, and a contactor is not a program variable."
+      - slug: door-reversal
+        number: "7.4"
+        title: "The door that pauses instead of reversing"
+        summary: "A latched reversal and a momentary one. The property written to separate the two designs separates the two builds as well, because v8.4 drops the latch."
+      - slug: burner-lockout
+        number: "7.5"
+        title: "A lockout that lets go"
+        summary: "EN 298 light-off order, proved on a burner with no working lockout. On the correct program the builds disagree; on the defective one they agree."
+      - slug: pump-alternation
+        number: "7.6"
+        title: "The standby pump nobody started"
+        summary: "Duty-standby alternation, and the first discriminator in this part that neither build can discharge. A five-line reproducer of a k-induction limit comes with it."
+      - slug: compressor-cycle
+        number: "7.7"
+        title: "The interlock that makes it wait"
+        summary: "A minimum-off interlock against a short-cycling twin, and the table that has been the same in all seven pairs."

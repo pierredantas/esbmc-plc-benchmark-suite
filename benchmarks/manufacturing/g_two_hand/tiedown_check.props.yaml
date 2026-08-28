@@ -1,0 +1,9 @@
+# Discriminator, not a safety requirement. Taping one actuator down leaves both signals
+# high, which is exactly the state this property says must produce a stroke. A Type II
+# device refutes it: after a tie-down there was no both-released, so it stays armed off.
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(LH && RH) || Stroke"
+    justification: "Both actuators held always produces a stroke. A Type II device with anti-tie-down must refute this."

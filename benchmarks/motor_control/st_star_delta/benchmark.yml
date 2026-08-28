@@ -1,0 +1,20 @@
+format_version: "0.1"
+id: st_star_delta
+name: "star-delta starter with open transition (ST twin)"
+domain: motor_control
+language: ST
+source:
+  origin: authored
+  reference: "Structured Text rendering of g_star_delta, for cross-language comparison of the same machine"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+syntax_pair_of: g_star_delta
+variants:
+  - file: star_delta.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [mutual_exclusion]
+difficulty: easy
+tags: [syntax-pair]

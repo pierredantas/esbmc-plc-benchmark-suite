@@ -1,0 +1,10 @@
+# Discriminator, not a safety requirement. Alternation exists so both pumps wear evenly.
+# A toggle wired in series rather than parallel never moves duty off pump A, and the
+# standby becomes a pump nobody has started in months. Asking about the selector rather
+# than about pump B keeps the question inductive: the stuck variant proves it at k = 1.
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!Duty"
+    justification: "The duty selector never moves to the second pump. Working alternation must refute this."

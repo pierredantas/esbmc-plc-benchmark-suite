@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_compressor_cycle
+name: "air compressor load/unload with minimum-off interlock"
+domain: manufacturing
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored as a receiver-pressure load/unload control with a minimum-off interlock, the usual guard against short-cycling the motor"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc v8.4, esbmc-plc master]
+  - file: short_cycle.xml
+    expected_verdict: true
+    ground_truth:
+      method: fault-injection
+      base_variant: program.xml
+      seeded_defect: "The minimum-off term is dropped from the load rung, so the compressor reloads the instant pressure falls and short-cycles against a leaking receiver."
+      witness: "Both variants satisfy props.yaml. mincycle_check.props.yaml separates them: the interlocked design refutes it, the short-cycling one proves it."
+features: [contacts, coils, latch]
+difficulty: easy
+tags: [discriminator, hysteresis]

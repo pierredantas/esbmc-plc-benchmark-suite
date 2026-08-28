@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [PumpA, PumpB]
+    justification: "Duty-standby: one pump runs at a time, so the standby stays available and the rising main is not over-pressured."

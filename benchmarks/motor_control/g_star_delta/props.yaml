@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [Star, Delta]
+    justification: "Closing the star and delta contactors together shorts the supply through the winding ends."

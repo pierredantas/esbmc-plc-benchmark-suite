@@ -1,0 +1,20 @@
+format_version: "0.1"
+id: st_burner_purge
+name: "burner purge, light-off and lockout (ST twin)"
+domain: hvac
+language: ST
+source:
+  origin: authored
+  reference: "Structured Text rendering of g_burner_purge, for cross-language comparison of the same machine"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+syntax_pair_of: g_burner_purge
+variants:
+  - file: burner_purge.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [latch, sequence]
+difficulty: easy
+tags: [syntax-pair]

@@ -1,0 +1,20 @@
+format_version: "0.1"
+id: st_estop_reset
+name: "emergency stop with monitored manual reset (ST twin)"
+domain: motor_control
+language: ST
+source:
+  origin: authored
+  reference: "Structured Text rendering of g_estop_reset, for cross-language comparison of the same safety function"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+syntax_pair_of: g_estop_reset
+variants:
+  - file: estop_reset.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [latch, edge_memory]
+difficulty: easy
+tags: [safety-function, syntax-pair]

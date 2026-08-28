@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_two_hand
+name: "two-hand control on a power press, Type II"
+domain: manufacturing
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored from the Type II requirements in ISO 13851: synchronous actuation, anti-tie-down and anti-repeat, so a taped actuator cannot start a cycle"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc v8.4, esbmc-plc master]
+  - file: type_i.xml
+    expected_verdict: true
+    ground_truth:
+      method: fault-injection
+      base_variant: program.xml
+      seeded_defect: "The arming latch is dropped, leaving Stroke as the plain conjunction of the two actuators. This is a Type I device: taping one button down and pressing the other starts a cycle."
+      witness: "Both variants satisfy props.yaml. tiedown_check.props.yaml separates them: Type II refutes it, Type I proves it."
+features: [contacts, coils, latch]
+difficulty: easy
+tags: [safety-function, discriminator, iso-13851]

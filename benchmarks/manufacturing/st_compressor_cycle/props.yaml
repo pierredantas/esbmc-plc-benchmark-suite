@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(Load && PressHigh)"
+    justification: "The compressor never loads at or above the cut-out pressure."

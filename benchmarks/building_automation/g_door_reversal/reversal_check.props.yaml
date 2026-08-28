@@ -1,0 +1,9 @@
+# Discriminator, not a safety requirement. EN 13241 asks for a reversal that carries the
+# door back to open, not a pause. A latched reversal keeps running after the obstruction
+# has cleared, which refutes this; a momentary one proves it and resumes closing.
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!Reversing || Beam"
+    justification: "Reversal lasts only while the beam is broken. A latched reversal must refute this."

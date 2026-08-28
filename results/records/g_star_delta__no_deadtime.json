@@ -1,0 +1,116 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-08-28T13:26:24Z",
+  "program": "benchmarks/motor_control/g_star_delta/no_deadtime.xml",
+  "properties_file": "benchmarks/motor_control/g_star_delta/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "mutual_exclusion",
+      "variables": [
+        "Star",
+        "Delta"
+      ],
+      "justification": "Closing the star and delta contactors together shorts the supply through the winding ends."
+    }
+  ],
+  "property_variables": [
+    "Delta",
+    "Star"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "61172c6f",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN Call=NONDET(_Bool);",
+          "        ASSIGN StarDone=NONDET(_Bool);",
+          "        ASSIGN DeadDone=NONDET(_Bool);",
+          "        ASSIGN Delta=1 && Call && StarDone;",
+          "        ASSIGN Star=1 && Call && !StarDone;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "Call": 1,
+          "StarDone": 1,
+          "DeadDone": 1,
+          "Delta": 1,
+          "Star": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/motor_control/g_star_delta/no_deadtime.xml benchmarks/motor_control/g_star_delta/no_deadtime.ld\nesbmc benchmarks/motor_control/g_star_delta/no_deadtime.ld --ld-props benchmarks/motor_control/g_star_delta/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.015,
+      "counterexample": null
+    },
+    "master": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "d88a9fa4",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 10",
+          "        ASSIGN Call=NONDET(_Bool);",
+          "        ASSIGN StarDone=NONDET(_Bool);",
+          "        ASSIGN DeadDone=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf6=0;",
+          "     2: IF !(1 && Call) THEN GOTO 3",
+          "        ASSIGN pf6=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf7=0;",
+          "     4: IF !(1 && pf6 && StarDone) THEN GOTO 5",
+          "        ASSIGN pf7=1;",
+          "     5: ASSIGN Delta=1 && pf7;",
+          "        IF !1 THEN GOTO 6",
+          "        ASSIGN pf3=0;",
+          "     6: IF !(1 && Call) THEN GOTO 7",
+          "        ASSIGN pf3=1;",
+          "     7: IF !1 THEN GOTO 8",
+          "        ASSIGN pf4=0;",
+          "     8: IF !(1 && pf3 && !StarDone) THEN GOTO 9",
+          "        ASSIGN pf4=1;",
+          "     9: ASSIGN Star=1 && pf4;",
+          "        GOTO 1",
+          "    10:"
+        ],
+        "assignment_counts": {
+          "Call": 1,
+          "StarDone": 1,
+          "DeadDone": 1,
+          "pf6": 2,
+          "pf7": 2,
+          "Delta": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "Star": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/motor_control/g_star_delta/no_deadtime.xml benchmarks/motor_control/g_star_delta/no_deadtime.ld\nesbmc benchmarks/motor_control/g_star_delta/no_deadtime.ld --ld-props benchmarks/motor_control/g_star_delta/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.016,
+      "counterexample": null
+    }
+  }
+}

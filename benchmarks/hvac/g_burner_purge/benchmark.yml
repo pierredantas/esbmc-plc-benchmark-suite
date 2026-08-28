@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_burner_purge
+name: "burner purge, light-off and lockout"
+domain: hvac
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored from the light-off order in EN 298: purge, prove flame, then admit main gas, with a lockout that needs a manual reset"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc v8.4, esbmc-plc master]
+  - file: self_clearing.xml
+    expected_verdict: true
+    ground_truth:
+      method: fault-injection
+      base_variant: program.xml
+      seeded_defect: "The lockout loses its self-hold branch, so it follows the flame-fault contact and clears itself. The burner then retries unattended after every flame failure."
+      witness: "Both variants satisfy props.yaml. lockout_check.props.yaml separates them, and v8.4 answers it the way the self-clearing variant does because it drops the latch."
+features: [contacts, coils, latch, sequence]
+difficulty: easy
+tags: [discriminator, en-298]

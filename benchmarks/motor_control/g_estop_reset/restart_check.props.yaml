@@ -1,0 +1,10 @@
+# Discriminator, not a safety requirement. ISO 13849-1 requires the safety function to be
+# restored by a separate manual action, so a monitored reset must be able to hold the drive
+# down after the emergency stop is released. A program that PROVES this has an automatic
+# restart in it.
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "Safe || EStop"
+    justification: "The safety function is available whenever the emergency stop is clear. A monitored reset must refute this."

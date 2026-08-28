@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_door_reversal
+name: "sectional door with photo-eye reversal"
+domain: building_automation
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored from the reversal requirement for power-operated doors in EN 13241: an obstruction sends the door back to open rather than pausing it"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc v8.4, esbmc-plc master]
+  - file: momentary.xml
+    expected_verdict: true
+    ground_truth:
+      method: fault-injection
+      base_variant: program.xml
+      seeded_defect: "The reversal latch loses its self-hold branch, so reversal lasts only while the beam is broken and the door resumes closing the moment the obstruction clears."
+      witness: "Both variants satisfy props.yaml. reversal_check.props.yaml separates them, and v8.4 answers it the way the momentary variant does because it drops the latch."
+features: [contacts, coils, latch]
+difficulty: easy
+tags: [discriminator, en-13241]

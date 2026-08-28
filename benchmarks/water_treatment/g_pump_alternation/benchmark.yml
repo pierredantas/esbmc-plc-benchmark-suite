@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_pump_alternation
+name: "duty-standby pump station with alternation"
+domain: water_treatment
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored as a licence-clean counterpart to the imported tank benchmarks: two pumps, one wet well, duty advancing each time the well empties"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc v8.4, esbmc-plc master]
+  - file: stuck_duty.xml
+    expected_verdict: true
+    ground_truth:
+      method: fault-injection
+      base_variant: program.xml
+      seeded_defect: "The toggle's set branch is wired in series rather than in parallel, so duty never leaves the lead pump and the standby is never started."
+      witness: "Both variants satisfy props.yaml. alternation_check.props.yaml refutes on the working alternation; on the stuck variant neither build can discharge it, and the unknown is the recorded result."
+features: [contacts, coils, toggle, mutual_exclusion]
+difficulty: medium
+tags: [discriminator, k-induction-limit]

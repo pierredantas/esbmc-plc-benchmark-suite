@@ -1,0 +1,110 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-08-28T13:26:58Z",
+  "program": "benchmarks/manufacturing/g_compressor_cycle/short_cycle.xml",
+  "properties_file": "benchmarks/manufacturing/g_compressor_cycle/mincycle_check.props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!PressLow || Load || PressHigh",
+      "justification": "A low pressure loads the compressor immediately. A minimum-off interlock must refute this."
+    }
+  ],
+  "property_variables": [
+    "Load",
+    "PressHigh",
+    "PressLow"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "61172c6f",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN PressLow=NONDET(_Bool);",
+          "        ASSIGN PressHigh=NONDET(_Bool);",
+          "        ASSIGN MinOffDone=NONDET(_Bool);",
+          "        ASSIGN Load=1 && Load && !PressHigh;",
+          "        ASSIGN Load=1 && PressLow && !PressHigh;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "PressLow": 1,
+          "PressHigh": 1,
+          "MinOffDone": 1,
+          "Load": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/manufacturing/g_compressor_cycle/short_cycle.xml benchmarks/manufacturing/g_compressor_cycle/short_cycle.ld\nesbmc benchmarks/manufacturing/g_compressor_cycle/short_cycle.ld --ld-props benchmarks/manufacturing/g_compressor_cycle/mincycle_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.014,
+      "counterexample": null
+    },
+    "master": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "d88a9fa4",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 9",
+          "        ASSIGN PressLow=NONDET(_Bool);",
+          "        ASSIGN PressHigh=NONDET(_Bool);",
+          "        ASSIGN MinOffDone=NONDET(_Bool);",
+          "        ASSIGN Load__prev=1 && Load;",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf4=0;",
+          "     2: IF !(1 && PressLow) THEN GOTO 3",
+          "        ASSIGN pf4=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf3=0;",
+          "     4: IF !(1 && Load__prev) THEN GOTO 5",
+          "        ASSIGN pf3=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN pf5=0;",
+          "     6: IF !(1 && pf4 && !PressHigh) THEN GOTO 7",
+          "        ASSIGN pf5=1;",
+          "     7: IF !(1 && pf3 && !PressHigh) THEN GOTO 8",
+          "        ASSIGN pf5=1;",
+          "     8: ASSIGN Load=1 && pf5;",
+          "        GOTO 1",
+          "     9:"
+        ],
+        "assignment_counts": {
+          "PressLow": 1,
+          "PressHigh": 1,
+          "MinOffDone": 1,
+          "Load__prev": 1,
+          "pf4": 2,
+          "pf3": 2,
+          "pf5": 3,
+          "Load": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/manufacturing/g_compressor_cycle/short_cycle.xml benchmarks/manufacturing/g_compressor_cycle/short_cycle.ld\nesbmc benchmarks/manufacturing/g_compressor_cycle/short_cycle.ld --ld-props benchmarks/manufacturing/g_compressor_cycle/mincycle_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.015,
+      "counterexample": null
+    }
+  }
+}

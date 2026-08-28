@@ -1,0 +1,9 @@
+# Discriminator, not a safety requirement. A burner lockout is non-volatile and needs a
+# manual reset, so it outlives the flame fault that caused it. A lockout that clears
+# itself proves this property and lets the burner retry unattended.
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!Lockout || FlameFail"
+    justification: "Lockout holds only while the flame fault is present. A latching lockout must refute this."

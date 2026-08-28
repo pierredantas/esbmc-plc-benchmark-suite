@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(Run && EStop)"
+    justification: "ISO 13850 stop function: the drive is never energised while the emergency stop is actuated."

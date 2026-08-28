@@ -1,0 +1,20 @@
+format_version: "0.1"
+id: st_two_hand
+name: "two-hand control on a power press, Type II (ST twin)"
+domain: manufacturing
+language: ST
+source:
+  origin: authored
+  reference: "Structured Text rendering of g_two_hand, for cross-language comparison of the same machine"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+syntax_pair_of: g_two_hand
+variants:
+  - file: two_hand.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [latch]
+difficulty: easy
+tags: [syntax-pair]

@@ -1,0 +1,9 @@
+# Discriminator, not a safety requirement. A minimum-off interlock makes the compressor
+# wait before restarting, so a low pressure does not always load it at once. A program
+# that proves this short-cycles the motor.
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!PressLow || Load || PressHigh"
+    justification: "A low pressure loads the compressor immediately. A minimum-off interlock must refute this."

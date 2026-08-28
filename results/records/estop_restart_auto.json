@@ -1,0 +1,115 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-08-28T13:26:56Z",
+  "program": "benchmarks/motor_control/g_estop_reset/auto_reset.xml",
+  "properties_file": "benchmarks/motor_control/g_estop_reset/restart_check.props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "Safe || EStop",
+      "justification": "The safety function is available whenever the emergency stop is clear. A monitored reset must refute this."
+    }
+  ],
+  "property_variables": [
+    "EStop",
+    "Safe"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "61172c6f",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN EStop=NONDET(_Bool);",
+          "        ASSIGN Reset=NONDET(_Bool);",
+          "        ASSIGN Start=NONDET(_Bool);",
+          "        ASSIGN Run=1 && Safe && Start && !EStop;",
+          "        ASSIGN Safe=1 && !EStop;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "EStop": 1,
+          "Reset": 1,
+          "Start": 1,
+          "Run": 1,
+          "Safe": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/motor_control/g_estop_reset/auto_reset.xml benchmarks/motor_control/g_estop_reset/auto_reset.ld\nesbmc benchmarks/motor_control/g_estop_reset/auto_reset.ld --ld-props benchmarks/motor_control/g_estop_reset/restart_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.014,
+      "counterexample": null
+    },
+    "master": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "d88a9fa4",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 10",
+          "        ASSIGN EStop=NONDET(_Bool);",
+          "        ASSIGN Reset=NONDET(_Bool);",
+          "        ASSIGN Start=NONDET(_Bool);",
+          "        ASSIGN Safe__prev=1 && Safe;",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf5=0;",
+          "     2: IF !(1 && Safe__prev) THEN GOTO 3",
+          "        ASSIGN pf5=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf6=0;",
+          "     4: IF !(1 && pf5 && Start) THEN GOTO 5",
+          "        ASSIGN pf6=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN pf8=0;",
+          "     6: IF !(1 && pf6 && !EStop) THEN GOTO 7",
+          "        ASSIGN pf8=1;",
+          "     7: ASSIGN Run=1 && pf8;",
+          "        IF !1 THEN GOTO 8",
+          "        ASSIGN pf3=0;",
+          "     8: IF !(1 && !EStop) THEN GOTO 9",
+          "        ASSIGN pf3=1;",
+          "     9: ASSIGN Safe=1 && pf3;",
+          "        GOTO 1",
+          "    10:"
+        ],
+        "assignment_counts": {
+          "EStop": 1,
+          "Reset": 1,
+          "Start": 1,
+          "Safe__prev": 1,
+          "pf5": 2,
+          "pf6": 2,
+          "pf8": 2,
+          "Run": 1,
+          "pf3": 2,
+          "Safe": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/motor_control/g_estop_reset/auto_reset.xml benchmarks/motor_control/g_estop_reset/auto_reset.ld\nesbmc benchmarks/motor_control/g_estop_reset/auto_reset.ld --ld-props benchmarks/motor_control/g_estop_reset/restart_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.015,
+      "counterexample": null
+    }
+  }
+}

@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_star_delta
+name: "star-delta starter with open transition"
+domain: motor_control
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored as the contactor-selection half of a wye-delta starter; the start/stop latch that drives Call is upstream and is the subject of lesson 1.4"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc v8.4, esbmc-plc master]
+  - file: no_deadtime.xml
+    expected_verdict: true
+    ground_truth:
+      method: fault-injection
+      base_variant: program.xml
+      seeded_defect: "The dead-time term is dropped from the delta rung, so delta closes on the same signal that opens star. The commands stay exclusive; the contactors no longer do."
+      witness: "Both variants satisfy props.yaml. deadtime_check.props.yaml separates them: the open transition refutes it, the closed one proves it."
+features: [contacts, coils, mutual_exclusion]
+difficulty: easy
+tags: [discriminator, transition]

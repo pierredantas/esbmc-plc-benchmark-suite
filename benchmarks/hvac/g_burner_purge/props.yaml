@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!MainValve || (PurgeDone && FlameProven)"
+    justification: "EN 298 light-off order: the main gas valve opens only after the purge has completed and the flame is proven."

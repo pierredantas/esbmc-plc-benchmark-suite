@@ -7,6 +7,16 @@ records:
   props: benchmarks/chemical_batch/g_batch_reactor/weakened.props.yaml
   expected: 'false'
   mode: kinduction
+- name: burner_lockout_latched
+  program: benchmarks/hvac/g_burner_purge/program.xml
+  props: benchmarks/hvac/g_burner_purge/lockout_check.props.yaml
+  expected: 'false'
+  mode: kinduction
+- name: burner_lockout_selfclearing
+  program: benchmarks/hvac/g_burner_purge/self_clearing.xml
+  props: benchmarks/hvac/g_burner_purge/lockout_check.props.yaml
+  expected: 'true'
+  mode: kinduction
 - name: comb_and
   program: benchmarks/manufacturing/g_comb_and/program.xml
   props: benchmarks/manufacturing/g_comb_and/props.yaml
@@ -24,6 +34,16 @@ records:
   props: benchmarks/building_automation/g_comb_or/branch_check.props.yaml
   expected: 'false'
   mode: kinduction
+- name: compressor_mincycle_interlocked
+  program: benchmarks/manufacturing/g_compressor_cycle/program.xml
+  props: benchmarks/manufacturing/g_compressor_cycle/mincycle_check.props.yaml
+  expected: 'false'
+  mode: kinduction
+- name: compressor_mincycle_short
+  program: benchmarks/manufacturing/g_compressor_cycle/short_cycle.xml
+  props: benchmarks/manufacturing/g_compressor_cycle/mincycle_check.props.yaml
+  expected: 'true'
+  mode: kinduction
 - name: ctd_load
   program: benchmarks/elevator/g_ctd_load/program.xml
   props: benchmarks/elevator/g_ctd_load/props.yaml
@@ -32,6 +52,26 @@ records:
   program: benchmarks/packaging/g_ctu_saturate/program.xml
   props: benchmarks/packaging/g_ctu_saturate/props.yaml
   expected: 'true'
+- name: door_reversal_latched
+  program: benchmarks/building_automation/g_door_reversal/program.xml
+  props: benchmarks/building_automation/g_door_reversal/reversal_check.props.yaml
+  expected: 'false'
+  mode: kinduction
+- name: door_reversal_momentary
+  program: benchmarks/building_automation/g_door_reversal/momentary.xml
+  props: benchmarks/building_automation/g_door_reversal/reversal_check.props.yaml
+  expected: 'true'
+  mode: kinduction
+- name: estop_restart_auto
+  program: benchmarks/motor_control/g_estop_reset/auto_reset.xml
+  props: benchmarks/motor_control/g_estop_reset/restart_check.props.yaml
+  expected: 'true'
+  mode: kinduction
+- name: estop_restart_monitored
+  program: benchmarks/motor_control/g_estop_reset/program.xml
+  props: benchmarks/motor_control/g_estop_reset/restart_check.props.yaml
+  expected: 'false'
+  mode: kinduction
 - name: ftrig_edge
   program: benchmarks/packaging/g_ftrig_edge/program.xml
   props: benchmarks/packaging/g_ftrig_edge/props.yaml
@@ -52,6 +92,16 @@ records:
   program: benchmarks/motor_control/g_motor_interlock/clean.xml
   props: benchmarks/motor_control/g_motor_interlock/witness.props.yaml
   expected: 'true'
+- name: pump_alternation_stuck
+  program: benchmarks/water_treatment/g_pump_alternation/stuck_duty.xml
+  props: benchmarks/water_treatment/g_pump_alternation/alternation_check.props.yaml
+  expected: 'true'
+  mode: kinduction
+- name: pump_alternation_working
+  program: benchmarks/water_treatment/g_pump_alternation/program.xml
+  props: benchmarks/water_treatment/g_pump_alternation/alternation_check.props.yaml
+  expected: 'false'
+  mode: kinduction
 - name: rtrig_edge
   program: benchmarks/traffic/g_rtrig_edge/program.xml
   props: benchmarks/traffic/g_rtrig_edge/props.yaml
@@ -73,6 +123,16 @@ records:
   program: demo2/sealin.ld
   props: demo2/props.yaml
   expected: 'true'
+- name: stardelta_deadtime_closed
+  program: benchmarks/motor_control/g_star_delta/no_deadtime.xml
+  props: benchmarks/motor_control/g_star_delta/deadtime_check.props.yaml
+  expected: 'true'
+  mode: kinduction
+- name: stardelta_deadtime_open
+  program: benchmarks/motor_control/g_star_delta/program.xml
+  props: benchmarks/motor_control/g_star_delta/deadtime_check.props.yaml
+  expected: 'false'
+  mode: kinduction
 - name: timer_latch_mix
   program: benchmarks/elevator/g_timer_latch_mix/program.xml
   props: benchmarks/elevator/g_timer_latch_mix/props.yaml
@@ -93,5 +153,15 @@ records:
 - name: tp_pulse
   program: benchmarks/packaging/g_tp_pulse/program.xml
   props: benchmarks/packaging/g_tp_pulse/props.yaml
+  expected: 'false'
+  mode: kinduction
+- name: twohand_tiedown_i
+  program: benchmarks/manufacturing/g_two_hand/type_i.xml
+  props: benchmarks/manufacturing/g_two_hand/tiedown_check.props.yaml
+  expected: 'true'
+  mode: kinduction
+- name: twohand_tiedown_ii
+  program: benchmarks/manufacturing/g_two_hand/program.xml
+  props: benchmarks/manufacturing/g_two_hand/tiedown_check.props.yaml
   expected: 'false'
   mode: kinduction

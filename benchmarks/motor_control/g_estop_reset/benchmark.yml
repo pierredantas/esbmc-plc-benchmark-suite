@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_estop_reset
+name: "emergency stop with monitored manual reset"
+domain: motor_control
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored from the reset requirement in ISO 13850 and ISO 13849-1: the safety function is restored by a separate manual action, never by releasing the actuator"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: program.xml
+    expected_verdict: true
+    ground_truth:
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc v8.4, esbmc-plc master]
+  - file: auto_reset.xml
+    expected_verdict: true
+    ground_truth:
+      method: fault-injection
+      base_variant: program.xml
+      seeded_defect: "The reset latch is removed, so the safety function follows the emergency stop contact directly and the drive is available again the moment the button is twisted out."
+      witness: "Both variants satisfy props.yaml. restart_check.props.yaml separates them: the monitored reset refutes it, the automatic restart proves it."
+features: [contacts, coils, latch, edge_memory]
+difficulty: easy
+tags: [safety-function, discriminator, iso-13850]

@@ -1,0 +1,9 @@
+# Discriminator, not a safety requirement. An open-transition starter opens star, waits
+# out the arc, and only then closes delta, so there is a window with the motor called for
+# and neither contactor in. A starter that proves this has no dead time.
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "Star || Delta || !Call"
+    justification: "Whenever the motor is called for, one of the two contactors is closed. An open transition must refute this."
