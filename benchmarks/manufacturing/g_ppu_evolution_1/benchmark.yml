@@ -5,7 +5,12 @@ domain: manufacturing
 language: LD-graphical
 source:
   origin: ppu
-  reference: "IEC 61131-3 clone-detection corpus (PPU, TwinCAT export), LD_EVOLUTION_1"
+  reference: >-
+    Named after the xPPU evolution scenarios (Vogel-Heuser et al.), but no code from
+    x-PPU/PLC_TwinCAT_Projects is present. That repository is GPL-3.0 and holds Structured
+    Text in TwinCAT .TcPOU form (Stack, Crane, TurningTable); this file is a single ladder
+    rung, Open := A AND B, in PLCopen XML carrying a 3S/CODESYS vendorElement. Checked
+    against the upstream repository on 2026-08-28, so CC-BY-4.0 stands.
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: validated
