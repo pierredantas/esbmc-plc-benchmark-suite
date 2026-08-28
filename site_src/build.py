@@ -151,6 +151,37 @@ def spell(n):
     return str(n)
 
 
+def read_properties(path):
+    """The property list of one props.yaml."""
+    return yaml.safe_load(path.read_text(encoding="utf-8"))["properties"]
+
+
+def props_path(folder, meta):
+    """The property file a benchmark names, resolved beside it.
+
+    A syntax pair shares one file, so this can point into a sibling task's directory.
+    """
+    return folder / meta["properties_file"]
+
+
+@functools.lru_cache(maxsize=1)
+def property_catalog():
+    """Every property in the catalog, grouped by kind, read from the files themselves.
+
+    A kind's task count is smaller than its property count wherever one task pairs a
+    safety claim with the witness that explains its violation.
+    """
+    kinds = {}
+    for path in sorted(BENCH.glob("*/*/benchmark.yml")):
+        meta = yaml.safe_load(path.read_text(encoding="utf-8"))
+        props = read_properties(props_path(path.parent, meta))
+        for prop in props:
+            kinds.setdefault(prop["kind"], {"properties": 0, "tasks": 0})["properties"] += 1
+        for kind in {prop["kind"] for prop in props}:
+            kinds[kind]["tasks"] += 1
+    return kinds
+
+
 @functools.lru_cache(maxsize=1)
 def corpus_stats():
     """Every figure the prose quotes, counted from the sources at build time.
@@ -177,16 +208,25 @@ def corpus_stats():
     stat["lessons.parts"] = len(parts)
     stat["lessons.count"] = sum(len(part["lessons"]) for part in parts)
 
-    domains, llb_tasks, llb_variants = set(), 0, 0
+    domains, llb_tasks, llb_variants, cited = set(), 0, 0, set()
     for path in sorted(BENCH.glob("*/*/benchmark.yml")):
         meta = yaml.safe_load(path.read_text(encoding="utf-8"))
         stat["benchmarks.tasks"] += 1
         domains.add(meta.get("domain"))
+        props = props_path(path.parent, meta)
+        cited.add(props.resolve())
+        for prop in read_properties(props):
+            stat["props.total"] += 1
+            stat[f'props.{prop["kind"]}'] += 1
         variants = meta.get("variants") or [meta]
         stat["benchmarks.programs"] += len(variants)
         if "llb" in set(meta.get("tags") or []):
             llb_tasks += 1
             llb_variants += len(variants)
+    for extra in sorted(BENCH.glob("*/*/*.yaml")):
+        # a property file no benchmark names exists to teach a lesson, not to be run
+        if extra.resolve() not in cited:
+            stat["props.teaching"] += len(read_properties(extra))
     stat["benchmarks.domains"] = len(domains)
     stat["llb.tasks"] = llb_tasks
     stat["llb.programs"] = llb_variants
@@ -267,6 +307,29 @@ def render_coverage(_arg, _ctx):
     out.append(f"| total | {sum(t for t, _ in rows.values())} "
                f"| {sum(v for _, v in rows.values())} |")
     return "\n".join(out)
+
+
+def render_properties(arg, _ctx):
+    """{{properties: catalog}} tallies the catalog's property kinds at build time.
+
+    {{properties: schema}} sets the same tally beside the vocabulary the schema declares,
+    so a kind that is spelled but never used cannot pass unnoticed.
+    """
+    catalog = property_catalog()
+    if arg.strip() == "schema":
+        schema = json.loads((ROOT / "schema" / "properties.schema.json")
+                            .read_text(encoding="utf-8"))
+        declared = schema["$defs"]["property"]["properties"]["kind"]["enum"]
+        rows = ["| kind in the schema | properties in the catalog |", "|---|---|"]
+        rows += [f'| `{kind}` | {catalog.get(kind, {}).get("properties", 0) or "none"} |'
+                 for kind in declared]
+        return "\n".join(rows)
+    rows = ["| kind | properties | tasks carrying one |", "|---|---|---|"]
+    rows += [f'| `{kind}` | {row["properties"]} | {row["tasks"]} |' for kind, row
+             in sorted(catalog.items(), key=lambda kv: -kv[1]["properties"])]
+    rows.append(f'| total | {sum(r["properties"] for r in catalog.values())} '
+                f'| {corpus_stats()["benchmarks.tasks"]} |')
+    return "\n".join(rows)
 
 
 def tool_label(run):
@@ -398,7 +461,7 @@ def render_record(arg, _ctx):
 
 HANDLERS = {"files": render_files, "code": render_code, "show": render_show,
             "record": render_record, "citation": render_citation,
-            "coverage": render_coverage,
+            "coverage": render_coverage, "properties": render_properties,
             "predict": render_predict}
 
 
@@ -448,6 +511,7 @@ def build_nav(parts):
             for les in part["lessons"]]})
     nav = [{"Home": "index.md"},
            {"The five languages": "languages.md"},
+           {"The properties we prove": "properties.md"},
            {"How ESBMC-PLC works": "how-esbmc-plc-works.md"},
            {"The tools underneath": "the-tools-underneath.md"},
            {"Ladder logic bombs": "ladder-logic-bombs.md"},
@@ -509,6 +573,38 @@ def sibling_links(text, meta):
     return re.sub(r"\]\(\.\./([A-Za-z0-9_]+)/\)", fix, text)
 
 
+def claim_of(prop):
+    """A property as a reader should read it, from whichever field carries it.
+
+    Reachability inverts the usual reading, so the row says which way it is meant to be
+    taken rather than leaving a bare expression that looks like a safety claim.
+    """
+    if prop.get("expression"):
+        wrapped = f'`{prop["expression"]}`'
+        return f"reachable: {wrapped}" if prop["kind"] == "reachability" else wrapped
+    if prop.get("variables"):
+        return "never true together: " + ", ".join(f"`{v}`" for v in prop["variables"])
+    return "every scan completes"
+
+
+def build_properties(meta):
+    """What this task asks, from the file the runner hands ESBMC.
+
+    A task page that lists only files and verdicts leaves the question itself off the
+    page, and the question is the part a reviewer has to disagree with.
+    """
+    path = props_path(meta["_dir"], meta)
+    rows = ["| id | kind | claim | requirement |", "|---|---|---|---|"]
+    for prop in read_properties(path):
+        why = " ".join(prop["justification"].split()).replace("|", "\\|")
+        rows.append(f'| `{prop["id"]}` | `{prop["kind"]}` | {claim_of(prop)} | {why} |')
+    named = path.resolve().relative_to(ROOT)
+    return ["\n## What is proved\n",
+            f"From `{named}`. What each kind claims, and what it becomes on either "
+            "route, is on [The properties we prove](../../../properties.md).\n",
+            "\n".join(rows)]
+
+
 def build_benchmark(meta, recorded):
     """One task page, keyed by suite id, at /benchmarks/<domain>/<id>/."""
     source = meta.get("source", {})
@@ -524,11 +620,15 @@ def build_benchmark(meta, recorded):
     if source.get("reference"):
         body.append(f'\n{source["reference"]}\n')
 
-    body += ["\n## Variants\n", "| file | expected verdict | ground truth |", "|---|---|---|"]
+    body += build_properties(meta)
+
+    body += ["\n## Variants\n",
+             "| file | expected verdict | violates | ground truth |", "|---|---|---|---|"]
     for var in meta.get("variants", []):
         expected = VERDICT.get(var.get("expected_verdict"), var.get("expected_verdict"))
         method = var.get("ground_truth", {}).get("method", "")
-        body.append(f'| `{var["file"]}` | {expected} | {method} |')
+        violated = ", ".join(f"`{p}`" for p in var.get("violated_properties", [])) or "none"
+        body.append(f'| `{var["file"]}` | {expected} | {violated} | {method} |')
 
     files = sorted(p for p in meta["_dir"].iterdir() if p.is_file() and p.name != "README.md")
     body += ["\n## Files\n", offer(files, dest)]

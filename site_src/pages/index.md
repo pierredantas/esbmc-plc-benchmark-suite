@@ -24,8 +24,10 @@ domains and five IEC languages, each with its files, its expected verdict, and t
 that established it.
 
 **[The five languages](languages.md)** writes one circuit six ways, and
-**[How ESBMC-PLC works](how-esbmc-plc-works.md)** follows a program from XML to a verdict.
-**[Reproducing](reproducing.md)** is how to run any of it yourself.
+**[The properties we prove](properties.md)** is the other half of every benchmark: the four
+kinds of question the suite asks, and what each becomes by the time the solver sees it.
+**[How ESBMC-PLC works](how-esbmc-plc-works.md)** follows a program from XML to a verdict,
+and **[Reproducing](reproducing.md)** is how to run any of it yourself.
 
 ## Recorded, not live
 

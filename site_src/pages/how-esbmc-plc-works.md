@@ -118,6 +118,10 @@ merely proving one exists.
 Expressions are parsed as C, so write `!(A && B)`. The IEC spelling `NOT (A AND B)` is
 rejected as an undeclared variable.
 
+What each kind claims, which of them the catalog actually uses, and what the C route does
+with the two this table cannot encode are on
+[The properties we prove](properties.md).
+
 ## Then the engine takes over
 
 From the GOTO program onward, nothing is PLC-specific. `goto-symex` unrolls the scan

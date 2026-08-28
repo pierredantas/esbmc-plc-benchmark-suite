@@ -79,9 +79,13 @@ The catalog carries four kinds for that reason:
 | `reachability` | can this state be reached, and by what input |
 | `termination` | does the scan complete |
 
-Across the catalog's sixty-eight benchmarks that is forty-eight invariants, eight mutual
-exclusions, four reachability claims and fourteen termination claims. The fourteen exist
-because the other three kinds are blind to a payload that produces nothing.
+Across the catalog's {{stat: benchmarks.tasks|words}} benchmarks that is
+{{stat: props.invariant|words}} invariants, {{stat: props.mutual_exclusion|words}} mutual
+exclusions, {{stat: props.reachability|words}} reachability claims and
+{{stat: props.termination|words}} termination claims. The last group exists because the
+other three kinds are blind to a payload that produces nothing.
+[The properties we prove](../../properties.md) takes each kind in turn, including the two
+the vocabulary declares and nothing here uses.
 
 ## 6. Check that the tool read your program
 
@@ -123,8 +127,9 @@ A yes or no tells you to investigate. A witness tells you what to do this aftern
 
 ## The short version
 
-Seventy-four properties across sixty-eight benchmarks, plus four more written only to
-teach, and the ones that earned their place share four qualities: they name a consequence
+{{stat: props.total|Words}} properties across {{stat: benchmarks.tasks|words}} benchmarks,
+plus {{stat: props.teaching|words}} more written only to teach, and the ones that earned
+their place share four qualities: they name a consequence
 a person can argue about, they fail when the feature they guard is absent, they admit what
 they do not cover, and they arrive with evidence that the program was read.
 
