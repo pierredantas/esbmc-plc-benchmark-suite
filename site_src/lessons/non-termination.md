@@ -140,7 +140,7 @@ diagnostic; there is only a green verdict.
 
 Fourteen benchmarks carry `kind: termination`. Eight are the `g_tank_*` family, graphical
 ladder with a Structured Text function block inside, and all eight are recorded here on
-both builds: legitimate SUCCESSFUL, malicious FAILED.
+as expected: legitimate SUCCESSFUL, malicious FAILED.
 
 The other six are `st_swat_*`, drawn from a real water treatment testbed. They are plain
 Structured Text, so ESBMC reaches them only through the C route, and that route has no way

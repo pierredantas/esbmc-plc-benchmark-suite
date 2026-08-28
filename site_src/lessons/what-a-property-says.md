@@ -32,7 +32,8 @@ The fix is a **discriminator**, a second property that only the real feature ref
 expression: "!Run || Start"      # Run implies Start; a real latch must break this
 ```
 
-v8.4 proves it, which is how you learn v8.4 built something else. The technique recurs in
+A front end that dropped the latch would prove it, which is how you learn it built
+something else. The technique recurs in
 [1.2](../series-parallel/index.md) for a dropped parallel branch and in
 [1.6](../timers/index.md) for a dropped timer block. If a benchmark is named for a
 feature, one of its properties should fail when that feature is missing.
@@ -96,9 +97,11 @@ variables assigned anywhere inside the scan loop? A front end that discards a bo
 an empty loop, and an empty loop satisfies every safety property ever written.
 
 **{{stat: gate.fail|Words}} of the {{stat: runs.total}} recorded runs on this site fail that gate.** Every FBD and SFC
-variant, on both builds, because ESBMC consumes an `<LD>` body and nothing else. Several
-timer and counter benchmarks on v8.4, because that build drops function-block bodies
-outright. In each case the verdict is `SAFE` and the verdict is worthless.
+variant, because ESBMC consumes an `<LD>` body and nothing else, and since
+[#7354](https://github.com/esbmc/esbmc/issues/7354) was fixed it says so and stops. The
+{{stat: gate.fail.silent|words}} that do not stop are the ones to worry about: a `SAFE` and
+a `VIOLATION`, both confident, both about a function block that never reached the scan
+loop.
 
 A verdict without evidence that the program was read is not a result. That is why every
 panel on this site prints the scan body next to the answer.

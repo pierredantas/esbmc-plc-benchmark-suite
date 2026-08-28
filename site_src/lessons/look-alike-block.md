@@ -86,7 +86,7 @@ some coordinates.
 
 {{record: g_tank_start_eq__malicious_mstart_eq}}
 
-The two builds agree, both times. Nothing had to tell the verifier that `EQ_0` was
+The verdict is the same both times. Nothing had to tell the verifier that `EQ_0` was
 suspicious, because it does not work from a list of trusted names. It translated the block
 that the rung actually calls, found a loop in it, and asked whether the loop can fail to
 terminate.

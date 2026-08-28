@@ -18,7 +18,7 @@ about as small as a ladder gets: two contacts in series driving a coil.
 
 {{record: g_ppu_evolution_1__evolution_1}}
 
-Proved on both builds. Nothing about the verdict is interesting. Everything about the
+Proved. Nothing about the verdict is interesting. Everything about the
 file is.
 
 ## It was the only one that validated

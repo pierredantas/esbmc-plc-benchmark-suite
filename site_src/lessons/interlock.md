@@ -54,13 +54,13 @@ Read the trace in order. Both `fwd` and `rev` come up true in one scan, `KM_CCW`
 follows `rev`, `KM_CW` follows `fwd` with nothing to block it, and the property fails
 on the pair. Twelve milliseconds, one scan, one short circuit.
 
-## What the two builds encoded
+## What the front end encoded
 
-Compare the two tabs above. v8.4 writes `ASSIGN KM_CW=1 && fwd;` and moves on. master
-builds a guarded accumulator, `pf10`, sets it to 1 only when the branch conducts, and
-then assigns `KM_CW=1 && pf10`, which on this rung means exactly what v8.4 means,
-because only one path runs through it. Put two paths in parallel and that difference
-decides the verdict. Lesson 2 is [where it does](../seal-in/index.md).
+Read the tab above. The front end builds a guarded accumulator, `pf10`, sets it to 1 only
+when the branch conducts, and then assigns `KM_CW=1 && pf10`. On this rung that is just a
+longhand spelling of `KM_CW = fwd`, because only one path runs through it. Put two paths in
+parallel and the accumulator stops being ceremony and starts deciding the verdict. Lesson
+1.2 is [where it does](../series-parallel/index.md).
 
 Watch the ingestion gate column as well. It reports whether the property's variables
 were assigned anywhere inside the scan loop. A front end that drops a body silently

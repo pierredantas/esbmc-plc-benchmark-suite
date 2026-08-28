@@ -33,26 +33,25 @@ paths rather than take the last one it saw. Hold that thought.
 
 {{record: comb_or}}
 
-Two builds, same verdict, both proofs closing at k = 2. Stop there and you would file
-this benchmark as done.
+Proved at k = 2. Stop there and you would file this benchmark as done.
 
 ## Read the encoding
 
-The two tabs above are not the same program.
-
-v8.4 writes one assignment per branch and lets the second land on top of the first:
+A wired OR is the first place a ladder front end can quietly get a rung wrong, because
+there is an obvious and incorrect way to compile it: emit one assignment per branch and
+let the later one land on top of the earlier one.
 
 ```
 ASSIGN Y=1 && A;
 ASSIGN Y=1 && B;
 ```
 
-After that pair of statements `Y` equals `B`. Contact A has no effect on anything. The
-rung drawn above has been flattened into a rung with one branch, and no diagnostic was
-printed.
+After that pair of statements `Y` equals `B`, contact A has no effect on anything, and the
+rung drawn above has been flattened into a rung with one branch. No diagnostic would be
+printed, because nothing went wrong as far as the compiler is concerned.
 
-master builds a per-coil accumulator instead. `pf3` and `pf4` record whether each
-branch conducted, then `Y__pf0` starts at 0 and is raised by either one:
+What this build actually emits is a per-coil accumulator. `pf3` and `pf4` record whether
+each branch conducted, then `Y__pf0` starts at 0 and is raised by either one:
 
 ```
 IF !(1 && B) THEN GOTO 3
@@ -69,12 +68,13 @@ ASSIGN Y__pf0=1;
 Two writes to `Y__pf0` with the same value 1, guarded separately. That is a disjunction
 written out longhand, and it is the rung you drew.
 
-## Why the property did not notice
+## Why the property would not have noticed
 
-`!Y || A || B` says that `Y` implies at least one of the two inputs. Under master's
-encoding `Y` is `A OR B`, so it holds. Under v8.4's encoding `Y` is `B`, and `B` implies
-`A OR B`, so it holds there too. The property is true of both a correct rung and a
-broken one, which makes it useless for telling them apart.
+`!Y || A || B` says that `Y` implies at least one of the two inputs. Under the accumulator
+encoding `Y` is `A OR B`, so it holds. Under the flattened one `Y` is `B`, and `B` implies
+`A OR B`, so it would hold there too. The property is true of the correct rung and of the
+broken one alike, which makes it useless for telling them apart. A green row here would
+have carried no information about whether the branch survived compilation.
 
 So ask something that only a real OR refutes. If both branches are live, `A` can close
 while `B` stays open, and `Y` still comes up:
@@ -83,10 +83,10 @@ while `B` stays open, and `Y` still comes up:
 
 {{record: comb_or_branch}}
 
-v8.4 proves it, at k = 2, because in the program v8.4 encoded `Y` really is `B` and can
-never outrun it. master refutes it and hands you the scan: `A` closed, `B` open, `Y`
-energized. Same file, same command, opposite answers, and the reason is not the solver.
-It is what each front end thought the rung said.
+Refuted, with the scan handed to you: `A` closed, `B` open, `Y` energized. That
+counterexample is only constructible if the upper branch reached the solver, so the
+refutation is the evidence that it did. Had the rung been flattened, this property would
+have been proved instead, soundly, about a program with one branch in it.
 
 ## Series inside a branch
 
@@ -99,10 +99,11 @@ The second twin adds a negated contact and puts a series pair on the upper branc
 
 {{record: comb_mixed}}
 
-Same story, one level deeper. v8.4 collapses to `ASSIGN Y=1 && A && !B;` followed by
-`ASSIGN Y=1 && C;`, so `Y` is just `C`. master threads `pf3` for A, `pf4` for the series
-pair, `pf5` for C, and merges the two branches into the coil accumulator. Both report
-SUCCESSFUL against the shipped property, for the same reason as before.
+Same story, one level deeper. Flattening would give `ASSIGN Y=1 && A && !B;` followed by
+`ASSIGN Y=1 && C;`, leaving `Y` as just `C`. What is built instead threads `pf3` for A,
+`pf4` for the series pair, `pf5` for C, and merges the two branches into the coil
+accumulator. The shipped property reports SUCCESSFUL either way, for the same reason as
+before.
 
 ## What to take from this
 

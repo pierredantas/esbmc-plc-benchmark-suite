@@ -187,9 +187,9 @@ A property holds vacuously over a program that was never ingested. Every run rec
 the ladder route therefore reports an ingestion gate beside its verdict, asking whether
 the property's variables are assigned anywhere inside the scan loop.
 **{{stat: gate.fail|Words}} of those {{stat: runs.ladder}} runs fail it.**
-{{stat: gate.fail.safe|Words}} of the {{stat: gate.fail}} report `SAFE` and the others do
-not, which matters less than what they have in common: none of them is an answer about the
-program in the file.
+Most are files the front end now rejects by name rather than emptying in silence. The
+{{stat: gate.fail.silent|words}} that remain still carry a verdict, one `SAFE` and one
+`VIOLATION`, and neither is an answer about the program in the file.
 
 [Lesson 3.6](lessons/what-a-property-says/index.md) turns all of this into a checklist for
 writing your own: name a consequence rather than restating the code, add a discriminator

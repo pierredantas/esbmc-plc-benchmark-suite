@@ -105,7 +105,7 @@ Independence of design does not survive shared implementation.
 
 ## And the verifier does not care
 
-All three bombs are refuted by both builds, in milliseconds, from properties short enough
+All three bombs are refuted in milliseconds, from properties short enough
 to read aloud. The verifier has no notion of substations, layers or operators. It was
 handed a claim about two Booleans and it found the assignment that breaks it.
 

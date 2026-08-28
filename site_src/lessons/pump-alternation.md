@@ -69,7 +69,7 @@ Duty ---| |---| |--- ( Duty )     Duty := Duty AND LevelLow
              LevelLow
 ```
 
-Against `!Duty`, both builds report `The inductive step is unable to prove the property`
+Against `!Duty`, the checker reports `The inductive step is unable to prove the property`
 at every k from 2 to 50 and finish with `VERIFICATION UNKNOWN`. A bounded run to depth 20
 finds no counterexample and fails only on the unwinding assertion, which is what an
 infinite scan loop always does. So there is no trace refuting the property within 20
@@ -82,6 +82,6 @@ the other. That symmetry is what makes the pair informative, and it depends
 on the checker being able to answer both halves. Here it answers one.
 
 The pair is still worth shipping. It records what the tool did rather than what we wanted
-it to do, the working alternation is confirmed on both builds, and the gap has a
+it to do, the working alternation is confirmed, and the gap has a
 five-line reproducer attached to it. An `unknown` that you can hand to somebody is a
 better artifact than a benchmark quietly reshaped until the checker agreed with it.

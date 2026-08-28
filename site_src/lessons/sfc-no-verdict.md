@@ -3,7 +3,10 @@ them, and actions attached to the steps. It is how batch plants and anything els
 sequence get written.
 
 The suite ships four Sequential Function Chart benchmarks and can tell you nothing
-trustworthy about any of them. This lesson is that result.
+trustworthy about any of them. This lesson is that result, and it is the one page in this
+part that the August 2026 fix to
+[esbmc#7354](https://github.com/esbmc/esbmc/issues/7354) barely improved. The front end now
+says out loud that it cannot read a chart. It still cannot read a chart.
 
 ## What the programs are
 
@@ -21,36 +24,28 @@ valves are never open together:
 
 Both properties are the kind this suite verifies routinely on ladder. Neither is exotic.
 
-## Eight runs, eight gate failures
+## Four runs, four refusals
 
 {{record: sfc_batch_fill_drain__clean}}
 
-`SAFE` on both builds, `status: correct`, and the ingestion gate failing on both
-`fill_valve` and `drain_valve`.
+```
+ERROR: UnsupportedConstruct(SFC body of POU 'batch_cycle', tier=2)
+```
 
-Take that row apart, because it is the most misleading shape a record can have. The verdict
-matches what the benchmark expected, and the status column agrees. A table that scores tools on
-whether the verdict matched would count this as a success, and the program was never read:
-the `<SFC>` body went the way of the `<FBD>` bodies in
-[lesson 6.1](../fbd-unread/index.md), leaving a scan loop that drives neither valve.
+That is what the fix bought: a named refusal instead of a verdict. It is worth knowing what
+this row used to say, because it was the most misleading shape a record can have. `SAFE`,
+`status: correct`, and the gate failing on both `fill_valve` and `drain_valve`. The verdict
+matched what the benchmark expected and the status column agreed, so a table scoring tools
+on whether the verdict matched would have counted it a success. The program was never read.
+The `<SFC>` body went the way of the `<FBD>` bodies in
+[lesson 6.1](../fbd-unread/index.md), leaving a scan loop that drove neither valve.
 
 An empty program satisfies mutual exclusion. It satisfies everything.
 
 {{record: sfc_batch_fill_drain__bomb}}
 
-`unknown`, which at least declines to claim anything.
-
-The elevator pair behaves identically, and the summary across all four SFC benchmarks is
-uniform:
-
-| | verdict | status | gate |
-|---|---|---|---|
-| `sfc_batch_fill_drain` clean | `SAFE` | correct | **fail** |
-| `sfc_batch_fill_drain` bomb | `unknown` | unknown | **fail** |
-| `sfc_elevator_door` clean | `SAFE` | correct | **fail** |
-| `sfc_elevator_door` bomb | `unknown` | unknown | **fail** |
-
-Eight runs across two builds, eight gate failures. Two of them say `SAFE`.
+The elevator pair behaves identically, and all four SFC benchmarks are now uniform: refused
+at parse, gate failing, nothing reaching the solver.
 
 ## The second route reaches them, and still cannot answer
 
@@ -109,13 +104,15 @@ part is about.
 A benchmark suite is allowed to have holes. It is not allowed to hide them behind a column
 that says `SAFE`.
 
-Four benchmarks here carry a green verdict and a failing gate, and the honest reading is
-that the suite ships SFC programs it cannot currently verify. Two things would change that,
-and both are open work rather than opinion: ESBMC reading `<SFC>` bodies, which is
-[#7354](https://github.com/esbmc/esbmc/issues/7354), or the generated state machine
-becoming tractable, which probably means a harness that drives the chart's own step
-variable instead of nesting two loops.
+Four benchmarks here used to carry a green verdict and a failing gate. They now carry an
+error and a failing gate, which is better and is not a verdict either. The honest reading is
+unchanged: the suite ships SFC programs it cannot currently verify.
+
+Two things would change that. The front end could learn to read `<SFC>` bodies, which the
+`tier=2` in that diagnostic says it does not; #7354 fixed the silence, not the gap. Or the
+generated state machine could become tractable on the C route, which probably means a
+harness driving the chart's own step variable instead of nesting two loops.
 
 Until one of them happens, the SFC rows are here to be counted against the tool rather than
 for it. [Lesson 3.6](../what-a-property-says/index.md) collects the {{stat: gate.fail|words}}
-recorded runs whose verdict meant nothing. Eight of them are on this page.
+recorded runs whose verdict rests on nothing. Four of them are on this page.

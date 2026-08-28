@@ -30,7 +30,7 @@ an interlock is supposed to look.
 
 {{record: g_conveyor_interlock__clean}}
 
-Proved on both builds, ingestion gate passing on both. Nothing surprising, which is the
+Proved, with the ingestion gate passing. Nothing surprising, which is the
 point: you need to know what the correct program looks like before the other one means
 anything.
 
@@ -48,7 +48,7 @@ The added path conducts precisely when the emergency stop *is* pressed and a mai
 key is turned. Everywhere else in the input space the two programs behave identically.
 Run the machine normally, for years, and you will never see the difference.
 
-{{predict: g_conveyor_interlock__bomb | You have the rung and the property. Before scrolling, decide what the two builds report and whether the gate passes.}}
+{{predict: g_conveyor_interlock__bomb | You have the rung and the property. Before scrolling, decide what the checker reports and whether the gate passes.}}
 
 {{record: g_conveyor_interlock__bomb}}
 

@@ -41,7 +41,7 @@ Neither build agrees.
 
 ## What went wrong, in the encoding
 
-v8.4 emits the three rungs in this order:
+The front end emits the three rungs in this order:
 
 ```
 ASSIGN Sig_prev=1 && Sig;              rung 3

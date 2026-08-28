@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-27T16:34:45Z",
+  "recorded_at": "2026-08-28T18:37:03Z",
   "program": "benchmarks/motor_control/g_motor_interlock/bomb.xml",
   "properties_file": "benchmarks/motor_control/motor_interlock/props.yaml",
   "properties": [
@@ -26,49 +26,12 @@
   ],
   "expected_verdict": "VIOLATION",
   "runs": {
-    "v8.4": {
-      "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
-        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
-        "version": "8.4.0",
-        "commit": "61172c6f",
-        "platform": "aarch64 macos"
-      },
-      "status": "correct",
-      "encoding": {
-        "scan_body": [
-          "     1: IF !1 THEN GOTO 2",
-          "        ASSIGN fwd=NONDET(_Bool);",
-          "        ASSIGN rev=NONDET(_Bool);",
-          "        ASSIGN maint=NONDET(_Bool);",
-          "        ASSIGN Motor_B=1 && rev;",
-          "        ASSIGN Motor_A=1 && !rev && fwd;",
-          "        ASSIGN Motor_A=1 && rev && maint && fwd;",
-          "        GOTO 1",
-          "     2:"
-        ],
-        "assignment_counts": {
-          "fwd": 1,
-          "rev": 1,
-          "maint": 1,
-          "Motor_B": 1,
-          "Motor_A": 2
-        },
-        "not_driven_by_body": [],
-        "gate": "pass"
-      },
-      "command": "cp benchmarks/motor_control/g_motor_interlock/bomb.xml benchmarks/motor_control/g_motor_interlock/bomb.ld\nesbmc benchmarks/motor_control/g_motor_interlock/bomb.ld --ld-props benchmarks/motor_control/motor_interlock/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
-      "verdict": "VIOLATION",
-      "proof": null,
-      "cpu_time_s": 0.011,
-      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  fwd = 1\n\nState 2  thread 0\n----------------------------------------------------\n  rev = 1\n\nState 3  thread 0\n----------------------------------------------------\n  maint = 1\n\nState 4  thread 0\n----------------------------------------------------\n  Motor_B = 1\n\nState 5  thread 0\n----------------------------------------------------\n  Motor_A = 1\n\nState 6 file benchmarks/motor_control/g_motor_interlock/bomb.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/motor_control/g_motor_interlock/bomb.ld\n  P1\n  !(Motor_A && Motor_B)"
-    },
     "master": {
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "d88a9fa4",
+        "commit": "0064c4ac",
         "platform": "aarch64 macos"
       },
       "status": "correct",
@@ -123,7 +86,7 @@
       "command": "cp benchmarks/motor_control/g_motor_interlock/bomb.xml benchmarks/motor_control/g_motor_interlock/bomb.ld\nesbmc benchmarks/motor_control/g_motor_interlock/bomb.ld --ld-props benchmarks/motor_control/motor_interlock/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.011,
+      "cpu_time_s": 0.012,
       "counterexample": "State 1  thread 0\n----------------------------------------------------\n  fwd = 1\n\nState 2  thread 0\n----------------------------------------------------\n  rev = 1\n\nState 3  thread 0\n----------------------------------------------------\n  maint = 1\n\nState 4  thread 0\n----------------------------------------------------\n  Motor_B = 1\n\nState 5  thread 0\n----------------------------------------------------\n  Motor_A = 1\n\nState 6 file benchmarks/motor_control/g_motor_interlock/bomb.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/motor_control/g_motor_interlock/bomb.ld\n  P1\n  !(Motor_A && Motor_B)\n\n\n** Results:\nbenchmarks/motor_control/g_motor_interlock/bomb.ld\n  FAILED       [global.assertion.1]  line 0  P1\n  NOT CHECKED  [global.assertion.2]  line 0  P2\n\n** 1 of 2 properties failed, 1 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
     }
   }

@@ -45,14 +45,14 @@ different statement.
 
 {{record: g_tank_assignment__legitimate_lassignment}}
 
-Proved on both builds. The scan loop terminates, so the property holds, and k-induction
+Proved. The scan loop terminates, so the property holds, and k-induction
 closes it without a bound.
 
 ## The malicious half
 
 {{record: g_tank_assignment__malicious_massignment}}
 
-Refuted on both builds in under four hundredths of a second.
+Refuted in under four hundredths of a second.
 
 The counterexample is the part to read closely:
 

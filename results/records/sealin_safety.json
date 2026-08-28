@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-27T16:34:52Z",
+  "recorded_at": "2026-08-28T18:37:09Z",
   "program": "demo2/sealin.ld",
   "properties_file": "demo2/props.yaml",
   "properties": [
@@ -17,45 +17,12 @@
   ],
   "expected_verdict": "SAFE",
   "runs": {
-    "v8.4": {
-      "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
-        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
-        "version": "8.4.0",
-        "commit": "61172c6f",
-        "platform": "aarch64 macos"
-      },
-      "status": "correct",
-      "encoding": {
-        "scan_body": [
-          "     1: IF !1 THEN GOTO 2",
-          "        ASSIGN Start=NONDET(_Bool);",
-          "        ASSIGN EStop=NONDET(_Bool);",
-          "        ASSIGN Run=1 && Start && !EStop;",
-          "        ASSIGN Run=1 && Run && !EStop;",
-          "        GOTO 1",
-          "     2:"
-        ],
-        "assignment_counts": {
-          "Start": 1,
-          "EStop": 1,
-          "Run": 2
-        },
-        "not_driven_by_body": [],
-        "gate": "pass"
-      },
-      "command": "esbmc demo2/sealin.ld --ld-props demo2/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
-      "verdict": "SAFE",
-      "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.015,
-      "counterexample": null
-    },
     "master": {
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "d88a9fa4",
+        "commit": "0064c4ac",
         "platform": "aarch64 macos"
       },
       "status": "correct",
@@ -98,7 +65,7 @@
       "command": "esbmc demo2/sealin.ld --ld-props demo2/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.017,
+      "cpu_time_s": 0.016,
       "counterexample": null
     }
   }

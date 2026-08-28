@@ -31,7 +31,7 @@ operator takes both hands off, which is the behavior the standard is asking for.
 {{show: benchmarks/manufacturing/g_two_hand/props.yaml}}
 
 The ram descends only while both actuators are held. That is the sentence in the risk
-assessment, and both builds prove it.
+assessment, and the checker proves it.
 
 {{record: g_two_hand__program}}
 

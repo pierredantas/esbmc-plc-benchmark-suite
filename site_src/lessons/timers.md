@@ -20,23 +20,12 @@ output rather than by the contact in front of it.
 
 {{record: ton_single}}
 
-Both builds return SUCCESSFUL. Look at the ingestion gate column before you believe
-either of them.
+SUCCESSFUL, with the gate passing. Before believing it, look at what the front end built.
 
-## v8.4 does not model the block at all
+## What a timer becomes
 
-The gate fails on v8.4 because the property's variables are never assigned inside the
-scan loop. That is not a subtlety. Here is the entire scan body v8.4 produced for the
-off-delay program below:
-
-```
-ASSIGN Pir=NONDET(_Bool);
-ASSIGN Button=NONDET(_Bool);
-ASSIGN Light=1 && Button;
-```
-
-The `TOF` block is gone. `Light` is just `Button`, and any property that happens to
-hold of that reduced program is reported as proved. master builds the timer:
+A `TON` is not a primitive to the solver. It has to be unrolled into state the scan loop
+carries between iterations, and you can read the whole of it:
 
 ```
 ASSIGN TOF0__IN=1 && pf3;
@@ -45,8 +34,12 @@ ASSIGN TOF0__ET=TOF0__ET + 1;
 ASSIGN TOF0__Q=...
 ```
 
-This is the value of the gate. Nobody had to read the encoding to notice; the record
-failed a mechanical check.
+An elapsed-time counter, incremented on the scans where the input holds, and an output
+raised when it passes the preset. That is the timer, and its presence in the scan body is
+what makes any verdict about the lamp mean something. A front end that dropped the block
+would leave `Light` as a plain copy of `Button`, and every property that happened to hold
+of that reduced program would come back proved. The gate exists to catch exactly that,
+mechanically, without anybody reading the encoding.
 
 ## The property was wrong, and the tool was right to say so
 
@@ -59,12 +52,11 @@ lit after the sensor clears. So the property claims the component does not do it
 
 {{record: tof_implies_input}}
 
-master refutes it, and its counterexample is the off-delay working: `Pir` goes high and
-`Light` comes on, then `Pir` drops to 0 with `Button` still 0, and `Light` stays on. v8.4
-proves it, because in v8.4's program `Light` is `Button` and the timer never existed.
+Refuted, and the counterexample is the off-delay working: `Pir` goes high and `Light`
+comes on, then `Pir` drops to 0 with `Button` still 0, and `Light` stays on.
 
-Both builds are wrong about the requirement, for opposite reasons, and only one of them
-is wrong about the program.
+The tool is right and the requirement is wrong. That is a distinction worth keeping
+separate from a tool being wrong, because both arrive on the page as a red row.
 
 ## A requirement that does hold
 
@@ -75,9 +67,11 @@ is lit. The delay only extends that, it never shortens it.
 
 {{record: tof_hold}}
 
-master proves it. v8.4 refutes it, because in a program where `Light` is `Button`, motion
-alone does not light the lamp. The corrected property is a discriminator for the dropped
-block, in exactly the sense lesson 1.2 used one for a dropped branch.
+Proved. Between them the two properties pin the block down from both sides: the timer
+extends the lamp past the sensor, and never cuts it short. A front end that had dropped the
+`TOF` would answer the pair the other way round, refuting the requirement that holds and
+proving the one that does not, which makes them a discriminator for the block in exactly
+the sense lesson 1.2 used one for a dropped branch.
 
 ## The trap that cost this suite a factor of ten
 

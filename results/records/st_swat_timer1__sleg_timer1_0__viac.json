@@ -14,7 +14,7 @@
       "dirty": false
     }
   },
-  "recorded_at": "2026-08-27T19:23:59Z",
+  "recorded_at": "2026-08-28T18:39:01Z",
   "program": "benchmarks/water_treatment/st_swat_timer1/sleg_timer1_0.st",
   "properties_file": "benchmarks/water_treatment/st_swat_timer1/props.yaml",
   "properties": [
@@ -28,15 +28,15 @@
   "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  CHECK_PUMPS_data__ d = {0};\n  CHECK_PUMPS_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., IN1, , nondet_int());\n    __SET_VAR(d., IN2, , nondet_int());\n    CHECK_PUMPS_body__(&d);\n  }\n  return 0;\n}",
   "runs": {
     "master": {
-      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --unwind 10 --timeout 30s",
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --unwind 10 --timeout 60s",
       "verdict": "SAFE",
       "proof": null,
-      "cpu_time_s": 0.922,
+      "cpu_time_s": 0.82,
       "counterexample": null,
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
-        "commit": "d88a9fa4",
+        "commit": "0064c4ac",
         "version": "8.4.0",
         "platform": "aarch64 macos"
       },

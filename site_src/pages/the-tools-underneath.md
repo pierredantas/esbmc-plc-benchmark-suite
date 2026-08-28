@@ -13,7 +13,7 @@ and that set is not the same on both routes.
 
 | tool | version used here | role |
 |---|---|---|
-| [ESBMC](https://github.com/esbmc/esbmc) | `61172c6f` (v8.4, 2026-07-06) and `d88a9fa4` (master, 2026-08-25) | the checker under test |
+| [ESBMC](https://github.com/esbmc/esbmc) | `0064c4ac` (master, 2026-08-28) | the checker under test |
 | [Clang / LLVM](https://llvm.org) | 18.1.8, arm64 | parses C for ESBMC's C front end |
 | [Z3](https://github.com/Z3Prover/z3) | 4.13.3 | decides the formulas ESBMC builds |
 | [MatIEC](https://github.com/beremiz/matiec) | `7949c0bd` (2026-05-03) | compiles ST and IL to C |
@@ -165,7 +165,7 @@ tool under test what the answer should be.
 
 `fbd_fan_damper` is what that looks like when it pays off. Its bomb is written in FBD, so
 the ladder front end drops the body and the scan loop assigns nothing but three nondet
-inputs; the ingestion gate fails on `fan`, and both builds return `unknown`. The via-C
+inputs; the ingestion gate fails on `fan`, and the ladder route refuses the file. The via-C
 route reads the same file through Beremiz, compiles it with MatIEC, and returns
 `VIOLATION` with a counterexample. One route could not see the program, and the other
 refuted it.

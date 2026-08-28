@@ -1,7 +1,7 @@
 {
   "schema_version": "0.4",
   "route": "via-c",
-  "scans": 3,
+  "scans": 8,
   "toolchain": {
     "beremiz": {
       "path": "~/plc-tools/beremiz",
@@ -14,7 +14,7 @@
       "dirty": false
     }
   },
-  "recorded_at": "2026-08-28T13:27:13Z",
+  "recorded_at": "2026-08-28T18:38:52Z",
   "program": "benchmarks/motor_control/st_star_delta/star_delta.st",
   "properties_file": "benchmarks/motor_control/st_star_delta/props.yaml",
   "properties": [
@@ -29,18 +29,18 @@
     }
   ],
   "expected_verdict": "SAFE",
-  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  STARTER_data__ d = {0};\n  STARTER_init__(&d, 0);\n  for (int scan = 0; scan < 3; scan++) {\n    __SET_VAR(d., CALL, , nondet_bool());\n    __SET_VAR(d., STARDONE, , nondet_bool());\n    __SET_VAR(d., DEADDONE, , nondet_bool());\n    STARTER_body__(&d);\n    __ESBMC_assert(!(__GET_VAR(d.STAR,) && __GET_VAR(d.DELTA,)), \"P1\");\n  }\n  return 0;\n}",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  STARTER_data__ d = {0};\n  STARTER_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., CALL, , nondet_bool());\n    __SET_VAR(d., STARDONE, , nondet_bool());\n    __SET_VAR(d., DEADDONE, , nondet_bool());\n    STARTER_body__(&d);\n    __ESBMC_assert(!(__GET_VAR(d.STAR,) && __GET_VAR(d.DELTA,)), \"P1\");\n  }\n  return 0;\n}",
   "runs": {
     "master": {
       "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 60s",
       "verdict": "SAFE",
-      "proof": "the forward condition; all states are reachable (k = 4)",
-      "cpu_time_s": 0.84,
+      "proof": "the forward condition; all states are reachable (k = 9)",
+      "cpu_time_s": 1.328,
       "counterexample": null,
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
-        "commit": "d88a9fa4",
+        "commit": "0064c4ac",
         "version": "8.4.0",
         "platform": "aarch64 macos"
       },

@@ -45,30 +45,30 @@ resumes, which are different machines with different accident reports.
 
 {{record: door_reversal_latched}}
 
-Read the two builds against each other before reading on.
+Commit to an answer before reading on.
 
-master refutes it, which is the right answer: a latched reversal outlives the beam.
-v8.4 proves it at k = 2, and v8.4 is wrong. The reason is the one lesson 1.4 sets out.
-For a coil fed by two parallel branches, v8.4 emits one assignment per branch:
+Refuted, which is the right answer: a latched reversal outlives the beam.
+
+It is worth knowing what a wrong answer here would look like. Lesson 1.4 sets out the
+flattening a ladder front end can apply to a coil fed by two parallel branches:
 
 ```
 ASSIGN Reversing = 1 && Reversing && !TopLimit;
 ASSIGN Reversing = 1 && Beam && !TopLimit;
 ```
 
-The second overwrites the first, the self-hold is gone, and what v8.4 verified is the
-momentary door. Its proof is sound about the program it built. That program is not the
-one in the file.
+The second assignment overwrites the first, the self-hold is gone, and what gets verified
+is the momentary door. Such a proof is sound about the program it built. That program is
+not the one in the file.
 
 {{record: door_reversal_momentary}}
 
-Here both builds agree, because on the momentary variant there is no latch for v8.4 to
-lose.
+The momentary variant proves it, as it should, because here there is no latch to lose.
 
 ## What to take from it
 
-The discriminator was written to separate two designs. It separated two builds as well,
-and nobody planned that, because any property sensitive to whether a latch still holds
-its value after the set condition has gone away is equally sensitive to whether the front
-end built a latch in the first place. So a check that catches this class of defect in a
-plant program catches it in the verifier too. Write one even when you trust the code.
+The discriminator was written to separate two designs, and it separates two toolchains for
+free, because any property sensitive to whether a latch still holds its value after the set
+condition has gone away is equally sensitive to whether the front end built a latch in the
+first place. A check that catches this class of defect in a plant program catches it in the
+verifier too. Write one even when you trust the code.

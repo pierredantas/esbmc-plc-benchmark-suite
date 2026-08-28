@@ -11,7 +11,7 @@ on all sixteen, and the whole family costs under a second of solver time.
 | 8 legitimate programs | `SAFE`, k-induction | 0.013 s |
 | 8 malicious programs | `VIOLATION`, incremental BMC | 0.033 s |
 
-Total across all thirty-two runs on both builds: 0.74 seconds.
+Total across all sixteen runs: 0.74 seconds.
 
 The mode differs by expectation, which is worth naming rather than hiding. A program
 expected to be safe is run under `--k-induction`, because only an unbounded proof settles

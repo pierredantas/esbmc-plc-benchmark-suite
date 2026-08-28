@@ -1,7 +1,7 @@
 {
   "schema_version": "0.4",
   "route": "via-c",
-  "scans": 3,
+  "scans": 8,
   "toolchain": {
     "beremiz": {
       "path": "~/plc-tools/beremiz",
@@ -14,7 +14,7 @@
       "dirty": false
     }
   },
-  "recorded_at": "2026-08-28T13:27:16Z",
+  "recorded_at": "2026-08-28T18:38:59Z",
   "program": "benchmarks/water_treatment/st_pump_alternation/pump_alternation.st",
   "properties_file": "benchmarks/water_treatment/st_pump_alternation/props.yaml",
   "properties": [
@@ -29,18 +29,18 @@
     }
   ],
   "expected_verdict": "SAFE",
-  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  STATION_data__ d = {0};\n  STATION_init__(&d, 0);\n  for (int scan = 0; scan < 3; scan++) {\n    __SET_VAR(d., LEVELHIGH, , nondet_bool());\n    __SET_VAR(d., LEVELLOW, , nondet_bool());\n    STATION_body__(&d);\n    __ESBMC_assert(!(__GET_VAR(d.PUMPA,) && __GET_VAR(d.PUMPB,)), \"P1\");\n  }\n  return 0;\n}",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  STATION_data__ d = {0};\n  STATION_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., LEVELHIGH, , nondet_bool());\n    __SET_VAR(d., LEVELLOW, , nondet_bool());\n    STATION_body__(&d);\n    __ESBMC_assert(!(__GET_VAR(d.PUMPA,) && __GET_VAR(d.PUMPB,)), \"P1\");\n  }\n  return 0;\n}",
   "runs": {
     "master": {
       "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 60s",
       "verdict": "SAFE",
-      "proof": "the forward condition; all states are reachable (k = 4)",
-      "cpu_time_s": 0.864,
+      "proof": "the forward condition; all states are reachable (k = 9)",
+      "cpu_time_s": 1.792,
       "counterexample": null,
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
-        "commit": "d88a9fa4",
+        "commit": "0064c4ac",
         "version": "8.4.0",
         "platform": "aarch64 macos"
       },

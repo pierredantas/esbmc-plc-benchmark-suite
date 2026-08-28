@@ -14,7 +14,7 @@
       "dirty": false
     }
   },
-  "recorded_at": "2026-08-27T19:19:18Z",
+  "recorded_at": "2026-08-28T18:38:45Z",
   "program": "benchmarks/motor_control/il_seal_in/seal_in.il",
   "properties_file": "benchmarks/motor_control/il_seal_in/props.yaml",
   "properties": [
@@ -29,15 +29,15 @@
   "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  DRIVE_data__ d = {0};\n  DRIVE_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., START, , nondet_bool());\n    __SET_VAR(d., STOP, , nondet_bool());\n    DRIVE_body__(&d);\n    __ESBMC_assert(!__GET_VAR(d.RUN,) || !__GET_VAR(d.STOP,), \"P1\");\n  }\n  return 0;\n}",
   "runs": {
     "master": {
-      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 30s",
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 60s",
       "verdict": "SAFE",
       "proof": "the forward condition; all states are reachable (k = 9)",
-      "cpu_time_s": 1.057,
+      "cpu_time_s": 1.055,
       "counterexample": null,
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
-        "commit": "d88a9fa4",
+        "commit": "0064c4ac",
         "version": "8.4.0",
         "platform": "aarch64 macos"
       },

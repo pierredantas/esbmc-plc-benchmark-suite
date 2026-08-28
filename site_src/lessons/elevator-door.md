@@ -69,7 +69,7 @@ drawings.
 
 {{record: sfc_elevator_door__bomb}}
 
-Read the ingestion gate. It fails on both builds and on both variants, because ESBMC's
+Read the ingestion gate. It fails on both variants, because ESBMC's
 front end discards an `<SFC>` body without a diagnostic. The clean chart reports SAFE
 having verified nothing, and the bombed chart reports `unknown`.
 

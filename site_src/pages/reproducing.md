@@ -25,8 +25,7 @@ The panels on this site are rendered from `results/records/*.json`, which
 
 ```bash
 python3 runner/record.py demo/interlock_bug.ld demo/props.yaml false \
-  --tool v8.4=/path/to/esbmc-8.4/esbmc \
-  --tool master=/path/to/esbmc-master/esbmc \
+  --tool master=/path/to/esbmc/esbmc \
   -o results/records/interlock_viol.json
 ```
 

@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-28T13:26:57Z",
+  "recorded_at": "2026-08-28T18:37:10Z",
   "program": "benchmarks/motor_control/g_star_delta/program.xml",
   "properties_file": "benchmarks/motor_control/g_star_delta/deadtime_check.props.yaml",
   "properties": [
@@ -18,48 +18,12 @@
   ],
   "expected_verdict": "VIOLATION",
   "runs": {
-    "v8.4": {
-      "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
-        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
-        "version": "8.4.0",
-        "commit": "61172c6f",
-        "platform": "aarch64 macos"
-      },
-      "status": "correct",
-      "encoding": {
-        "scan_body": [
-          "     1: IF !1 THEN GOTO 2",
-          "        ASSIGN Call=NONDET(_Bool);",
-          "        ASSIGN StarDone=NONDET(_Bool);",
-          "        ASSIGN DeadDone=NONDET(_Bool);",
-          "        ASSIGN Delta=1 && Call && StarDone && DeadDone;",
-          "        ASSIGN Star=1 && Call && !StarDone;",
-          "        GOTO 1",
-          "     2:"
-        ],
-        "assignment_counts": {
-          "Call": 1,
-          "StarDone": 1,
-          "DeadDone": 1,
-          "Delta": 1,
-          "Star": 1
-        },
-        "not_driven_by_body": [],
-        "gate": "pass"
-      },
-      "command": "cp benchmarks/motor_control/g_star_delta/program.xml benchmarks/motor_control/g_star_delta/program.ld\nesbmc benchmarks/motor_control/g_star_delta/program.ld --ld-props benchmarks/motor_control/g_star_delta/deadtime_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
-      "verdict": "VIOLATION",
-      "proof": null,
-      "cpu_time_s": 0.011,
-      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  Call = 1\n\nState 2  thread 0\n----------------------------------------------------\n  StarDone = 1\n\nState 3  thread 0\n----------------------------------------------------\n  DeadDone = 0\n\nState 4  thread 0\n----------------------------------------------------\n  Delta = 0\n\nState 5  thread 0\n----------------------------------------------------\n  Star = 0\n\nState 6 file benchmarks/motor_control/g_star_delta/program.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/motor_control/g_star_delta/program.ld\n  P1\n  Star || Delta || !Call"
-    },
     "master": {
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "d88a9fa4",
+        "commit": "0064c4ac",
         "platform": "aarch64 macos"
       },
       "status": "correct",
@@ -112,7 +76,7 @@
       "command": "cp benchmarks/motor_control/g_star_delta/program.xml benchmarks/motor_control/g_star_delta/program.ld\nesbmc benchmarks/motor_control/g_star_delta/program.ld --ld-props benchmarks/motor_control/g_star_delta/deadtime_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.011,
+      "cpu_time_s": 0.012,
       "counterexample": "State 1  thread 0\n----------------------------------------------------\n  Call = 1\n\nState 2  thread 0\n----------------------------------------------------\n  StarDone = 1\n\nState 3  thread 0\n----------------------------------------------------\n  DeadDone = 0\n\nState 4  thread 0\n----------------------------------------------------\n  Delta = 0\n\nState 5  thread 0\n----------------------------------------------------\n  Star = 0\n\nState 6 file benchmarks/motor_control/g_star_delta/program.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/motor_control/g_star_delta/program.ld\n  P1\n  Star || Delta || !Call\n\n\n** Results:\nbenchmarks/motor_control/g_star_delta/program.ld\n  FAILED       [global.assertion.1]  line 0  P1\n\n** 1 of 1 properties failed"
     }
   }

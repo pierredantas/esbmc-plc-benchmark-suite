@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-28T13:26:56Z",
+  "recorded_at": "2026-08-28T18:37:10Z",
   "program": "benchmarks/manufacturing/g_two_hand/type_i.xml",
   "properties_file": "benchmarks/manufacturing/g_two_hand/tiedown_check.props.yaml",
   "properties": [
@@ -18,48 +18,12 @@
   ],
   "expected_verdict": "SAFE",
   "runs": {
-    "v8.4": {
-      "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
-        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
-        "version": "8.4.0",
-        "commit": "61172c6f",
-        "platform": "aarch64 macos"
-      },
-      "status": "correct",
-      "encoding": {
-        "scan_body": [
-          "     1: IF !1 THEN GOTO 2",
-          "        ASSIGN LH=NONDET(_Bool);",
-          "        ASSIGN RH=NONDET(_Bool);",
-          "        ASSIGN Stroke=1 && LH && RH;",
-          "        ASSIGN Armed=1 && BothOff;",
-          "        ASSIGN BothOff=1 && !LH && !RH;",
-          "        GOTO 1",
-          "     2:"
-        ],
-        "assignment_counts": {
-          "LH": 1,
-          "RH": 1,
-          "Stroke": 1,
-          "Armed": 1,
-          "BothOff": 1
-        },
-        "not_driven_by_body": [],
-        "gate": "pass"
-      },
-      "command": "cp benchmarks/manufacturing/g_two_hand/type_i.xml benchmarks/manufacturing/g_two_hand/type_i.ld\nesbmc benchmarks/manufacturing/g_two_hand/type_i.ld --ld-props benchmarks/manufacturing/g_two_hand/tiedown_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
-      "verdict": "SAFE",
-      "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.015,
-      "counterexample": null
-    },
     "master": {
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "d88a9fa4",
+        "commit": "0064c4ac",
         "platform": "aarch64 macos"
       },
       "status": "correct",

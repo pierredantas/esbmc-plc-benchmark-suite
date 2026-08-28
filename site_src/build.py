@@ -235,6 +235,8 @@ def corpus_stats():
     stat["llb.tasks"] = llb_tasks
     stat["llb.programs"] = llb_variants
     stat["benchmarks.discriminator"] = discriminator_tasks
+    # a gate failure the tool announced (it refused the file) against one it did not
+    stat["gate.fail.silent"] = stat["gate.fail"] - stat["gate.fail.error"]
     return stat
 
 

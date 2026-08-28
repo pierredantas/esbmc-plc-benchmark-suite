@@ -13,7 +13,7 @@ parts:
       - slug: series-parallel
         number: "1.2"
         title: "Series, parallel, and the wired OR"
-        summary: "Two branches into one coil. Both builds prove the shipped property, and only one of them encoded the second branch at all."
+        summary: "Two branches into one coil. The shipped property is proved, and it would have been proved just as soundly by a front end that dropped the second branch. A second property makes the branch's survival checkable."
       - slug: interlock
         number: "1.3"
         title: "A reversing starter, proved and broken"
@@ -21,7 +21,7 @@ parts:
       - slug: seal-in
         number: "1.4"
         title: "A seal-in latch, where the verdict hides the encoding"
-        summary: "Two ESBMC builds agree the circuit is safe. Only one of them encoded a latch, and it takes a second property to find out which."
+        summary: "The circuit verifies as safe, and that verdict is equally true of a latch, of a plain conjunction, and of a program that assigns nothing. It takes a second property to tell them apart."
       - slug: edges-and-scan-order
         number: "1.5"
         title: "Edges, and the order rungs run in"
@@ -146,7 +146,7 @@ parts:
       - slug: tank-family
         number: "5.5"
         title: "Eight bombs, one property"
-        summary: "Thirty-two runs, both builds agreeing on all sixteen programs in 0.74 seconds, and what termination covers that an interlock property cannot."
+        summary: "Sixteen programs settled in 0.74 seconds, and what termination covers that an interlock property cannot."
 
   - title: The languages ladder cannot reach
     blurb: >-
@@ -157,15 +157,15 @@ parts:
       - slug: fbd-unread
         number: "6.1"
         title: "A diagram the checker never read"
-        summary: "An air handler permissive with one wire deleted. The ladder route returns unknown with the gate failing, the C route names the violated property, and the clean variant's SAFE is a proof about nothing."
+        summary: "An air handler permissive with one wire deleted. The ladder route now refuses the file by name, which it did not do until esbmc#7354 was fixed, and the C route names the violated property."
       - slug: fbd-false-alarm
         number: "6.2"
         title: "The false alarm"
-        summary: "A two-out-of-three vote that works, refuted on both builds with a plausible counterexample, and proved correct through C. The same front end condemns the good program and the broken one."
+        summary: "A two-out-of-three vote that works, once refuted with a plausible counterexample and now refused outright. The table that made the case for recording encodings, and why the fix does not retire it."
       - slug: sfc-no-verdict
         number: "6.3"
         title: "Four charts and no verdict"
-        summary: "Every SFC benchmark fails the ingestion gate, two while reporting SAFE and status correct. Pointing the second route at them broke in three different layers, and the third one has not been cleared."
+        summary: "Every SFC benchmark is refused at parse, which is an improvement on the SAFE they used to report. Pointing the second route at them broke in three different layers, and the third has not been cleared."
       - slug: textual-ladder
         number: "6.4"
         title: "The spelling nothing here reads"
@@ -192,11 +192,11 @@ parts:
       - slug: door-reversal
         number: "7.4"
         title: "The door that pauses instead of reversing"
-        summary: "A latched reversal and a momentary one. The property written to separate the two designs separates the two builds as well, because v8.4 drops the latch."
+        summary: "A latched reversal and a momentary one. The safety property is true of both; only a question about what the latch still holds after the beam clears tells them apart."
       - slug: burner-lockout
         number: "7.5"
         title: "A lockout that lets go"
-        summary: "EN 298 light-off order, proved on a burner with no working lockout. On the correct program the builds disagree; on the defective one they agree."
+        summary: "EN 298 light-off order, proved on a burner whose lockout clears itself. The order is right in both programs, and only the lockout question separates them."
       - slug: pump-alternation
         number: "7.6"
         title: "The standby pump nobody started"
@@ -204,7 +204,7 @@ parts:
       - slug: guard-lock
         number: "7.7"
         title: "The guard that waits for the spindle"
-        summary: "ISO 14119 guard locking with a real rundown timer. The discriminator asks whether the program waits rather than whether it remembers, and only one build can read the timer at all."
+        summary: "ISO 14119 guard locking with a real rundown timer. The discriminator asks whether the program waits rather than whether it remembers."
       - slug: compressor-cycle
         number: "7.8"
         title: "The interlock that makes it wait"

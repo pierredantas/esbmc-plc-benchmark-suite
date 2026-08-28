@@ -48,12 +48,14 @@ ingestion gate that fails when the property's variables were never assigned insi
 scan loop.
 
 Of the {{stat: runs.ladder}} runs that reach the ladder front end, **{{stat: gate.fail}} fail
-that gate**. {{stat: gate.fail.safe|Words}} of the {{stat: gate.fail}} report `SAFE`,
-{{stat: gate.fail.unknown|words}} report `unknown`, and {{stat: gate.fail.violation|words}}
-report a violation. The verdicts disagree
-with each other, which is the point: what they have in common is not the answer they give
-but that none of them is an answer about the program in the file. A violation raised
-inside an empty scan loop is worth no more than a proof found there.
+that gate**, and they fail it in two different ways. {{stat: gate.fail.error|Words}} are files
+ESBMC now refuses outright, naming the construct it cannot read. That diagnostic is new: until
+[esbmc#7354](https://github.com/esbmc/esbmc/issues/7354) was fixed, the same files were
+silently emptied and then proved correct.
+
+The remaining {{stat: gate.fail.silent|words}} are what the gate is for. Both are confident
+verdicts, one `SAFE` and one `VIOLATION`, and neither is an answer about the program in the
+file. A violation raised inside an empty scan loop is worth no more than a proof found there.
 
 [Lesson 1.4](lessons/seal-in/index.md) is the case that motivates the arrangement. Two
 builds return the same verdict on the same file, and only one of them verified the circuit

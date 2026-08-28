@@ -4,7 +4,7 @@ is somebody else's tested code. That is the shape safety logic actually arrives 
 
 So here is lesson 7.2's press again, with the identical Type II body moved into a
 function block. Same machine, same properties, same expected answers. The ladder twin
-verifies on both builds and has since 7.2.
+verifies, and has since 7.2.
 
 ## The block
 
@@ -46,7 +46,7 @@ The block is not in it. Two proofs about a press with no logic in it at all.
 Put the Type I body in the block instead, `Stroke := LH AND RH`, which is the program
 lesson 7.2 proves safe. This time the gate passes.
 
-{{predict: g_two_hand_fb__type_i | The block body is now the plain conjunction, and its ladder twin satisfies the property on both builds. What happens here?}}
+{{predict: g_two_hand_fb__type_i | The block body is now the plain conjunction, and its ladder twin satisfies the property. What happens here?}}
 
 Both builds refute a property that holds. The encoding says why:
 
@@ -57,7 +57,7 @@ ASSIGN THC0__Stroke=THC0__LH;
 ASSIGN Stroke=THC0__Stroke;
 ```
 
-Two separate defects, and both builds have them.
+Two separate defects, in one four-line block.
 
 The block's inputs are havocked rather than bound. `THC0__LH` is a fresh unconstrained
 value, not the program's `LH`, so the wiring from the call site is gone. Then the body

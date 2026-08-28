@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-27T16:34:50Z",
+  "recorded_at": "2026-08-28T18:37:08Z",
   "program": "benchmarks/packaging/g_ftrig_edge/program.xml",
   "properties_file": "benchmarks/packaging/g_ftrig_edge/props.yaml",
   "properties": [
@@ -17,46 +17,12 @@
   ],
   "expected_verdict": "SAFE",
   "runs": {
-    "v8.4": {
-      "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
-        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
-        "version": "8.4.0",
-        "commit": "61172c6f",
-        "platform": "aarch64 macos"
-      },
-      "status": "unknown",
-      "encoding": {
-        "scan_body": [
-          "     1: IF !1 THEN GOTO 2",
-          "        ASSIGN Sig=NONDET(_Bool);",
-          "        ASSIGN Sig_prev=1 && Sig;",
-          "        ASSIGN OneShot=1 && Fall;",
-          "        ASSIGN Fall=1 && !Sig && Sig_prev;",
-          "        GOTO 1",
-          "     2:"
-        ],
-        "assignment_counts": {
-          "Sig": 1,
-          "Sig_prev": 1,
-          "OneShot": 1,
-          "Fall": 1
-        },
-        "not_driven_by_body": [],
-        "gate": "pass"
-      },
-      "command": "cp benchmarks/packaging/g_ftrig_edge/program.xml benchmarks/packaging/g_ftrig_edge/program.ld\nesbmc benchmarks/packaging/g_ftrig_edge/program.ld --ld-props benchmarks/packaging/g_ftrig_edge/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
-      "verdict": "unknown",
-      "proof": null,
-      "cpu_time_s": 0.193,
-      "counterexample": null
-    },
     "master": {
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "d88a9fa4",
+        "commit": "0064c4ac",
         "platform": "aarch64 macos"
       },
       "status": "wrong",

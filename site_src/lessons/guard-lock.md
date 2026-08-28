@@ -30,16 +30,16 @@ the two are never on together whatever the timer does.
 
 {{record: g_guard_lock__program}}
 
-Check the ingestion gate column before the verdict column. v8.4 fails it, and lesson 1.6
-already explains why: v8.4 does not model the `TON` block at all, so `Unlocked` is never
-assigned anywhere in its scan body. Its `SAFE` is a proof about a program with the timer
-rung missing. Only master's answer is about the ladder in the file.
+Check the ingestion gate column before the verdict column. It passes, and the scan body
+carries `Rundown__ET` and `Rundown__Q`, so the timer reached the solver. That check is not
+ceremonial here: a front end that skipped the `TON` would leave `Unlocked` unassigned and
+prove this property about a program with the timer rung missing.
 
 Now the variant with the timer deleted, where the guard releases on the request alone.
 
 {{predict: g_guard_lock__no_rundown | The rundown timer is gone and the door opens as soon as somebody asks. Does the guard still stay locked while the drive is energised?}}
 
-It does, on both builds and with the gate passing. `OpenReq` drops `Motor` in the same
+It does, with the gate passing. `OpenReq` drops `Motor` in the same
 rung that raises `Unlocked`, so the two cannot coincide however impatient the release
 is. The property is about coincidence, and coasting is not coincidence.
 
@@ -58,10 +58,12 @@ whether it waits.
 
 ## What the timer costs
 
-The timed variant is the only benchmark in this part that one of the two builds cannot
-read. That is worth sitting with. A rundown interlock is not exotic, it is on most
-guarded machines in the building, and half the toolchain here silently returns a proof
-about a program with the interlock deleted.
+A timer is the most expensive thing in this part to verify, and the reason is visible in
+the scan body. `Rundown__ET` is an integer the solver has to reason about across scans,
+so the state space stops being a handful of booleans. The Structured Text twin makes the
+point plainly: through the C route it takes 41 seconds, against hundredths for every
+untimed machine in this part.
 
-The gate is what makes that visible rather than reassuring, and it is the reason every
-run panel on this site carries a gate column instead of a verdict alone.
+That cost is why a rundown interlock is a good thing to have a benchmark for. It is not
+exotic, it is on most guarded machines in the building, and it is exactly the shape of
+logic that a verifier is tempted to skip.

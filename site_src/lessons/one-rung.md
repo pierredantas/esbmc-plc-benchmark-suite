@@ -48,7 +48,7 @@ step covers every scan after it, and there is nothing else for the proof to chas
 This is the first place worth slowing down, because the two tabs above disagree about
 how to write the same rung.
 
-v8.4 flattens it into the assignment you would have written yourself:
+One reasonable compilation is the assignment you would have written yourself:
 
 ```
 ASSIGN Y=1 && A && B && C;

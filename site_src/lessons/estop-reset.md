@@ -36,7 +36,7 @@ the rungs run in, which lesson 1.5 shows is not the order the file specifies.
 {{show: benchmarks/motor_control/g_estop_reset/props.yaml}}
 
 The drive is never energized while the button is in. It is the requirement a reviewer
-asks for, it is true, and both builds discharge it at k = 2.
+asks for, it is true, and the checker discharges it at k = 2.
 
 {{record: g_estop_reset__program}}
 

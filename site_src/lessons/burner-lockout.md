@@ -42,19 +42,19 @@ satisfies it.
 
 {{record: burner_lockout_latched}}
 
-master refutes it. v8.4 proves it at k = 2 and is wrong, for the same reason as the door
-in lesson 7.4: the two branches into `Lockout` become two assignments, the second wins,
-and the latch v8.4 verified is a plain copy of `FlameFail AND NOT ResetBtn`.
+Refuted, which is the right answer: a latching lockout outlives the fault that set it. A
+front end that flattened the two branches into `Lockout` would prove this instead, soundly,
+about a lockout that is a plain copy of `FlameFail AND NOT ResetBtn`.
 
 {{record: burner_lockout_selfclearing}}
 
 ## Two lockouts, one verdict
 
-Put the four runs together. On the correct program the two builds disagree, and on the
-defective one they agree. A results table reporting one build would show a burner that
-either does or does not latch depending on which column somebody read, and both columns
-say `SAFE` for the property that was actually shipped.
+Put the four runs together. The property that was actually shipped, the light-off order,
+says `SAFE` for the burner that latches and `SAFE` for the burner that does not. A results
+table built from it would report a working lockout in both rows.
 
 The pattern is worth naming because it generalizes past this benchmark. Wherever a
-requirement reduces to "this memory outlives its cause", the check for it is a
-refutation, and a front end that quietly drops memory will pass it.
+requirement reduces to "this memory outlives its cause", the check for it is a refutation,
+and both a program without the memory and a front end that quietly drops it will pass
+anything weaker.

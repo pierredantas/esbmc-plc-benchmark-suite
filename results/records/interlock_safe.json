@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-27T16:34:51Z",
+  "recorded_at": "2026-08-28T18:37:08Z",
   "program": "demo/interlock.ld",
   "properties_file": "demo/props.yaml",
   "properties": [
@@ -20,46 +20,12 @@
   ],
   "expected_verdict": "SAFE",
   "runs": {
-    "v8.4": {
-      "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
-        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
-        "version": "8.4.0",
-        "commit": "61172c6f",
-        "platform": "aarch64 macos"
-      },
-      "status": "correct",
-      "encoding": {
-        "scan_body": [
-          "     1: IF !1 THEN GOTO 2",
-          "        ASSIGN fwd=NONDET(_Bool);",
-          "        ASSIGN rev=NONDET(_Bool);",
-          "        ASSIGN KM_CW=1 && fwd && !rev;",
-          "        ASSIGN KM_CCW=1 && rev;",
-          "        GOTO 1",
-          "     2:"
-        ],
-        "assignment_counts": {
-          "fwd": 1,
-          "rev": 1,
-          "KM_CW": 1,
-          "KM_CCW": 1
-        },
-        "not_driven_by_body": [],
-        "gate": "pass"
-      },
-      "command": "esbmc demo/interlock.ld --ld-props demo/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
-      "verdict": "SAFE",
-      "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.014,
-      "counterexample": null
-    },
     "master": {
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "d88a9fa4",
+        "commit": "0064c4ac",
         "platform": "aarch64 macos"
       },
       "status": "correct",
@@ -100,7 +66,7 @@
       "command": "esbmc demo/interlock.ld --ld-props demo/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.015,
+      "cpu_time_s": 0.016,
       "counterexample": null
     }
   }

@@ -1,6 +1,12 @@
 Parts 1 through 5 were ladder, with two exceptions nobody dwelt on. This part is about the
-notations the suite ships and the ladder front end cannot read, starting with the one where
-the tool says the least and means it the most.
+notations the suite ships and the ladder front end cannot read.
+
+It is also the part of this site with a date on it. Everything below used to describe a
+tool that read nothing and said nothing about it. That defect was reported as
+[esbmc#7354](https://github.com/esbmc/esbmc/issues/7354) and fixed on 28 August 2026, so
+the runs on this page now show the front end refusing the file by name. The lesson is kept,
+and rerecorded, because the interesting part was never the verdict. It was how long a
+corpus can carry a silent one.
 
 ## An air handler permissive
 
@@ -35,25 +41,28 @@ part a variable list cannot show you.
 
 {{record: fbd_fan_damper__bomb}}
 
-`unknown`, on both builds, with the ingestion gate failing on `fan`.
+It stops before verification starts:
 
-Read the scan body in that panel. It assigns the three inputs a nondeterministic value and
-stops. There is no `fan` in it, no AND, no NOT: the `<FBD>` body was dropped on the way in,
-and what got verified was a program with no logic. `unknown` is the honest end of that,
-since the harness has nothing to decide.
+```
+ERROR: UnsupportedConstruct(FBD body of POU 'air_handler', tier=2)
+ERROR: PARSING ERROR
+```
 
-The clean variant is worth a glance for the same reason. This one is worth predicting
-first, because the verdict and the expectation agree and that is exactly what makes it
-misleading:
+That is the whole answer, and it is the right one. The front end cannot read a function
+block diagram, so it declines the file and names the construct and the POU.
 
-{{predict: fbd_fan_damper__clean | This is the correct air handler, expected SAFE. The ladder route agrees. Does that agreement mean the program was verified?}}
+It did not always. Until #7354 was fixed, the same file came back `unknown` with the
+ingestion gate failing on `fan`, because the `<FBD>` body was discarded on the way in and
+what got verified was a program with no logic in it. The clean variant was worse:
+
+{{predict: fbd_fan_damper__clean | This is the correct air handler. On the build this site now records, what does the ladder route report?}}
 
 {{record: fbd_fan_damper__clean}}
 
-`SAFE` on both builds, gate failing on both. That verdict is not a proof of anything about
-the air handler. It is a proof about an empty scan loop, which satisfies every safety
-property ever written, and the only reason the page can tell you so is that the gate ran
-alongside it.
+It errors too, and that is the improvement. This file used to return `SAFE` with the
+gate failing, and a reader who checked only the clean row saw a verdict
+that matched the expectation exactly. The proof was about an empty scan loop, which
+satisfies every safety property ever written.
 
 ## What the second route says
 
@@ -73,12 +82,19 @@ outcome.
 The clean variant comes back `SAFE` on that route too, and this time it means the thing it
 appears to mean.
 
-## Why this is the sharpest case in the suite
+## What the fix changed, and what it did not
 
-Everywhere else, a dropped body cost a verdict. Here it costs the distinction between a
-working air handler and a broken one, and the tool reports the same word for both if you
-only read the clean row.
+Before, the clean air handler and the broken one produced the same word on the ladder
+route, and a results table would have shown two green rows. Now both produce an error, and
+the distinction between them lives entirely on the C route, where it always did.
 
-[Issue #7354](https://github.com/esbmc/esbmc/issues/7354) is the defect: a program POU whose
-body is not `<LD>` is discarded without a diagnostic. Six of the catalog's FBD variants sit
-on it. The next lesson is the same defect producing the opposite error.
+Notice what the ingestion gate did across that change. It failed on these files when the
+tool was silent, and it fails on them now that the tool is loud. It was never measuring the
+verdict; it was measuring whether the property's variables were assigned inside the scan
+loop, and the answer to that did not move.
+
+Two of the site's runs still fail the gate while returning a confident verdict rather than
+an error, and both are in [lesson 7.9](../two-hand-fb/index.md). That is a different defect,
+in a different place, and it is not yet reported.
+
+The next lesson is the same #7354 body-dropping defect producing the opposite error.

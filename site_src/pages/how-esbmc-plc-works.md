@@ -191,7 +191,7 @@ whose **content** is PLCopen XML, whose **body** is `<LD>`.
 
 The second row is the one that costs you. The file is accepted, an empty scan loop is
 built, and a verdict comes back about a program that no longer contains the logic under
-test. Every FBD and SFC variant in this suite fails the ingestion gate on both builds for
+test. Every FBD and SFC variant in this suite fails the ingestion gate for
 that reason, and a `SUCCESSFUL` there means nothing was checked rather than nothing is
 wrong.
 

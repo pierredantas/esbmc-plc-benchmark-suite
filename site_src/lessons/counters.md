@@ -11,9 +11,9 @@ puts them here, in the half of Part 1 where the order of things starts to matter
 
 {{record: ctu_saturate}}
 
-Both builds prove that `Done` and `Reset` never hold together, and once again the gate
-tells you that only one of them modeled a counter. v8.4's scan body has no `CTU0__CV`
-in it at all.
+`Done` and `Reset` never hold together, proved, with the gate passing and `CTU0__CV`
+visible in the scan body. The counter is there, which is the precondition for the verdict
+meaning anything.
 
 The `R` pin is wired to a contact here, and the front end reads that contact's variable
 straight through. Wire `R` to a chain of contacts instead and it prints a warning and

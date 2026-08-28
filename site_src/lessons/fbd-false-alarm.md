@@ -2,7 +2,11 @@ A verifier that misses a defect has failed once, and one that condemns a correct
 has failed twice over: the engineer loses an afternoon to a program that was never broken,
 and the next red result gets rather less attention than it deserves.
 
-Both come from the same defect here.
+Both came from the same defect here, and both are gone. Like [lesson 6.1](../fbd-unread/index.md),
+this page records behavior that [esbmc#7354](https://github.com/esbmc/esbmc/issues/7354)
+removed on 28 August 2026. The reactor is worth keeping because the false alarm it produced
+is the harder half of that bug to argue about, and because the table at the end is the
+reason this site records an encoding beside every verdict.
 
 ## Two out of three
 
@@ -32,17 +36,15 @@ normally through commissioning. Only the outer pair is deaf: `ps1=1, ps2=0, ps3=
 
 ## The correct program, refuted
 
-Before reading on, commit to an answer. The file is the clean one, the vote is implemented
-correctly, and both properties hold of the program as written.
-
-{{predict: fbd_reactor_2oo3__clean | The vote above is correct and satisfies both properties. What does the ladder front end say about it, and what does the gate say?}}
+{{predict: fbd_reactor_2oo3__clean | The vote above is correct and satisfies both properties. What does the ladder front end say about it now?}}
 
 {{record: fbd_reactor_2oo3__clean}}
 
-`VIOLATION`, on both builds, with `status: wrong`.
+```
+ERROR: UnsupportedConstruct(FBD body of POU 'trip_logic', tier=2)
+```
 
-That is the clean file, which implements the vote correctly and satisfies both properties,
-and the ladder front end refutes it anyway. The counterexample even looks plausible:
+Today it refuses the file. Until #7354 was fixed it answered `VIOLATION` with `status: wrong`, and the counterexample looked entirely plausible:
 
 ```
 ps1 = 0
@@ -50,8 +52,8 @@ ps2 = 1
 ps3 = 1
 ```
 
-Two switches high, no trip, P1 broken. Except the program does trip on that input, and the
-scan body says why it appeared not to:
+Two switches high, no trip, P1 broken. The program does trip on that input. The scan body
+was the giveaway:
 
 ```
 1: IF !1 THEN GOTO 2
@@ -62,9 +64,9 @@ scan body says why it appeared not to:
 2:
 ```
 
-Three inputs and nothing else. `trip` is never assigned, so it holds its initial value of
-false forever and a property demanding that it rise is broken by construction, which is why
-the gate says `fail` and names `trip` as the one variable no statement in the body drives.
+Three inputs and nothing else. `trip` was never assigned, so it held its initial value of
+false forever, and a property demanding that it rise was broken by construction. The gate
+said `fail` and named `trip` as the one variable no statement in the body drove.
 
 ## The C route
 
@@ -74,22 +76,24 @@ the gate says `fail` and names `trip` as the one variable no statement in the bo
 
 ## Both answers were wrong for one reason
 
-Its bombed twin is refuted on the ladder route too, and that row reads `correct`.
+The bombed twin was refuted on the ladder route as well, and that row read `correct`.
 
-That is the part worth sitting with. The same front end returns `VIOLATION` for the working
+That is the part worth sitting with. The same front end returned `VIOLATION` for the working
 reactor and `VIOLATION` for the broken one, because it read neither program. One of those
 rows counts as a pass in any table that compares verdict against expectation, and it was
 right by accident.
 
-| | ladder route | via-C | truth |
-|---|---|---|---|
-| clean | `VIOLATION`, gate fails | `SAFE` | correct program, falsely condemned |
-| bomb | `VIOLATION`, gate fails | `VIOLATION` | broken program, right for the wrong reason |
+| | ladder route, before #7354 | ladder route, now | via-C | truth |
+|---|---|---|---|---|
+| clean | `VIOLATION`, gate fails | refused by name | `SAFE` | correct program |
+| bomb | `VIOLATION`, gate fails | refused by name | `VIOLATION` | broken program |
 
-An accuracy score over those four cells reports fifty percent and tells you nothing. The
-gate column reports four failures out of four, and tells you everything: no verdict here
-rests on the program in the file.
+An accuracy score over the first column reports fifty percent and tells you nothing. The
+gate reported four failures out of four, and told you everything: no verdict there rested on
+the program in the file.
 
 That is the argument for recording the encoding next to the verdict rather than the verdict
-alone. [Lesson 1.4](../seal-in/index.md) made it on a ladder where the two builds disagreed.
-This one makes it where the tool agrees with itself, twice, and is wrong both times.
+alone, and it is not retired by the fix. The gate is what made this page writable in the
+first place, a year before the front end learned to say `UnsupportedConstruct`, and it is
+what still catches [lesson 7.9](../two-hand-fb/index.md), where the tool is confident and
+wrong today.

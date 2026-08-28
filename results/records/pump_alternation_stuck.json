@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-28T13:26:58Z",
+  "recorded_at": "2026-08-28T18:37:09Z",
   "program": "benchmarks/water_treatment/g_pump_alternation/stuck_duty.xml",
   "properties_file": "benchmarks/water_treatment/g_pump_alternation/alternation_check.props.yaml",
   "properties": [
@@ -16,51 +16,12 @@
   ],
   "expected_verdict": "SAFE",
   "runs": {
-    "v8.4": {
-      "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-src/build/src/esbmc/esbmc",
-        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
-        "version": "8.4.0",
-        "commit": "61172c6f",
-        "platform": "aarch64 macos"
-      },
-      "status": "unknown",
-      "encoding": {
-        "scan_body": [
-          "     1: IF !1 THEN GOTO 2",
-          "        ASSIGN LevelHigh=NONDET(_Bool);",
-          "        ASSIGN LevelLow=NONDET(_Bool);",
-          "        ASSIGN PumpB=1 && Call && Duty;",
-          "        ASSIGN PumpA=1 && Call && !Duty;",
-          "        ASSIGN Duty=1 && Duty && LevelLow;",
-          "        ASSIGN Call=1 && Call && !LevelLow;",
-          "        ASSIGN Call=1 && LevelHigh && !LevelLow;",
-          "        GOTO 1",
-          "     2:"
-        ],
-        "assignment_counts": {
-          "LevelHigh": 1,
-          "LevelLow": 1,
-          "PumpB": 1,
-          "PumpA": 1,
-          "Duty": 1,
-          "Call": 2
-        },
-        "not_driven_by_body": [],
-        "gate": "pass"
-      },
-      "command": "cp benchmarks/water_treatment/g_pump_alternation/stuck_duty.xml benchmarks/water_treatment/g_pump_alternation/stuck_duty.ld\nesbmc benchmarks/water_treatment/g_pump_alternation/stuck_duty.ld --ld-props benchmarks/water_treatment/g_pump_alternation/alternation_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
-      "verdict": "unknown",
-      "proof": null,
-      "cpu_time_s": 0.165,
-      "counterexample": null
-    },
     "master": {
       "tool": {
         "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "d88a9fa4",
+        "commit": "0064c4ac",
         "platform": "aarch64 macos"
       },
       "status": "unknown",
@@ -141,7 +102,7 @@
       "command": "cp benchmarks/water_treatment/g_pump_alternation/stuck_duty.xml benchmarks/water_treatment/g_pump_alternation/stuck_duty.ld\nesbmc benchmarks/water_treatment/g_pump_alternation/stuck_duty.ld --ld-props benchmarks/water_treatment/g_pump_alternation/alternation_check.props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
       "verdict": "unknown",
       "proof": null,
-      "cpu_time_s": 0.364,
+      "cpu_time_s": 0.4,
       "counterexample": null
     }
   }

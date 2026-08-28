@@ -24,7 +24,7 @@ ERROR: benchmarks/hvac/ld_ton_single/ton_single.ld: No document element found
 ERROR: PARSING ERROR
 ```
 
-Identical on both builds. ESBMC picks its ladder front end from the `.ld` extension and
+ESBMC picks its ladder front end from the `.ld` extension and
 then XML-parses the file, so a file of `XIC` and `OTE` lines produces the error an XML
 parser gives an empty document.
 

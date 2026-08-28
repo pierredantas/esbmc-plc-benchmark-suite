@@ -68,7 +68,7 @@ It reads reasonably. It is also fatal:
 
 {{record: batch_reactor_weakened}}
 
-Same bombed program, same two builds, same verifier. **SAFE.** The escape clause is true
+Same bombed program, same verifier. **SAFE.** The escape clause is true
 in exactly the scans the attack needs, because the attack does not touch the vent, so
 `vent` is high whenever `overpressure` is. The requirement now excuses the one behavior
 it existed to forbid.

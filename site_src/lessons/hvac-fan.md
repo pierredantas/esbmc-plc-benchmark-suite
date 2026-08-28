@@ -32,7 +32,7 @@ rung, and nothing else prevents the conflict.
 
 {{record: g_hvac_fan_delay__clean}}
 
-The bombed variant is the branch this part has now shown five times, and both builds
+The bombed variant is the branch this part has now shown five times, and the checker
 refute it:
 
 {{record: g_hvac_fan_delay__bomb}}

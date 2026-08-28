@@ -39,7 +39,7 @@ nothing else:
 
 {{record: motor_witness_clean}}
 
-SUCCESSFUL, on both builds, by k-induction. Read what that means here: no reachable state
+SUCCESSFUL, by k-induction. Read what that means here: no reachable state
 energizes both contactors, for any input sequence of any length. Not "we looked and found
 nothing". The state does not exist.
 
