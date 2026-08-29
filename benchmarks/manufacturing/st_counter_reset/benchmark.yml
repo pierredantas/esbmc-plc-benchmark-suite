@@ -1,0 +1,23 @@
+format_version: "0.1"
+id: st_counter_reset
+name: "counter with reset-to-value (Structured Text)"
+domain: manufacturing
+language: ST
+source:
+  origin: beremiz
+  reference: >-
+    Imported from the Beremiz IEC 61131-3 language test (tests/projects/iec61131_lang_test, CounterST function block, checked at aeb89e8 on 2026-08-29). The body is carried over unchanged; only the enclosing POU differs, since upstream declares a function block reading a global ResetCounterValue and this file declares an equivalent PROGRAM taking it as an input, so the task stands alone. Beremiz ships its IDE tree under GPLv2-or-later with no per-file header, which is the license recorded here.
+  license: "GPL-2.0-or-later"
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: counter_reset.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+metrics:
+  pous: 1
+  variables: 4
+features: [counter, reset, assignment]
+difficulty: easy
+tags: [feature, semantics, syntax-pair, language-coverage]
