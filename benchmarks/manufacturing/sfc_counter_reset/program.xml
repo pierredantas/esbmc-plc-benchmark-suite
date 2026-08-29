@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- counter_reset: a free-running counter with a reset-to-value.
+   Reset loads ResetCounterValue, otherwise Cnt increments; OUT follows Cnt.
+   Imported from the Beremiz IEC 61131-3 language test (CounterSFC function block),
+   re-expressed as a PROGRAM so it stands alone. See benchmark.yml for provenance. -->
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="Anonymous" productName="Benchmark Suite" productVersion="1.0" creationDateTime="2026-08-29T00:00:00" />
+  <contentHeader name="sfc_counter_reset"><coordinateInfo><fbd><scaling x="1" y="1" /></fbd><ld><scaling x="1" y="1" /></ld><sfc><scaling x="1" y="1" /></sfc></coordinateInfo></contentHeader>
+  <types><dataTypes /><pous><pou name="drive" pouType="program">
+    <interface>
+      <inputVars>
+        <variable name="Reset"><type><BOOL /></type></variable>
+        <variable name="ResetCounterValue"><type><INT /></type></variable>
+      </inputVars>
+      <outputVars><variable name="OUT"><type><INT /></type></variable></outputVars>
+      <localVars><variable name="Cnt"><type><INT /></type></variable></localVars>
+    </interface>
+    <body><SFC xmlns:html="http://www.w3.org/1999/xhtml">
+            <step localId="1" name="Start" initialStep="true" height="34" width="90">
+              <position x="241" y="14" />
+              <connectionPointOut formalParameter="">
+                <relPosition x="45" y="34" />
+              </connectionPointOut>
+            </step>
+            <selectionDivergence localId="2" height="1" width="431">
+              <position x="70" y="86" />
+              <connectionPointIn>
+                <relPosition x="216" y="0" />
+                <connection refLocalId="1">
+                  <position x="286" y="86" />
+                  <position x="286" y="42" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut formalParameter="">
+                <relPosition x="0" y="1" />
+              </connectionPointOut>
+              <connectionPointOut formalParameter="">
+                <relPosition x="431" y="1" />
+              </connectionPointOut>
+            </selectionDivergence>
+            <transition localId="3" height="2" width="20">
+              <position x="491" y="132" />
+              <connectionPointIn>
+                <relPosition x="10" y="0" />
+                <connection refLocalId="2">
+                  <position x="501" y="132" />
+                  <position x="501" y="87" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="10" y="2" />
+              </connectionPointOut>
+              <condition>
+                <inline name="">
+                  <ST>
+                    <html:p>Reset</html:p>
+                  </ST>
+                </inline>
+              </condition>
+            </transition>
+            <transition localId="4" height="2" width="20" executionOrderId="0">
+              <position x="60" y="135" />
+              <connectionPointIn>
+                <relPosition x="10" y="0" />
+                <connection refLocalId="2">
+                  <position x="70" y="135" />
+                  <position x="70" y="87" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="10" y="2" />
+              </connectionPointOut>
+              <condition>
+                <inline name="">
+                  <ST>
+                    <html:p>NOT Reset</html:p>
+                  </ST>
+                </inline>
+              </condition>
+            </transition>
+            <step localId="5" name="ResetCounter" initialStep="false" height="30" width="134">
+              <position x="434" y="190" />
+              <connectionPointIn>
+                <relPosition x="67" y="0" />
+                <connection refLocalId="3">
+                  <position x="501" y="190" />
+                  <position x="501" y="134" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut formalParameter="">
+                <relPosition x="67" y="30" />
+              </connectionPointOut>
+              <connectionPointOutAction formalParameter="">
+                <relPosition x="134" y="15" />
+              </connectionPointOutAction>
+            </step>
+            <actionBlock localId="6" height="63" width="254">
+              <position x="641" y="190" />
+              <connectionPointIn>
+                <relPosition x="0" y="15" />
+                <connection refLocalId="5">
+                  <position x="641" y="205" />
+                  <position x="568" y="205" />
+                </connection>
+              </connectionPointIn>
+              <action localId="0">
+                <relPosition x="0" y="0" />
+                <inline>
+                  <ST>
+                    <html:p>Cnt := ResetCounterValue;</html:p>
+                  </ST>
+                </inline>
+              </action>
+              <action localId="0">
+                <relPosition x="0" y="0" />
+                <inline>
+                  <ST>
+                    <html:p>OUT := Cnt;</html:p>
+                  </ST>
+                </inline>
+              </action>
+            </actionBlock>
+            <step localId="7" name="Count" initialStep="false" height="30" width="85" executionOrderId="0">
+              <position x="28" y="191" />
+              <connectionPointIn>
+                <relPosition x="42" y="0" />
+                <connection refLocalId="4">
+                  <position x="70" y="191" />
+                  <position x="70" y="137" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut formalParameter="">
+                <relPosition x="42" y="30" />
+              </connectionPointOut>
+              <connectionPointOutAction formalParameter="">
+                <relPosition x="85" y="15" />
+              </connectionPointOutAction>
+            </step>
+            <actionBlock localId="8" height="52" width="164" executionOrderId="0">
+              <position x="154" y="191" />
+              <connectionPointIn>
+                <relPosition x="0" y="15" />
+                <connection refLocalId="7">
+                  <position x="154" y="206" />
+                  <position x="113" y="206" />
+                </connection>
+              </connectionPointIn>
+              <action localId="0">
+                <relPosition x="0" y="0" />
+                <inline>
+                  <ST>
+                    <html:p>Cnt := Cnt + 1;</html:p>
+                  </ST>
+                </inline>
+              </action>
+              <action localId="0">
+                <relPosition x="0" y="0" />
+                <inline>
+                  <ST>
+                    <html:p>OUT := Cnt;</html:p>
+                  </ST>
+                </inline>
+              </action>
+            </actionBlock>
+            <selectionConvergence localId="10" height="1" width="431">
+              <position x="70" y="273" />
+              <connectionPointIn>
+                <relPosition x="0" y="0" />
+                <connection refLocalId="13">
+                  <position x="70" y="273" />
+                  <position x="70" y="244" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointIn>
+                <relPosition x="431" y="0" />
+                <connection refLocalId="14">
+                  <position x="501" y="273" />
+                  <position x="501" y="250" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="216" y="1" />
+              </connectionPointOut>
+            </selectionConvergence>
+            <jumpStep localId="12" targetName="Start" height="13" width="12">
+              <position x="280" y="317" />
+              <connectionPointIn>
+                <relPosition x="6" y="0" />
+                <connection refLocalId="10">
+                  <position x="286" y="317" />
+                  <position x="286" y="274" />
+                </connection>
+              </connectionPointIn>
+            </jumpStep>
+            <transition localId="13" height="2" width="20" executionOrderId="0">
+              <position x="60" y="242" />
+              <connectionPointIn>
+                <relPosition x="10" y="0" />
+                <connection refLocalId="7">
+                  <position x="70" y="242" />
+                  <position x="70" y="215" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="10" y="2" />
+              </connectionPointOut>
+              <condition>
+                <inline name="">
+                  <ST>
+                    <html:p>Reset</html:p>
+                  </ST>
+                </inline>
+              </condition>
+            </transition>
+            <transition localId="14" height="2" width="20" executionOrderId="0">
+              <position x="491" y="248" />
+              <connectionPointIn>
+                <relPosition x="10" y="0" />
+                <connection refLocalId="5">
+                  <position x="501" y="248" />
+                  <position x="501" y="220" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="10" y="2" />
+              </connectionPointOut>
+              <condition>
+                <inline name="">
+                  <ST>
+                    <html:p>NOT Reset</html:p>
+                  </ST>
+                </inline>
+              </condition>
+            </transition>
+          </SFC></body>
+  </pou></pous></types>
+  <instances><configurations><configuration name="Config0"><resource name="Res0"><task name="tcyclic" interval="T#10ms" priority="0"><pouInstance name="inst0" typeName="drive" /></task></resource></configuration></configurations></instances>
+</project>

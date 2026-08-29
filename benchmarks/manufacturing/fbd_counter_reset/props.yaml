@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!Reset || (OUT == ResetCounterValue)"
+    justification: "Reset is a load, not a clear: on a scan where Reset holds, the counter output equals the supplied reset value rather than the incremented count."
