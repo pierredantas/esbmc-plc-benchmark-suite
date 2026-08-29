@@ -51,11 +51,11 @@ docs/INTEROP.md                the second verification route and what it costs
 > ([DOI 10.5281/zenodo.21642386](https://doi.org/10.5281/zenodo.21642386)) holds
 > **50 benchmarks over 83 program variants** in 15 LD-textual, 25 LD-graphical and
 > 10 ST. Those are the numbers the accompanying paper reports, and they are what you
-> should cite. This branch has grown since: as of 2026-08-27 it holds **68 tasks
-> over 105 variants** (53 LD-graphical · 25 ST · 15 LD-textual · 6 FBD · 4 SFC · 2 IL).
-> The [benchmarks catalog](https://pierredantas.github.io/esbmc-plc-benchmark-suite/benchmarks/)
-> computes its counts from the files at build time, so read current figures there rather
-> than here. Everything below this note describes v1.0.1.
+> should cite. This branch has grown since, and its size changes with every benchmark
+> added, so no count for it is written here. For current figures read the
+> [benchmarks catalog](https://pierredantas.github.io/esbmc-plc-benchmark-suite/benchmarks/)
+> or `docs/INDEX.md`; both derive their counts from `benchmarks/` at build time.
+> Everything below this note describes v1.0.1.
 
 50 benchmarks / 83 variants across 10 domains, all passing `runner/validate.py`.
 Composition: **15 LD-textual · 25 LD-graphical · 10 ST**.

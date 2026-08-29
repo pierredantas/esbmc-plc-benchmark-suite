@@ -21,3 +21,6 @@ portal/
 _site/
 
 nav.generated.yml
+
+# Local Claude Code permission state, per machine
+.claude/settings.local.json
