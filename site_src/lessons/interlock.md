@@ -4,15 +4,11 @@ phases straight through the reversing contacts, so the interlock here is wiring
 protection rather than a process preference. Nobody gets a second chance to test it
 on real switchgear.
 
-## The ladder
+## The rung
 
-```
-Rung 1:  fwd ---| |----|/|--- ( KM_CW )       KM_CW  := fwd AND NOT rev
-                       rev
-Rung 2:  rev ---| |------------( KM_CCW )     KM_CCW := rev
-```
+<svg class="diagram" viewBox="0 0 700 150" role="img" aria-label="Two rungs: a forward command and a normally closed reverse contact drive the clockwise contactor; a plain reverse command drives the counter-clockwise contactor"><g stroke="currentColor" fill="none" stroke-width="2.4"><path d="M28 18 V132"/><path d="M672 18 V132"/></g><g stroke="currentColor" fill="none" stroke-width="1.6"><path d="M28 52 H140"/><path d="M156 52 H300"/><path d="M316 52 H571"/><path d="M605 52 H672"/><path d="M140 40 V64"/><path d="M156 40 V64"/><path d="M300 40 V64"/><path d="M316 40 V64"/><path d="M296 66 L320 38"/><path d="M578 38 Q564 52 578 66"/><path d="M598 38 Q612 52 598 66"/><path d="M28 110 H140"/><path d="M156 110 H571"/><path d="M605 110 H672"/><path d="M140 98 V122"/><path d="M156 98 V122"/><path d="M578 96 Q564 110 578 124"/><path d="M598 96 Q612 110 598 124"/></g><g fill="currentColor" font-size="13" text-anchor="middle"><text x="148" y="32">fwd</text><text x="308" y="32">rev</text><text x="588" y="32">KM_CW</text><text x="148" y="90">rev</text><text x="588" y="90">KM_CCW</text></g></svg>
 
-Rung 1 carries the interlock. Its normally-closed `rev` contact drops `KM_CW` the
+`KM_CW := fwd AND NOT rev`, `KM_CCW := rev`. Rung 1 carries the interlock. Its normally-closed `rev` contact drops `KM_CW` the
 moment reverse is asked for, and rung 2 needs no guard of its own because rung 1
 already breaks the pair.
 
