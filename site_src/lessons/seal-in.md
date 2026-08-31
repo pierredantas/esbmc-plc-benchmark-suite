@@ -3,13 +3,9 @@ verdict starts lying to you.
 
 ## The rung
 
-```
-Start ---| |---+---|/|--- ( Run )       Run := (Start OR Run) AND NOT EStop
-               |   EStop
-Run   ---| |---+
-```
+<svg class="diagram" viewBox="0 0 700 150" role="img" aria-label="Start in series, or Run feeding back in parallel, joined and driving a normally closed EStop contact into the Run coil"><g stroke="currentColor" fill="none" stroke-width="2.4"><path d="M28 18 V132"/><path d="M672 18 V132"/></g><g stroke="currentColor" fill="none" stroke-width="1.6"><path d="M28 52 H140"/><path d="M156 52 H320"/><path d="M28 98 H140"/><path d="M156 98 H240"/><path d="M240 98 H320"/><path d="M320 52 V98"/><path d="M320 52 H396"/><path d="M412 52 H571"/><path d="M605 52 H672"/><path d="M140 40 V64"/><path d="M156 40 V64"/><path d="M140 86 V110"/><path d="M156 86 V110"/><path d="M396 40 V64"/><path d="M412 40 V64"/><path d="M392 66 L416 38"/><path d="M578 38 Q564 52 578 66"/><path d="M598 38 Q612 52 598 66"/></g><circle cx="320" cy="52" r="3.5" fill="currentColor"/><circle cx="320" cy="98" r="3.5" fill="currentColor"/><g fill="currentColor" font-size="13" text-anchor="middle"><text x="148" y="32">Start</text><text x="148" y="128">Run</text><text x="404" y="32">EStop</text><text x="588" y="32">Run</text></g></svg>
 
-The coil's own output feeds back through the lower branch. Press Start, release it,
+`Run := (Start OR Run) AND NOT EStop`. The coil's own output feeds back through the lower branch. Press Start, release it,
 and the motor keeps running until EStop opens the path. In PLCopen XML that junction
 is two `<connection>` elements inside one `<connectionPointIn>`, which is a wired OR.
 
