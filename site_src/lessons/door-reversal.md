@@ -8,19 +8,11 @@ onto whatever moved.
 
 ## The rungs
 
-```
-Reversing --| |---+---|/|--- ( Reversing )   Reversing := (Reversing OR Beam) AND NOT TopLimit
-Beam -------| |---+   TopLimit
+<svg class="diagram" viewBox="0 0 700 340" role="img" aria-label="Three rungs: reversing or beam in parallel, gated by normally closed top limit, latches reversing; close command with normally closed beam and normally closed reversing drives move down; open command or reversing in parallel drives move up"><g stroke="currentColor" fill="none" stroke-width="2.4"><path d="M28 18 V322"/><path d="M672 18 V322"/></g><g stroke="currentColor" fill="none" stroke-width="1.6"><path d="M28 52 H140"/><path d="M156 52 H320"/><path d="M28 82 H140"/><path d="M156 82 H240"/><path d="M240 82 H320"/><path d="M320 52 V82"/><path d="M320 52 H396"/><path d="M412 52 H571"/><path d="M605 52 H672"/><path d="M140 40 V64"/><path d="M156 40 V64"/><path d="M140 70 V94"/><path d="M156 70 V94"/><path d="M396 40 V64"/><path d="M412 40 V64"/><path d="M392 66 L416 38"/><path d="M578 38 Q564 52 578 66"/><path d="M598 38 Q612 52 598 66"/><path d="M28 158 H140"/><path d="M156 158 H270"/><path d="M286 158 H400"/><path d="M416 158 H571"/><path d="M605 158 H672"/><path d="M140 146 V170"/><path d="M156 146 V170"/><path d="M270 146 V170"/><path d="M286 146 V170"/><path d="M266 172 L290 144"/><path d="M400 146 V170"/><path d="M416 146 V170"/><path d="M396 172 L420 144"/><path d="M578 144 Q564 158 578 172"/><path d="M598 144 Q612 158 598 172"/><path d="M28 234 H140"/><path d="M156 234 H320"/><path d="M28 264 H140"/><path d="M156 264 H320"/><path d="M320 234 V264"/><path d="M320 234 H571"/><path d="M605 234 H672"/><path d="M140 222 V246"/><path d="M156 222 V246"/><path d="M140 252 V276"/><path d="M156 252 V276"/><path d="M578 220 Q564 234 578 248"/><path d="M598 220 Q612 234 598 248"/></g><circle cx="320" cy="52" r="3.5" fill="currentColor"/><circle cx="320" cy="82" r="3.5" fill="currentColor"/><circle cx="320" cy="234" r="3.5" fill="currentColor"/><circle cx="320" cy="264" r="3.5" fill="currentColor"/><g fill="currentColor" font-size="13" text-anchor="middle"><text x="148" y="32">Reversing</text><text x="148" y="112">Beam</text><text x="404" y="32">TopLimit</text><text x="588" y="32">Reversing</text><text x="148" y="138">CloseCmd</text><text x="278" y="138">Beam</text><text x="408" y="138">Reversing</text><text x="588" y="138">MoveDown</text><text x="148" y="214">OpenCmd</text><text x="148" y="294">Reversing</text><text x="588" y="214">MoveUp</text></g></svg>
 
-CloseCmd ---| |---|/|---|/|--- ( MoveDown )  MoveDown := CloseCmd AND NOT Beam AND NOT Reversing
-                 Beam  Reversing
-
-OpenCmd ----| |---+--- ( MoveUp )            MoveUp := OpenCmd OR Reversing
-Reversing --| |---+
-```
-
-`Reversing` latches on the beam and holds until the top limit. The latch is the safety
-function. Everything else is plumbing.
+`Reversing := (Reversing OR Beam) AND NOT TopLimit`, `MoveDown := CloseCmd AND NOT Beam
+AND NOT Reversing`, `MoveUp := OpenCmd OR Reversing`. `Reversing` latches on the beam and
+holds until the top limit. The latch is the safety function. Everything else is plumbing.
 
 {{files: benchmarks/building_automation/g_door_reversal/program.xml | benchmarks/building_automation/g_door_reversal/momentary.xml | benchmarks/building_automation/g_door_reversal/props.yaml | benchmarks/building_automation/g_door_reversal/reversal_check.props.yaml}}
 
