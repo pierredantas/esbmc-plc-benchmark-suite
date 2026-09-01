@@ -1,0 +1,20 @@
+# Provenance: Copied verbatim from PLC-LD-dataset legitimate/lstart_cycle.xml
+format_version: "0.1"
+id: g_start_cycle
+name: "Start/stop cycle controller (graphical LD)"
+domain: motor_control
+language: LD-graphical
+source:
+  origin: plc-ld-dataset
+  reference: "PLC-LD-dataset, github.com/UniboSecurityResearch/PLC-LD-dataset (Iacobelli et al., ICPS 2024, doi:10.1109/ICPS59941.2024.10639995); legitimate/lstart_cycle.xml"
+  license: "GPL-3.0"
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: lstart_cycle.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [start_stop, seal_in, cycle]
+difficulty: easy
+tags: [motor, start_stop, seal_in]

@@ -1,0 +1,20 @@
+# Provenance: Copied verbatim from PLC-LD-dataset legitimate/lstop_eq.xml
+format_version: "0.1"
+id: g_stop_eq
+name: "Stop-on-equal comparison cycle (graphical LD)"
+domain: motor_control
+language: LD-graphical
+source:
+  origin: plc-ld-dataset
+  reference: "PLC-LD-dataset, github.com/UniboSecurityResearch/PLC-LD-dataset (Iacobelli et al., ICPS 2024, doi:10.1109/ICPS59941.2024.10639995); legitimate/lstop_eq.xml"
+  license: "GPL-3.0"
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: lstop_eq.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [comparison, start_stop]
+difficulty: easy
+tags: [motor, comparison, stop]

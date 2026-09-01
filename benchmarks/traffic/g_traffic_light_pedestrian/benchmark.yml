@@ -1,0 +1,21 @@
+# Provenance: Copied from Beremiz exemples/svghmi_traffic_light/plc.xml
+# Beremiz IDE is GPLv2; example projects inherit the same license terms (GPL-2.0-or-later).
+format_version: "0.1"
+id: g_traffic_light_pedestrian
+name: "Traffic light sequence with pedestrian button (graphical LD / FB)"
+domain: traffic
+language: LD-graphical
+source:
+  origin: beremiz
+  reference: "Beremiz sample projects, github.com/beremiz/beremiz (exemples/svghmi_traffic_light/plc.xml); Beremiz is Free Software for machine automation"
+  license: "GPL-2.0-or-later"
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: plc.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+features: [timer, sequence, function_block]
+difficulty: medium
+tags: [traffic_light, pedestrian, sequence, timer]
