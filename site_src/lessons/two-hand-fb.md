@@ -8,11 +8,7 @@ verifies, and has since 7.2.
 
 ## The block
 
-```
-     LH ---[      ]
-            TwoHandII  ]--- Stroke
-     RH ---[      ]
-```
+<svg class="diagram" viewBox="0 0 600 150" role="img" aria-label="Function block diagram: LH and RH feed a TwoHandII block whose output drives Stroke"><g stroke="currentColor" fill="none" stroke-width="1.4"><rect x="20" y="26" width="70" height="26" rx="2"/><rect x="20" y="98" width="70" height="26" rx="2"/><rect x="230" y="26" width="140" height="98" rx="2"/><rect x="450" y="62" width="90" height="26" rx="2"/></g><g stroke="currentColor" fill="none" stroke-width="1.4"><path d="M90 39 H230"/><path d="M90 111 H230"/><path d="M370 75 H450"/></g><g fill="currentColor" font-size="12.5" text-anchor="middle"><text x="55" y="43">LH</text><text x="55" y="115">RH</text><text x="300" y="79">TwoHandII</text><text x="495" y="79">Stroke</text></g></svg>
 
 ```
 BothOff := NOT LH AND NOT RH;
