@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "STOP IMPLIES NOT CYCLE_ON"
+    justification: "Classic seal-in safety: pressing STOP must release the holding circuit so the motor/cycle cannot remain energized."
+  - id: P2
+    kind: invariant
+    expression: "NOT (START AND STOP AND CYCLE_ON)"
+    justification: "Simultaneous START and STOP should not leave the cycle active (STOP has priority)."
