@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-01T22:42:36Z",
+  "program": "benchmarks/traffic/g_traffic_light_pedestrian/plc.xml",
+  "properties_file": "benchmarks/traffic/g_traffic_light_pedestrian/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(RED_LIGHT && GREEN_LIGHT)",
+      "justification": "Traffic safety hazard: for the same approach, red and green lights must never be illuminated together."
+    },
+    {
+      "id": "P2",
+      "kind": "invariant",
+      "expression": "!(PEDESTRIAN_GREEN_LIGHT && GREEN_LIGHT)",
+      "justification": "Pedestrian safety: cars must not have green while pedestrians have green on a conflicting movement."
+    }
+  ],
+  "property_variables": [
+    "GREEN_LIGHT",
+    "PEDESTRIAN_GREEN_LIGHT",
+    "RED_LIGHT"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "master": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "0064c4acc8",
+        "platform": "aarch64 macos"
+      },
+      "status": "error",
+      "encoding": {
+        "scan_body": [
+          "Target: 64-bit little-endian aarch64-unknown-macos with esbmclibc",
+          "Parsing benchmarks/traffic/g_traffic_light_pedestrian/plc.ld",
+          "ERROR: UnsupportedConstruct(R_TRIG, tier=2)",
+          "ERROR: PARSING ERROR"
+        ],
+        "assignment_counts": {},
+        "not_driven_by_body": [
+          "GREEN_LIGHT",
+          "PEDESTRIAN_GREEN_LIGHT",
+          "RED_LIGHT"
+        ],
+        "gate": "fail"
+      },
+      "command": "cp benchmarks/traffic/g_traffic_light_pedestrian/plc.xml benchmarks/traffic/g_traffic_light_pedestrian/plc.ld\nesbmc benchmarks/traffic/g_traffic_light_pedestrian/plc.ld --ld-props benchmarks/traffic/g_traffic_light_pedestrian/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
+      "verdict": "error",
+      "proof": null,
+      "cpu_time_s": 0.01,
+      "counterexample": null
+    }
+  }
+}

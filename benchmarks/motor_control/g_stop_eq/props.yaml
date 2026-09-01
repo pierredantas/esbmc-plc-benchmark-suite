@@ -2,5 +2,5 @@ format_version: "0.1"
 properties:
   - id: P1
     kind: invariant
-    expression: "STOP IMPLIES NOT CYCLE_ON"
+    expression: "!(STOP && CYCLE_ON)"
     justification: "STOP input must force the cycle off (safety interlock)."

@@ -2,9 +2,9 @@ format_version: "0.1"
 properties:
   - id: P1
     kind: invariant
-    expression: "NOT (RED_LIGHT AND GREEN_LIGHT)"
+    expression: "!(RED_LIGHT && GREEN_LIGHT)"
     justification: "Traffic safety hazard: for the same approach, red and green lights must never be illuminated together."
   - id: P2
     kind: invariant
-    expression: "NOT (PEDESTRIAN_GREEN_LIGHT AND GREEN_LIGHT)"
+    expression: "!(PEDESTRIAN_GREEN_LIGHT && GREEN_LIGHT)"
     justification: "Pedestrian safety: cars must not have green while pedestrians have green on a conflicting movement."
