@@ -6,15 +6,9 @@ and you have shorted the supply through the winding ends.
 
 ## The rungs
 
-```
-Call ---| |---|/|--- ( Star )              Star := Call AND NOT StarDone
-             StarDone
+<svg class="diagram" viewBox="0 0 700 150" role="img" aria-label="Two rungs: a call command and a normally closed star-done contact drive the star contactor; a call command with star-done and dead-time-done in series drives the delta contactor"><g stroke="currentColor" fill="none" stroke-width="2.4"><path d="M28 18 V132"/><path d="M672 18 V132"/></g><g stroke="currentColor" fill="none" stroke-width="1.6"><path d="M28 52 H140"/><path d="M156 52 H571"/><path d="M605 52 H672"/><path d="M140 40 V64"/><path d="M156 40 V64"/><path d="M136 66 L160 38"/><path d="M578 38 Q564 52 578 66"/><path d="M598 38 Q612 52 598 66"/><path d="M28 110 H140"/><path d="M156 110 H270"/><path d="M286 110 H400"/><path d="M416 110 H571"/><path d="M605 110 H672"/><path d="M140 98 V122"/><path d="M156 98 V122"/><path d="M270 98 V122"/><path d="M286 98 V122"/><path d="M400 98 V122"/><path d="M416 98 V122"/><path d="M578 96 Q564 110 578 124"/><path d="M598 96 Q612 110 598 124"/></g><g fill="currentColor" font-size="13" text-anchor="middle"><text x="148" y="32">Call</text><text x="588" y="32">Star</text><text x="148" y="90">Call</text><text x="278" y="90">StarDone</text><text x="408" y="90">DeadDone</text><text x="588" y="90">Delta</text></g></svg>
 
-Call ---| |---| |---| |--- ( Delta )       Delta := Call AND StarDone AND DeadDone
-            StarDone DeadDone
-```
-
-`StarDone` and `DeadDone` come from the changeover timer. The start and stop latch that
+`Star := Call AND NOT StarDone`, `Delta := Call AND StarDone AND DeadDone`. `StarDone` and `DeadDone` come from the changeover timer. The start and stop latch that
 drives `Call` sits upstream and is the subject of lesson 1.4, so it is deliberately not
 in this file; two rungs is the whole of the contactor selection.
 
