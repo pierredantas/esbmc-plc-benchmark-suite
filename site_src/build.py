@@ -535,6 +535,7 @@ def build_nav(parts):
            {"The properties we prove": "properties.md"},
            {"How ESBMC-PLC works": "how-esbmc-plc-works.md"},
            {"The tools underneath": "the-tools-underneath.md"},
+           {"Ladder to structured text": "ld-to-st.md"},
            {"Ladder logic bombs": "ladder-logic-bombs.md"},
            {"Lessons": lessons},
            {"Benchmarks": "benchmarks/index.md"},
@@ -758,6 +759,11 @@ def build_static():
         dest = OUT / "stylesheets" / css.name
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(css, dest)
+        STATS["files"] += 1
+    for script in (SRC / "scripts").glob("*.js"):
+        dest = OUT / "scripts" / script.name
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(script, dest)
         STATS["files"] += 1
 
 

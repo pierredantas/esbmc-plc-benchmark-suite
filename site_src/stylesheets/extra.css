@@ -25,3 +25,51 @@
 .diagram text {
   font-family: var(--md-code-font);
 }
+
+#ld2st-drop {
+  border: 2px dashed var(--md-default-fg-color--lighter);
+  border-radius: 0.2rem;
+  padding: 1.6rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+#ld2st-drop.ld2st-over {
+  border-color: var(--md-primary-fg-color);
+  background: var(--md-primary-fg-color--transparent, transparent);
+}
+
+.ld2st-hint {
+  font-size: 0.75rem;
+  color: var(--md-default-fg-color--light);
+  margin: 0.3rem 0 0;
+}
+
+.ld2st-error {
+  color: var(--md-typeset-color);
+  background: var(--md-code-bg-color);
+  border-left: 0.2rem solid #e53935;
+  padding: 0.6rem 0.9rem;
+  margin: 0.8rem 0;
+}
+
+.ld2st-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -0.5rem;
+}
+
+.ld2st-toolbar button {
+  font: inherit;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 0.2rem;
+  background: var(--md-code-bg-color);
+  color: var(--md-default-fg-color);
+  cursor: pointer;
+}
+
+.ld2st-toolbar button:hover {
+  border-color: var(--md-primary-fg-color);
+}
