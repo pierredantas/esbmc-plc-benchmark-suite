@@ -15,6 +15,7 @@ decides whether the mix is worth showing.
     python3 -m runner.ld_to_st benchmarks/traffic/g_traffic_light/clean.xml
 """
 import collections
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -24,11 +25,21 @@ FB_TYPES = {"TON", "TOF", "TP", "CTU", "CTD", "CTUD", "R_TRIG", "F_TRIG", "SR", 
 FN_TYPES = {"AND", "OR", "XOR", "NOT", "EQ", "NE", "LE", "GE", "LT", "GT",
             "ADD", "SUB", "MUL", "DIV", "SEL", "LIMIT", "MOVE"}
 
+_SUFFIX = re.compile(r"_\d+$")
+
+
+def base_type(type_name):
+    """Beremiz disambiguates a repeated standard function on one sheet with a
+    trailing _N (LE_0, EQ_0, ...); strip it so LE_0 dispatches exactly like LE."""
+    if type_name and _SUFFIX.search(type_name) and _SUFFIX.sub("", type_name) in FN_TYPES:
+        return _SUFFIX.sub("", type_name)
+    return type_name
+
 
 def _is_fb_instance(el):
     """True when a <block> is a stateful function block, called as a statement."""
-    return el.type_name in FB_TYPES or (
-        el.type_name and el.type_name not in FN_TYPES and el.instance_name)
+    t = base_type(el.type_name)
+    return t in FB_TYPES or (t and t not in FN_TYPES and el.instance_name)
 
 
 def strip_ns(tag):
@@ -190,23 +201,30 @@ class Pou:
             fp = v.get("formalParameter")
             refs = el.inputs(formal=fp)
             formals_in[fp] = self._series_or_parallel(refs) if refs else None
-        args = list(formals_in.values())
-        if el.type_name == "NOT":
+        # EN/ENO are the standard optional enable qualifiers (IEC 61131-3 2.5.1.5), not
+        # operands: EN gates whether the call executes at all and carries no relation to
+        # IN1/IN2, so treating it as a positional argument reads the wrong operand and
+        # silently drops the real one past it.
+        operands = {k: v for k, v in formals_in.items() if k not in ("EN", "ENO")}
+        args = list(operands.values())
+        t = base_type(el.type_name)
+        if t == "NOT":
             return f"NOT ({args[0]})"
-        if el.type_name == "AND":
+        if t == "AND":
             return "(" + " AND ".join(args) + ")"
-        if el.type_name == "OR":
+        if t == "OR":
             return "(" + " OR ".join(args) + ")"
-        if el.type_name == "XOR":
+        if t == "XOR":
             return "(" + " XOR ".join(args) + ")"
-        if el.type_name in ("EQ", "NE", "LE", "GE", "LT", "GT"):
+        if t in ("EQ", "NE", "LE", "GE", "LT", "GT"):
             op = {"EQ": "=", "NE": "<>", "LE": "<=", "GE": ">=", "LT": "<",
-                  "GT": ">"}[el.type_name]
-            return f"({args[0]} {op} {args[1]})"
-        if el.type_name in ("ADD", "SUB", "MUL", "DIV"):
-            op = {"ADD": "+", "SUB": "-", "MUL": "*", "DIV": "/"}[el.type_name]
+                  "GT": ">"}[t]
+            return f"({operands.get('IN1', args[0] if args else '?')} {op} "\
+                   f"{operands.get('IN2', args[1] if len(args) > 1 else '?')})"
+        if t in ("ADD", "SUB", "MUL", "DIV"):
+            op = {"ADD": "+", "SUB": "-", "MUL": "*", "DIV": "/"}[t]
             return "(" + f" {op} ".join(args) + ")"
-        if el.type_name == "SEL":
+        if t == "SEL":
             g, in0, in1 = formals_in.get("G"), formals_in.get("IN0"), formals_in.get("IN1")
             return f"SEL({g}, {in0}, {in1})"
         return f"{el.type_name}({', '.join(args)})"
