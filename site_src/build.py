@@ -698,6 +698,7 @@ def build_benchmark(meta, recorded):
                 "No ESBMC run is recorded against this task yet. The lessons carry the "
                 "recorded runs; see [Reproducing](../../../reproducing.md) to make your own.")
     write(dest / "index.md", meta["id"],
+          f'[Benchmarks](../../../benchmarks/index.md)\n\n'
           f'# {meta.get("name", meta["id"])}\n\n' + "\n".join(body))
 
 
