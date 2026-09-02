@@ -4,8 +4,8 @@ name: "Forward/reverse motor interlock"
 domain: motor_control
 language: ST
 source:
-  origin: plc-sec
-  reference: "ESBMC-PLC-Sec benchmark S2 (motor interlock, secret-knock LLB)"
+  origin: authored
+  reference: "Authored by Pierre Dantas for the ESBMC-PLC-Sec curation (benchmark S2, motor interlock, secret-knock LLB), adopted into this suite"
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: candidate
