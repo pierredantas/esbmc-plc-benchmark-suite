@@ -14,7 +14,7 @@ built on one program and the runs recorded against it.
 
 | part | what it covers |
 |---|---|
-| [Foundations](lessons/one-rung/index.md) | contacts, branches, rung order, timers and counters, on ladders small enough to read line by line |
+| [Getting started](lessons/one-rung/index.md) | contacts, branches, rung order, timers and counters, on ladders small enough to read line by line |
 | [Machines and their hazards](lessons/conveyor/index.md) | twelve industrial plants, and a bypass hidden in each |
 | [Logic-level bombs](lessons/what-is-an-llb/index.md) | triggers, fuses, denial of control, and recovering the trigger from a counterexample |
 | [Code from the plant](lessons/real-export/index.md) | programs neither of us wrote, and what they cost |

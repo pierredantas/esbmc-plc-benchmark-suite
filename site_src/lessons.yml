@@ -1,7 +1,7 @@
 # Teaching order lives here, never in a slug. A lesson can be renumbered or moved to
 # another part without changing its URL, which is what published links depend on.
 parts:
-  - title: Foundations
+  - title: Getting started
     blurb: >-
       Small synthetic ladders, one idea each. Every program here is a few elements
       long, so the encoding ESBMC produces is short enough to read line by line.

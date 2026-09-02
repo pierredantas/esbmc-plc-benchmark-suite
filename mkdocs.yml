@@ -18,6 +18,7 @@ theme:
   features:
     - content.code.copy
     - content.tabs.link
+    - navigation.path
     - navigation.top
     - search.highlight
     - toc.follow
