@@ -6,7 +6,7 @@ message: >-
   If you use this benchmark suite, please cite both the
   accompanying paper and this artifact.
 type: dataset
-version: 1.0.1
+version: 1.1.0
 license: CC-BY-4.0
 doi: 10.5281/zenodo.21642385
 repository-code: https://github.com/pierredantas/esbmc-plc-benchmark-suite
@@ -18,14 +18,16 @@ identifiers:
     value: 10.5281/zenodo.21642386
     description: DOI of the archived v1.0.1 release
 abstract: >-
-  A suite of 50 IEC 61131-3 benchmarks over 83 program variants
-  (15 textual Ladder Diagram, 25 graphical Ladder Diagram, 10
-  Structured Text) across ten industrial domains, each paired with
-  a formal safety property, a machine-checkable expected verdict, a
-  recorded ground-truth method, and a triggering witness for every
-  violation. Packaged in an SV-COMP-compatible layout with a JSON
-  Schema, validator, tool adapters, and a one-command re-check
-  harness.
+  A suite of 92 IEC 61131-3 benchmarks over 138 program variants
+  (15 textual Ladder Diagram, 74 graphical Ladder Diagram, 34
+  Structured Text, 7 Function Block Diagram, 5 Sequential Function
+  Chart, 3 Instruction List) across ten industrial domains, each
+  paired with a formal safety property, a machine-checkable
+  expected verdict, a recorded ground-truth method, and a
+  triggering witness for every violation. Packaged in an
+  SV-COMP-compatible layout with a JSON Schema, validator, tool
+  adapters, a one-command re-check harness, and a companion
+  teaching portal of worked lessons built from the recorded runs.
 authors:
   - given-names: Pierre
     family-names: Dantas
