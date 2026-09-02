@@ -4,8 +4,8 @@ name: "counter scalability"
 domain: manufacturing
 language: ST
 source:
-  origin: plc-sec
-  reference: "ESBMC-PLC-Sec curated benchmark"
+  origin: authored
+  reference: "Authored by Pierre Dantas for the ESBMC-PLC-Sec curation, adopted into this suite"
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: candidate
