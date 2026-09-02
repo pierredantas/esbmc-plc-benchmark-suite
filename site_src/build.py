@@ -119,15 +119,25 @@ def offer(paths, dest_dir, link_prefix="files"):
     The copy always lands in <page>/files/. The link may need a different spelling,
     because MkDocs resolves it against the source file's directory, and a top-level
     page sits one level above the directory it is served from.
+
+    Two sources can share a basename (two benchmarks each with a props.yaml, offered
+    by separate {{files: ...}} calls on the same page). A plain name-keyed copy would
+    let the second silently overwrite the first. When an existing destination file
+    has different content than the one about to be written, the new copy is
+    disambiguated with its parent directory name instead.
     """
     rows = ["| file | what it is | size | sha256 |", "|---|---|---|---|"]
     for src in paths:
-        dest = dest_dir / "files" / src.name
+        name = src.name
+        dest = dest_dir / "files" / name
+        if dest.exists() and digest(dest) != digest(src):
+            name = f"{src.parent.name}_{src.name}"
+            dest = dest_dir / "files" / name
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(src, dest)
         STATS["files"] += 1
         size = src.stat().st_size / 1024.0
-        rows.append(f"| [`{src.name}`]({link_prefix}/{src.name}) | {kind_of(src)} "
+        rows.append(f"| [`{name}`]({link_prefix}/{name}) | {kind_of(src)} "
                     f"| {size:.1f} KB | `{digest(src)}` |")
     return "\n".join(rows)
 
