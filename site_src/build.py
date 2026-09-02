@@ -309,7 +309,8 @@ def render_citation(arg, _ctx):
                      f'  doi     = {{{cff["doi"]}}},',
                      f'  version = {{{cff["version"]}}},',
                      "  note    = {Benchmark suite artifact}", "}"])
-    return "\n".join(rows) + "\n\n" + fence(bib, "bibtex")
+    abstract = " ".join(cff["abstract"].split())
+    return "\n".join(rows) + "\n\n" + abstract + "\n\n" + fence(bib, "bibtex")
 
 
 def render_coverage(_arg, _ctx):
