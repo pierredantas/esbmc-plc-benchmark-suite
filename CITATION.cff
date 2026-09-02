@@ -21,8 +21,8 @@ identifiers:
     value: 10.5281/zenodo.21642386
     description: DOI of the archived v1.0.1 release
 abstract: >-
-  A suite of 92 IEC 61131-3 benchmarks over 138 program variants
-  (15 textual Ladder Diagram, 74 graphical Ladder Diagram, 34
+  A suite of 100 IEC 61131-3 benchmarks over 152 program variants
+  (15 textual Ladder Diagram, 88 graphical Ladder Diagram, 34
   Structured Text, 7 Function Block Diagram, 5 Sequential Function
   Chart, 3 Instruction List) across ten industrial domains, each
   paired with a formal safety property, a machine-checkable
