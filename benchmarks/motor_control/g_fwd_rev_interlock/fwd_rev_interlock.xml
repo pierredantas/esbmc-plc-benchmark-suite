@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <fileHeader companyName="Unknown" productName="Lessons in Electric Circuits transcription" productVersion="1" creationDateTime="2026-09-02T12:00:00"/>
+  <contentHeader name="fwd_rev_interlock">
+    <coordinateInfo>
+      <fbd><scaling x="1" y="1"/></fbd>
+      <ld><scaling x="1" y="1"/></ld>
+      <sfc><scaling x="1" y="1"/></sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="main" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="START_FWD"><type><BOOL/></type></variable>
+            <variable name="START_REV"><type><BOOL/></type></variable>
+            <variable name="STOP"><type><BOOL/></type></variable>
+            <variable name="M1_FWD"><type><BOOL/></type></variable>
+            <variable name="M2_REV"><type><BOOL/></type></variable>
+          </localVars>
+        </interface>
+        <body>
+          <LD>
+            <leftPowerRail localId="100">
+              <position x="0" y="0"/>
+              <connectionPointOut formalParameter=""/>
+            </leftPowerRail>
+            <rightPowerRail localId="200">
+              <position x="100" y="0"/>
+              <connectionPointIn>
+                <connection refLocalId="5"/>
+                <connection refLocalId="10"/>
+              </connectionPointIn>
+            </rightPowerRail>
+            <contact localId="1">
+              <position x="10" y="0"/>
+              <connectionPointIn><connection refLocalId="100"/></connectionPointIn>
+              <connectionPointOut/>
+              <variable>START_FWD</variable>
+            </contact>
+            <contact localId="2">
+              <position x="10" y="10"/>
+              <connectionPointIn><connection refLocalId="100"/></connectionPointIn>
+              <connectionPointOut/>
+              <variable>M1_FWD</variable>
+            </contact>
+            <contact localId="3" negated="true">
+              <position x="20" y="0"/>
+              <connectionPointIn>
+                <connection refLocalId="1"/>
+                <connection refLocalId="2"/>
+              </connectionPointIn>
+              <connectionPointOut/>
+              <variable>STOP</variable>
+            </contact>
+            <contact localId="4" negated="true">
+              <position x="30" y="0"/>
+              <connectionPointIn><connection refLocalId="3"/></connectionPointIn>
+              <connectionPointOut/>
+              <variable>M2_REV</variable>
+            </contact>
+            <coil localId="5">
+              <position x="40" y="0"/>
+              <connectionPointIn><connection refLocalId="4"/></connectionPointIn>
+              <connectionPointOut/>
+              <variable>M1_FWD</variable>
+            </coil>
+            <contact localId="6">
+              <position x="10" y="20"/>
+              <connectionPointIn><connection refLocalId="100"/></connectionPointIn>
+              <connectionPointOut/>
+              <variable>START_REV</variable>
+            </contact>
+            <contact localId="7">
+              <position x="10" y="30"/>
+              <connectionPointIn><connection refLocalId="100"/></connectionPointIn>
+              <connectionPointOut/>
+              <variable>M2_REV</variable>
+            </contact>
+            <contact localId="8" negated="true">
+              <position x="20" y="20"/>
+              <connectionPointIn>
+                <connection refLocalId="6"/>
+                <connection refLocalId="7"/>
+              </connectionPointIn>
+              <connectionPointOut/>
+              <variable>STOP</variable>
+            </contact>
+            <contact localId="9" negated="true">
+              <position x="30" y="20"/>
+              <connectionPointIn><connection refLocalId="8"/></connectionPointIn>
+              <connectionPointOut/>
+              <variable>M1_FWD</variable>
+            </contact>
+            <coil localId="10">
+              <position x="40" y="20"/>
+              <connectionPointIn><connection refLocalId="9"/></connectionPointIn>
+              <connectionPointOut/>
+              <variable>M2_REV</variable>
+            </coil>
+          </LD>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances><configurations><configuration name="Config0"><resource name="Res0"><task name="tcyclic" interval="T#10ms" priority="0"><pouInstance name="inst0" typeName="main" /></task></resource></configuration></configurations></instances>
+</project>

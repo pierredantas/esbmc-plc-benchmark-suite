@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(M1_FWD && M2_REV)"
+    justification: "Motor Short-Circuit Hazard: Forward and Reverse contactors must never be closed at the same time."

@@ -1,0 +1,79 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-02T11:58:11Z",
+  "program": "benchmarks/motor_control/g_failsafe_motor_latch/failsafe_motor_latch.xml",
+  "properties_file": "benchmarks/motor_control/g_failsafe_motor_latch/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "THERMAL_OVERLOAD_NC || !MOTOR_RUN",
+      "justification": "Fire Hazard: The motor coil must instantly de-energize if the hardware thermal overload relay physically trips (opening the NC circuit)."
+    }
+  ],
+  "property_variables": [
+    "MOTOR_RUN",
+    "THERMAL_OVERLOAD_NC"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "master": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "0064c4acc8",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 11",
+          "        ASSIGN START=NONDET(_Bool);",
+          "        ASSIGN THERMAL_OVERLOAD_NC=NONDET(_Bool);",
+          "        ASSIGN STOP_NC=NONDET(_Bool);",
+          "        ASSIGN MOTOR_RUN__prev=1 && MOTOR_RUN;",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf2=0;",
+          "     2: IF !(1 && MOTOR_RUN__prev) THEN GOTO 3",
+          "        ASSIGN pf2=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf1=0;",
+          "     4: IF !(1 && START) THEN GOTO 5",
+          "        ASSIGN pf1=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN pf3=0;",
+          "     6: IF !(1 && pf2 && THERMAL_OVERLOAD_NC) THEN GOTO 7",
+          "        ASSIGN pf3=1;",
+          "     7: IF !(1 && pf1 && THERMAL_OVERLOAD_NC) THEN GOTO 8",
+          "        ASSIGN pf3=1;",
+          "     8: IF !1 THEN GOTO 9",
+          "        ASSIGN pf4=0;",
+          "     9: IF !(1 && pf3 && STOP_NC) THEN GOTO 10",
+          "        ASSIGN pf4=1;",
+          "    10: ASSIGN MOTOR_RUN=1 && pf4;",
+          "        GOTO 1",
+          "    11:"
+        ],
+        "assignment_counts": {
+          "START": 1,
+          "THERMAL_OVERLOAD_NC": 1,
+          "STOP_NC": 1,
+          "MOTOR_RUN__prev": 1,
+          "pf2": 2,
+          "pf1": 2,
+          "pf3": 3,
+          "pf4": 2,
+          "MOTOR_RUN": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/motor_control/g_failsafe_motor_latch/failsafe_motor_latch.xml benchmarks/motor_control/g_failsafe_motor_latch/failsafe_motor_latch.ld\nesbmc benchmarks/motor_control/g_failsafe_motor_latch/failsafe_motor_latch.ld --ld-props benchmarks/motor_control/g_failsafe_motor_latch/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.021,
+      "counterexample": null
+    }
+  }
+}

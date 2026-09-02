@@ -1,0 +1,21 @@
+format_version: "0.1"
+id: g_failsafe_motor_latch
+name: "Fail-Safe Motor Latch"
+domain: motor_control
+language: LD-graphical
+source:
+  origin: lessons-electric-circuits
+  reference: "Lessons In Electric Circuits, Volume IV - Digital, Chapter 6 (Fail-safe design), by Tony R. Kuphaldt"
+  license: "Design Science License"
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: failsafe_motor_latch.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [pierre]
+      witness: "results/records/g_failsafe_motor_latch__failsafe_motor_latch.json"
+features: [contact, coil, parallel_branch]
+difficulty: easy
+tags: [seal-in, fail-safe, overload]

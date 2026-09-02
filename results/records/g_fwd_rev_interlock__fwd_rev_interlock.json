@@ -1,0 +1,105 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-02T11:56:05Z",
+  "program": "benchmarks/motor_control/g_fwd_rev_interlock/fwd_rev_interlock.xml",
+  "properties_file": "benchmarks/motor_control/g_fwd_rev_interlock/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(M1_FWD && M2_REV)",
+      "justification": "Motor Short-Circuit Hazard: Forward and Reverse contactors must never be closed at the same time."
+    }
+  ],
+  "property_variables": [
+    "M1_FWD",
+    "M2_REV"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "master": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "0064c4acc8",
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 20",
+          "        ASSIGN START_FWD=NONDET(_Bool);",
+          "        ASSIGN START_REV=NONDET(_Bool);",
+          "        ASSIGN STOP=NONDET(_Bool);",
+          "        ASSIGN M1_FWD__prev=1 && M1_FWD;",
+          "        ASSIGN M2_REV__prev=1 && M2_REV;",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf2=0;",
+          "     2: IF !(1 && M1_FWD__prev) THEN GOTO 3",
+          "        ASSIGN pf2=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf1=0;",
+          "     4: IF !(1 && START_FWD) THEN GOTO 5",
+          "        ASSIGN pf1=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN pf3=0;",
+          "     6: IF !(1 && pf2 && !STOP) THEN GOTO 7",
+          "        ASSIGN pf3=1;",
+          "     7: IF !(1 && pf1 && !STOP) THEN GOTO 8",
+          "        ASSIGN pf3=1;",
+          "     8: IF !1 THEN GOTO 9",
+          "        ASSIGN pf4=0;",
+          "     9: IF !(1 && pf3 && !M2_REV__prev) THEN GOTO 10",
+          "        ASSIGN pf4=1;",
+          "    10: ASSIGN M1_FWD=1 && pf4;",
+          "        IF !1 THEN GOTO 11",
+          "        ASSIGN pf7=0;",
+          "    11: IF !(1 && M2_REV__prev) THEN GOTO 12",
+          "        ASSIGN pf7=1;",
+          "    12: IF !1 THEN GOTO 13",
+          "        ASSIGN pf6=0;",
+          "    13: IF !(1 && START_REV) THEN GOTO 14",
+          "        ASSIGN pf6=1;",
+          "    14: IF !1 THEN GOTO 15",
+          "        ASSIGN pf8=0;",
+          "    15: IF !(1 && pf7 && !STOP) THEN GOTO 16",
+          "        ASSIGN pf8=1;",
+          "    16: IF !(1 && pf6 && !STOP) THEN GOTO 17",
+          "        ASSIGN pf8=1;",
+          "    17: IF !1 THEN GOTO 18",
+          "        ASSIGN pf9=0;",
+          "    18: IF !(1 && pf8 && !M1_FWD__prev) THEN GOTO 19",
+          "        ASSIGN pf9=1;",
+          "    19: ASSIGN M2_REV=1 && pf9;",
+          "        GOTO 1",
+          "    20:"
+        ],
+        "assignment_counts": {
+          "START_FWD": 1,
+          "START_REV": 1,
+          "STOP": 1,
+          "M1_FWD__prev": 1,
+          "M2_REV__prev": 1,
+          "pf2": 2,
+          "pf1": 2,
+          "pf3": 3,
+          "pf4": 2,
+          "M1_FWD": 1,
+          "pf7": 2,
+          "pf6": 2,
+          "pf8": 3,
+          "pf9": 2,
+          "M2_REV": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/motor_control/g_fwd_rev_interlock/fwd_rev_interlock.xml benchmarks/motor_control/g_fwd_rev_interlock/fwd_rev_interlock.ld\nesbmc benchmarks/motor_control/g_fwd_rev_interlock/fwd_rev_interlock.ld --ld-props benchmarks/motor_control/g_fwd_rev_interlock/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.031,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  START_FWD = 1\n\nState 2  thread 0\n----------------------------------------------------\n  START_REV = 1\n\nState 3  thread 0\n----------------------------------------------------\n  STOP = 0\n\nState 4  thread 0\n----------------------------------------------------\n  M1_FWD = 1\n\nState 5  thread 0\n----------------------------------------------------\n  M2_REV = 1\n\nState 6 file benchmarks/motor_control/g_fwd_rev_interlock/fwd_rev_interlock.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/motor_control/g_fwd_rev_interlock/fwd_rev_interlock.ld\n  P1\n  !(M1_FWD && M2_REV)\n\n\n** Results:\nbenchmarks/motor_control/g_fwd_rev_interlock/fwd_rev_interlock.ld\n  FAILED       [global.assertion.1]  line 0  P1\n\n** 1 of 1 properties failed"
+    }
+  }
+}

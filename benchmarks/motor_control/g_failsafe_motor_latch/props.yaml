@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "THERMAL_OVERLOAD_NC || !MOTOR_RUN"
+    justification: "Fire Hazard: The motor coil must instantly de-energize if the hardware thermal overload relay physically trips (opening the NC circuit)."

@@ -1,0 +1,22 @@
+format_version: "0.1"
+id: g_fwd_rev_interlock
+name: "FWD/REV Motor Interlock (first-scan race)"
+domain: motor_control
+language: LD-graphical
+source:
+  origin: lessons-electric-circuits
+  reference: "Lessons In Electric Circuits, Volume IV - Digital, Chapter 6 (Ladder Logic), by Tony R. Kuphaldt"
+  license: "Design Science License"
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: fwd_rev_interlock.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: expert
+      confirmed_by: [pierre]
+      witness: "results/records/g_fwd_rev_interlock__fwd_rev_interlock.json"
+features: [contact, coil, parallel_branch]
+difficulty: easy
+tags: [interlock, short-circuit, safety]
