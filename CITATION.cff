@@ -15,6 +15,9 @@ identifiers:
     value: 10.5281/zenodo.21642385
     description: Version-independent DOI, always resolving to the latest release
   - type: doi
+    value: 10.5281/zenodo.22252807
+    description: DOI of the archived v1.1.0 release
+  - type: doi
     value: 10.5281/zenodo.21642386
     description: DOI of the archived v1.0.1 release
 abstract: >-
