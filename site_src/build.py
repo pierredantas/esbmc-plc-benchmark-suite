@@ -526,8 +526,8 @@ def build_lessons():
 def build_nav(parts):
     """Emit the nav mkdocs.yml inherits, so a new lesson needs one edit, not two."""
     lessons = [{"Overview": "lessons/index.md"}]
-    for part in parts:
-        lessons.append({part["title"]: [
+    for part_num, part in enumerate(parts, start=1):
+        lessons.append({f'{part_num}. {part["title"]}': [
             {f'{les["number"]} {les["title"]}': f'lessons/{les["slug"]}/index.md'}
             for les in part["lessons"]]})
     foundations = [
