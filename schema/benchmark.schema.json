@@ -22,7 +22,7 @@
       "properties": {
         "origin": {
           "type": "string",
-          "enum": ["authored", "openplc", "beremiz", "ppu", "swat", "mathworks", "controllino", "plc-ld-dataset", "plc-sec"]
+          "enum": ["authored", "openplc", "beremiz", "ppu", "swat", "mathworks", "controllino", "plc-ld-dataset", "plc-sec", "lessons-electric-circuits"]
         },
         "reference": { "type": "string" },
         "license": { "type": "string" }
