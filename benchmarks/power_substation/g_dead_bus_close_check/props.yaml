@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!breaker_close || !bus_live || sync_check_ok"
+    justification: "A breaker may close onto a live bus only after synchro-check passes; closing onto a dead bus needs no check."

@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_trip_lockout_86
+name: "trip lockout relay (86) reclose block (graphical LD)"
+domain: power_substation
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored for this suite, modeling a latching 86 lockout relay that blocks autoreclose until manual reset"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: clean.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+  - file: bomb.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.xml
+      seeded_defect: "Added a maintenance-key OR-branch that asserts reclose whenever maint is asserted alongside reclose_request, bypassing the lockout latch."
+      witness: "protection_trip=1, manual_reset=0, reclose_request=1, maint=1 latches lockout and simultaneously asserts reclose."
+features: [contacts, coils]
+difficulty: medium
+tags: [safety, interlock, security, llb, authored]

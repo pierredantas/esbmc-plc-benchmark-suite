@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_phase_hold_permissive
+name: "ISA-88 phase hold on permissive loss (graphical LD)"
+domain: chemical_batch
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored for this suite, modeling an ISA-88 phase HELD state entered on agitator-permissive loss"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: clean.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+  - file: bomb.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.xml
+      seeded_defect: "Added a maintenance-key OR-branch that asserts heater whenever maint is asserted while held, bypassing the phase hold."
+      witness: "Scan 1: run_command=1, agitator_ok=0 latches held. A later scan with run_command=0, resume_command=0, maint=1 asserts heater while held is still latched."
+features: [contacts, coils]
+difficulty: medium
+tags: [safety, sequence, security, llb, authored]

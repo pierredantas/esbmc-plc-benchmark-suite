@@ -1,0 +1,98 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-02T15:38:52Z",
+  "program": "benchmarks/power_substation/g_trip_lockout_86/clean.xml",
+  "properties_file": "benchmarks/power_substation/g_trip_lockout_86/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(lockout && reclose)",
+      "justification": "The 86 lockout relay must block reclose until an explicit manual reset clears it; lockout and reclose must never be true together."
+    }
+  ],
+  "property_variables": [
+    "lockout",
+    "reclose"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "master": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "0064c4acc8",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 17",
+          "        ASSIGN protection_trip=NONDET(_Bool);",
+          "        ASSIGN manual_reset=NONDET(_Bool);",
+          "        ASSIGN reclose_request=NONDET(_Bool);",
+          "        ASSIGN maint=NONDET(_Bool);",
+          "        ASSIGN lockout__prev=1 && lockout;",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf7=0;",
+          "     2: IF !(1 && reclose_request) THEN GOTO 3",
+          "        ASSIGN pf7=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf8=0;",
+          "     4: IF !(1 && pf7 && !lockout__prev) THEN GOTO 5",
+          "        ASSIGN pf8=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN pf12=0;",
+          "     6: IF !(1 && pf8 && !protection_trip) THEN GOTO 7",
+          "        ASSIGN pf12=1;",
+          "     7: ASSIGN reclose=1 && pf12;",
+          "        IF !1 THEN GOTO 8",
+          "        ASSIGN pf3=0;",
+          "     8: IF !(1 && protection_trip) THEN GOTO 9",
+          "        ASSIGN pf3=1;",
+          "     9: IF !1 THEN GOTO 10",
+          "        ASSIGN pf4=0;",
+          "    10: IF !(1 && lockout__prev) THEN GOTO 11",
+          "        ASSIGN pf4=1;",
+          "    11: IF !1 THEN GOTO 12",
+          "        ASSIGN pf5=0;",
+          "    12: IF !(1 && pf4 && !manual_reset) THEN GOTO 13",
+          "        ASSIGN pf5=1;",
+          "    13: IF !1 THEN GOTO 14",
+          "        ASSIGN lockout__pf0=0;",
+          "    14: IF !(1 && pf3) THEN GOTO 15",
+          "        ASSIGN lockout__pf0=1;",
+          "    15: IF !(1 && pf5) THEN GOTO 16",
+          "        ASSIGN lockout__pf0=1;",
+          "    16: ASSIGN lockout=1 && lockout__pf0;",
+          "        GOTO 1",
+          "    17:"
+        ],
+        "assignment_counts": {
+          "protection_trip": 1,
+          "manual_reset": 1,
+          "reclose_request": 1,
+          "maint": 1,
+          "lockout__prev": 1,
+          "pf7": 2,
+          "pf8": 2,
+          "pf12": 2,
+          "reclose": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "pf5": 2,
+          "lockout__pf0": 3,
+          "lockout": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/power_substation/g_trip_lockout_86/clean.xml benchmarks/power_substation/g_trip_lockout_86/clean.ld\nesbmc benchmarks/power_substation/g_trip_lockout_86/clean.ld --ld-props benchmarks/power_substation/g_trip_lockout_86/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.016,
+      "counterexample": null
+    }
+  }
+}

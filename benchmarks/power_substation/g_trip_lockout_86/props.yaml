@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(lockout && reclose)"
+    justification: "The 86 lockout relay must block reclose until an explicit manual reset clears it; lockout and reclose must never be true together."

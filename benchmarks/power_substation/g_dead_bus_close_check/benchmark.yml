@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_dead_bus_close_check
+name: "dead bus / synchro-check close permissive (graphical LD)"
+domain: power_substation
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored for this suite, modeling a breaker close permissive gated by dead-bus or synchro-check"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: clean.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+  - file: bomb.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.xml
+      seeded_defect: "Added a maintenance-key OR-branch that asserts breaker_close whenever maint is asserted alongside close_request, bypassing both the dead-bus and synchro-check permissives."
+      witness: "close_request=1, bus_live=1, sync_check_ok=0, maint=1 closes the breaker onto a live, unchecked bus."
+features: [contacts, coils]
+difficulty: medium
+tags: [safety, interlock, security, llb, authored]

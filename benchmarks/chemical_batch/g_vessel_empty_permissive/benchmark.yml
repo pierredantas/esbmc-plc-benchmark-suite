@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_vessel_empty_permissive
+name: "reactor charge vessel-empty permissive (graphical LD)"
+domain: chemical_batch
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored for this suite, modeling a feed/discharge valve interlock gated by vessel-empty confirmation"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: clean.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+  - file: bomb.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.xml
+      seeded_defect: "Added a maintenance-key OR-branch that opens feed_valve whenever maint is asserted alongside feed_cmd, bypassing the vessel-empty and discharge-closed permissive."
+      witness: "feed_cmd=1, discharge_cmd=1, vessel_empty=0, maint=1 opens feed_valve while discharge_valve is also open."
+features: [contacts, coils]
+difficulty: medium
+tags: [safety, interlock, security, llb, authored]

@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_bus_coupler_changeover
+name: "bus coupler auto-changeover (graphical LD)"
+domain: power_substation
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored for this suite, modeling a two-incomer/bus-coupler auto-changeover scheme"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: clean.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+  - file: bomb.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.xml
+      seeded_defect: "Added a maintenance-key OR-branch that closes the coupler whenever maint is asserted with incomer_a_healthy, regardless of incomer_b's actual breaker state."
+      witness: "incomer_a_healthy=1, incomer_b_healthy=1, maint=1 closes incomer_a, incomer_b and coupler together."
+features: [contacts, coils]
+difficulty: medium
+tags: [safety, interlock, security, llb, authored]

@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(held && heater)"
+    justification: "A phase held on permissive loss must keep the heater off; only clearing HELD through resume_command may re-enable heating."

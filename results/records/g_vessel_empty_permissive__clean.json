@@ -1,0 +1,87 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-02T15:38:46Z",
+  "program": "benchmarks/chemical_batch/g_vessel_empty_permissive/clean.xml",
+  "properties_file": "benchmarks/chemical_batch/g_vessel_empty_permissive/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "mutual_exclusion",
+      "variables": [
+        "feed_valve",
+        "discharge_valve"
+      ],
+      "justification": "Feed and discharge valves must never be open together; feed requires the vessel confirmed empty."
+    }
+  ],
+  "property_variables": [
+    "discharge_valve",
+    "feed_valve"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "master": {
+      "tool": {
+        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": "0064c4acc8",
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 12",
+          "        ASSIGN feed_cmd=NONDET(_Bool);",
+          "        ASSIGN discharge_cmd=NONDET(_Bool);",
+          "        ASSIGN vessel_empty=NONDET(_Bool);",
+          "        ASSIGN maint=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf7=0;",
+          "     2: IF !(1 && discharge_cmd) THEN GOTO 3",
+          "        ASSIGN pf7=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf8=0;",
+          "     4: IF !(1 && pf7 && !vessel_empty) THEN GOTO 5",
+          "        ASSIGN pf8=1;",
+          "     5: ASSIGN discharge_valve=1 && pf8;",
+          "        IF !1 THEN GOTO 6",
+          "        ASSIGN pf3=0;",
+          "     6: IF !(1 && !discharge_cmd) THEN GOTO 7",
+          "        ASSIGN pf3=1;",
+          "     7: IF !1 THEN GOTO 8",
+          "        ASSIGN pf4=0;",
+          "     8: IF !(1 && pf3 && vessel_empty) THEN GOTO 9",
+          "        ASSIGN pf4=1;",
+          "     9: IF !1 THEN GOTO 10",
+          "        ASSIGN pf5=0;",
+          "    10: IF !(1 && pf4 && feed_cmd) THEN GOTO 11",
+          "        ASSIGN pf5=1;",
+          "    11: ASSIGN feed_valve=1 && pf5;",
+          "        GOTO 1",
+          "    12:"
+        ],
+        "assignment_counts": {
+          "feed_cmd": 1,
+          "discharge_cmd": 1,
+          "vessel_empty": 1,
+          "maint": 1,
+          "pf7": 2,
+          "pf8": 2,
+          "discharge_valve": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "pf5": 2,
+          "feed_valve": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/chemical_batch/g_vessel_empty_permissive/clean.xml benchmarks/chemical_batch/g_vessel_empty_permissive/clean.ld\nesbmc benchmarks/chemical_batch/g_vessel_empty_permissive/clean.ld --ld-props benchmarks/chemical_batch/g_vessel_empty_permissive/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.016,
+      "counterexample": null
+    }
+  }
+}

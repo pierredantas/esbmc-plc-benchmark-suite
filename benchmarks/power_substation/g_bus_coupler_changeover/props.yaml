@@ -1,0 +1,6 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(incomer_a && incomer_b && coupler)"
+    justification: "The coupler may parallel at most one healthy incomer onto the affected section; all three breakers must never be closed together."

@@ -1,0 +1,27 @@
+format_version: "0.1"
+id: g_independent_hp_trip
+name: "independent high-pressure trip (graphical LD)"
+domain: chemical_batch
+language: LD-graphical
+source:
+  origin: authored
+  reference: "Authored for this suite, modeling a single independent overpressure trip layer distinct from the existing 2-of-3 voted trip"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: validated
+variants:
+  - file: clean.xml
+    expected_verdict: true
+    ground_truth:
+      method: expert
+  - file: bomb.xml
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.xml
+      seeded_defect: "Split the trip into a maintenance-suppressible leg and a sequence-gated leg, so pressure_high with maint=1 and sequence_step_active=0 no longer vents."
+      witness: "pressure_high=1, maint=1, sequence_step_active=0 leaves vent_valve=0 while pressure is high."
+features: [contacts, coils]
+difficulty: medium
+tags: [safety, trip, security, llb, authored]
