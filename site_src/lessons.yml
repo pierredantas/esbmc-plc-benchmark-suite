@@ -213,3 +213,7 @@ parts:
         number: "7.9"
         title: "The block the checker stops reading"
         summary: "Lesson 7.2's press moved into a function block. Both builds fail the gate on the correct program and refute a property that holds on the correct variant, because block parameters are never bound and a boolean body loses an operand."
+      - slug: textbook-race
+        number: "7.10"
+        title: "Two textbook rungs, transcribed"
+        summary: "A cross-interlocked forward/reverse starter that a relay panel gets for free and a scan cycle does not, and a fail-safe latch whose textbook property will not parse until an implication is rewritten by hand."
