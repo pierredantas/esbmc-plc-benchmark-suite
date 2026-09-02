@@ -30,6 +30,9 @@ import sys
 
 import yaml
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "runner"))
+import ld_to_st  # noqa: E402
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SRC = ROOT / "site_src"
 OUT = ROOT / "portal"
@@ -623,6 +626,24 @@ def build_properties(meta):
             "\n".join(rows)]
 
 
+def ladder_as_st(files):
+    """Structured text derived from each PLCopen LD file among a variant's files.
+
+    Only `is_plcopen` files carry a ladder body to walk; the textual `.ld` DSL and
+    non-ladder languages (FBD, SFC, IL, hand-written ST) have nothing to derive. A file
+    that is PLCopen XML but carries no `<LD>` body (FBD- or SFC-only) is skipped too,
+    since ld_to_st.translate returns "" for it.
+    """
+    pairs = []
+    for path in files:
+        if path.suffix not in (".ld", ".xml") or not is_plcopen(path):
+            continue
+        st = ld_to_st.translate(path)
+        if st:
+            pairs.append((path.name, st))
+    return pairs
+
+
 def build_benchmark(meta, recorded):
     """One task page, keyed by suite id, at /benchmarks/<domain>/<id>/."""
     source = meta.get("source", {})
@@ -650,6 +671,15 @@ def build_benchmark(meta, recorded):
 
     files = sorted(p for p in meta["_dir"].iterdir() if p.is_file() and p.name != "README.md")
     body += ["\n## Files\n", offer(files, dest)]
+
+    st_pairs = ladder_as_st(files)
+    if st_pairs:
+        body += ["\n## Structured text, derived\n",
+                 "Read off the ladder graph by `runner/ld_to_st.py`: every rung's contacts "
+                 "and coils rewritten as IEC 61131-3 assignments, in the same series/"
+                 "parallel logic the PLCopen XML encodes. This is a reading aid, not a "
+                 "second ground truth; ESBMC verifies the ladder program shown above, "
+                 "never this rendering.\n", tabs(st_pairs)]
 
     readme = meta["_dir"] / "README.md"
     if readme.exists():
