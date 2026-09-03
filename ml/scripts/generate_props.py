@@ -16,13 +16,16 @@ from mlx_lm.sample_utils import make_sampler
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-# The two checkpoints trained this session:
-#   -iter300            152 raw benchmark examples, best val-loss checkpoint
-#   -augmented-best      239 examples (+ ld_to_st.py ST renderings), final checkpoint
-# Neither dominates the other — see ml/README.md for the tradeoffs — so the
-# default below is a deliberate choice, not a "best" one; override with
-# --adapter-path to try the other.
-DEFAULT_ADAPTER = REPO_ROOT / "ml" / "adapters" / "qwen2.5-coder-1.5b-props-augmented-best"
+# Checkpoints trained so far, oldest to newest:
+#   -iter300         152 raw benchmark examples, best val-loss checkpoint
+#   -augmented-best  239 examples (+ ld_to_st.py ST renderings), final checkpoint
+#   -nary-best       243 examples (+ two authored N-ary mutual_exclusion
+#                    benchmarks); fixes N-ary mutual_exclusion generalization,
+#                    at a small cost to kind recall/precision. See ml/README.md
+#                    for the full tradeoffs; override with --adapter-path to
+#                    try another. Also published at
+#                    huggingface.co/Pvdantas/esbmc-plc-props-slm-lora.
+DEFAULT_ADAPTER = REPO_ROOT / "ml" / "adapters" / "qwen2.5-coder-1.5b-props-nary-best"
 
 SYSTEM_PROMPT = (
     "You are a formal-verification assistant for IEC 61131-3 PLC programs. "
