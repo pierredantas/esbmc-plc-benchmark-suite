@@ -24,3 +24,10 @@ nav.generated.yml
 
 # Local Claude Code permission state, per machine
 .claude/settings.local.json
+
+# SLM fine-tuning: venv, downloaded base model cache, LoRA checkpoints, and
+# generated datasets/eval outputs are all regeneratable from ml/scripts/ +
+# ml/lora_config*.yaml. See ml/README.md.
+ml/.venv/
+ml/adapters/
+ml/data/
