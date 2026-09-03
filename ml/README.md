@@ -5,6 +5,11 @@ benchmark's `props.yaml` safety properties from its program source. Scope is
 deliberately narrow: given one program, emit its properties in the suite's
 schema. No verification, no property checking, nothing else.
 
+The `augmented-best` checkpoint (239 examples, iteration 640, the default in
+`ml/scripts/generate_props.py`) is published at
+[huggingface.co/Pvdantas/esbmc-plc-props-slm-lora](https://huggingface.co/Pvdantas/esbmc-plc-props-slm-lora)
+(private) — pull it instead of retraining if you already have access.
+
 ## Setup
 
 ```bash
@@ -65,6 +70,15 @@ python3 ml/scripts/generate_props.py path/to/program.st --domain motor_control -
 Defaults to the `qwen2.5-coder-1.5b-props-augmented-best` checkpoint; override
 with `--adapter-path` to try another. `--language` accepts `ST`,
 `LD-textual`, `LD-graphical`, `FBD`, `SFC`, `IL` (a prompt hint, not a parser).
+
+To use the published checkpoint instead of training your own, download it and
+point `--adapter-path` at the local copy:
+
+```bash
+python3 -c "from huggingface_hub import snapshot_download; print(snapshot_download('Pvdantas/esbmc-plc-props-slm-lora'))"
+python3 ml/scripts/generate_props.py path/to/program.st --domain motor_control --language ST \
+  --adapter-path <path printed above>
+```
 
 ## 4. Evaluate
 
