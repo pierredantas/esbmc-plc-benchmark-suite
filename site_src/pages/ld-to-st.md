@@ -9,6 +9,23 @@ program itself, never a rendering of it.
 
 Works on any file with a `<pou><body><LD>` inside, not only files from this suite.
 
+## How the translation works
+
+PLCopen XML does not store a rung as a line of contacts; it stores a graph. Every
+element carries a `localId` and a `connectionPointIn` naming the `refLocalId`(s) it is
+wired from. The translator starts at each coil and walks that graph backward toward the
+power rail: one incoming reference is a series link (AND), two or more on the same
+`connectionPointIn` are parallel branches (OR). The walk is memoized per `localId`, so a
+contact feeding two coils is still evaluated once.
+
+<svg class="diagram" viewBox="0 0 700 465" role="img" aria-label="Three views of the same rung: the ladder drawing with contacts A and B in parallel feeding negated contact C into coil Y; the PLCopen graph of localId nodes wired by connectionPointIn and refLocalId that ld_to_st.py actually walks; and the structured text the backward walk from the coil produces"><g fill="currentColor" font-size="12.5" font-weight="600"><text x="8" y="20">1. The rung, as drawn</text><text x="8" y="175">2. The PLCopen graph, as stored (and as ld_to_st.py walks it)</text><text x="8" y="345">3. The walk from the coil back to the rail</text></g><g stroke="currentColor" fill="none" stroke-width="2.4"><path d="M28 40 V128"/><path d="M592 40 V128"/></g><g stroke="currentColor" fill="none" stroke-width="1.6"><path d="M28 62 H110"/><path d="M126 62 H320"/><path d="M28 106 H110"/><path d="M126 106 H210"/><path d="M210 106 H320"/><path d="M320 62 V106"/><path d="M320 84 H366"/><path d="M382 84 H501"/><path d="M535 84 H592"/><path d="M110 50 V74"/><path d="M126 50 V74"/><path d="M110 94 V118"/><path d="M126 94 V118"/><path d="M366 72 V96"/><path d="M382 72 V96"/><path d="M362 98 L386 70"/><path d="M508 70 Q494 84 508 98"/><path d="M528 70 Q542 84 528 98"/></g><circle cx="320" cy="62" r="3.5" fill="currentColor"/><circle cx="320" cy="106" r="3.5" fill="currentColor"/><g fill="currentColor" font-size="13" text-anchor="middle"><text x="118" y="42">A</text><text x="118" y="130">B</text><text x="374" y="42">C</text><text x="518" y="42">Y</text></g><g stroke="currentColor" fill="none" stroke-width="1.4"><rect x="30" y="200" width="100" height="30" rx="3"/><rect x="30" y="255" width="100" height="30" rx="3"/><rect x="278" y="228" width="150" height="30" rx="3"/><rect x="548" y="228" width="110" height="30" rx="3"/></g><g fill="currentColor" font-size="12" text-anchor="middle"><text x="80" y="219">contact id=3</text><text x="80" y="234">var: A</text><text x="80" y="274">contact id=4</text><text x="80" y="289">var: B</text><text x="353" y="247">contact id=5, negated</text><text x="353" y="262">var: C</text><text x="603" y="247">coil id=6</text><text x="603" y="262">var: Y</text></g><g stroke="currentColor" fill="none" stroke-width="1.3" marker-end="url(#arrow)"><path d="M130 213 L278 236"/><path d="M130 272 L278 250"/><path d="M428 243 L548 243"/></g><g fill="currentColor" font-size="11" text-anchor="middle" font-style="italic"><text x="200" y="205">connectionPointIn</text><text x="200" y="296">refLocalId=3, 4</text><text x="488" y="234">refLocalId=5</text></g><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs><g font-family="var(--md-code-font)" font-size="12.5" fill="currentColor"><text x="30" y="366">coil 6 reads contact 5's connectionPointIn: one ref, so AND.</text><text x="30" y="386">contact 5 reads refLocalId 3 and 4: two refs, so OR.</text><text x="30" y="406">the walk bottoms out at the rails: 3 and 4 both read TRUE.</text></g><path d="M28 420 H672" stroke="currentColor" stroke-width="1" opacity="0.35"/><g font-family="var(--md-code-font)" font-size="15" fill="currentColor" font-weight="600"><text x="30" y="450">Y := (A OR B) AND NOT C;</text></g></svg>
+
+Every function block call is collected the same way, before the coil assignments: a
+block's inputs are walked first, so a call statement always precedes any expression that
+reads `<instance>.<formal>` from it. When two rungs write the same coil, scan order
+decides which write survives, and the rendered ST marks that target rather than hiding
+the collision.
+
 <div id="ld2st-app">
   <div id="ld2st-drop" tabindex="0" role="button"
        aria-label="Drop a PLCopen XML file here, or click to choose one">
