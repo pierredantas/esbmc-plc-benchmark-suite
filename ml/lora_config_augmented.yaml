@@ -1,0 +1,29 @@
+# LoRA fine-tune config for props.yaml generation, on the ST-augmented dataset
+# (raw benchmarks + ld_to_st.py renderings of every LD-graphical/FBD/SFC variant).
+# Run: mlx_lm.lora -c ml/lora_config_augmented.yaml
+#
+# 172 train examples vs. 107 in the unaugmented run (ml/lora_config.yaml);
+# iters scaled by the same ~1.6x to keep epoch count comparable.
+
+model: mlx-community/Qwen2.5-Coder-1.5B-Instruct-4bit
+train: true
+fine_tune_type: lora
+data: ml/data
+adapter_path: ml/adapters/qwen2.5-coder-1.5b-props-augmented
+
+num_layers: 8
+batch_size: 2
+iters: 640
+val_batches: 10
+learning_rate: 1e-4
+steps_per_report: 20
+steps_per_eval: 80
+save_every: 160
+max_seq_length: 4096
+grad_checkpoint: true
+seed: 42
+
+lora_parameters:
+  rank: 16
+  scale: 20.0
+  dropout: 0.05
