@@ -5,7 +5,7 @@ benchmark's `props.yaml` safety properties from its program source. Scope is
 deliberately narrow: given one program, emit its properties in the suite's
 schema. No verification, no property checking, nothing else.
 
-The `augmented-best` checkpoint (239 examples, iteration 640, the default in
+The `nary-best` checkpoint (243 examples, iteration 320, the default in
 `ml/scripts/generate_props.py`) is published at
 [huggingface.co/Pvdantas/esbmc-plc-props-slm-lora](https://huggingface.co/Pvdantas/esbmc-plc-props-slm-lora)
 (private) — pull it instead of retraining if you already have access.
@@ -44,6 +44,14 @@ none). Omit the flag to build the smaller, unaugmented set.
 ```bash
 python3 -m mlx_lm lora -c ml/lora_config.yaml             # 152 examples
 python3 -m mlx_lm lora -c ml/lora_config_augmented.yaml   # 239 examples (ST-augmented)
+python3 -m mlx_lm lora -c ml/lora_config_nary.yaml        # 243 examples (+ N-ary mutual_exclusion)
+```
+
+The `_nary` config needs the dataset rebuilt with the two new N-ary
+benchmarks pinned into training first — see *N-ary mutual_exclusion* below:
+
+```bash
+python3 ml/scripts/build_dataset.py --augment-st --force-train st_three_pump_lockout
 ```
 
 LoRA rank 16 on Qwen2.5-Coder-1.5B-Instruct-4bit, ~15-45 min on an M-series
@@ -67,7 +75,7 @@ python3 ml/scripts/generate_props.py path/to/program.st --domain motor_control -
 python3 ml/scripts/generate_props.py path/to/program.st --domain motor_control --language ST -o path/to/props.yaml
 ```
 
-Defaults to the `qwen2.5-coder-1.5b-props-augmented-best` checkpoint; override
+Defaults to the `qwen2.5-coder-1.5b-props-nary-best` checkpoint; override
 with `--adapter-path` to try another. `--language` accepts `ST`,
 `LD-textual`, `LD-graphical`, `FBD`, `SFC`, `IL` (a prompt hint, not a parser).
 
