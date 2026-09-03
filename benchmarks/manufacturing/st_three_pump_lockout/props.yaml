@@ -1,0 +1,11 @@
+format_version: "0.1"
+# Applies to both variants (clean.st -> SAFE, bomb.st -> VIOLATION of P1 via P2 witness).
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [pump_a, pump_b, pump_c]
+    justification: "At most one of the three pumps may run at a time; the shared discharge header cannot take combined flow from two or more."
+  - id: P2
+    kind: reachability
+    expression: "pump_a && pump_b"
+    justification: "Trigger synthesis: a witness recovers the maintenance-override input combination that violates pairwise exclusion between pump_a and pump_b."

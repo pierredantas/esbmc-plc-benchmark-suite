@@ -1,0 +1,33 @@
+format_version: "0.1"
+id: st_three_pump_lockout
+name: "Three-pump station lockout"
+domain: manufacturing
+language: ST
+source:
+  origin: authored
+  reference: "Authored for the ESBMC-PLC benchmark suite to cover N-ary (N>2) mutual_exclusion, previously unrepresented in the corpus."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [pierre]
+  - file: bomb.st
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.st
+      seeded_defect: "Added maintenance override: IF maint THEN pump_a := req_a; pump_b := req_b; pump_c := FALSE; (drives pump_a and pump_b independently, bypassing the mutual-exclusion interlock between them while pump_c remains correctly locked out)."
+      witness: "maint=1, req_a=1, req_b=1 reaches pump_a AND pump_b (pairwise exclusion breaks; 3-way conjunction pump_a AND pump_b AND pump_c is still false, which is why the property must be N-ary mutual_exclusion rather than a single 3-way AND)."
+metrics:
+  rungs: 4
+  loc: 26
+  pous: 1
+  variables: 7
+features: [contacts, coils, comparison, n_ary_mutual_exclusion]
+difficulty: medium
+tags: [safety, interlock, mutual-exclusion]

@@ -1,0 +1,11 @@
+format_version: "0.1"
+# Applies to both variants (clean.st -> SAFE, bomb.st -> VIOLATION of P1 via P2 witness).
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [valve_1, valve_2, valve_3, valve_4]
+    justification: "Exactly one (or none) of the four header outlet valves may be open at a time; the shared header would cross-contaminate batches if two lines were supplied together."
+  - id: P2
+    kind: reachability
+    expression: "valve_1 && valve_3"
+    justification: "Trigger synthesis: a witness recovers the fast-flush input combination that violates pairwise exclusion between valve_1 and valve_3."

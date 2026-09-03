@@ -124,7 +124,12 @@ def collect_records(schema, augment_st=False):
     return records, skipped
 
 
-def stratified_split(records, val_frac, test_frac, seed):
+def stratified_split(records, val_frac, test_frac, seed, force_train=()):
+    """force_train pins specific task ids into the training split regardless
+    of the random draw — for a newly authored task whose pattern (e.g. a kind
+    or variable-count combination) doesn't exist anywhere else in the corpus,
+    landing it in valid/test by chance means the model never sees the pattern
+    it was added to teach."""
     by_task = {}
     for r in records:
         by_task.setdefault((r["domain"], r["task_id"]), []).append(r)
@@ -138,16 +143,20 @@ def stratified_split(records, val_frac, test_frac, seed):
     for domain, task_ids in tasks_by_domain.items():
         task_ids = sorted(set(task_ids))
         rng.shuffle(task_ids)
-        n = len(task_ids)
+        eligible = [t for t in task_ids if t not in force_train]
+        n = len(eligible)
         n_test = max(1, round(n * test_frac)) if n >= 3 else (1 if n > 1 else 0)
         n_val = max(1, round(n * val_frac)) if n >= 3 else 0
-        test_ids.update(task_ids[:n_test])
-        val_ids.update(task_ids[n_test:n_test + n_val])
-        train_ids.update(task_ids[n_test + n_val:])
+        test_ids.update(eligible[:n_test])
+        val_ids.update(eligible[n_test:n_test + n_val])
+        train_ids.update(eligible[n_test + n_val:])
+        train_ids.update(t for t in task_ids if t in force_train)
 
     train, val, test = [], [], []
     for (domain, task_id), recs in by_task.items():
-        if task_id in test_ids:
+        if task_id in force_train:
+            train.extend(recs)
+        elif task_id in test_ids:
             test.extend(recs)
         elif task_id in val_ids:
             val.extend(recs)
@@ -170,6 +179,9 @@ def main():
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--augment-st", action="store_true",
                      help="add an ld_to_st.py ST-translation record for every XML-bodied variant (same ground truth, new syntax)")
+    ap.add_argument("--force-train", default="",
+                     help="comma-separated task ids to pin into the training split regardless of the random draw "
+                          "(e.g. a newly authored task covering a pattern absent elsewhere in the corpus)")
     args = ap.parse_args()
 
     schema = load_schema()
@@ -180,7 +192,8 @@ def main():
         for name, reason in skipped:
             print(f"  {name}: {reason}", file=sys.stderr)
 
-    train, val, test = stratified_split(records, args.val_frac, args.test_frac, args.seed)
+    force_train = {t.strip() for t in args.force_train.split(",") if t.strip()}
+    train, val, test = stratified_split(records, args.val_frac, args.test_frac, args.seed, force_train)
 
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
