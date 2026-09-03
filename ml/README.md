@@ -166,26 +166,71 @@ sometimes preferring the pairwise decomposition over the native idiom.
   N=3 case into pairwise `invariant`s instead of reproducing the
   `mutual_exclusion` form it was trained on. Logically sound, schema-idiom
   inconsistent.
+- **Polarity inversion and incomplete variable coverage on unfamiliar program
+  shapes** — the most concerning failure mode found so far, since it produces
+  syntactically valid output using only real variable names, so schema
+  validation and `check_props.py` (below) both pass it. Confirmed on:
+  a 3-variable AND-conjunction enable gate (inverted a "descend only when all
+  three hold" requirement into "never descend while two hold", and dropped
+  the third variable); a 2-out-of-3 voting trip (no voting structure
+  attempted, one sensor dropped, polarity inverted); a negated-guard
+  interlock (`IF NOT fan_running THEN ...`, inverted to forbid the enabled
+  state while the fan runs rather than while it doesn't). Critically, this is
+  not a data-coverage gap: `st_two_hand`'s exact correct answer
+  (`!Stroke || (LH && RH)`) is repeated 8+ times across `train.jsonl`
+  (raw + ST-augmented), and the `nary-best` checkpoint still fails on the
+  *exact training source*, reproducing the justification text verbatim while
+  fabricating a different, wrong expression (`!(Stroke && Armed)` — real
+  variable, wrong relationship, doesn't even use `LH`/`RH`). More repetition
+  of an already-repeated example did not fix it; whatever is wrong here looks
+  like a reasoning/capacity limit, not a training-set gap.
 - **Zero training examples** for `kind: absence` and `kind: assertion` — both
   are valid per the schema but unused anywhere in the current 52-benchmark
   corpus, so neither model has ever seen one and will not produce one.
 
+## Deterministic post-check (`ml/scripts/check_props.py`)
+
+```bash
+python3 ml/scripts/check_props.py path/to/program.st path/to/props.yaml
+```
+
+Advisory only — flags for human review, does not alter the generated YAML.
+Parses the source program's declared variables (ST/IL `AT %IX`/`AT %QX` and
+`VAR_INPUT`/`VAR_OUTPUT` blocks, LD-textual `XIC`/`OTE` usage, PLCopen XML
+`<inputVars>`/`<outputVars>`) and checks two things a schema validator
+cannot: every variable a generated property references actually exists in
+the source, and any `mutual_exclusion` property is over a symmetric
+output-output pair (the shape every such example in the training corpus
+has — a `mutual_exclusion` between an input/sensor and an output/actuator is
+very likely a mislabeled cause-effect `invariant`).
+
+Confirmed catches: a hallucinated variable name absent from the source; a
+`mutual_exclusion` between `pressure_high` (input) and `vent_valve`
+(output). Confirmed to **not** catch: any of the polarity-inversion or
+incomplete-coverage failures above — all three used only real, validly
+declared variables in a syntactically well-formed `expression`, and telling
+"the polarity is backward" or "a variable is missing" apart from "correct"
+requires understanding the program's actual control-flow semantics, not
+just its variable declarations. Treat this as a cheap first-pass filter for
+one specific class of error, not a correctness guarantee.
+
 ## Next levers, roughly in order of expected payoff
 
-1. **More real, validated benchmarks** — the dataset is the bottleneck, not
-   model size; validation loss plateaus well before training loss does on
-   both checkpoints. Prioritize multi-property programs (fixes
-   under-enumeration) and asymmetric cause-effect two-variable programs
-   outside `chemical_batch` (gives the kind-confusion pattern more contexts
-   to generalize from). Adding `absence`/`assertion` examples requires
-   authoring new benchmarks; augmentation cannot manufacture a kind that
-   does not exist in the source data.
-2. **A deterministic post-generation check** — cheap and independent of
-   which checkpoint is default: given the source program's declared I/O
-   roles (`AT %IX`/`AT %QX`, `VAR_INPUT`/`VAR_OUTPUT`, or PLCopen
-   `<inputVars>`/`<outputVars>`), flag a `mutual_exclusion` property whose
-   variables are not both outputs, or an `expression`/`variables` list
-   referencing a name absent from the program, for human review before the
-   generated `props.yaml` is trusted.
-3. **A larger base model** (7B) — plausible but secondary; the diagnosed
-   bottleneck so far is data coverage, not model capacity.
+1. **A larger base model (7B)** — promoted above "more data" once
+   `st_two_hand` showed the model failing on its own 8+-times-repeated
+   training example (see *polarity inversion*, above): the AND-conjunction /
+   N-of-M voting / negated-guard failures look like a reasoning-capacity
+   limit rather than a training-set gap, so more repetitions of a pattern
+   the model already can't reproduce is unlikely to help. Untested; the
+   1.5B-vs-7B comparison on the polarity-inversion cases specifically is the
+   next experiment to run.
+2. **More real, validated benchmarks** — still the right lever for the
+   failure modes that *are* data-coverage gaps: under-enumeration (multi-
+   property programs), the `mutual_exclusion`-vs-`invariant` kind confusion
+   (asymmetric cause-effect programs outside `chemical_batch`), and the
+   zero-example `absence`/`assertion` kinds. Not expected to help the
+   polarity-inversion failures per the `st_two_hand` evidence above.
+3. **`ml/scripts/check_props.py`** — built and validated (see above); a
+   cheap guardrail for hallucinated variables and mislabeled
+   `mutual_exclusion`, not a fix for polarity inversion or incomplete
+   variable coverage.
