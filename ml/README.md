@@ -92,18 +92,52 @@ and scores: `yaml_valid`, `schema_valid` (against `properties.schema.json`),
 `id_format_ok`, and `kind_recall`/`kind_precision` (multiset overlap of
 `kind` values against the expected properties).
 
-## Results so far (1.5B, both checkpoints use the lowest-val-loss iteration)
+## Results so far (1.5B, all checkpoints use the lowest-val-loss iteration)
 
-| Metric | Base (no fine-tune) | Fine-tuned, 152 examples | Fine-tuned, 239 examples (ST-augmented) |
-|---|---|---|---|
-| Valid YAML | 59% | 100% | 97% |
-| Schema-valid | 0% | 91% | 97% |
-| Correct id format | 59% | 100% | 97% |
-| Property-kind recall | 18% | 73% | 73% |
-| Property-kind precision | 3% | 73% | 73% |
+| Metric | Base (no fine-tune) | 152 examples | 239 examples (ST-augmented) | 243 examples (+ N-ary mutual_exclusion) |
+|---|---|---|---|---|
+| Valid YAML | 59% | 100% | 97% | 100% |
+| Schema-valid | 0% | 91% | 97% | 100% |
+| Correct id format | 59% | 100% | 97% | 100% |
+| Property-kind recall | 18% | 73% | 73% | 71% |
+| Property-kind precision | 3% | 73% | 73% | 70% |
 
-Test splits differ in size (22 vs. 33 examples) because augmentation changes
-task-to-split assignment, so treat this as directional, not a controlled A/B.
+Test splits differ in size (22/33/33 examples) because each augmentation
+round changes task-to-split assignment, so treat this as directional, not a
+controlled A/B.
+
+## N-ary mutual_exclusion (`ml/lora_config_nary.yaml`)
+
+Every `mutual_exclusion` example in the corpus was a 2-variable pair until
+`st_three_pump_lockout` (N=3, `manufacturing`) and `st_quad_valve_lockout`
+(N=4, `water_treatment`) were authored to close the gap: both are real,
+schema-validated benchmarks with a clean variant (`expert` ground truth) and
+a fault-injected `bomb` variant whose seeded defect specifically breaks
+*pairwise* exclusion (not just "not all N together") — the exact distinction
+a pre-fix model got wrong, collapsing an N-way lockout into
+`!(a && b && c)`, which only forbids all three running together and says
+nothing about any two.
+
+`st_three_pump_lockout` was pinned into the training split with
+`--force-train` (its task id would otherwise land in valid/test by chance
+under the default seed, teaching the model nothing); `st_quad_valve_lockout`
+was left to the random split and landed in test, so it doubles as a genuine
+held-out generalization check: does a model that has seen exactly one N=3
+example produce the correct form, `kind: mutual_exclusion` with all N
+variables, on an unseen N=4 case?
+
+Result: yes. `qwen2.5-coder-1.5b-props-nary-best` (iter 320) generated
+`kind: mutual_exclusion, variables: [valve_1, valve_2, valve_3, valve_4]`
+for the held-out N=4 case, correct in kind, all four variable names, and no
+hallucination. It did *not*, however, reproduce the in-training N=3 example
+verbatim — instead of `mutual_exclusion`, it decomposed the three-pump case
+into three separate pairwise `invariant` properties. That decomposition is
+logically complete (three pairwise exclusions do cover "at most one of
+three"), just not the schema's established `mutual_exclusion`+`variables`
+idiom for N>2. Net effect on the aggregate metrics: format reliability
+reached 100% across the board; kind recall/precision dipped ~1.5-2.5 points,
+within noise for a 33-example test set and consistent with the model
+sometimes preferring the pairwise decomposition over the native idiom.
 
 **Known failure modes, both checkpoints:**
 - **Under-enumeration.** A program with two independent safety intents often
@@ -123,8 +157,17 @@ task-to-split assignment, so treat this as directional, not a controlled A/B.
 - **Variable hallucination**, seen once (152-example checkpoint, not yet
   reproduced on the augmented one): a generated `expression` referenced a
   variable that does not appear anywhere in the source program.
+- **Fabricated relationships between real variables**: two genuine variable
+  names combined into a property that isn't in the program's actual logic —
+  subtler than a hallucinated name, and easy to miss since both names check
+  out against the source.
+- **N-ary mutual_exclusion is now handled correctly on unseen N** (see
+  above), but inconsistently: the same checkpoint can decompose an *in-training*
+  N=3 case into pairwise `invariant`s instead of reproducing the
+  `mutual_exclusion` form it was trained on. Logically sound, schema-idiom
+  inconsistent.
 - **Zero training examples** for `kind: absence` and `kind: assertion` — both
-  are valid per the schema but unused anywhere in the current 50-benchmark
+  are valid per the schema but unused anywhere in the current 52-benchmark
   corpus, so neither model has ever seen one and will not produce one.
 
 ## Next levers, roughly in order of expected payoff

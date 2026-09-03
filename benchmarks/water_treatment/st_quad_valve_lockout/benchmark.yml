@@ -1,0 +1,33 @@
+format_version: "0.1"
+id: st_quad_valve_lockout
+name: "Four-way header selector valve lockout"
+domain: water_treatment
+language: ST
+source:
+  origin: authored
+  reference: "Authored for the ESBMC-PLC benchmark suite to cover N-ary (N>2) mutual_exclusion at N=4, alongside st_three_pump_lockout (N=3), previously unrepresented in the corpus."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [pierre]
+  - file: bomb.st
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.st
+      seeded_defect: "Added fast-flush mode: IF fast_flush THEN valve_3 := TRUE; runs as a second, independent rung after the exclusive selector, so valve_3 can be forced open alongside whatever valve_1/valve_2/valve_4 the selector already chose."
+      witness: "sel_1=1, fast_flush=1 reaches valve_1 AND valve_3 (pairwise exclusion breaks between the flush valve and any selector-driven valve)."
+metrics:
+  rungs: 5
+  loc: 30
+  pous: 1
+  variables: 9
+features: [contacts, coils, comparison, n_ary_mutual_exclusion]
+difficulty: medium
+tags: [safety, interlock, mutual-exclusion]
