@@ -21,4 +21,4 @@ metrics:
   variables: 5
 features: [contacts, coils, timer_tof, parallel_branch]
 difficulty: medium
-tags: [feature, semantics, syntax-pair, timer]
+tags: [feature, semantics, syntax-pair, timer, known-issue-esbmc-7577]

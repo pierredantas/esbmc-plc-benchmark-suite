@@ -8,7 +8,7 @@ source:
   reference: "Authored as a licence-clean counterpart to the imported tank benchmarks: two pumps, one wet well, duty advancing each time the well empties"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: validated
+validation_status: candidate
 variants:
   - file: program.xml
     expected_verdict: true
@@ -24,4 +24,4 @@ variants:
       witness: "Both variants satisfy props.yaml. alternation_check.props.yaml refutes on the working alternation; on the stuck variant neither build can discharge it, and the unknown is the recorded result."
 features: [contacts, coils, toggle, mutual_exclusion]
 difficulty: medium
-tags: [discriminator, k-induction-limit]
+tags: [discriminator, k-induction-limit, known-issue-esbmc-7577]

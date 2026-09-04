@@ -8,7 +8,7 @@ source:
   reference: "Authored for this suite, modeling a two-incomer/bus-coupler auto-changeover scheme"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: validated
+validation_status: candidate
 variants:
   - file: clean.xml
     expected_verdict: true
@@ -24,4 +24,4 @@ variants:
       witness: "incomer_a_healthy=1, incomer_b_healthy=1, maint=1 closes incomer_a, incomer_b and coupler together."
 features: [contacts, coils]
 difficulty: medium
-tags: [safety, interlock, security, llb, authored]
+tags: [safety, interlock, security, llb, authored, known-issue-esbmc-7577]

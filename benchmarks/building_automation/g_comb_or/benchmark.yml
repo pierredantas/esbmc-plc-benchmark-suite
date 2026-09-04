@@ -8,7 +8,7 @@ source:
   reference: "Graphical PLCopen XML twin of the K-LD textual benchmark (syntax-coverage pair)"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: validated
+validation_status: candidate
 syntax_pair_of: ld_comb_or
 variants:
   - file: program.xml
@@ -21,4 +21,4 @@ metrics:
   variables: 3
 features: [contacts, coils, parallel_branch]
 difficulty: easy
-tags: [feature, semantics, syntax-pair]
+tags: [feature, semantics, syntax-pair, known-issue-esbmc-7577]
