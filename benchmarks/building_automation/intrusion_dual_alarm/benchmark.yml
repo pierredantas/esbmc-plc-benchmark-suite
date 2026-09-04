@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: intrusion_dual_alarm
+name: "Intrusion latch with siren and door-lock annunciation"
+domain: building_automation
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored for the esbmc-plc-benchmark-suite to close a training gap found by ml/scripts/build_task_slice.py: a latch that fans out to two independent readouts, where the safety property is about the trigger, not the readouts' mutual relationship."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Removed the sensor_trip trigger from alarm_state, so an intrusion never latches and siren_out stays low even on a live sensor trip."
+      witness: "sensor_trip=1 reaches siren_out=0."
+features: [contacts, coils, latch, fan_out]
+difficulty: easy
+tags: [safety, security, intrusion, latch-training-example]

@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: protection_lockout_cascade
+name: "Protection trip cascading through a lockout latch to breaker close"
+domain: power_substation
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored for the esbmc-plc-benchmark-suite to close a training gap found by ml/scripts/build_task_slice.py: a latch that feeds a second latch, where the safety property must trace back through both hops to the original trigger."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "lockout_latch no longer reads trip_latch, so a protection trip latches correctly at the first stage but never propagates to the lockout stage that actually blocks breaker_close."
+      witness: "protection_trip=1, close_req=1 reaches breaker_close=1."
+features: [contacts, coils, latch, cascade]
+difficulty: medium
+tags: [safety, substation, lockout, latch-training-example]

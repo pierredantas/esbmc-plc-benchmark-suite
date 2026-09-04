@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "overdose_sensor -> !dose_pump_run"
+    justification: "An overdose condition must stop the dosing pump in the same scan it is sensed; the property is grounded in the sensor trigger, not in dose_pump_run's relationship to the unrelated fault_lamp readout."
+  - id: P2
+    kind: reachability
+    expression: "overdose_sensor && dose_pump_run"
+    justification: "Witness: overdose_sensor=1, dose_req=1 reaches dose_pump_run=1 in bomb, because dose_fault no longer latches on the overdose sensor at all."

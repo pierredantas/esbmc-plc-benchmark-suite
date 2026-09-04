@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: chemical_feed_fault_lockout
+name: "Chemical dosing overdose lockout with lamp and pump-inhibit readouts"
+domain: water_treatment
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored for the esbmc-plc-benchmark-suite to close a training gap found by ml/scripts/build_task_slice.py: a latch that fans out to two independent readouts, where the safety property is about the trigger, not the readouts' mutual relationship."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Removed the overdose_sensor trigger from dose_fault, so an overdose no longer stops the dosing pump even though fault_lamp still reads the (now permanently-false) latch."
+      witness: "overdose_sensor=1, dose_req=1 reaches dose_pump_run=1."
+features: [contacts, coils, latch, fan_out]
+difficulty: easy
+tags: [safety, water_treatment, dosing, latch-training-example]
