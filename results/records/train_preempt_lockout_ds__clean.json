@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:59Z",
+  "program": "benchmarks/traffic/train_preempt_lockout_ds/clean.ld",
+  "properties_file": "benchmarks/traffic/train_preempt_lockout_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "rail_clear -> gates_closed",
+      "justification": "Rail clear signal must only be given when gates are closed."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "rail_clear && !gates_closed",
+      "justification": "Witness: train_approach=1, gates_closed=0 reaches rail_clear=1 in bomb."
+    }
+  ],
+  "property_variables": [
+    "gates_closed",
+    "rail_clear"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN train_approach=NONDET(_Bool);",
+          "        ASSIGN gates_closed=NONDET(_Bool);",
+          "        ASSIGN rail_clear=1 && train_approach && gates_closed;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "train_approach": 1,
+          "gates_closed": 1,
+          "rail_clear": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/traffic/train_preempt_lockout_ds/clean.ld > benchmarks/traffic/train_preempt_lockout_ds/clean__xml.ld\nesbmc benchmarks/traffic/train_preempt_lockout_ds/clean__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp6u9cng4p/props_no_implies.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.022,
+      "counterexample": null
+    }
+  }
+}

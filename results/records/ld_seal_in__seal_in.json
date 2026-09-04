@@ -1,0 +1,54 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:51Z",
+  "program": "benchmarks/motor_control/ld_seal_in/seal_in.ld",
+  "properties_file": "benchmarks/motor_control/ld_seal_in/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!Run || !Stop",
+      "justification": "Stop always drops the seal-in coil: Run and Stop never hold together."
+    }
+  ],
+  "property_variables": [
+    "Run",
+    "Stop"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN Start=NONDET(_Bool);",
+          "        ASSIGN Stop=NONDET(_Bool);",
+          "        ASSIGN Run=1 && Start && !Stop;",
+          "        ASSIGN Run=1 && Run && !Stop;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "Start": 1,
+          "Stop": 1,
+          "Run": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/motor_control/ld_seal_in/seal_in.ld > benchmarks/motor_control/ld_seal_in/seal_in__xml.ld\nesbmc benchmarks/motor_control/ld_seal_in/seal_in__xml.ld --ld-props benchmarks/motor_control/ld_seal_in/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.018,
+      "counterexample": null
+    }
+  }
+}

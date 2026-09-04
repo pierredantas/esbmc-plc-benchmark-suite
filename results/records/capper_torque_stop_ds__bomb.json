@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:51Z",
+  "program": "benchmarks/packaging/capper_torque_stop_ds/bomb.ld",
+  "properties_file": "benchmarks/packaging/capper_torque_stop_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "torque_high -> !capper_run",
+      "justification": "Capper must stop if torque exceeds limit."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "torque_high && capper_run",
+      "justification": "Witness: torque_high=1, capper_req=1 reaches capper_run=1 in bomb."
+    }
+  ],
+  "property_variables": [
+    "capper_run",
+    "torque_high"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "error",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN capper_req=NONDET(_Bool);",
+          "        ASSIGN capper_run=1 && capper_req;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "capper_req": 1,
+          "capper_run": 1
+        },
+        "not_driven_by_body": [
+          "torque_high"
+        ],
+        "gate": "fail"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/capper_torque_stop_ds/bomb.ld > benchmarks/packaging/capper_torque_stop_ds/bomb__xml.ld\nesbmc benchmarks/packaging/capper_torque_stop_ds/bomb__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp5t86_dta/props_no_implies.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "error",
+      "proof": null,
+      "cpu_time_s": 0.011,
+      "counterexample": null
+    }
+  }
+}

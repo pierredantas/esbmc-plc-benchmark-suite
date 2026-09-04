@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:54Z",
+  "program": "benchmarks/packaging/palletizer_light_curtain_ds/clean.ld",
+  "properties_file": "benchmarks/packaging/palletizer_light_curtain_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "palletizer_run -> !curtain_broken",
+      "justification": "Palletizer must stop if light curtain is broken."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "palletizer_run && curtain_broken",
+      "justification": "Witness: palletizer_req=1, curtain_broken=1 reaches palletizer_run=1 in bomb."
+    }
+  ],
+  "property_variables": [
+    "curtain_broken",
+    "palletizer_run"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN palletizer_req=NONDET(_Bool);",
+          "        ASSIGN curtain_broken=NONDET(_Bool);",
+          "        ASSIGN palletizer_run=1 && palletizer_req && !curtain_broken;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "palletizer_req": 1,
+          "curtain_broken": 1,
+          "palletizer_run": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/palletizer_light_curtain_ds/clean.ld > benchmarks/packaging/palletizer_light_curtain_ds/clean__xml.ld\nesbmc benchmarks/packaging/palletizer_light_curtain_ds/clean__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpgh8kdjga/props_no_implies.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.023,
+      "counterexample": null
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:54Z",
+  "program": "benchmarks/packaging/reject_gate_triple_output/clean.ld",
+  "properties_file": "benchmarks/packaging/reject_gate_triple_output/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "defect_detect -> gate_actuate",
+      "justification": "A detected defect must actuate the reject gate in the same scan; the property is grounded in the trigger, not in gate_actuate's relationship to the two other readouts (counter_enable, line_stop) the same internal latch happens to also drive."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "defect_detect && !gate_actuate",
+      "justification": "Witness: defect_detect=1 reaches gate_actuate=0 in bomb, because reject_latch no longer triggers on the defect sensor at all."
+    }
+  ],
+  "property_variables": [
+    "defect_detect",
+    "gate_actuate"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN defect_detect=NONDET(_Bool);",
+          "        ASSIGN op_reset=NONDET(_Bool);",
+          "        ASSIGN line_running=NONDET(_Bool);",
+          "        ASSIGN bypass_key=NONDET(_Bool);",
+          "        ASSIGN line_stop=1 && reject_latch && !bypass_key;",
+          "        ASSIGN gate_actuate=1 && reject_latch;",
+          "        ASSIGN reject_latch=1 && defect_detect;",
+          "        ASSIGN reject_latch=1 && reject_latch && !op_reset;",
+          "        ASSIGN counter_enable=1 && reject_latch && line_running;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "defect_detect": 1,
+          "op_reset": 1,
+          "line_running": 1,
+          "bypass_key": 1,
+          "line_stop": 1,
+          "gate_actuate": 1,
+          "reject_latch": 2,
+          "counter_enable": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/reject_gate_triple_output/clean.ld > benchmarks/packaging/reject_gate_triple_output/clean__xml.ld\nesbmc benchmarks/packaging/reject_gate_triple_output/clean__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpbnmqj0vz/props_no_implies.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.018,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  defect_detect = 1\n\nState 2 file benchmarks/packaging/reject_gate_triple_output/clean__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/packaging/reject_gate_triple_output/clean__xml.ld\n  P1\n  !(defect_detect && !gate_actuate)"
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:59Z",
+  "program": "benchmarks/traffic/train_preempt_lockout_gm/bomb.ld",
+  "properties_file": "benchmarks/traffic/train_preempt_lockout_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(veh_green && train_detect)",
+      "justification": "Vehicle green light must never energize while a train is physically detected in the crossing island."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "veh_green && train_detect",
+      "justification": "Trigger synthesis: a witness recovers the premature reset condition that allows a conflicting green light."
+    }
+  ],
+  "property_variables": [
+    "train_detect",
+    "veh_green"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN train_detect=NONDET(_Bool);",
+          "        ASSIGN preempt_reset=NONDET(_Bool);",
+          "        ASSIGN timer_green=NONDET(_Bool);",
+          "        ASSIGN veh_green=1 && timer_green && !lockout_latch;",
+          "        ASSIGN lockout_latch=1 && train_detect && !preempt_reset;",
+          "        ASSIGN lockout_latch=1 && lockout_latch && !preempt_reset;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "train_detect": 1,
+          "preempt_reset": 1,
+          "timer_green": 1,
+          "veh_green": 1,
+          "lockout_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/traffic/train_preempt_lockout_gm/bomb.ld > benchmarks/traffic/train_preempt_lockout_gm/bomb__xml.ld\nesbmc benchmarks/traffic/train_preempt_lockout_gm/bomb__xml.ld --ld-props benchmarks/traffic/train_preempt_lockout_gm/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.014,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  train_detect = 1\n\nState 2  thread 0\n----------------------------------------------------\n  timer_green = 1\n\nState 3  thread 0\n----------------------------------------------------\n  veh_green = 1\n\nState 4 file benchmarks/traffic/train_preempt_lockout_gm/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/traffic/train_preempt_lockout_gm/bomb__xml.ld\n  P1\n  !(veh_green && train_detect)"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:42Z",
+  "program": "benchmarks/chemical_batch/relief_valve_trip_ds/bomb.ld",
+  "properties_file": "benchmarks/chemical_batch/relief_valve_trip_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "pressure_hh -> relief_valve",
+      "justification": "High\u2011high pressure must open the relief valve."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "pressure_hh && !relief_valve",
+      "justification": "Witness: pressure_hh=1 reaches relief_valve=0 in bomb."
+    }
+  ],
+  "property_variables": [
+    "pressure_hh",
+    "relief_valve"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "error",
+      "encoding": {
+        "scan_body": [
+          "        ASSUME !1"
+        ],
+        "assignment_counts": {},
+        "not_driven_by_body": [
+          "pressure_hh",
+          "relief_valve"
+        ],
+        "gate": "fail"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/chemical_batch/relief_valve_trip_ds/bomb.ld > benchmarks/chemical_batch/relief_valve_trip_ds/bomb__xml.ld\nesbmc benchmarks/chemical_batch/relief_valve_trip_ds/bomb__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmppnzg95h4/props_no_implies.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "error",
+      "proof": null,
+      "cpu_time_s": 0.011,
+      "counterexample": null
+    }
+  }
+}

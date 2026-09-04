@@ -1,0 +1,66 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:51Z",
+  "program": "benchmarks/packaging/capper_torque_stop_ds/clean.ld",
+  "properties_file": "benchmarks/packaging/capper_torque_stop_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "torque_high -> !capper_run",
+      "justification": "Capper must stop if torque exceeds limit."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "torque_high && capper_run",
+      "justification": "Witness: torque_high=1, capper_req=1 reaches capper_run=1 in bomb."
+    }
+  ],
+  "property_variables": [
+    "capper_run",
+    "torque_high"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN torque_high=NONDET(_Bool);",
+          "        ASSIGN manual_reset=NONDET(_Bool);",
+          "        ASSIGN capper_req=NONDET(_Bool);",
+          "        ASSIGN fault_latch=1 && latch;",
+          "        ASSIGN latch=1 && torque_high;",
+          "        ASSIGN latch=1 && latch && !manual_reset;",
+          "        ASSIGN capper_run=1 && capper_req && !latch;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "torque_high": 1,
+          "manual_reset": 1,
+          "capper_req": 1,
+          "fault_latch": 1,
+          "latch": 2,
+          "capper_run": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/capper_torque_stop_ds/clean.ld > benchmarks/packaging/capper_torque_stop_ds/clean__xml.ld\nesbmc benchmarks/packaging/capper_torque_stop_ds/clean__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpd8yjqm9m/props_no_implies.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.019,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  torque_high = 1\n\nState 2  thread 0\n----------------------------------------------------\n  manual_reset = 1\n\nState 3  thread 0\n----------------------------------------------------\n  capper_req = 1\n\nState 4  thread 0\n----------------------------------------------------\n  latch = 1\n\nState 5  thread 0\n----------------------------------------------------\n  latch = 0\n\nState 6  thread 0\n----------------------------------------------------\n  capper_run = 1\n\nState 7 file benchmarks/packaging/capper_torque_stop_ds/clean__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/packaging/capper_torque_stop_ds/clean__xml.ld\n  P1\n  !(torque_high && !(!capper_run))"
+    }
+  }
+}

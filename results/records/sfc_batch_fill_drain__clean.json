@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-28T18:36:59Z",
+  "recorded_at": "2026-09-04T23:40:43Z",
   "program": "benchmarks/chemical_batch/sfc_batch_fill_drain/clean.xml",
   "properties_file": "benchmarks/chemical_batch/sfc_batch_fill_drain/props.yaml",
   "properties": [
@@ -20,33 +20,41 @@
   ],
   "expected_verdict": "SAFE",
   "runs": {
-    "master": {
+    "v8.4": {
       "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/bin/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "0064c4ac",
+        "commit": null,
         "platform": "aarch64 macos"
       },
-      "status": "error",
+      "status": "correct",
       "encoding": {
         "scan_body": [
-          "Target: 64-bit little-endian aarch64-unknown-macos with esbmclibc",
-          "Parsing /Users/user/Claude/Overleaf Projects (2 items)/ESBMC-Benchmark-Suite (P6)/benchmarks/chemical_batch/sfc_batch_fill_drain/clean.ld",
-          "ERROR: UnsupportedConstruct(SFC body of POU 'batch_cycle', tier=2)",
-          "ERROR: PARSING ERROR"
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN start=NONDET(_Bool);",
+          "        ASSIGN level_high=NONDET(_Bool);",
+          "        ASSIGN reaction_done=NONDET(_Bool);",
+          "        ASSIGN level_low=NONDET(_Bool);",
+          "        GOTO 1",
+          "     2:"
         ],
-        "assignment_counts": {},
+        "assignment_counts": {
+          "start": 1,
+          "level_high": 1,
+          "reaction_done": 1,
+          "level_low": 1
+        },
         "not_driven_by_body": [
           "drain_valve",
           "fill_valve"
         ],
         "gate": "fail"
       },
-      "command": "cp benchmarks/chemical_batch/sfc_batch_fill_drain/clean.xml benchmarks/chemical_batch/sfc_batch_fill_drain/clean.ld\nesbmc benchmarks/chemical_batch/sfc_batch_fill_drain/clean.ld --ld-props benchmarks/chemical_batch/sfc_batch_fill_drain/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
-      "verdict": "error",
-      "proof": null,
-      "cpu_time_s": 0.008,
+      "command": "cp benchmarks/chemical_batch/sfc_batch_fill_drain/clean.xml benchmarks/chemical_batch/sfc_batch_fill_drain/clean.ld\nesbmc benchmarks/chemical_batch/sfc_batch_fill_drain/clean.ld --ld-props benchmarks/chemical_batch/sfc_batch_fill_drain/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.014,
       "counterexample": null
     }
   }

@@ -1,0 +1,55 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:58Z",
+  "program": "benchmarks/traffic/conflict_monitor_trip_ds/bomb.ld",
+  "properties_file": "benchmarks/traffic/conflict_monitor_trip_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "fault_latch -> flash_mode",
+      "justification": "When fault is latched, flash mode must be active."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "conflict_fault && !fault_latch",
+      "justification": "Witness: conflict_fault=1, manual_reset=0 reaches violation (fault ignored)."
+    }
+  ],
+  "property_variables": [
+    "conflict_fault",
+    "fault_latch",
+    "flash_mode"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "error",
+      "encoding": {
+        "scan_body": [
+          "        ASSUME !1"
+        ],
+        "assignment_counts": {},
+        "not_driven_by_body": [
+          "conflict_fault",
+          "fault_latch",
+          "flash_mode"
+        ],
+        "gate": "fail"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/traffic/conflict_monitor_trip_ds/bomb.ld > benchmarks/traffic/conflict_monitor_trip_ds/bomb__xml.ld\nesbmc benchmarks/traffic/conflict_monitor_trip_ds/bomb__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpodagkhqj/props_no_implies.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "error",
+      "proof": null,
+      "cpu_time_s": 0.011,
+      "counterexample": null
+    }
+  }
+}

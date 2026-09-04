@@ -1,0 +1,62 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:38Z",
+  "program": "benchmarks/building_automation/fire_damper_interlock_ds/clean.ld",
+  "properties_file": "benchmarks/building_automation/fire_damper_interlock_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "fan_on -> (damper_open && !fire_alarm)",
+      "justification": "AHU fan must only run if damper is open and no fire alarm."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "fan_on && !damper_open",
+      "justification": "Witness: fan_req=1, damper_open=0, fire_alarm=0 reaches fan_on=1 in bomb."
+    }
+  ],
+  "property_variables": [
+    "damper_open",
+    "fan_on",
+    "fire_alarm"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN fan_req=NONDET(_Bool);",
+          "        ASSIGN damper_open=NONDET(_Bool);",
+          "        ASSIGN fire_alarm=NONDET(_Bool);",
+          "        ASSIGN fan_on=1 && fan_req && damper_open && !fire_alarm;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "fan_req": 1,
+          "damper_open": 1,
+          "fire_alarm": 1,
+          "fan_on": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/building_automation/fire_damper_interlock_ds/clean.ld > benchmarks/building_automation/fire_damper_interlock_ds/clean__xml.ld\nesbmc benchmarks/building_automation/fire_damper_interlock_ds/clean__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp8zme927i/props_no_implies.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.022,
+      "counterexample": null
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:47Z",
+  "program": "benchmarks/hvac/smoke_detector_shutdown/clean.ld",
+  "properties_file": "benchmarks/hvac/smoke_detector_shutdown/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(fan_run && smoke_latch)",
+      "justification": "The supply fan must not run while a smoke alarm is actively latched in the system."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "fan_run && smoke_latch",
+      "justification": "Trigger synthesis: a witness recovers the state where the fan auto-restarts without a manual fire panel reset."
+    }
+  ],
+  "property_variables": [
+    "fan_run",
+    "smoke_latch"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN smoke_detect=NONDET(_Bool);",
+          "        ASSIGN reset_btn=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        ASSIGN fan_run=1 && req_run && !smoke_latch;",
+          "        ASSIGN smoke_latch=1 && smoke_detect;",
+          "        ASSIGN smoke_latch=1 && smoke_latch && !reset_btn;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "smoke_detect": 1,
+          "reset_btn": 1,
+          "req_run": 1,
+          "fan_run": 1,
+          "smoke_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/hvac/smoke_detector_shutdown/clean.ld > benchmarks/hvac/smoke_detector_shutdown/clean__xml.ld\nesbmc benchmarks/hvac/smoke_detector_shutdown/clean__xml.ld --ld-props benchmarks/hvac/smoke_detector_shutdown/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.013,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  smoke_detect = 1\n\nState 2  thread 0\n----------------------------------------------------\n  reset_btn = 0\n\nState 3  thread 0\n----------------------------------------------------\n  req_run = 1\n\nState 4  thread 0\n----------------------------------------------------\n  fan_run = 1\n\nState 5  thread 0\n----------------------------------------------------\n  smoke_latch = 1\n\nState 6  thread 0\n----------------------------------------------------\n  smoke_latch = 1\n\nState 7 file benchmarks/hvac/smoke_detector_shutdown/clean__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/hvac/smoke_detector_shutdown/clean__xml.ld\n  P1\n  !(fan_run && smoke_latch)"
+    }
+  }
+}

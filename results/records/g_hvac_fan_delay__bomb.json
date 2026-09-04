@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-28T18:37:00Z",
+  "recorded_at": "2026-09-04T23:40:47Z",
   "program": "benchmarks/hvac/g_hvac_fan_delay/bomb.xml",
   "properties_file": "benchmarks/hvac/g_hvac_fan_delay/props.yaml",
   "properties": [
@@ -20,87 +20,46 @@
   ],
   "expected_verdict": "VIOLATION",
   "runs": {
-    "master": {
+    "v8.4": {
       "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/bin/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "0064c4ac",
+        "commit": null,
         "platform": "aarch64 macos"
       },
       "status": "correct",
       "encoding": {
         "scan_body": [
-          "     1: IF !1 THEN GOTO 19",
+          "     1: IF !1 THEN GOTO 2",
           "        ASSIGN heat_call=NONDET(_Bool);",
           "        ASSIGN cool_call=NONDET(_Bool);",
           "        ASSIGN enable=NONDET(_Bool);",
           "        ASSIGN maint=NONDET(_Bool);",
-          "        IF !1 THEN GOTO 2",
-          "        ASSIGN pf12=0;",
-          "     2: IF !(1 && enable) THEN GOTO 3",
-          "        ASSIGN pf12=1;",
-          "     3: ASSIGN fan=1 && pf12;",
-          "        IF !1 THEN GOTO 4",
-          "        ASSIGN pf3=0;",
-          "     4: IF !(1 && !cool_call) THEN GOTO 5",
-          "        ASSIGN pf3=1;",
-          "     5: IF !1 THEN GOTO 6",
-          "        ASSIGN pf4=0;",
-          "     6: IF !(1 && cool_call) THEN GOTO 7",
-          "        ASSIGN pf4=1;",
-          "     7: IF !1 THEN GOTO 8",
-          "        ASSIGN pf5=0;",
-          "     8: IF !(1 && pf4 && maint) THEN GOTO 9",
-          "        ASSIGN pf5=1;",
-          "     9: IF !1 THEN GOTO 10",
-          "        ASSIGN pf6=0;",
-          "    10: IF !(1 && pf3 && heat_call) THEN GOTO 11",
-          "        ASSIGN pf6=1;",
-          "    11: IF !(1 && pf5 && heat_call) THEN GOTO 12",
-          "        ASSIGN pf6=1;",
-          "    12: IF !1 THEN GOTO 13",
-          "        ASSIGN pf7=0;",
-          "    13: IF !(1 && pf6 && enable) THEN GOTO 14",
-          "        ASSIGN pf7=1;",
-          "    14: ASSIGN heat=1 && pf7;",
-          "        IF !1 THEN GOTO 15",
-          "        ASSIGN pf9=0;",
-          "    15: IF !(1 && cool_call) THEN GOTO 16",
-          "        ASSIGN pf9=1;",
-          "    16: IF !1 THEN GOTO 17",
-          "        ASSIGN pf10=0;",
-          "    17: IF !(1 && pf9 && enable) THEN GOTO 18",
-          "        ASSIGN pf10=1;",
-          "    18: ASSIGN cool=1 && pf10;",
+          "        ASSIGN fan=1 && enable;",
+          "        ASSIGN heat=1 && !cool_call && heat_call && enable;",
+          "        ASSIGN heat=1 && cool_call && maint && heat_call && enable;",
+          "        ASSIGN cool=1 && cool_call && enable;",
           "        GOTO 1",
-          "    19:"
+          "     2:"
         ],
         "assignment_counts": {
           "heat_call": 1,
           "cool_call": 1,
           "enable": 1,
           "maint": 1,
-          "pf12": 2,
           "fan": 1,
-          "pf3": 2,
-          "pf4": 2,
-          "pf5": 2,
-          "pf6": 3,
-          "pf7": 2,
-          "heat": 1,
-          "pf9": 2,
-          "pf10": 2,
+          "heat": 2,
           "cool": 1
         },
         "not_driven_by_body": [],
         "gate": "pass"
       },
-      "command": "cp benchmarks/hvac/g_hvac_fan_delay/bomb.xml benchmarks/hvac/g_hvac_fan_delay/bomb.ld\nesbmc benchmarks/hvac/g_hvac_fan_delay/bomb.ld --ld-props benchmarks/hvac/g_hvac_fan_delay/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "command": "cp benchmarks/hvac/g_hvac_fan_delay/bomb.xml benchmarks/hvac/g_hvac_fan_delay/bomb.ld\nesbmc benchmarks/hvac/g_hvac_fan_delay/bomb.ld --ld-props benchmarks/hvac/g_hvac_fan_delay/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.012,
-      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  heat_call = 1\n\nState 2  thread 0\n----------------------------------------------------\n  cool_call = 1\n\nState 3  thread 0\n----------------------------------------------------\n  enable = 1\n\nState 4  thread 0\n----------------------------------------------------\n  maint = 1\n\nState 5  thread 0\n----------------------------------------------------\n  heat = 1\n\nState 6  thread 0\n----------------------------------------------------\n  cool = 1\n\nState 7 file benchmarks/hvac/g_hvac_fan_delay/bomb.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/hvac/g_hvac_fan_delay/bomb.ld\n  P1\n  !(heat && cool)\n\n\n** Results:\nbenchmarks/hvac/g_hvac_fan_delay/bomb.ld\n  FAILED       [global.assertion.1]  line 0  P1\n\n** 1 of 1 properties failed"
+      "cpu_time_s": 0.013,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  heat_call = 1\n\nState 2  thread 0\n----------------------------------------------------\n  cool_call = 1\n\nState 3  thread 0\n----------------------------------------------------\n  enable = 1\n\nState 4  thread 0\n----------------------------------------------------\n  maint = 1\n\nState 5  thread 0\n----------------------------------------------------\n  heat = 1\n\nState 6  thread 0\n----------------------------------------------------\n  cool = 1\n\nState 7 file benchmarks/hvac/g_hvac_fan_delay/bomb.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/hvac/g_hvac_fan_delay/bomb.ld\n  P1\n  !(heat && cool)"
     }
   }
 }

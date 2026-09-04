@@ -1,0 +1,63 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:54Z",
+  "program": "benchmarks/power_substation/bus_transfer_lockout/clean.ld",
+  "properties_file": "benchmarks/power_substation/bus_transfer_lockout/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(tie_close && source_a_closed && source_b_closed)",
+      "justification": "The tie breaker must never parallel two independent unsynchronized power sources."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "tie_close && source_a_closed && source_b_closed",
+      "justification": "Trigger synthesis: a witness recovers the failure to block paralleling of live mains."
+    }
+  ],
+  "property_variables": [
+    "source_a_closed",
+    "source_b_closed",
+    "tie_close"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_tie=NONDET(_Bool);",
+          "        ASSIGN source_a_closed=NONDET(_Bool);",
+          "        ASSIGN source_b_closed=NONDET(_Bool);",
+          "        ASSIGN tie_close=1 && req_tie && !source_a_closed;",
+          "        ASSIGN tie_close=1 && req_tie && !source_b_closed;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_tie": 1,
+          "source_a_closed": 1,
+          "source_b_closed": 1,
+          "tie_close": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/power_substation/bus_transfer_lockout/clean.ld > benchmarks/power_substation/bus_transfer_lockout/clean__xml.ld\nesbmc benchmarks/power_substation/bus_transfer_lockout/clean__xml.ld --ld-props benchmarks/power_substation/bus_transfer_lockout/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.018,
+      "counterexample": null
+    }
+  }
+}

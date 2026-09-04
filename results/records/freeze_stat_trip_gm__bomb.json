@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:46Z",
+  "program": "benchmarks/hvac/freeze_stat_trip_gm/bomb.ld",
+  "properties_file": "benchmarks/hvac/freeze_stat_trip_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(fan_run && freeze_latch)",
+      "justification": "The supply fan must remain off while the freeze stat trip is actively latched."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "fan_run && freeze_latch",
+      "justification": "Trigger synthesis: a witness recovers the state where the fan auto-restarts before the trip latch is manually reset."
+    }
+  ],
+  "property_variables": [
+    "fan_run",
+    "freeze_latch"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "unknown",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN freeze_stat=NONDET(_Bool);",
+          "        ASSIGN reset_btn=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        ASSIGN fan_run=1 && req_run && !freeze_stat;",
+          "        ASSIGN freeze_latch=1 && freeze_stat;",
+          "        ASSIGN freeze_latch=1 && freeze_latch && !reset_btn;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "freeze_stat": 1,
+          "reset_btn": 1,
+          "req_run": 1,
+          "fan_run": 1,
+          "freeze_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/hvac/freeze_stat_trip_gm/bomb.ld > benchmarks/hvac/freeze_stat_trip_gm/bomb__xml.ld\nesbmc benchmarks/hvac/freeze_stat_trip_gm/bomb__xml.ld --ld-props benchmarks/hvac/freeze_stat_trip_gm/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "unknown",
+      "proof": null,
+      "cpu_time_s": 0.149,
+      "counterexample": null
+    }
+  }
+}

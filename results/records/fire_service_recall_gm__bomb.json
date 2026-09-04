@@ -1,0 +1,67 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:44Z",
+  "program": "benchmarks/elevator/fire_service_recall_gm/bomb.ld",
+  "properties_file": "benchmarks/elevator/fire_service_recall_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(doors_open && fire_alarm)",
+      "justification": "Elevator doors must not open in response to a hall call when the building fire alarm is active, preventing exposure to fire floors."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "doors_open && fire_alarm",
+      "justification": "Trigger synthesis: a witness recovers the VIP bypass condition that opens the doors during a fire event."
+    }
+  ],
+  "property_variables": [
+    "doors_open",
+    "fire_alarm"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN fire_alarm=NONDET(_Bool);",
+          "        ASSIGN smoke_detect=NONDET(_Bool);",
+          "        ASSIGN req_hall_call=NONDET(_Bool);",
+          "        ASSIGN vip_key=NONDET(_Bool);",
+          "        ASSIGN doors_open=1 && req_hall_call && !recall_mode;",
+          "        ASSIGN doors_open=1 && req_hall_call && vip_key;",
+          "        ASSIGN recall_mode=1 && fire_alarm;",
+          "        ASSIGN recall_mode=1 && smoke_detect;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "fire_alarm": 1,
+          "smoke_detect": 1,
+          "req_hall_call": 1,
+          "vip_key": 1,
+          "doors_open": 2,
+          "recall_mode": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/elevator/fire_service_recall_gm/bomb.ld > benchmarks/elevator/fire_service_recall_gm/bomb__xml.ld\nesbmc benchmarks/elevator/fire_service_recall_gm/bomb__xml.ld --ld-props benchmarks/elevator/fire_service_recall_gm/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.013,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  fire_alarm = 1\n\nState 2  thread 0\n----------------------------------------------------\n  req_hall_call = 1\n\nState 3  thread 0\n----------------------------------------------------\n  vip_key = 1\n\nState 4  thread 0\n----------------------------------------------------\n  doors_open = 1\n\nState 5 file benchmarks/elevator/fire_service_recall_gm/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/elevator/fire_service_recall_gm/bomb__xml.ld\n  P1\n  !(doors_open && fire_alarm)"
+    }
+  }
+}

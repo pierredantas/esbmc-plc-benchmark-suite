@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:52Z",
+  "program": "benchmarks/packaging/case_sealer_jam_ds/bomb.ld",
+  "properties_file": "benchmarks/packaging/case_sealer_jam_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "jam_detected -> !conveyor_run",
+      "justification": "Conveyor must stop if a jam is detected."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "jam_detected && conveyor_run",
+      "justification": "Witness: jam_detected=1, conveyor_req=1 reaches conveyor_run=1 in bomb."
+    }
+  ],
+  "property_variables": [
+    "conveyor_run",
+    "jam_detected"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "error",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN conveyor_req=NONDET(_Bool);",
+          "        ASSIGN conveyor_run=1 && conveyor_req;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "conveyor_req": 1,
+          "conveyor_run": 1
+        },
+        "not_driven_by_body": [
+          "jam_detected"
+        ],
+        "gate": "fail"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/case_sealer_jam_ds/bomb.ld > benchmarks/packaging/case_sealer_jam_ds/bomb__xml.ld\nesbmc benchmarks/packaging/case_sealer_jam_ds/bomb__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpf9a9lm_h/props_no_implies.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "error",
+      "proof": null,
+      "cpu_time_s": 0.011,
+      "counterexample": null
+    }
+  }
+}

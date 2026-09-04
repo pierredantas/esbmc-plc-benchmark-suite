@@ -8,10 +8,13 @@ walks the suite and drives record.py once per runnable variant.
     record_all.py --tool v8.4=PATH --tool master=PATH [--timeout 30]
     record_all.py --route via-c --tool master=PATH
 
-The ladder route runs PLCopen XML only: ESBMC picks its LD front end from the file
-extension and XML-parses whatever it finds, so the textual .ld DSL and the .st
-programs are skipped rather than reported as failures. A termination property is not
-accepted by --ld-props at all; those variants go through the scan watchdog instead.
+The ladder route runs PLCopen XML, plus the plain-text LD DSL that
+tools/ld_text_to_xml.py can convert to XML first: ESBMC picks its LD front end from
+the file extension and XML-parses whatever it finds, so a source that is genuinely
+neither (a .st program, or a plain-text .ld rung using a stateful block the converter
+does not handle) is skipped rather than reported as a failure. A termination property
+is not accepted by --ld-props at all; those variants go through the scan watchdog
+instead.
 
 The via-c route reaches ST, IL, FBD and SFC as well, by way of Beremiz and MatIEC. Its
 harness runs a fixed number of scans, so a bomb on a long fuse is invisible at a small
@@ -31,6 +34,9 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 RECORDS = ROOT / "results" / "records"
 DEEP = 64  # scans to retry at when a fused bomb hides below the default depth
 
+sys.path.insert(0, str(ROOT / "tools"))
+from ld_text_to_xml import ParseError, translate  # noqa: E402
+
 
 def is_termination(props_path):
     """Whether a property file asks about termination rather than safety."""
@@ -38,18 +44,37 @@ def is_termination(props_path):
     return any(p.get("kind") == "termination" for p in props.get("properties", []))
 
 
+def is_text_ld(path):
+    """A .ld file is the plain-text OTE/XIC/XIO DSL, not PLCopen XML with a forced
+    extension, when its content does not start with an XML declaration."""
+    return not path.read_text(encoding="utf-8").lstrip().startswith("<?xml")
+
+
 def variants(route):
-    """Every (benchmark, variant) pair this route can attempt."""
+    """Every (benchmark, variant) pair this route can attempt.
+
+    Every plain-text .ld file is included here regardless of whether it will
+    actually convert; a stateful block (TON, CTU, ...) that tools/ld_text_to_xml.py
+    cannot handle surfaces as a printed SKIP line from record(), not a silent
+    absence from the catalog.
+    """
     for meta_path in sorted((ROOT / "benchmarks").glob("*/*/benchmark.yml")):
         meta = yaml.safe_load(meta_path.read_text(encoding="utf-8"))
         folder = meta_path.parent
         props = (folder / meta["properties_file"]).resolve()
         for var in meta.get("variants", []):
             program = folder / var["file"]
-            runnable = ((".xml",) if route == "ld" else (".xml", ".st", ".il"))
-            if program.suffix in runnable and props.exists():
+            if not props.exists():
+                continue
+            if program.suffix == ".xml" or (route == "ld" and program.suffix == ".ld"
+                                             and is_text_ld(program)):
                 yield {"name": f'{meta["id"]}__{program.stem}', "program": program,
-                       "props": props, "expected": var["expected_verdict"]}
+                       "props": props, "expected": var["expected_verdict"],
+                       "text_ld": program.suffix == ".ld"}
+            elif route == "via-c" and program.suffix in (".xml", ".st", ".il"):
+                yield {"name": f'{meta["id"]}__{program.stem}', "program": program,
+                       "props": props, "expected": var["expected_verdict"],
+                       "text_ld": False}
 
 
 def record_via_c(task, tools, timeout, scans):
@@ -73,13 +98,30 @@ def record_via_c(task, tools, timeout, scans):
 
 
 def record(task, tools, timeout):
-    """One record, written against a .ld copy so ESBMC selects the LD front end."""
+    """One record, written against a .ld copy so ESBMC selects the LD front end.
+
+    A plain-text .ld source is already `.ld`-suffixed, so `with_suffix(".ld")` would
+    name the source itself; it is converted to PLCopen XML into a sibling temp file
+    instead, and record.py is told so it prints an honest replay command rather than
+    a `cp` of a file ESBMC cannot parse.
+    """
     program, props = task["program"], task["props"]
-    copy = program.with_suffix(".ld")
-    shutil.copyfile(program, copy)
+    converted = task["text_ld"]
+    if converted:
+        copy = program.with_name(program.stem + "__xml.ld")
+        try:
+            xml = translate(program.stem, program.read_text(encoding="utf-8"))
+        except ParseError as e:
+            return f'SKIP {task["name"]}: {e}'
+        copy.write_text(xml, encoding="utf-8")
+    else:
+        copy = program.with_suffix(".ld")
+        shutil.copyfile(program, copy)
     args = [sys.executable, str(ROOT / "runner" / "record.py"), str(copy), str(props),
             "true" if task["expected"] else "false", "--timeout", str(timeout),
             "--source", str(program)]
+    if converted:
+        args.append("--converted-from-text-ld")
     if is_termination(props):
         args.append("--watchdog-only")
     for tool in tools:

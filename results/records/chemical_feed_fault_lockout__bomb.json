@@ -1,0 +1,61 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:41:00Z",
+  "program": "benchmarks/water_treatment/chemical_feed_fault_lockout/bomb.ld",
+  "properties_file": "benchmarks/water_treatment/chemical_feed_fault_lockout/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "overdose_sensor -> !dose_pump_run",
+      "justification": "An overdose condition must stop the dosing pump in the same scan it is sensed; the property is grounded in the sensor trigger, not in dose_pump_run's relationship to the unrelated fault_lamp readout."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "overdose_sensor && dose_pump_run",
+      "justification": "Witness: overdose_sensor=1, dose_req=1 reaches dose_pump_run=1 in bomb, because dose_fault no longer latches on the overdose sensor at all."
+    }
+  ],
+  "property_variables": [
+    "dose_pump_run",
+    "overdose_sensor"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "error",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN dose_req=NONDET(_Bool);",
+          "        ASSIGN dose_pump_run=1 && dose_req;",
+          "        ASSIGN fault_lamp=1 && dose_fault;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "dose_req": 1,
+          "dose_pump_run": 1,
+          "fault_lamp": 1
+        },
+        "not_driven_by_body": [
+          "overdose_sensor"
+        ],
+        "gate": "fail"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/water_treatment/chemical_feed_fault_lockout/bomb.ld > benchmarks/water_treatment/chemical_feed_fault_lockout/bomb__xml.ld\nesbmc benchmarks/water_treatment/chemical_feed_fault_lockout/bomb__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp6acwgzvt/props_no_implies.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "error",
+      "proof": null,
+      "cpu_time_s": 0.011,
+      "counterexample": null
+    }
+  }
+}

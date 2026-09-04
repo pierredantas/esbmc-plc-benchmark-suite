@@ -1,0 +1,53 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:38Z",
+  "program": "benchmarks/building_automation/access_door_forced_ds/bomb.ld",
+  "properties_file": "benchmarks/building_automation/access_door_forced_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "door_forced -> lock_hold",
+      "justification": "If door is forced open, the lock must be engaged (door held locked)."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "door_forced && !lock_hold",
+      "justification": "Witness: door_forced=1 reaches lock_hold=0 in bomb."
+    }
+  ],
+  "property_variables": [
+    "door_forced",
+    "lock_hold"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "error",
+      "encoding": {
+        "scan_body": [
+          "        ASSUME !1"
+        ],
+        "assignment_counts": {},
+        "not_driven_by_body": [
+          "door_forced",
+          "lock_hold"
+        ],
+        "gate": "fail"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/building_automation/access_door_forced_ds/bomb.ld > benchmarks/building_automation/access_door_forced_ds/bomb__xml.ld\nesbmc benchmarks/building_automation/access_door_forced_ds/bomb__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpno665fv3/props_no_implies.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "error",
+      "proof": null,
+      "cpu_time_s": 0.011,
+      "counterexample": null
+    }
+  }
+}

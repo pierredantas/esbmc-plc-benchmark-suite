@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:53Z",
+  "program": "benchmarks/packaging/labeler_web_break_ds/bomb.ld",
+  "properties_file": "benchmarks/packaging/labeler_web_break_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "web_break -> !labeler_run",
+      "justification": "Labeler must stop if web break is detected."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "web_break && labeler_run",
+      "justification": "Witness: web_break=1, labeler_req=1 reaches labeler_run=1 in bomb."
+    }
+  ],
+  "property_variables": [
+    "labeler_run",
+    "web_break"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "error",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN labeler_req=NONDET(_Bool);",
+          "        ASSIGN labeler_run=1 && labeler_req;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "labeler_req": 1,
+          "labeler_run": 1
+        },
+        "not_driven_by_body": [
+          "web_break"
+        ],
+        "gate": "fail"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/labeler_web_break_ds/bomb.ld > benchmarks/packaging/labeler_web_break_ds/bomb__xml.ld\nesbmc benchmarks/packaging/labeler_web_break_ds/bomb__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpdhmvsss3/props_no_implies.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "error",
+      "proof": null,
+      "cpu_time_s": 0.011,
+      "counterexample": null
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:41Z",
+  "program": "benchmarks/chemical_batch/dual_valve_containment_ds/bomb.ld",
+  "properties_file": "benchmarks/chemical_batch/dual_valve_containment_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "mutual_exclusion",
+      "variables": [
+        "feed_valve",
+        "vent_valve"
+      ],
+      "justification": "Feed and vent valves must never be open together (loss of containment)."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "feed_valve && vent_valve",
+      "justification": "Witness: feed_req=1, vent_req=1 reaches both open in bomb."
+    }
+  ],
+  "property_variables": [
+    "feed_valve",
+    "vent_valve"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN feed_req=NONDET(_Bool);",
+          "        ASSIGN vent_req=NONDET(_Bool);",
+          "        ASSIGN vent_valve=1 && vent_req;",
+          "        ASSIGN feed_valve=1 && feed_req;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "feed_req": 1,
+          "vent_req": 1,
+          "vent_valve": 1,
+          "feed_valve": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/chemical_batch/dual_valve_containment_ds/bomb.ld > benchmarks/chemical_batch/dual_valve_containment_ds/bomb__xml.ld\nesbmc benchmarks/chemical_batch/dual_valve_containment_ds/bomb__xml.ld --ld-props benchmarks/chemical_batch/dual_valve_containment_ds/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.013,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  feed_req = 1\n\nState 2  thread 0\n----------------------------------------------------\n  vent_req = 1\n\nState 3  thread 0\n----------------------------------------------------\n  vent_valve = 1\n\nState 4  thread 0\n----------------------------------------------------\n  feed_valve = 1\n\nState 5 file benchmarks/chemical_batch/dual_valve_containment_ds/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/chemical_batch/dual_valve_containment_ds/bomb__xml.ld\n  P1\n  !(feed_valve && vent_valve)"
+    }
+  }
+}

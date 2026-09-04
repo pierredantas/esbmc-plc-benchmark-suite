@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:54Z",
+  "program": "benchmarks/packaging/palletizer_light_curtain_gm/clean.ld",
+  "properties_file": "benchmarks/packaging/palletizer_light_curtain_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(safety_latch && !curtain_ok)",
+      "justification": "The safety latch must drop instantly when the light curtain is breached, regardless of reset button state."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "safety_latch && !curtain_ok",
+      "justification": "Trigger synthesis: a witness recovers the bypassed state where the latch holds despite a curtain breach."
+    }
+  ],
+  "property_variables": [
+    "curtain_ok",
+    "safety_latch"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN curtain_ok=NONDET(_Bool);",
+          "        ASSIGN reset_btn=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        ASSIGN machine_run=1 && req_run && safety_latch;",
+          "        ASSIGN safety_latch=1 && curtain_ok && safety_latch;",
+          "        ASSIGN safety_latch=1 && curtain_ok && reset_btn;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "curtain_ok": 1,
+          "reset_btn": 1,
+          "req_run": 1,
+          "machine_run": 1,
+          "safety_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/palletizer_light_curtain_gm/clean.ld > benchmarks/packaging/palletizer_light_curtain_gm/clean__xml.ld\nesbmc benchmarks/packaging/palletizer_light_curtain_gm/clean__xml.ld --ld-props benchmarks/packaging/palletizer_light_curtain_gm/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.018,
+      "counterexample": null
+    }
+  }
+}

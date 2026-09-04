@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:40Z",
+  "program": "benchmarks/building_automation/stairwell_smoke_exhaust/clean.ld",
+  "properties_file": "benchmarks/building_automation/stairwell_smoke_exhaust/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(exhaust_fan && damper_closed)",
+      "justification": "The exhaust fan must never pull against a closed isolation damper, preventing duct collapse."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "exhaust_fan && damper_closed",
+      "justification": "Trigger synthesis: a witness recovers the failure to check damper status before fan startup."
+    }
+  ],
+  "property_variables": [
+    "damper_closed",
+    "exhaust_fan"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN smoke_alarm=NONDET(_Bool);",
+          "        ASSIGN damper_closed=NONDET(_Bool);",
+          "        ASSIGN exhaust_fan=1 && smoke_alarm && !damper_closed;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "smoke_alarm": 1,
+          "damper_closed": 1,
+          "exhaust_fan": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/building_automation/stairwell_smoke_exhaust/clean.ld > benchmarks/building_automation/stairwell_smoke_exhaust/clean__xml.ld\nesbmc benchmarks/building_automation/stairwell_smoke_exhaust/clean__xml.ld --ld-props benchmarks/building_automation/stairwell_smoke_exhaust/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.017,
+      "counterexample": null
+    }
+  }
+}

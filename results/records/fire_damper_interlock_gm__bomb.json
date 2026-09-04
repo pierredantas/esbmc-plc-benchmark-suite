@@ -1,0 +1,62 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:38Z",
+  "program": "benchmarks/building_automation/fire_damper_interlock_gm/bomb.ld",
+  "properties_file": "benchmarks/building_automation/fire_damper_interlock_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(ahu_fan && !damper_open)",
+      "justification": "The AHU fan must never be energized against a closed fire damper to prevent severe ductwork damage."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "ahu_fan && !damper_open",
+      "justification": "Trigger synthesis: a witness recovers the override condition that dead-heads the fan."
+    }
+  ],
+  "property_variables": [
+    "ahu_fan",
+    "damper_open"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        ASSIGN damper_open=NONDET(_Bool);",
+          "        ASSIGN smoke_override=NONDET(_Bool);",
+          "        ASSIGN ahu_fan=1 && req_run && damper_open;",
+          "        ASSIGN ahu_fan=1 && req_run && smoke_override;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_run": 1,
+          "damper_open": 1,
+          "smoke_override": 1,
+          "ahu_fan": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/building_automation/fire_damper_interlock_gm/bomb.ld > benchmarks/building_automation/fire_damper_interlock_gm/bomb__xml.ld\nesbmc benchmarks/building_automation/fire_damper_interlock_gm/bomb__xml.ld --ld-props benchmarks/building_automation/fire_damper_interlock_gm/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.013,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  req_run = 1\n\nState 2  thread 0\n----------------------------------------------------\n  damper_open = 0\n\nState 3  thread 0\n----------------------------------------------------\n  smoke_override = 1\n\nState 4  thread 0\n----------------------------------------------------\n  ahu_fan = 1\n\nState 5 file benchmarks/building_automation/fire_damper_interlock_gm/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/building_automation/fire_damper_interlock_gm/bomb__xml.ld\n  P1\n  !(ahu_fan && !damper_open)"
+    }
+  }
+}

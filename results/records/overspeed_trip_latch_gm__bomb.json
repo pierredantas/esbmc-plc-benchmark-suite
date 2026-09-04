@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:45Z",
+  "program": "benchmarks/elevator/overspeed_trip_latch_gm/bomb.ld",
+  "properties_file": "benchmarks/elevator/overspeed_trip_latch_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(car_run && trip_latch)",
+      "justification": "The elevator car must never be allowed to run while the overspeed safety latch is in a tripped state."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "car_run && trip_latch",
+      "justification": "Trigger synthesis: a witness recovers the state where the car runs despite a latched overspeed trip."
+    }
+  ],
+  "property_variables": [
+    "car_run",
+    "trip_latch"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "unknown",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN speed_ok=NONDET(_Bool);",
+          "        ASSIGN reset_key=NONDET(_Bool);",
+          "        ASSIGN run_cmd=NONDET(_Bool);",
+          "        ASSIGN car_run=1 && run_cmd && speed_ok;",
+          "        ASSIGN trip_latch=1 && !speed_ok;",
+          "        ASSIGN trip_latch=1 && trip_latch && !reset_key;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "speed_ok": 1,
+          "reset_key": 1,
+          "run_cmd": 1,
+          "car_run": 1,
+          "trip_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/elevator/overspeed_trip_latch_gm/bomb.ld > benchmarks/elevator/overspeed_trip_latch_gm/bomb__xml.ld\nesbmc benchmarks/elevator/overspeed_trip_latch_gm/bomb__xml.ld --ld-props benchmarks/elevator/overspeed_trip_latch_gm/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "unknown",
+      "proof": null,
+      "cpu_time_s": 0.16,
+      "counterexample": null
+    }
+  }
+}

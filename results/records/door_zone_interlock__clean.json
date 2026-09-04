@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:44Z",
+  "program": "benchmarks/elevator/door_zone_interlock/clean.ld",
+  "properties_file": "benchmarks/elevator/door_zone_interlock/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(doors_open && !door_zone)",
+      "justification": "Car and hoistway doors must never open unless the car is physically verified to be within a safe landing zone."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "doors_open && !door_zone",
+      "justification": "Trigger synthesis: a witness recovers the bypass state allowing doors to open outside a landing."
+    }
+  ],
+  "property_variables": [
+    "door_zone",
+    "doors_open"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_open=NONDET(_Bool);",
+          "        ASSIGN door_zone=NONDET(_Bool);",
+          "        ASSIGN doors_open=1 && req_open && door_zone;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_open": 1,
+          "door_zone": 1,
+          "doors_open": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/elevator/door_zone_interlock/clean.ld > benchmarks/elevator/door_zone_interlock/clean__xml.ld\nesbmc benchmarks/elevator/door_zone_interlock/clean__xml.ld --ld-props benchmarks/elevator/door_zone_interlock/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.017,
+      "counterexample": null
+    }
+  }
+}

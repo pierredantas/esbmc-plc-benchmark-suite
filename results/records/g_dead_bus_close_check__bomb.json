@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-09-02T15:38:51Z",
+  "recorded_at": "2026-09-04T23:40:55Z",
   "program": "benchmarks/power_substation/g_dead_bus_close_check/bomb.xml",
   "properties_file": "benchmarks/power_substation/g_dead_bus_close_check/props.yaml",
   "properties": [
@@ -18,80 +18,43 @@
   ],
   "expected_verdict": "VIOLATION",
   "runs": {
-    "master": {
+    "v8.4": {
       "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/bin/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "0064c4acc8",
+        "commit": null,
         "platform": "aarch64 macos"
       },
       "status": "correct",
       "encoding": {
         "scan_body": [
-          "     1: IF !1 THEN GOTO 18",
+          "     1: IF !1 THEN GOTO 2",
           "        ASSIGN close_request=NONDET(_Bool);",
           "        ASSIGN bus_live=NONDET(_Bool);",
           "        ASSIGN sync_check_ok=NONDET(_Bool);",
           "        ASSIGN maint=NONDET(_Bool);",
-          "        IF !1 THEN GOTO 2",
-          "        ASSIGN pf8=0;",
-          "     2: IF !(1 && close_request) THEN GOTO 3",
-          "        ASSIGN pf8=1;",
-          "     3: IF !1 THEN GOTO 4",
-          "        ASSIGN pf9=0;",
-          "     4: IF !(1 && pf8 && maint) THEN GOTO 5",
-          "        ASSIGN pf9=1;",
-          "     5: IF !1 THEN GOTO 6",
-          "        ASSIGN pf5=0;",
-          "     6: IF !(1 && close_request) THEN GOTO 7",
-          "        ASSIGN pf5=1;",
-          "     7: IF !1 THEN GOTO 8",
-          "        ASSIGN pf6=0;",
-          "     8: IF !(1 && pf5 && sync_check_ok) THEN GOTO 9",
-          "        ASSIGN pf6=1;",
-          "     9: IF !1 THEN GOTO 10",
-          "        ASSIGN pf3=0;",
-          "    10: IF !(1 && close_request) THEN GOTO 11",
-          "        ASSIGN pf3=1;",
-          "    11: IF !1 THEN GOTO 12",
-          "        ASSIGN pf4=0;",
-          "    12: IF !(1 && pf3 && !bus_live) THEN GOTO 13",
-          "        ASSIGN pf4=1;",
-          "    13: IF !1 THEN GOTO 14",
-          "        ASSIGN breaker_close__pf0=0;",
-          "    14: IF !(1 && pf9) THEN GOTO 15",
-          "        ASSIGN breaker_close__pf0=1;",
-          "    15: IF !(1 && pf6) THEN GOTO 16",
-          "        ASSIGN breaker_close__pf0=1;",
-          "    16: IF !(1 && pf4) THEN GOTO 17",
-          "        ASSIGN breaker_close__pf0=1;",
-          "    17: ASSIGN breaker_close=1 && breaker_close__pf0;",
+          "        ASSIGN breaker_close=1 && close_request && !bus_live;",
+          "        ASSIGN breaker_close=1 && close_request && sync_check_ok;",
+          "        ASSIGN breaker_close=1 && close_request && maint;",
           "        GOTO 1",
-          "    18:"
+          "     2:"
         ],
         "assignment_counts": {
           "close_request": 1,
           "bus_live": 1,
           "sync_check_ok": 1,
           "maint": 1,
-          "pf8": 2,
-          "pf9": 2,
-          "pf5": 2,
-          "pf6": 2,
-          "pf3": 2,
-          "pf4": 2,
-          "breaker_close__pf0": 4,
-          "breaker_close": 1
+          "breaker_close": 3
         },
         "not_driven_by_body": [],
         "gate": "pass"
       },
-      "command": "cp benchmarks/power_substation/g_dead_bus_close_check/bomb.xml benchmarks/power_substation/g_dead_bus_close_check/bomb.ld\nesbmc benchmarks/power_substation/g_dead_bus_close_check/bomb.ld --ld-props benchmarks/power_substation/g_dead_bus_close_check/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "command": "cp benchmarks/power_substation/g_dead_bus_close_check/bomb.xml benchmarks/power_substation/g_dead_bus_close_check/bomb.ld\nesbmc benchmarks/power_substation/g_dead_bus_close_check/bomb.ld --ld-props benchmarks/power_substation/g_dead_bus_close_check/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.012,
-      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  close_request = 1\n\nState 2  thread 0\n----------------------------------------------------\n  bus_live = 1\n\nState 3  thread 0\n----------------------------------------------------\n  sync_check_ok = 0\n\nState 4  thread 0\n----------------------------------------------------\n  maint = 1\n\nState 5  thread 0\n----------------------------------------------------\n  breaker_close = 1\n\nState 6 file benchmarks/power_substation/g_dead_bus_close_check/bomb.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/power_substation/g_dead_bus_close_check/bomb.ld\n  P1\n  !breaker_close || !bus_live || sync_check_ok\n\n\n** Results:\nbenchmarks/power_substation/g_dead_bus_close_check/bomb.ld\n  FAILED       [global.assertion.1]  line 0  P1\n\n** 1 of 1 properties failed"
+      "cpu_time_s": 0.014,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  close_request = 1\n\nState 2  thread 0\n----------------------------------------------------\n  bus_live = 1\n\nState 3  thread 0\n----------------------------------------------------\n  sync_check_ok = 0\n\nState 4  thread 0\n----------------------------------------------------\n  maint = 1\n\nState 5  thread 0\n----------------------------------------------------\n  breaker_close = 1\n\nState 6 file benchmarks/power_substation/g_dead_bus_close_check/bomb.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/power_substation/g_dead_bus_close_check/bomb.ld\n  P1\n  !breaker_close || !bus_live || sync_check_ok"
     }
   }
 }

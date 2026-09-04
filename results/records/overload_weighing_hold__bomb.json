@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:45Z",
+  "program": "benchmarks/elevator/overload_weighing_hold/bomb.ld",
+  "properties_file": "benchmarks/elevator/overload_weighing_hold/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(brake_lift && overload_latch)",
+      "justification": "The elevator brake must not lift while an overload condition is actively latched in the controller."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "brake_lift && overload_latch",
+      "justification": "Trigger synthesis: a witness recovers the state where the car moves despite an un-cleared overload latch."
+    }
+  ],
+  "property_variables": [
+    "brake_lift",
+    "overload_latch"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "unknown",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN weight_high=NONDET(_Bool);",
+          "        ASSIGN doors_open=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        ASSIGN brake_lift=1 && req_run && !weight_high;",
+          "        ASSIGN overload_latch=1 && weight_high;",
+          "        ASSIGN overload_latch=1 && overload_latch && !doors_open;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "weight_high": 1,
+          "doors_open": 1,
+          "req_run": 1,
+          "brake_lift": 1,
+          "overload_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/elevator/overload_weighing_hold/bomb.ld > benchmarks/elevator/overload_weighing_hold/bomb__xml.ld\nesbmc benchmarks/elevator/overload_weighing_hold/bomb__xml.ld --ld-props benchmarks/elevator/overload_weighing_hold/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "unknown",
+      "proof": null,
+      "cpu_time_s": 0.152,
+      "counterexample": null
+    }
+  }
+}

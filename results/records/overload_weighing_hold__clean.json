@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:45Z",
+  "program": "benchmarks/elevator/overload_weighing_hold/clean.ld",
+  "properties_file": "benchmarks/elevator/overload_weighing_hold/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(brake_lift && overload_latch)",
+      "justification": "The elevator brake must not lift while an overload condition is actively latched in the controller."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "brake_lift && overload_latch",
+      "justification": "Trigger synthesis: a witness recovers the state where the car moves despite an un-cleared overload latch."
+    }
+  ],
+  "property_variables": [
+    "brake_lift",
+    "overload_latch"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN weight_high=NONDET(_Bool);",
+          "        ASSIGN doors_open=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        ASSIGN brake_lift=1 && req_run && !overload_latch;",
+          "        ASSIGN overload_latch=1 && weight_high;",
+          "        ASSIGN overload_latch=1 && overload_latch && !doors_open;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "weight_high": 1,
+          "doors_open": 1,
+          "req_run": 1,
+          "brake_lift": 1,
+          "overload_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/elevator/overload_weighing_hold/clean.ld > benchmarks/elevator/overload_weighing_hold/clean__xml.ld\nesbmc benchmarks/elevator/overload_weighing_hold/clean__xml.ld --ld-props benchmarks/elevator/overload_weighing_hold/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.013,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  weight_high = 1\n\nState 2  thread 0\n----------------------------------------------------\n  doors_open = 0\n\nState 3  thread 0\n----------------------------------------------------\n  req_run = 1\n\nState 4  thread 0\n----------------------------------------------------\n  brake_lift = 1\n\nState 5  thread 0\n----------------------------------------------------\n  overload_latch = 1\n\nState 6  thread 0\n----------------------------------------------------\n  overload_latch = 1\n\nState 7 file benchmarks/elevator/overload_weighing_hold/clean__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/elevator/overload_weighing_hold/clean__xml.ld\n  P1\n  !(brake_lift && overload_latch)"
+    }
+  }
+}

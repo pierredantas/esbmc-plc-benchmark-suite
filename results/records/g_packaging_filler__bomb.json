@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-28T18:37:03Z",
+  "recorded_at": "2026-09-04T23:40:53Z",
   "program": "benchmarks/packaging/g_packaging_filler/bomb.xml",
   "properties_file": "benchmarks/packaging/g_packaging_filler/props.yaml",
   "properties": [
@@ -17,80 +17,44 @@
   ],
   "expected_verdict": "VIOLATION",
   "runs": {
-    "master": {
+    "v8.4": {
       "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/bin/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "0064c4ac",
+        "commit": null,
         "platform": "aarch64 macos"
       },
       "status": "correct",
       "encoding": {
         "scan_body": [
-          "     1: IF !1 THEN GOTO 17",
+          "     1: IF !1 THEN GOTO 2",
           "        ASSIGN bottle_present=NONDET(_Bool);",
           "        ASSIGN full=NONDET(_Bool);",
           "        ASSIGN start=NONDET(_Bool);",
           "        ASSIGN maint=NONDET(_Bool);",
-          "        IF !1 THEN GOTO 2",
-          "        ASSIGN pf3=0;",
-          "     2: IF !(1 && !full) THEN GOTO 3",
-          "        ASSIGN pf3=1;",
-          "     3: IF !1 THEN GOTO 4",
-          "        ASSIGN pf4=0;",
-          "     4: IF !(1 && full) THEN GOTO 5",
-          "        ASSIGN pf4=1;",
-          "     5: IF !1 THEN GOTO 6",
-          "        ASSIGN pf5=0;",
-          "     6: IF !(1 && pf4 && maint) THEN GOTO 7",
-          "        ASSIGN pf5=1;",
-          "     7: IF !1 THEN GOTO 8",
-          "        ASSIGN pf6=0;",
-          "     8: IF !(1 && pf3 && bottle_present) THEN GOTO 9",
-          "        ASSIGN pf6=1;",
-          "     9: IF !(1 && pf5 && bottle_present) THEN GOTO 10",
-          "        ASSIGN pf6=1;",
-          "    10: IF !1 THEN GOTO 11",
-          "        ASSIGN pf7=0;",
-          "    11: IF !(1 && pf6 && start) THEN GOTO 12",
-          "        ASSIGN pf7=1;",
-          "    12: ASSIGN fill_valve=1 && pf7;",
-          "        IF !1 THEN GOTO 13",
-          "        ASSIGN pf9=0;",
-          "    13: IF !(1 && !bottle_present) THEN GOTO 14",
-          "        ASSIGN pf9=1;",
-          "    14: IF !1 THEN GOTO 15",
-          "        ASSIGN pf10=0;",
-          "    15: IF !(1 && pf9 && start) THEN GOTO 16",
-          "        ASSIGN pf10=1;",
-          "    16: ASSIGN reject=1 && pf10;",
+          "        ASSIGN fill_valve=1 && !full && bottle_present && start;",
+          "        ASSIGN fill_valve=1 && full && maint && bottle_present && start;",
+          "        ASSIGN reject=1 && !bottle_present && start;",
           "        GOTO 1",
-          "    17:"
+          "     2:"
         ],
         "assignment_counts": {
           "bottle_present": 1,
           "full": 1,
           "start": 1,
           "maint": 1,
-          "pf3": 2,
-          "pf4": 2,
-          "pf5": 2,
-          "pf6": 3,
-          "pf7": 2,
-          "fill_valve": 1,
-          "pf9": 2,
-          "pf10": 2,
+          "fill_valve": 2,
           "reject": 1
         },
         "not_driven_by_body": [],
         "gate": "pass"
       },
-      "command": "cp benchmarks/packaging/g_packaging_filler/bomb.xml benchmarks/packaging/g_packaging_filler/bomb.ld\nesbmc benchmarks/packaging/g_packaging_filler/bomb.ld --ld-props benchmarks/packaging/g_packaging_filler/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "command": "cp benchmarks/packaging/g_packaging_filler/bomb.xml benchmarks/packaging/g_packaging_filler/bomb.ld\nesbmc benchmarks/packaging/g_packaging_filler/bomb.ld --ld-props benchmarks/packaging/g_packaging_filler/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.012,
-      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  bottle_present = 1\n\nState 2  thread 0\n----------------------------------------------------\n  full = 1\n\nState 3  thread 0\n----------------------------------------------------\n  start = 1\n\nState 4  thread 0\n----------------------------------------------------\n  maint = 1\n\nState 5  thread 0\n----------------------------------------------------\n  fill_valve = 1\n\nState 6 file benchmarks/packaging/g_packaging_filler/bomb.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/packaging/g_packaging_filler/bomb.ld\n  P1\n  !(fill_valve && full)\n\n\n** Results:\nbenchmarks/packaging/g_packaging_filler/bomb.ld\n  FAILED       [global.assertion.1]  line 0  P1\n\n** 1 of 1 properties failed"
+      "cpu_time_s": 0.013,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  bottle_present = 1\n\nState 2  thread 0\n----------------------------------------------------\n  full = 1\n\nState 3  thread 0\n----------------------------------------------------\n  start = 1\n\nState 4  thread 0\n----------------------------------------------------\n  maint = 1\n\nState 5  thread 0\n----------------------------------------------------\n  fill_valve = 1\n\nState 6 file benchmarks/packaging/g_packaging_filler/bomb.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/packaging/g_packaging_filler/bomb.ld\n  P1\n  !(fill_valve && full)"
     }
   }
 }
