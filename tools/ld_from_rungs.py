@@ -10,6 +10,12 @@ junction. That covers every contact-and-coil program in this suite, latches
 included. Blocks (TON, counters, user-defined function blocks) are not emitted;
 those files are still written by hand.
 
+A rung can instead be {coil, literal}: the coil is driven directly by the
+constant TRUE/FALSE, rendered as an <inVariable> rather than a contact chain
+(a bare `OTE(x) := TRUE ;`/`FALSE ;` rung has no contact to draw). Mixing
+`literal` with `branches`/`tail` on the same rung is not meaningful and is
+rejected.
+
     from ld_from_rungs import build
     T, F = True, False
     xml = build("g_seal_in", ["Start", "Stop"], ["Run"], [
@@ -54,17 +60,33 @@ def build(name, ins, outs, rungs):
         nid += 1
         return nid - 1
 
+    def literal_source(value, x, y):
+        nonlocal nid
+        elems.append(f'<inVariable localId="{nid}" height="20" width="20">'
+                     f'<position x="{x}" y="{y}" /><connectionPointOut>'
+                     f'<relPosition x="20" y="10" /></connectionPointOut>'
+                     f'<expression>{"TRUE" if value else "FALSE"}</expression></inVariable>')
+        nid += 1
+        return nid - 1
+
     for rung in rungs:
-        ends, top = [], y
-        for branch in rung["branches"]:
-            src, x = [0], 20
-            for var, neg in branch:
-                src, x = [contact(var, neg, x, y, src)], x + 20
-            ends += src
-            y += 10
-        x = 20 + 20 * max(len(b) for b in rung["branches"])
-        for var, neg in rung.get("tail", []):
-            ends, x = [contact(var, neg, x, top, ends)], x + 20
+        if "literal" in rung:
+            if rung.get("branches") or rung.get("tail"):
+                raise ValueError(f"rung {rung['coil']!r}: literal cannot be combined "
+                                  "with branches/tail")
+            ends, top = [literal_source(rung["literal"], 20, y)], y
+            x = 40
+        else:
+            ends, top = [], y
+            for branch in rung["branches"]:
+                src, x = [0], 20
+                for var, neg in branch:
+                    src, x = [contact(var, neg, x, y, src)], x + 20
+                ends += src
+                y += 10
+            x = 20 + 20 * max(len(b) for b in rung["branches"])
+            for var, neg in rung.get("tail", []):
+                ends, x = [contact(var, neg, x, top, ends)], x + 20
         conns = "".join(f'<connection refLocalId="{e}" />' for e in ends)
         elems.append(f'<coil localId="{nid}" negated="false" storage="none">'
                      f'<position x="{x}" y="{top}" /><connectionPointIn>{conns}'
