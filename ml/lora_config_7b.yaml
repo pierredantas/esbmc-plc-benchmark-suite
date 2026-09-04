@@ -1,0 +1,37 @@
+# LoRA fine-tune config for props.yaml generation on the 7B base model,
+# same 243-example (+ N-ary mutual_exclusion) dataset as lora_config_nary.yaml,
+# to test whether a larger base model handles polarity-inversion /
+# AND-conjunction / N-of-M-voting patterns better — see ml/README.md
+# "Next levers" #1.
+#
+# Build the dataset first with:
+#   python3 ml/scripts/build_dataset.py --augment-st --force-train st_three_pump_lockout
+#
+# batch_size dropped to 1 (vs. 2 for the 1.5B configs): a 7B model on 24GB
+# unified memory has much less headroom, and long sequences colliding in a
+# batch caused severe memory-pressure thrashing on the 1.5B run at
+# batch_size 2 (see ml/README.md training notes) — not repeating that here.
+# Run: mlx_lm.lora -c ml/lora_config_7b.yaml
+
+model: mlx-community/Qwen2.5-Coder-7B-Instruct-4bit
+train: true
+fine_tune_type: lora
+data: ml/data
+adapter_path: ml/adapters/qwen2.5-coder-7b-props-nary
+
+num_layers: 8
+batch_size: 1
+iters: 640
+val_batches: 10
+learning_rate: 1e-4
+steps_per_report: 20
+steps_per_eval: 80
+save_every: 160
+max_seq_length: 4096
+grad_checkpoint: true
+seed: 42
+
+lora_parameters:
+  rank: 16
+  scale: 20.0
+  dropout: 0.05

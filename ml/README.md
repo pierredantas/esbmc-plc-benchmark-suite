@@ -5,8 +5,9 @@ benchmark's `props.yaml` safety properties from its program source. Scope is
 deliberately narrow: given one program, emit its properties in the suite's
 schema. No verification, no property checking, nothing else.
 
-The `nary-best` checkpoint (243 examples, iteration 320, the default in
-`ml/scripts/generate_props.py`) is published at
+The `7b-props-nary-best` checkpoint (Qwen2.5-Coder-7B base model, 243
+examples, iteration 320, the default in `ml/scripts/generate_props.py`) is
+published at
 [huggingface.co/Pvdantas/esbmc-plc-props-slm-lora](https://huggingface.co/Pvdantas/esbmc-plc-props-slm-lora)
 (private) — pull it instead of retraining if you already have access.
 
@@ -42,25 +43,40 @@ none). Omit the flag to build the smaller, unaugmented set.
 ## 2. Fine-tune
 
 ```bash
-python3 -m mlx_lm lora -c ml/lora_config.yaml             # 152 examples
-python3 -m mlx_lm lora -c ml/lora_config_augmented.yaml   # 239 examples (ST-augmented)
-python3 -m mlx_lm lora -c ml/lora_config_nary.yaml        # 243 examples (+ N-ary mutual_exclusion)
+python3 -m mlx_lm lora -c ml/lora_config.yaml             # 1.5B, 152 examples
+python3 -m mlx_lm lora -c ml/lora_config_augmented.yaml   # 1.5B, 239 examples (ST-augmented)
+python3 -m mlx_lm lora -c ml/lora_config_nary.yaml        # 1.5B, 243 examples (+ N-ary mutual_exclusion)
+python3 -m mlx_lm lora -c ml/lora_config_7b.yaml          # 7B,   243 examples (same dataset as _nary)
 ```
 
-The `_nary` config needs the dataset rebuilt with the two new N-ary
-benchmarks pinned into training first — see *N-ary mutual_exclusion* below:
+`evaluate.py`'s `--model` default is the 1.5B base model — pass
+`--model mlx-community/Qwen2.5-Coder-7B-Instruct-4bit` alongside
+`--adapter-path` when evaluating a 7B checkpoint, since a LoRA adapter and
+its base model must match.
+
+The `_nary` and `_7b` configs need the dataset rebuilt with the two new
+N-ary benchmarks pinned into training first — see *N-ary mutual_exclusion*
+below:
 
 ```bash
 python3 ml/scripts/build_dataset.py --augment-st --force-train st_three_pump_lockout
 ```
 
-LoRA rank 16 on Qwen2.5-Coder-1.5B-Instruct-4bit, ~15-45 min on an M-series
-Mac. Watch validation loss across checkpoints (`save_every` in each config) —
-it plateaus and then rises well before `iters` is exhausted on a dataset this
-size, so **pick the checkpoint with the lowest val loss, not the last one**.
-Copy the winning `NNNNNNN_adapters.safetensors` plus `adapter_config.json`
-into a fresh directory (`mlx_lm.load(adapter_path=...)` always reads
-`adapters.safetensors` from whatever directory you point it at):
+LoRA rank 16, ~15-50 min on an M-series Mac (7B runs somewhat slower per
+iteration than 1.5B; `lora_config_7b.yaml` uses `batch_size: 1` rather than
+`2` — a 7B model has much less unified-memory headroom, and long sequences
+colliding in a batch caused severe memory-pressure thrashing on an earlier
+1.5B run at `batch_size: 2`). Watch validation loss across checkpoints
+(`save_every` in each config) — it plateaus and then rises well before
+`iters` is exhausted on a dataset this size, and can be non-monotonic (the
+7B run's curve went 0.269 → 0.262 → 0.258 → 0.411 → 0.369 → 0.249 → 0.296
+across its 9 logged points), so **pick the checkpoint with the lowest val
+loss among the ones actually saved (`save_every`), not the last iteration
+and not necessarily the single lowest logged value if it falls between
+saves**. Copy the winning `NNNNNNN_adapters.safetensors` plus
+`adapter_config.json` into a fresh directory (`mlx_lm.load(adapter_path=...)`
+always reads `adapters.safetensors` from whatever directory you point it
+at):
 
 ```bash
 mkdir ml/adapters/<name>
@@ -75,9 +91,12 @@ python3 ml/scripts/generate_props.py path/to/program.st --domain motor_control -
 python3 ml/scripts/generate_props.py path/to/program.st --domain motor_control --language ST -o path/to/props.yaml
 ```
 
-Defaults to the `qwen2.5-coder-1.5b-props-nary-best` checkpoint; override
-with `--adapter-path` to try another. `--language` accepts `ST`,
-`LD-textual`, `LD-graphical`, `FBD`, `SFC`, `IL` (a prompt hint, not a parser).
+Defaults to the `qwen2.5-coder-7b-props-nary-best` checkpoint (Qwen2.5-Coder-7B
+base model); override `--model` together with `--adapter-path` to try a
+1.5B checkpoint instead — the two must match, since a LoRA adapter trained
+against one base model size will not load correctly against another.
+`--language` accepts `ST`, `LD-textual`, `LD-graphical`, `FBD`, `SFC`, `IL`
+(a prompt hint, not a parser).
 
 To use the published checkpoint instead of training your own, download it and
 point `--adapter-path` at the local copy:
@@ -100,19 +119,21 @@ and scores: `yaml_valid`, `schema_valid` (against `properties.schema.json`),
 `id_format_ok`, and `kind_recall`/`kind_precision` (multiset overlap of
 `kind` values against the expected properties).
 
-## Results so far (1.5B, all checkpoints use the lowest-val-loss iteration)
+## Results so far (all checkpoints use the lowest-val-loss saved checkpoint)
 
-| Metric | Base (no fine-tune) | 152 examples | 239 examples (ST-augmented) | 243 examples (+ N-ary mutual_exclusion) |
-|---|---|---|---|---|
-| Valid YAML | 59% | 100% | 97% | 100% |
-| Schema-valid | 0% | 91% | 97% | 100% |
-| Correct id format | 59% | 100% | 97% | 100% |
-| Property-kind recall | 18% | 73% | 73% | 71% |
-| Property-kind precision | 3% | 73% | 73% | 70% |
+| Metric | Base, 1.5B | 1.5B, 152 ex. | 1.5B, 239 ex. (ST-aug.) | 1.5B, 243 ex. (+N-ary) | **7B, 243 ex. (+N-ary)** |
+|---|---|---|---|---|---|
+| Valid YAML | 59% | 100% | 97% | 100% | 100% |
+| Schema-valid | 0% | 91% | 97% | 100% | 97% |
+| Correct id format | 59% | 100% | 97% | 100% | 100% |
+| Property-kind recall | 18% | 73% | 73% | 71% | 61% |
+| Property-kind precision | 3% | 73% | 73% | 70% | 62% |
 
 Test splits differ in size (22/33/33 examples) because each augmentation
 round changes task-to-split assignment, so treat this as directional, not a
-controlled A/B.
+controlled A/B. The 7B numbers look worse on `kind_recall`/`kind_precision`
+than every 1.5B checkpoint — see *Base model size* below for why that is not
+the whole story.
 
 ## N-ary mutual_exclusion (`ml/lora_config_nary.yaml`)
 
@@ -196,6 +217,51 @@ sometimes preferring the pairwise decomposition over the native idiom.
   are valid per the schema but unused anywhere in the current 52-benchmark
   corpus, so neither model has ever seen one and will not produce one.
 
+## Base model size (`ml/lora_config_7b.yaml`)
+
+The `st_two_hand` evidence above pointed at a reasoning-capacity limit
+rather than a data-coverage gap, so the next experiment was the base model
+itself: same 243-example dataset, same LoRA rank/config, `Qwen2.5-Coder-7B-
+Instruct-4bit` instead of `1.5B` (`batch_size: 1`, see *2. Fine-tune*
+above). Result is a genuine split verdict, not a clean win in either
+direction — reported in full rather than picking the flattering half.
+
+**Four probes targeting the exact 1.5B failures, all fixed or improved:**
+
+| Program | 1.5B (`nary-best`) | 7B (`nary-best`) |
+|---|---|---|
+| `st_two_hand.st` (in-training memorization) | `!(Stroke && Armed)` — fabricated wrong variables, doesn't use `LH`/`RH` at all, despite the correct answer appearing 8+ times in `train.jsonl` | `!Stroke \|\| (LH && RH)` — **exact match to ground truth** |
+| `press_two_hand.st` (AND-conjunction) | `!(ram_descend && (palm_left && palm_right))` — inverted polarity, missing `light_curtain_clear` | `!ram_descend \|\| (palm_left && palm_right)` — **polarity fixed**, `light_curtain_clear` still missing |
+| `reactor_2oo3_trip.st` (2-of-3 voting) | `!(trip_valve && ps1 && ps2)` — no voting structure, `ps3` missing, inverted polarity | `!trip_valve \|\| (ps1 && ps2) \|\| (ps1 && ps3) \|\| (ps2 && ps3)` — **correct voting logic, all 3 sensors, correct polarity** |
+| `vent_fan_interlock.st` (negated guard) | `!(gun_enabled && fan_running)` — exactly backward | `!gun_enabled \|\| fan_running` — **exactly correct** |
+
+Three of four flipped from wrong to fully correct; the fourth went from
+wrong (inverted + incomplete) to mostly correct (right polarity, still
+incomplete). This is a real result on the reasoning failures that motivated
+the experiment.
+
+**But the aggregate held-out eval moved backward:** `kind_recall` 71% → 61%,
+`kind_precision` 70% → 62% (`schema_valid` also dipped 100% → 97%; see the
+results table above). The 4 probes above were hand-picked to target known
+1.5B failure modes, not drawn from the test distribution — the 7B model
+appears to follow this specific corpus's `mutual_exclusion`-vs-`invariant`
+labeling idiom and property-enumeration conventions less closely than the
+1.5B model does, even while reasoning more correctly about novel program
+logic. A stronger pretrained prior pulling less on the (smaller, relative to
+7B) LoRA adapter is the likely mechanism, though this is not confirmed.
+
+**Verdict, and why it's the default anyway:** reasoning correctness on
+program shapes the corpus does not cover, the actual failure mode that
+motivated this whole line of investigation, matters more for this task than
+matching the corpus's exact schema idiom on the held-out set. `7b-props-
+nary-best` is `generate_props.py`'s default. If the aggregate metrics matter
+more for a given use (e.g. reproducing this corpus's exact conventions on
+programs similar to what is already in it), pass `--model` and
+`--adapter-path` for a 1.5B checkpoint instead. Cost of the 7B checkpoint:
+~4GB download vs. ~1GB, similar peak training memory (~12.6GB vs. ~14.6GB —
+the 7B run's smaller `batch_size` mostly offset its larger parameter count),
+noticeably slower generation per example.
+
 ## Deterministic post-check (`ml/scripts/check_props.py`)
 
 ```bash
@@ -224,21 +290,24 @@ one specific class of error, not a correctness guarantee.
 
 ## Next levers, roughly in order of expected payoff
 
-1. **A larger base model (7B)** — promoted above "more data" once
-   `st_two_hand` showed the model failing on its own 8+-times-repeated
-   training example (see *polarity inversion*, above): the AND-conjunction /
-   N-of-M voting / negated-guard failures look like a reasoning-capacity
-   limit rather than a training-set gap, so more repetitions of a pattern
-   the model already can't reproduce is unlikely to help. Untested; the
-   1.5B-vs-7B comparison on the polarity-inversion cases specifically is the
-   next experiment to run.
-2. **More real, validated benchmarks** — still the right lever for the
-   failure modes that *are* data-coverage gaps: under-enumeration (multi-
-   property programs), the `mutual_exclusion`-vs-`invariant` kind confusion
-   (asymmetric cause-effect programs outside `chemical_batch`), and the
-   zero-example `absence`/`assertion` kinds. Not expected to help the
-   polarity-inversion failures per the `st_two_hand` evidence above.
-3. **`ml/scripts/check_props.py`** — built and validated (see above); a
-   cheap guardrail for hallucinated variables and mislabeled
-   `mutual_exclusion`, not a fix for polarity inversion or incomplete
-   variable coverage.
+1. **More real, validated benchmarks targeting the 7B model's own gap** —
+   the 7B checkpoint still under-enumerates (`press_two_hand.st` dropped
+   `light_curtain_clear`) and its aggregate `kind_recall`/`kind_precision`
+   trail every 1.5B checkpoint (see *Base model size*, above). Unlike the
+   1.5B model's polarity-inversion failures, this now looks like a real
+   coverage gap again, not a reasoning-capacity limit, since the 7B model's
+   reasoning on genuinely novel logic is demonstrably strong (3/4 probes
+   correct) — it just needs more of this specific corpus's `mutual_exclusion`
+   idiom and multi-property-enumeration convention to stop drifting from it.
+   Prioritize: 3+-condition AND-conjunction enable gates (closes the
+   remaining `press_two_hand`-style gap directly), multi-property programs
+   generally (under-enumeration), and the zero-example `absence`/`assertion`
+   kinds.
+2. **`ml/scripts/check_props.py`** — built and validated; a cheap guardrail
+   for hallucinated variables and mislabeled `mutual_exclusion`, not a fix
+   for polarity inversion or incomplete variable coverage (neither model's
+   remaining failures are caught by it).
+3. **An even larger base model, or full fine-tuning instead of LoRA** —
+   untested; the 1.5B→7B jump produced a real but mixed result (reasoning
+   up, idiom-adherence down), so it is not obvious a further jump keeps
+   paying off versus just needing more data at the current model size.

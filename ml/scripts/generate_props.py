@@ -16,16 +16,32 @@ from mlx_lm.sample_utils import make_sampler
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-# Checkpoints trained so far, oldest to newest:
-#   -iter300         152 raw benchmark examples, best val-loss checkpoint
-#   -augmented-best  239 examples (+ ld_to_st.py ST renderings), final checkpoint
-#   -nary-best       243 examples (+ two authored N-ary mutual_exclusion
-#                    benchmarks); fixes N-ary mutual_exclusion generalization,
-#                    at a small cost to kind recall/precision. See ml/README.md
-#                    for the full tradeoffs; override with --adapter-path to
-#                    try another. Also published at
-#                    huggingface.co/Pvdantas/esbmc-plc-props-slm-lora.
-DEFAULT_ADAPTER = REPO_ROOT / "ml" / "adapters" / "qwen2.5-coder-1.5b-props-nary-best"
+# Checkpoints trained so far, oldest to newest (all trained on the 1.5B base
+# model except the last):
+#   -iter300              152 raw benchmark examples, best val-loss checkpoint
+#   -augmented-best       239 examples (+ ld_to_st.py ST renderings)
+#   -nary-best            (1.5B) 243 examples (+ N-ary mutual_exclusion);
+#                         fixes N-ary generalization, small kind recall/
+#                         precision cost.
+#   7b-props-nary-best    (7B base model) same 243-example dataset. Fixes
+#                         polarity-inversion / AND-conjunction / N-of-M-voting
+#                         failures the 1.5B checkpoints could not — including
+#                         reproducing st_two_hand's own training example,
+#                         which every 1.5B checkpoint fabricated despite 8+
+#                         repeats in train.jsonl — at the cost of ~10 points
+#                         on the aggregate kind_recall/precision metrics
+#                         (drifts from the corpus's exact mutual_exclusion-vs-
+#                         invariant labeling idiom more than the 1.5B model
+#                         does). Chosen as the default: reasoning correctness
+#                         on unfamiliar program shapes matters more here than
+#                         matching this corpus's exact schema conventions.
+# Full tradeoffs in ml/README.md. Override --model together with
+# --adapter-path to use a 1.5B checkpoint instead — the two must match, a LoRA
+# adapter trained on one base model size will not load correctly on another.
+# Default checkpoint also published at
+# huggingface.co/Pvdantas/esbmc-plc-props-slm-lora.
+DEFAULT_MODEL = "mlx-community/Qwen2.5-Coder-7B-Instruct-4bit"
+DEFAULT_ADAPTER = REPO_ROOT / "ml" / "adapters" / "qwen2.5-coder-7b-props-nary-best"
 
 SYSTEM_PROMPT = (
     "You are a formal-verification assistant for IEC 61131-3 PLC programs. "
@@ -67,7 +83,7 @@ def main():
     ap.add_argument("source_file")
     ap.add_argument("--domain", default="manufacturing")
     ap.add_argument("--language", default="ST")
-    ap.add_argument("--model", default="mlx-community/Qwen2.5-Coder-1.5B-Instruct-4bit")
+    ap.add_argument("--model", default=DEFAULT_MODEL)
     ap.add_argument("--adapter-path", default=str(DEFAULT_ADAPTER))
     ap.add_argument("--max-tokens", type=int, default=512)
     ap.add_argument("-o", "--out", help="write the generated YAML here instead of printing it")
