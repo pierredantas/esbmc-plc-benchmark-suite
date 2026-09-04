@@ -25,4 +25,4 @@ variants:
       witness: "req_run=1, guard_closed=0 reaches machine_run=1 AND guard_closed=0."
 features: [contacts, coils, interlock]
 difficulty: easy
-tags: [safety, packaging, guarding]
+tags: [safety, packaging, guarding, known-issue-esbmc-7352]

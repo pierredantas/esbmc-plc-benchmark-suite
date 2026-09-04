@@ -28,4 +28,4 @@ metrics:
   variables: 4
 features: [blocks, voting, fan_in]
 difficulty: medium
-tags: [safety, voting, language-coverage]
+tags: [safety, voting, language-coverage, known-issue-esbmc-7578]
