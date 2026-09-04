@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:52Z",
+  "program": "benchmarks/packaging/case_sealer_jam_gm/bomb.ld",
+  "properties_file": "benchmarks/packaging/case_sealer_jam_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(conveyor_run && jam_latch)",
+      "justification": "The feed conveyor must not run while a machine jam is actively latched."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "conveyor_run && jam_latch",
+      "justification": "Trigger synthesis: a witness recovers the state where the conveyor auto-restarts upon jam sensor clearing."
+    }
+  ],
+  "property_variables": [
+    "conveyor_run",
+    "jam_latch"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "unknown",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN jam_sensor=NONDET(_Bool);",
+          "        ASSIGN reset_btn=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        ASSIGN conveyor_run=1 && req_run && !jam_sensor;",
+          "        ASSIGN jam_latch=1 && jam_sensor;",
+          "        ASSIGN jam_latch=1 && jam_latch && !reset_btn;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "jam_sensor": 1,
+          "reset_btn": 1,
+          "req_run": 1,
+          "conveyor_run": 1,
+          "jam_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/case_sealer_jam_gm/bomb.ld > benchmarks/packaging/case_sealer_jam_gm/bomb__xml.ld\nesbmc benchmarks/packaging/case_sealer_jam_gm/bomb__xml.ld --ld-props benchmarks/packaging/case_sealer_jam_gm/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "unknown",
+      "proof": null,
+      "cpu_time_s": 0.151,
+      "counterexample": null
+    }
+  }
+}

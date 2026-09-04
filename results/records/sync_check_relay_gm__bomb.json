@@ -1,0 +1,66 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:57Z",
+  "program": "benchmarks/power_substation/sync_check_relay_gm/bomb.ld",
+  "properties_file": "benchmarks/power_substation/sync_check_relay_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(breaker_close && line_live && !sync_ok)",
+      "justification": "A breaker must never close onto a live line without a valid synchronization check to prevent out-of-phase damage."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "breaker_close && line_live && !sync_ok",
+      "justification": "Trigger synthesis: a witness recovers the condition where the breaker closes out-of-phase due to bypass."
+    }
+  ],
+  "property_variables": [
+    "breaker_close",
+    "line_live",
+    "sync_ok"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_close=NONDET(_Bool);",
+          "        ASSIGN line_live=NONDET(_Bool);",
+          "        ASSIGN sync_ok=NONDET(_Bool);",
+          "        ASSIGN maint_bypass=NONDET(_Bool);",
+          "        ASSIGN breaker_close=1 && req_close && !line_live;",
+          "        ASSIGN breaker_close=1 && req_close && sync_ok;",
+          "        ASSIGN breaker_close=1 && req_close && maint_bypass;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_close": 1,
+          "line_live": 1,
+          "sync_ok": 1,
+          "maint_bypass": 1,
+          "breaker_close": 3
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/power_substation/sync_check_relay_gm/bomb.ld > benchmarks/power_substation/sync_check_relay_gm/bomb__xml.ld\nesbmc benchmarks/power_substation/sync_check_relay_gm/bomb__xml.ld --ld-props benchmarks/power_substation/sync_check_relay_gm/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.013,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  req_close = 1\n\nState 2  thread 0\n----------------------------------------------------\n  line_live = 1\n\nState 3  thread 0\n----------------------------------------------------\n  sync_ok = 0\n\nState 4  thread 0\n----------------------------------------------------\n  maint_bypass = 1\n\nState 5  thread 0\n----------------------------------------------------\n  breaker_close = 1\n\nState 6 file benchmarks/power_substation/sync_check_relay_gm/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/power_substation/sync_check_relay_gm/bomb__xml.ld\n  P1\n  !(breaker_close && line_live && !sync_ok)"
+    }
+  }
+}

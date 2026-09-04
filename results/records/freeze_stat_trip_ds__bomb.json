@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:46Z",
+  "program": "benchmarks/hvac/freeze_stat_trip_ds/bomb.ld",
+  "properties_file": "benchmarks/hvac/freeze_stat_trip_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "freeze_stat -> !compressor_run",
+      "justification": "Compressor must stop when freeze\u2011stat trips."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "freeze_stat && compressor_run",
+      "justification": "Witness: freeze_stat=1, compressor_req=1 reaches compressor_run=1 in bomb."
+    }
+  ],
+  "property_variables": [
+    "compressor_run",
+    "freeze_stat"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "error",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN compressor_req=NONDET(_Bool);",
+          "        ASSIGN compressor_run=1 && compressor_req;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "compressor_req": 1,
+          "compressor_run": 1
+        },
+        "not_driven_by_body": [
+          "freeze_stat"
+        ],
+        "gate": "fail"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/hvac/freeze_stat_trip_ds/bomb.ld > benchmarks/hvac/freeze_stat_trip_ds/bomb__xml.ld\nesbmc benchmarks/hvac/freeze_stat_trip_ds/bomb__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpk1dxe0sb/props_no_implies.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "error",
+      "proof": null,
+      "cpu_time_s": 0.012,
+      "counterexample": null
+    }
+  }
+}

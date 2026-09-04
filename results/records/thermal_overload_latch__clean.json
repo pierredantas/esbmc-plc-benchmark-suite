@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:51Z",
+  "program": "benchmarks/motor_control/thermal_overload_latch/clean.ld",
+  "properties_file": "benchmarks/motor_control/thermal_overload_latch/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(motor_run && overload_latch)",
+      "justification": "The motor must not be allowed to run while a thermal overload condition is actively latched."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "motor_run && overload_latch",
+      "justification": "Trigger synthesis: a witness recovers the auto-restart condition when the motor cools before manual reset."
+    }
+  ],
+  "property_variables": [
+    "motor_run",
+    "overload_latch"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN thermal_trip=NONDET(_Bool);",
+          "        ASSIGN reset_btn=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        ASSIGN motor_run=1 && req_run && !overload_latch;",
+          "        ASSIGN overload_latch=1 && thermal_trip;",
+          "        ASSIGN overload_latch=1 && overload_latch && !reset_btn;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "thermal_trip": 1,
+          "reset_btn": 1,
+          "req_run": 1,
+          "motor_run": 1,
+          "overload_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/motor_control/thermal_overload_latch/clean.ld > benchmarks/motor_control/thermal_overload_latch/clean__xml.ld\nesbmc benchmarks/motor_control/thermal_overload_latch/clean__xml.ld --ld-props benchmarks/motor_control/thermal_overload_latch/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.014,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  thermal_trip = 1\n\nState 2  thread 0\n----------------------------------------------------\n  reset_btn = 0\n\nState 3  thread 0\n----------------------------------------------------\n  req_run = 1\n\nState 4  thread 0\n----------------------------------------------------\n  motor_run = 1\n\nState 5  thread 0\n----------------------------------------------------\n  overload_latch = 1\n\nState 6  thread 0\n----------------------------------------------------\n  overload_latch = 1\n\nState 7 file benchmarks/motor_control/thermal_overload_latch/clean__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/motor_control/thermal_overload_latch/clean__xml.ld\n  P1\n  !(motor_run && overload_latch)"
+    }
+  }
+}

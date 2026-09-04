@@ -1,0 +1,61 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:47Z",
+  "program": "benchmarks/hvac/purge_fault_lockout/bomb.ld",
+  "properties_file": "benchmarks/hvac/purge_fault_lockout/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "purge_fail -> !burner_enable",
+      "justification": "A failed pre-ignition purge must lock out the burner; this must hold on the trigger condition itself, not merely on the internal fault_latch/fault_indicator wiring the trigger happens to drive."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "purge_fail && burner_enable",
+      "justification": "Witness: purge_fail=1, burner_req=1 reaches burner_enable=1 in bomb, because the latch mechanism was removed rather than merely reworded."
+    }
+  ],
+  "property_variables": [
+    "burner_enable",
+    "purge_fail"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "error",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN burner_req=NONDET(_Bool);",
+          "        ASSIGN burner_enable=1 && burner_req;",
+          "        ASSIGN fault_indicator=1 && fault_latch;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "burner_req": 1,
+          "burner_enable": 1,
+          "fault_indicator": 1
+        },
+        "not_driven_by_body": [
+          "purge_fail"
+        ],
+        "gate": "fail"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/hvac/purge_fault_lockout/bomb.ld > benchmarks/hvac/purge_fault_lockout/bomb__xml.ld\nesbmc benchmarks/hvac/purge_fault_lockout/bomb__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpilwx_9v1/props_no_implies.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "error",
+      "proof": null,
+      "cpu_time_s": 0.012,
+      "counterexample": null
+    }
+  }
+}

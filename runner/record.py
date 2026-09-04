@@ -19,6 +19,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import time
 
 import yaml
@@ -72,6 +73,37 @@ def property_variables(props):
         if expr:
             out.update(t for t in IDENT.findall(expr) if t not in KEYWORDS)
     return sorted(out)
+
+
+IMPLIES = re.compile(r"(.+?)\s*->\s*(.+)")
+
+
+def rewrite_implication(expr):
+    """`A -> B` as `!(A && !(B))`: --ld-props has no implication operator, and
+    silently reads the whole expression as one undeclared variable name instead."""
+    m = IMPLIES.match(expr.strip())
+    if not m:
+        return expr
+    a, b = m.group(1).strip(), m.group(2).strip()
+    return f"!({a} && !({b}))"
+
+
+def props_for_esbmc(props_path, tmp_dir):
+    """The props.yaml ESBMC actually reads: unchanged, unless some property uses
+    `->`, in which case a rewritten copy is written into `tmp_dir` and returned
+    instead. `properties_file` in the record still names the original."""
+    with open(props_path, encoding="utf-8") as fh:
+        text = fh.read()
+    props = yaml.safe_load(text)
+    if not any("->" in (p.get("expression") or "") for p in props.get("properties", [])):
+        return props_path
+    for p in props.get("properties", []):
+        if p.get("expression"):
+            p["expression"] = rewrite_implication(p["expression"])
+    rewritten = os.path.join(tmp_dir, "props_no_implies.yaml")
+    with open(rewritten, "w", encoding="utf-8") as fh:
+        yaml.safe_dump(props, fh)
+    return rewritten
 
 
 def encoding(esbmc, program):
@@ -152,24 +184,32 @@ def counterexample(txt):
     return elide(match.group(0).strip()).replace(str(ROOT) + os.sep, "")
 
 
-def command_line(esbmc, args, program, source):
+def command_line(esbmc, args, program, source, converted):
     """The command a reader can replay, including the copy ESBMC's extension forces.
 
     ESBMC picks its LD front end from the file extension, so a PLCopen `.xml` is
     copied to `.ld` for the run and removed afterwards. A command that omits the copy
     names a file the repository does not contain.
+
+    A source written in the plain-text LD DSL is not byte-identical to what ESBMC
+    read: `tools/ld_text_to_xml.py` converted it to PLCopen XML first. Printing a
+    plain `cp` there would name a command that feeds ESBMC a file it cannot parse.
     """
     shown = " ".join([os.path.basename(esbmc), *(portable(a) for a in args)])
+    if source and source != program and converted:
+        return (f"python3 -m tools.ld_text_to_xml {portable(source)} > {portable(program)}"
+                f"\n{shown}")
     if source and source != program:
         return f"cp {portable(source)} {portable(program)}\n{shown}"
     return shown
 
 
-def verify(esbmc, paths, props_path, timeout, mode):
+def verify(esbmc, paths, props_path, timeout, mode, converted):
     """Run the verification and classify the outcome.
 
     `paths` is (program, source): the file ESBMC reads, and the file that lives in the
-    repository. They differ whenever a `.ld` copy was made purely for the extension.
+    repository. They differ whenever a `.ld` copy was made purely for the extension,
+    or when `source` is in the plain-text LD DSL and was converted to XML first.
     """
     program, source = paths
     flags = ["--k-induction"] if mode == "kinduction" else ["--incremental-bmc", "--unwind", "20"]
@@ -187,7 +227,7 @@ def verify(esbmc, paths, props_path, timeout, mode):
         verdict = "unknown"
     trace = counterexample(txt) if verdict == "VIOLATION" else None
     proof = re.search(r"Solution found by (.+)", txt)
-    return {"command": command_line(esbmc, args, program, source),
+    return {"command": command_line(esbmc, args, program, source, converted),
             "verdict": verdict, "proof": proof.group(1).strip() if proof else None,
             "cpu_time_s": round(time.time() - start, 3), "counterexample": trace}
 
@@ -198,7 +238,7 @@ def record_one(label, esbmc, args, props_path, pvars):
     missing, gate = check_gate(counts, pvars)
     expected = args.expected == "true"
     result = verify(esbmc, (args.program, args.source), props_path, args.timeout,
-                    resolve_mode(args.mode, expected))
+                    resolve_mode(args.mode, expected), args.converted_from_text_ld)
     expected_v = "SAFE" if expected else "VIOLATION"
     if result["verdict"] in ("error", "unknown"):
         status = result["verdict"]
@@ -218,6 +258,9 @@ def main():
     ap.add_argument("expected", choices=["true", "false"])
     ap.add_argument("--source", help="the repository file this run was copied from, when "
                                      "the copy exists only to give ESBMC a .ld extension")
+    ap.add_argument("--converted-from-text-ld", action="store_true",
+                    help="`program` is tools/ld_text_to_xml.py's XML rendering of "
+                         "`source`, not a byte-identical copy of it")
     ap.add_argument("--tool", action="append", required=True, metavar="LABEL=PATH")
     ap.add_argument("--mode", choices=["auto", "kinduction", "bmc"], default="auto",
                     help="auto picks k-induction for an expected-SAFE task and "
@@ -233,10 +276,11 @@ def main():
     with open(args.props, encoding="utf-8") as fh:
         props = yaml.safe_load(fh)
     pvars = property_variables(props)
-    props_path = None if args.watchdog_only else args.props
 
-    runs = dict(record_one(t.split("=", 1)[0], t.split("=", 1)[1], args, props_path, pvars)
-                for t in args.tool)
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        props_path = None if args.watchdog_only else props_for_esbmc(args.props, tmp_dir)
+        runs = dict(record_one(t.split("=", 1)[0], t.split("=", 1)[1], args, props_path, pvars)
+                    for t in args.tool)
 
     record = {
         "schema_version": "0.3",

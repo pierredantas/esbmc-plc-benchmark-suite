@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:54Z",
+  "program": "benchmarks/power_substation/breaker_disconnect_interlock_gm/clean.ld",
+  "properties_file": "benchmarks/power_substation/breaker_disconnect_interlock_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(disc_cmd && brk_closed)",
+      "justification": "The mechanical disconnector must never actuate while the main breaker is closed under load to prevent arcing."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "disc_cmd && brk_closed",
+      "justification": "Trigger synthesis: a witness recovers the maintenance-bypass input combination that causes an arcing fault."
+    }
+  ],
+  "property_variables": [
+    "brk_closed",
+    "disc_cmd"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_disc=NONDET(_Bool);",
+          "        ASSIGN brk_closed=NONDET(_Bool);",
+          "        ASSIGN disc_cmd=1 && req_disc && !brk_closed;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_disc": 1,
+          "brk_closed": 1,
+          "disc_cmd": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/power_substation/breaker_disconnect_interlock_gm/clean.ld > benchmarks/power_substation/breaker_disconnect_interlock_gm/clean__xml.ld\nesbmc benchmarks/power_substation/breaker_disconnect_interlock_gm/clean__xml.ld --ld-props benchmarks/power_substation/breaker_disconnect_interlock_gm/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.017,
+      "counterexample": null
+    }
+  }
+}

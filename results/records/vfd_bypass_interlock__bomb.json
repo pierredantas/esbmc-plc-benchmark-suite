@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:51Z",
+  "program": "benchmarks/motor_control/vfd_bypass_interlock/bomb.ld",
+  "properties_file": "benchmarks/motor_control/vfd_bypass_interlock/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "mutual_exclusion",
+      "variables": [
+        "vfd_out",
+        "bypass_cont"
+      ],
+      "justification": "VFD output and bypass contactors must never close together to prevent catastrophic short circuits."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "vfd_out && bypass_cont",
+      "justification": "Trigger synthesis: a witness recovers the failure condition causing simultaneous contactor closure."
+    }
+  ],
+  "property_variables": [
+    "bypass_cont",
+    "vfd_out"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "unknown",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_vfd=NONDET(_Bool);",
+          "        ASSIGN req_bypass=NONDET(_Bool);",
+          "        ASSIGN bypass_cont=1 && req_bypass;",
+          "        ASSIGN vfd_out=1 && req_vfd && !bypass_cont;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_vfd": 1,
+          "req_bypass": 1,
+          "bypass_cont": 1,
+          "vfd_out": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/motor_control/vfd_bypass_interlock/bomb.ld > benchmarks/motor_control/vfd_bypass_interlock/bomb__xml.ld\nesbmc benchmarks/motor_control/vfd_bypass_interlock/bomb__xml.ld --ld-props benchmarks/motor_control/vfd_bypass_interlock/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "unknown",
+      "proof": null,
+      "cpu_time_s": 0.137,
+      "counterexample": null
+    }
+  }
+}

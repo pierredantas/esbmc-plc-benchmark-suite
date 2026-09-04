@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:58Z",
+  "program": "benchmarks/traffic/conflict_monitor_trip_gm/clean.ld",
+  "properties_file": "benchmarks/traffic/conflict_monitor_trip_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(solid_green && conflict_detect)",
+      "justification": "Solid green lights must never be energized while the hardware conflict monitor detects an electrical fault."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "solid_green && conflict_detect",
+      "justification": "Trigger synthesis: a witness recovers the premature reset condition that enables a green light during an active fault."
+    }
+  ],
+  "property_variables": [
+    "conflict_detect",
+    "solid_green"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN conflict_detect=NONDET(_Bool);",
+          "        ASSIGN sys_reset=NONDET(_Bool);",
+          "        ASSIGN req_green=NONDET(_Bool);",
+          "        ASSIGN solid_green=1 && req_green && !flash_mode;",
+          "        ASSIGN flash_mode=1 && conflict_detect;",
+          "        ASSIGN flash_mode=1 && flash_mode && !sys_reset;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "conflict_detect": 1,
+          "sys_reset": 1,
+          "req_green": 1,
+          "solid_green": 1,
+          "flash_mode": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/traffic/conflict_monitor_trip_gm/clean.ld > benchmarks/traffic/conflict_monitor_trip_gm/clean__xml.ld\nesbmc benchmarks/traffic/conflict_monitor_trip_gm/clean__xml.ld --ld-props benchmarks/traffic/conflict_monitor_trip_gm/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.013,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  conflict_detect = 1\n\nState 2  thread 0\n----------------------------------------------------\n  req_green = 1\n\nState 3  thread 0\n----------------------------------------------------\n  solid_green = 1\n\nState 4 file benchmarks/traffic/conflict_monitor_trip_gm/clean__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/traffic/conflict_monitor_trip_gm/clean__xml.ld\n  P1\n  !(solid_green && conflict_detect)"
+    }
+  }
+}

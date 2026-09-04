@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:37Z",
+  "program": "benchmarks/building_automation/access_door_forced_ds/clean.ld",
+  "properties_file": "benchmarks/building_automation/access_door_forced_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "door_forced -> lock_hold",
+      "justification": "If door is forced open, the lock must be engaged (door held locked)."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "door_forced && !lock_hold",
+      "justification": "Witness: door_forced=1 reaches lock_hold=0 in bomb."
+    }
+  ],
+  "property_variables": [
+    "door_forced",
+    "lock_hold"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN door_forced=NONDET(_Bool);",
+          "        ASSIGN manual_reset=NONDET(_Bool);",
+          "        ASSIGN lock_hold=1 && latch;",
+          "        ASSIGN alarm_latch=1 && latch;",
+          "        ASSIGN latch=1 && door_forced;",
+          "        ASSIGN latch=1 && latch && !manual_reset;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "door_forced": 1,
+          "manual_reset": 1,
+          "lock_hold": 1,
+          "alarm_latch": 1,
+          "latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/building_automation/access_door_forced_ds/clean.ld > benchmarks/building_automation/access_door_forced_ds/clean__xml.ld\nesbmc benchmarks/building_automation/access_door_forced_ds/clean__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpx9f2s5yw/props_no_implies.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.02,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  door_forced = 1\n\nState 2 file benchmarks/building_automation/access_door_forced_ds/clean__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/building_automation/access_door_forced_ds/clean__xml.ld\n  P1\n  !(door_forced && !lock_hold)"
+    }
+  }
+}

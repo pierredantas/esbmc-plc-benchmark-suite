@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:57Z",
+  "program": "benchmarks/traffic/all_red_clearance_ds/bomb.ld",
+  "properties_file": "benchmarks/traffic/all_red_clearance_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(ns_green && ew_green)",
+      "justification": "North\u2011south and east\u2011west greens must never be simultaneous."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "ns_green && !timer_done",
+      "justification": "Witness in bomb: ns_green_req=1, ew_green=0, timer_done=0 reaches violation."
+    }
+  ],
+  "property_variables": [
+    "ew_green",
+    "ns_green",
+    "timer_done"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN ns_green_req=NONDET(_Bool);",
+          "        ASSIGN ew_green_req=NONDET(_Bool);",
+          "        ASSIGN timer_done=NONDET(_Bool);",
+          "        ASSIGN ew_green=1 && ew_green_req && timer_done && !ns_green;",
+          "        ASSIGN ns_green=1 && ns_green_req && !ew_green;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "ns_green_req": 1,
+          "ew_green_req": 1,
+          "timer_done": 1,
+          "ew_green": 1,
+          "ns_green": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/traffic/all_red_clearance_ds/bomb.ld > benchmarks/traffic/all_red_clearance_ds/bomb__xml.ld\nesbmc benchmarks/traffic/all_red_clearance_ds/bomb__xml.ld --ld-props benchmarks/traffic/all_red_clearance_ds/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.012,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  ns_green_req = 1\n\nState 2  thread 0\n----------------------------------------------------\n  ew_green_req = 0\n\nState 3  thread 0\n----------------------------------------------------\n  timer_done = 0\n\nState 4  thread 0\n----------------------------------------------------\n  ew_green = 0\n\nState 5  thread 0\n----------------------------------------------------\n  ns_green = 1\n\nState 7 file benchmarks/traffic/all_red_clearance_ds/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/traffic/all_red_clearance_ds/bomb__xml.ld\n  P2\n  !(ns_green && !timer_done)"
+    }
+  }
+}

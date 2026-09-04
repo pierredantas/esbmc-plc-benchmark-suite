@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:38Z",
+  "program": "benchmarks/building_automation/emer_light_transfer/bomb.ld",
+  "properties_file": "benchmarks/building_automation/emer_light_transfer/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "mutual_exclusion",
+      "variables": [
+        "norm_cont",
+        "emer_cont"
+      ],
+      "justification": "Normal and emergency power contactors must never be closed together to prevent dangerous grid backfeeding."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "norm_cont && emer_cont",
+      "justification": "Trigger synthesis: a witness recovers the failure condition causing simultaneous contactor closure."
+    }
+  ],
+  "property_variables": [
+    "emer_cont",
+    "norm_cont"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "unknown",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_norm=NONDET(_Bool);",
+          "        ASSIGN req_emer=NONDET(_Bool);",
+          "        ASSIGN emer_cont=1 && req_emer;",
+          "        ASSIGN norm_cont=1 && req_norm && !emer_cont;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_norm": 1,
+          "req_emer": 1,
+          "emer_cont": 1,
+          "norm_cont": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/building_automation/emer_light_transfer/bomb.ld > benchmarks/building_automation/emer_light_transfer/bomb__xml.ld\nesbmc benchmarks/building_automation/emer_light_transfer/bomb__xml.ld --ld-props benchmarks/building_automation/emer_light_transfer/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "unknown",
+      "proof": null,
+      "cpu_time_s": 0.138,
+      "counterexample": null
+    }
+  }
+}

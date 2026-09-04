@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:43Z",
+  "program": "benchmarks/chemical_batch/relief_valve_trip_gm/clean.ld",
+  "properties_file": "benchmarks/chemical_batch/relief_valve_trip_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(feed_pump && trip_latch)",
+      "justification": "The chemical feed pump must not run while the relief valve trip is latched, to avoid feeding into an overpressure event."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "feed_pump && trip_latch",
+      "justification": "Trigger synthesis: a witness recovers the auto-restart condition when the valve reseats before manual reset."
+    }
+  ],
+  "property_variables": [
+    "feed_pump",
+    "trip_latch"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN relief_open=NONDET(_Bool);",
+          "        ASSIGN reset_btn=NONDET(_Bool);",
+          "        ASSIGN req_pump=NONDET(_Bool);",
+          "        ASSIGN feed_pump=1 && req_pump && !trip_latch;",
+          "        ASSIGN trip_latch=1 && relief_open;",
+          "        ASSIGN trip_latch=1 && trip_latch && !reset_btn;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "relief_open": 1,
+          "reset_btn": 1,
+          "req_pump": 1,
+          "feed_pump": 1,
+          "trip_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/chemical_batch/relief_valve_trip_gm/clean.ld > benchmarks/chemical_batch/relief_valve_trip_gm/clean__xml.ld\nesbmc benchmarks/chemical_batch/relief_valve_trip_gm/clean__xml.ld --ld-props benchmarks/chemical_batch/relief_valve_trip_gm/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.013,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  relief_open = 1\n\nState 2  thread 0\n----------------------------------------------------\n  reset_btn = 0\n\nState 3  thread 0\n----------------------------------------------------\n  req_pump = 1\n\nState 4  thread 0\n----------------------------------------------------\n  feed_pump = 1\n\nState 5  thread 0\n----------------------------------------------------\n  trip_latch = 1\n\nState 6  thread 0\n----------------------------------------------------\n  trip_latch = 1\n\nState 7 file benchmarks/chemical_batch/relief_valve_trip_gm/clean__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/chemical_batch/relief_valve_trip_gm/clean__xml.ld\n  P1\n  !(feed_pump && trip_latch)"
+    }
+  }
+}

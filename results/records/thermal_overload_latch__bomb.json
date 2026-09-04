@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:51Z",
+  "program": "benchmarks/motor_control/thermal_overload_latch/bomb.ld",
+  "properties_file": "benchmarks/motor_control/thermal_overload_latch/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(motor_run && overload_latch)",
+      "justification": "The motor must not be allowed to run while a thermal overload condition is actively latched."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "motor_run && overload_latch",
+      "justification": "Trigger synthesis: a witness recovers the auto-restart condition when the motor cools before manual reset."
+    }
+  ],
+  "property_variables": [
+    "motor_run",
+    "overload_latch"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "unknown",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN thermal_trip=NONDET(_Bool);",
+          "        ASSIGN reset_btn=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        ASSIGN motor_run=1 && req_run && !thermal_trip;",
+          "        ASSIGN overload_latch=1 && thermal_trip;",
+          "        ASSIGN overload_latch=1 && overload_latch && !reset_btn;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "thermal_trip": 1,
+          "reset_btn": 1,
+          "req_run": 1,
+          "motor_run": 1,
+          "overload_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/motor_control/thermal_overload_latch/bomb.ld > benchmarks/motor_control/thermal_overload_latch/bomb__xml.ld\nesbmc benchmarks/motor_control/thermal_overload_latch/bomb__xml.ld --ld-props benchmarks/motor_control/thermal_overload_latch/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "unknown",
+      "proof": null,
+      "cpu_time_s": 0.152,
+      "counterexample": null
+    }
+  }
+}

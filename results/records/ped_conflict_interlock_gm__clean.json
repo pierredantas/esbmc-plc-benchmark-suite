@@ -1,0 +1,61 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:59Z",
+  "program": "benchmarks/traffic/ped_conflict_interlock_gm/clean.ld",
+  "properties_file": "benchmarks/traffic/ped_conflict_interlock_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(ped_walk && turn_arrow)",
+      "justification": "Pedestrian walk signal must not activate concurrently with a conflicting vehicle turn arrow."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "ped_walk && turn_arrow",
+      "justification": "Trigger synthesis: a witness recovers the missing interlock condition leading to a pedestrian conflict."
+    }
+  ],
+  "property_variables": [
+    "ped_walk",
+    "turn_arrow"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_ped=NONDET(_Bool);",
+          "        ASSIGN veh_green=NONDET(_Bool);",
+          "        ASSIGN turn_arrow=NONDET(_Bool);",
+          "        ASSIGN ped_walk=1 && req_ped && !veh_green && !turn_arrow;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_ped": 1,
+          "veh_green": 1,
+          "turn_arrow": 1,
+          "ped_walk": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/traffic/ped_conflict_interlock_gm/clean.ld > benchmarks/traffic/ped_conflict_interlock_gm/clean__xml.ld\nesbmc benchmarks/traffic/ped_conflict_interlock_gm/clean__xml.ld --ld-props benchmarks/traffic/ped_conflict_interlock_gm/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.018,
+      "counterexample": null
+    }
+  }
+}

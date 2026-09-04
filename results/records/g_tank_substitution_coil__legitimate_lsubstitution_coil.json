@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-28T18:37:06Z",
+  "recorded_at": "2026-09-04T23:41:01Z",
   "program": "benchmarks/water_treatment/g_tank_substitution_coil/legitimate_lsubstitution_coil.xml",
   "properties_file": "benchmarks/water_treatment/g_tank_substitution_coil/props.yaml",
   "properties": [
@@ -13,12 +13,12 @@
   "property_variables": [],
   "expected_verdict": "SAFE",
   "runs": {
-    "master": {
+    "v8.4": {
       "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/bin/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "0064c4ac",
+        "commit": null,
         "platform": "aarch64 macos"
       },
       "status": "correct",
@@ -82,7 +82,7 @@
         "not_driven_by_body": [],
         "gate": "pass"
       },
-      "command": "cp benchmarks/water_treatment/g_tank_substitution_coil/legitimate_lsubstitution_coil.xml benchmarks/water_treatment/g_tank_substitution_coil/legitimate_lsubstitution_coil.ld\nesbmc benchmarks/water_treatment/g_tank_substitution_coil/legitimate_lsubstitution_coil.ld --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "command": "cp benchmarks/water_treatment/g_tank_substitution_coil/legitimate_lsubstitution_coil.xml benchmarks/water_treatment/g_tank_substitution_coil/legitimate_lsubstitution_coil.ld\nesbmc benchmarks/water_treatment/g_tank_substitution_coil/legitimate_lsubstitution_coil.ld --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
       "cpu_time_s": 0.014,

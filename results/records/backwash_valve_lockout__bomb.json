@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:41:00Z",
+  "program": "benchmarks/water_treatment/backwash_valve_lockout/bomb.ld",
+  "properties_file": "benchmarks/water_treatment/backwash_valve_lockout/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "mutual_exclusion",
+      "variables": [
+        "service_v",
+        "backwash_v"
+      ],
+      "justification": "Service and backwash valves must never open simultaneously."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "service_v && backwash_v",
+      "justification": "Trigger synthesis: a witness recovers the failure condition causing simultaneous valve opening."
+    }
+  ],
+  "property_variables": [
+    "backwash_v",
+    "service_v"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "unknown",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_service=NONDET(_Bool);",
+          "        ASSIGN req_backwash=NONDET(_Bool);",
+          "        ASSIGN backwash_v=1 && req_backwash;",
+          "        ASSIGN service_v=1 && req_service && !backwash_v;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_service": 1,
+          "req_backwash": 1,
+          "backwash_v": 1,
+          "service_v": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/water_treatment/backwash_valve_lockout/bomb.ld > benchmarks/water_treatment/backwash_valve_lockout/bomb__xml.ld\nesbmc benchmarks/water_treatment/backwash_valve_lockout/bomb__xml.ld --ld-props benchmarks/water_treatment/backwash_valve_lockout/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "unknown",
+      "proof": null,
+      "cpu_time_s": 0.139,
+      "counterexample": null
+    }
+  }
+}

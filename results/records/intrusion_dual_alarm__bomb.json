@@ -1,0 +1,62 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:39Z",
+  "program": "benchmarks/building_automation/intrusion_dual_alarm/bomb.ld",
+  "properties_file": "benchmarks/building_automation/intrusion_dual_alarm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "sensor_trip -> siren_out",
+      "justification": "An intrusion trip must sound the siren in the same scan it is detected; the property is about the trigger reaching this readout, not about siren_out's relationship to the unrelated door_lock readout."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "sensor_trip && !siren_out",
+      "justification": "Witness: sensor_trip=1 reaches siren_out=0 in bomb, because alarm_state no longer latches on the sensor at all."
+    }
+  ],
+  "property_variables": [
+    "sensor_trip",
+    "siren_out"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "error",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN lock_req=NONDET(_Bool);",
+          "        ASSIGN door_lock=1 && alarm_state;",
+          "        ASSIGN door_lock=1 && lock_req;",
+          "        ASSIGN siren_out=1 && alarm_state;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "lock_req": 1,
+          "door_lock": 2,
+          "siren_out": 1
+        },
+        "not_driven_by_body": [
+          "sensor_trip"
+        ],
+        "gate": "fail"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/building_automation/intrusion_dual_alarm/bomb.ld > benchmarks/building_automation/intrusion_dual_alarm/bomb__xml.ld\nesbmc benchmarks/building_automation/intrusion_dual_alarm/bomb__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpt4ru_jiq/props_no_implies.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "error",
+      "proof": null,
+      "cpu_time_s": 0.012,
+      "counterexample": null
+    }
+  }
+}

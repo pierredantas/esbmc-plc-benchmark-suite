@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:55Z",
+  "program": "benchmarks/power_substation/dead_bus_close_permissive_ds/bomb.ld",
+  "properties_file": "benchmarks/power_substation/dead_bus_close_permissive_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "breaker_close -> close_permit",
+      "justification": "Breaker must close only when permissive conditions are met."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "breaker_close && !close_permit",
+      "justification": "Witness: req_close=1 reaches breaker_close=1, close_permit=0 in bomb."
+    }
+  ],
+  "property_variables": [
+    "breaker_close",
+    "close_permit"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_close=NONDET(_Bool);",
+          "        ASSIGN breaker_close=1 && req_close;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_close": 1,
+          "breaker_close": 1
+        },
+        "not_driven_by_body": [
+          "close_permit"
+        ],
+        "gate": "fail"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/power_substation/dead_bus_close_permissive_ds/bomb.ld > benchmarks/power_substation/dead_bus_close_permissive_ds/bomb__xml.ld\nesbmc benchmarks/power_substation/dead_bus_close_permissive_ds/bomb__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpradzu1ya/props_no_implies.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.013,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  req_close = 1\n\nState 2  thread 0\n----------------------------------------------------\n  breaker_close = 1\n\nState 3 file benchmarks/power_substation/dead_bus_close_permissive_ds/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/power_substation/dead_bus_close_permissive_ds/bomb__xml.ld\n  P1\n  !(breaker_close && !close_permit)"
+    }
+  }
+}

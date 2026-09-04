@@ -1,0 +1,53 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:45Z",
+  "program": "benchmarks/elevator/overspeed_trip_latch_ds/bomb.ld",
+  "properties_file": "benchmarks/elevator/overspeed_trip_latch_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "overspeed_trip -> brake_applied",
+      "justification": "Overspeed trip must apply the brake."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "overspeed_trip && !brake_applied",
+      "justification": "Witness: overspeed_trip=1 reaches brake_applied=0 in bomb."
+    }
+  ],
+  "property_variables": [
+    "brake_applied",
+    "overspeed_trip"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "error",
+      "encoding": {
+        "scan_body": [
+          "        ASSUME !1"
+        ],
+        "assignment_counts": {},
+        "not_driven_by_body": [
+          "brake_applied",
+          "overspeed_trip"
+        ],
+        "gate": "fail"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/elevator/overspeed_trip_latch_ds/bomb.ld > benchmarks/elevator/overspeed_trip_latch_ds/bomb__xml.ld\nesbmc benchmarks/elevator/overspeed_trip_latch_ds/bomb__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpb5ppfeyb/props_no_implies.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "error",
+      "proof": null,
+      "cpu_time_s": 0.011,
+      "counterexample": null
+    }
+  }
+}

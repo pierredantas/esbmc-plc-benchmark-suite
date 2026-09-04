@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-28T18:37:06Z",
+  "recorded_at": "2026-09-04T23:41:01Z",
   "program": "benchmarks/water_treatment/g_tank_substitution_coil/malicious_msubstitution_coil.xml",
   "properties_file": "benchmarks/water_treatment/g_tank_substitution_coil/props.yaml",
   "properties": [
@@ -13,12 +13,12 @@
   "property_variables": [],
   "expected_verdict": "VIOLATION",
   "runs": {
-    "master": {
+    "v8.4": {
       "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/bin/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "0064c4ac",
+        "commit": null,
         "platform": "aarch64 macos"
       },
       "status": "correct",
@@ -89,11 +89,11 @@
         "not_driven_by_body": [],
         "gate": "pass"
       },
-      "command": "cp benchmarks/water_treatment/g_tank_substitution_coil/malicious_msubstitution_coil.xml benchmarks/water_treatment/g_tank_substitution_coil/malicious_msubstitution_coil.ld\nesbmc benchmarks/water_treatment/g_tank_substitution_coil/malicious_msubstitution_coil.ld --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "command": "cp benchmarks/water_treatment/g_tank_substitution_coil/malicious_msubstitution_coil.xml benchmarks/water_treatment/g_tank_substitution_coil/malicious_msubstitution_coil.ld\nesbmc benchmarks/water_treatment/g_tank_substitution_coil/malicious_msubstitution_coil.ld --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
       "verdict": "VIOLATION",
       "proof": null,
-      "cpu_time_s": 0.033,
-      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  valves_handler0__IN1 = 46 (00000000 00000000 00000000 00101110)\n\nState 2  thread 0\n----------------------------------------------------\nViolated property:\n  assertion valves_handler0____wd0 <= 8\n  valves_handler0____wd0 <= 8\n\n\n** Results:\n  FAILED       [global.assertion.1]  line 0  assertion valves_handler0____wd0 <= 8\n  NOT CHECKED  [global.assertion.2]  line 0  unwinding assertion loop 1\n  NOT CHECKED  [global.assertion.3]  line 0  unwinding assertion loop 2\n\n** 1 of 3 properties failed, 2 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
+      "cpu_time_s": 0.034,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  valves_handler0__IN1 = 46 (00000000 00000000 00000000 00101110)\n\nState 2  thread 0\n----------------------------------------------------\nViolated property:\n  assertion valves_handler0____wd0 <= 8\n  valves_handler0____wd0 <= 8"
     }
   }
 }

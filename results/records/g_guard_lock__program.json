@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "recorded_at": "2026-08-28T18:37:01Z",
+  "recorded_at": "2026-09-04T23:40:48Z",
   "program": "benchmarks/manufacturing/g_guard_lock/program.xml",
   "properties_file": "benchmarks/manufacturing/g_guard_lock/props.yaml",
   "properties": [
@@ -17,77 +17,40 @@
   ],
   "expected_verdict": "SAFE",
   "runs": {
-    "master": {
+    "v8.4": {
       "tool": {
-        "path": "~/esbmc-toolchain/src/esbmc-master/build/src/esbmc/esbmc",
+        "path": "~/esbmc-toolchain/bin/esbmc",
         "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
         "version": "8.4.0",
-        "commit": "0064c4ac",
+        "commit": null,
         "platform": "aarch64 macos"
       },
       "status": "correct",
       "encoding": {
         "scan_body": [
-          "     1: IF !1 THEN GOTO 15",
+          "     1: IF !1 THEN GOTO 2",
           "        ASSIGN OpenReq=NONDET(_Bool);",
           "        ASSIGN DoorClosed=NONDET(_Bool);",
           "        ASSIGN RunCmd=NONDET(_Bool);",
-          "        ASSIGN Motor__prev=1 && Motor;",
-          "        IF !1 THEN GOTO 2",
-          "        ASSIGN pf3=0;",
-          "     2: IF !(1 && !Motor__prev) THEN GOTO 3",
-          "        ASSIGN pf3=1;",
-          "     3: ASSIGN Rundown__IN=1 && pf3;",
-          "        IF !Rundown__IN THEN GOTO 5",
-          "        IF !(Rundown__ET < Rundown__PT) THEN GOTO 4",
-          "        ASSIGN Rundown__ET=Rundown__ET + 1;",
-          "     4: GOTO 6",
-          "     5: ASSIGN Rundown__ET=0;",
-          "     6: ASSIGN Rundown__Q=Rundown__IN && Rundown__ET >= Rundown__PT;",
-          "        IF !1 THEN GOTO 7",
-          "        ASSIGN pf6=0;",
-          "     7: IF !(1 && Rundown__Q && OpenReq) THEN GOTO 8",
-          "        ASSIGN pf6=1;",
-          "     8: ASSIGN Unlocked=1 && pf6;",
-          "        IF !1 THEN GOTO 9",
-          "        ASSIGN pf8=0;",
-          "     9: IF !(1 && RunCmd) THEN GOTO 10",
-          "        ASSIGN pf8=1;",
-          "    10: IF !1 THEN GOTO 11",
-          "        ASSIGN pf9=0;",
-          "    11: IF !(1 && pf8 && DoorClosed) THEN GOTO 12",
-          "        ASSIGN pf9=1;",
-          "    12: IF !1 THEN GOTO 13",
-          "        ASSIGN pf10=0;",
-          "    13: IF !(1 && pf9 && !OpenReq) THEN GOTO 14",
-          "        ASSIGN pf10=1;",
-          "    14: ASSIGN Motor=1 && pf10;",
+          "        ASSIGN Motor=1 && RunCmd && DoorClosed && !OpenReq;",
           "        GOTO 1",
-          "    15:"
+          "     2:"
         ],
         "assignment_counts": {
           "OpenReq": 1,
           "DoorClosed": 1,
           "RunCmd": 1,
-          "Motor__prev": 1,
-          "pf3": 2,
-          "Rundown__IN": 1,
-          "Rundown__ET": 2,
-          "Rundown__Q": 1,
-          "pf6": 2,
-          "Unlocked": 1,
-          "pf8": 2,
-          "pf9": 2,
-          "pf10": 2,
           "Motor": 1
         },
-        "not_driven_by_body": [],
-        "gate": "pass"
+        "not_driven_by_body": [
+          "Unlocked"
+        ],
+        "gate": "fail"
       },
-      "command": "cp benchmarks/manufacturing/g_guard_lock/program.xml benchmarks/manufacturing/g_guard_lock/program.ld\nesbmc benchmarks/manufacturing/g_guard_lock/program.ld --ld-props benchmarks/manufacturing/g_guard_lock/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 30s",
+      "command": "cp benchmarks/manufacturing/g_guard_lock/program.xml benchmarks/manufacturing/g_guard_lock/program.ld\nesbmc benchmarks/manufacturing/g_guard_lock/program.ld --ld-props benchmarks/manufacturing/g_guard_lock/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
       "verdict": "SAFE",
       "proof": "the inductive step (k = 2)",
-      "cpu_time_s": 0.016,
+      "cpu_time_s": 0.014,
       "counterexample": null
     }
   }

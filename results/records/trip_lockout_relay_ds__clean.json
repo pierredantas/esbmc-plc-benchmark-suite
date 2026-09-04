@@ -1,0 +1,62 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:57Z",
+  "program": "benchmarks/power_substation/trip_lockout_relay_ds/clean.ld",
+  "properties_file": "benchmarks/power_substation/trip_lockout_relay_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "backup_trip -> fail_latch",
+      "justification": "Backup trip must only be issued through the latched failure relay, never directly from the trip command."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "backup_trip && !fail_latch",
+      "justification": "Witness: trip_cmd=1 then trip_cmd=0 reaches backup_trip=1, fail_latch=0 in bomb."
+    }
+  ],
+  "property_variables": [
+    "backup_trip",
+    "fail_latch"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN trip_cmd=NONDET(_Bool);",
+          "        ASSIGN reset=NONDET(_Bool);",
+          "        ASSIGN backup_trip=1 && fail_latch;",
+          "        ASSIGN fail_latch=1 && trip_cmd;",
+          "        ASSIGN fail_latch=1 && fail_latch && !reset;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "trip_cmd": 1,
+          "reset": 1,
+          "backup_trip": 1,
+          "fail_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/power_substation/trip_lockout_relay_ds/clean.ld > benchmarks/power_substation/trip_lockout_relay_ds/clean__xml.ld\nesbmc benchmarks/power_substation/trip_lockout_relay_ds/clean__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmp819ui2ej/props_no_implies.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.02,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  trip_cmd = 1\n\nState 2  thread 0\n----------------------------------------------------\n  reset = 0\n\nState 3  thread 0\n----------------------------------------------------\n  fail_latch = 1\n\nState 4  thread 0\n----------------------------------------------------\n  fail_latch = 1\n\nState 5  thread 0\n----------------------------------------------------\n  trip_cmd = 0\n\nState 6  thread 0\n----------------------------------------------------\n  reset = 0\n\nState 7  thread 0\n----------------------------------------------------\n  backup_trip = 1\n\nState 8  thread 0\n----------------------------------------------------\n  fail_latch = 0\n\nState 9  thread 0\n----------------------------------------------------\n  fail_latch = 0\n\nState 10 file benchmarks/power_substation/trip_lockout_relay_ds/clean__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/power_substation/trip_lockout_relay_ds/clean__xml.ld\n  P1\n  !(backup_trip && !fail_latch)"
+    }
+  }
+}

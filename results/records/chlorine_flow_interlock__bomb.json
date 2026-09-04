@@ -1,0 +1,62 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:41:00Z",
+  "program": "benchmarks/water_treatment/chlorine_flow_interlock/bomb.ld",
+  "properties_file": "benchmarks/water_treatment/chlorine_flow_interlock/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(dose_pump && low_flow)",
+      "justification": "Chlorine must never be dosed into a static or low-flow water line due to toxicity and explosion risks."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "dose_pump && low_flow",
+      "justification": "Trigger synthesis: a witness recovers the override condition that forces dosing without flow."
+    }
+  ],
+  "property_variables": [
+    "dose_pump",
+    "low_flow"
+  ],
+  "expected_verdict": "VIOLATION",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_dose=NONDET(_Bool);",
+          "        ASSIGN low_flow=NONDET(_Bool);",
+          "        ASSIGN maint_mode=NONDET(_Bool);",
+          "        ASSIGN dose_pump=1 && req_dose && !low_flow;",
+          "        ASSIGN dose_pump=1 && req_dose && maint_mode;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_dose": 1,
+          "low_flow": 1,
+          "maint_mode": 1,
+          "dose_pump": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/water_treatment/chlorine_flow_interlock/bomb.ld > benchmarks/water_treatment/chlorine_flow_interlock/bomb__xml.ld\nesbmc benchmarks/water_treatment/chlorine_flow_interlock/bomb__xml.ld --ld-props benchmarks/water_treatment/chlorine_flow_interlock/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.012,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  req_dose = 1\n\nState 2  thread 0\n----------------------------------------------------\n  low_flow = 1\n\nState 3  thread 0\n----------------------------------------------------\n  maint_mode = 1\n\nState 4  thread 0\n----------------------------------------------------\n  dose_pump = 1\n\nState 5 file benchmarks/water_treatment/chlorine_flow_interlock/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/water_treatment/chlorine_flow_interlock/bomb__xml.ld\n  P1\n  !(dose_pump && low_flow)"
+    }
+  }
+}

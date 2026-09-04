@@ -1,0 +1,67 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-09-04T23:40:39Z",
+  "program": "benchmarks/building_automation/intrusion_dual_alarm/clean.ld",
+  "properties_file": "benchmarks/building_automation/intrusion_dual_alarm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "sensor_trip -> siren_out",
+      "justification": "An intrusion trip must sound the siren in the same scan it is detected; the property is about the trigger reaching this readout, not about siren_out's relationship to the unrelated door_lock readout."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "sensor_trip && !siren_out",
+      "justification": "Witness: sensor_trip=1 reaches siren_out=0 in bomb, because alarm_state no longer latches on the sensor at all."
+    }
+  ],
+  "property_variables": [
+    "sensor_trip",
+    "siren_out"
+  ],
+  "expected_verdict": "SAFE",
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "~/esbmc-toolchain/bin/esbmc",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN sensor_trip=NONDET(_Bool);",
+          "        ASSIGN guard_ack=NONDET(_Bool);",
+          "        ASSIGN lock_req=NONDET(_Bool);",
+          "        ASSIGN siren_out=1 && alarm_state;",
+          "        ASSIGN alarm_state=1 && sensor_trip;",
+          "        ASSIGN alarm_state=1 && alarm_state && !guard_ack;",
+          "        ASSIGN door_lock=1 && alarm_state;",
+          "        ASSIGN door_lock=1 && lock_req;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "sensor_trip": 1,
+          "guard_ack": 1,
+          "lock_req": 1,
+          "siren_out": 1,
+          "alarm_state": 2,
+          "door_lock": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/building_automation/intrusion_dual_alarm/clean.ld > benchmarks/building_automation/intrusion_dual_alarm/clean__xml.ld\nesbmc benchmarks/building_automation/intrusion_dual_alarm/clean__xml.ld --ld-props /var/folders/vx/p9sst7h127s3pvp48grg1j4c0000gp/T/tmpms2sbvpn/props_no_implies.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --timeout 20s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.02,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  sensor_trip = 1\n\nState 2 file benchmarks/building_automation/intrusion_dual_alarm/clean__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/building_automation/intrusion_dual_alarm/clean__xml.ld\n  P1\n  !(sensor_trip && !siren_out)"
+    }
+  }
+}
