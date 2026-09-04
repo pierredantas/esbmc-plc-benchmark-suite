@@ -81,6 +81,16 @@ ICS corpora, are both in the water domain; results are reported per domain so th
 reweighted. Five benchmarks are textual/graphical syntax-coverage pairs (same logic, two
 encodings), labelled via `syntax_pair_of` and counted once per language slice.
 
+**ESBMC OR-branch coil bug** ([esbmc/esbmc#7577](https://github.com/esbmc/esbmc/issues/7577)):
+ESBMC's LD front end does not OR-combine a coil driven by more than one parallel branch — it
+compiles the branches as sequential overwrites instead, so only the last one in document order
+has any effect. This silently breaks any seal-in/latch coil (`Q := S OR (Q AND NOT R)`) and any
+plain OR gate wired as two branches into one coil. Every benchmark using either idiom is
+tagged `known-issue-esbmc-7577` and carries `validation_status: candidate` rather than
+`validated` until the upstream fix lands, whatever its prior status said — a tool-confirmed
+verdict on one of these was never actually sound. Check a task's tags before trusting its
+expected verdict as tool-confirmed.
+
 ## Validate
 ```
 pip3 install pyyaml jsonschema
