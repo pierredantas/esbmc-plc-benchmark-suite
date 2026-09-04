@@ -8,7 +8,7 @@ source:
   reference: "Authored from the reversal requirement for power-operated doors in EN 13241: an obstruction sends the door back to open rather than pausing it"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: validated
+validation_status: candidate
 variants:
   - file: program.xml
     expected_verdict: true
@@ -24,4 +24,4 @@ variants:
       witness: "Both variants satisfy props.yaml. reversal_check.props.yaml separates them, and v8.4 answers it the way the momentary variant does because it drops the latch."
 features: [contacts, coils, latch]
 difficulty: easy
-tags: [discriminator, en-13241]
+tags: [discriminator, en-13241, known-issue-esbmc-7577]

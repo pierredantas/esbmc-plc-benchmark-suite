@@ -8,7 +8,7 @@ source:
   reference: "Authored for this suite, modeling a latching 86 lockout relay that blocks autoreclose until manual reset"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: validated
+validation_status: candidate
 variants:
   - file: clean.xml
     expected_verdict: true
@@ -24,4 +24,4 @@ variants:
       witness: "protection_trip=1, manual_reset=0, reclose_request=1, maint=1 latches lockout and simultaneously asserts reclose."
 features: [contacts, coils]
 difficulty: medium
-tags: [safety, interlock, security, llb, authored]
+tags: [safety, interlock, security, llb, authored, known-issue-esbmc-7577]
