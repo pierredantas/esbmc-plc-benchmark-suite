@@ -262,6 +262,76 @@ programs similar to what is already in it), pass `--model` and
 the 7B run's smaller `batch_size` mostly offset its larger parameter count),
 noticeably slower generation per example.
 
+## Held-out probe: 3 tasks from the DeepSeek/Gemini benchmark import
+
+The 58 benchmarks added to `benchmarks/` from the DeepSeek/Gemini generation
+round postdate `ml/data/manifest.json` (243 records, built before that
+import), so they are genuinely unseen by every checkpoint above. Three were
+picked for structural variety and run through `7b-props-nary-best`:
+`capper_torque_stop_ds` (plain 2-variable invariant, latch-driven fault),
+`dual_valve_containment_gm` and `vfd_bypass_interlock` (both
+`mutual_exclusion` between peer output actuators, the training data's
+dominant shape for that kind).
+
+```bash
+python3 ml/scripts/build_task_slice.py --out ml/data/test_new_ladder_3.jsonl \
+    chemical_batch/dual_valve_containment_gm \
+    motor_control/vfd_bypass_interlock \
+    packaging/capper_torque_stop_ds
+python3 ml/scripts/evaluate.py \
+    --model mlx-community/Qwen2.5-Coder-7B-Instruct-4bit \
+    --adapter-path ml/adapters/qwen2.5-coder-7b-props-nary-best \
+    --test-file ml/data/test_new_ladder_3.jsonl \
+    --out ml/data/eval_new_ladder_3_7b.json
+```
+
+| Metric | Value |
+|---|---|
+| Valid YAML | 100% |
+| Schema-valid | 100% |
+| Correct id format | 100% |
+| Property-kind recall | 50% |
+| Property-kind precision | 100% |
+
+`check_props.py` passed all three ("OK: no issues found") — no hallucinated
+variable, no mislabeled `mutual_exclusion`.
+
+The aggregate numbers alone hide the actual split, which the manual
+comparison against each task's ground-truth `props.yaml` makes visible:
+
+- **`dual_valve_containment_gm`, `vfd_bypass_interlock`**: correct
+  `mutual_exclusion` kind, exact `variables` match against ground truth on
+  both. Confirms the `mutual_exclusion`-on-peer-actuators shape generalizes
+  cleanly to unseen programs. Both are missing the paired `reachability`
+  property (P2) that ground truth carries — under-enumeration, the same
+  known failure mode documented above, not a new one.
+- **`capper_torque_stop_ds`**: **wrong**, and the more concerning kind of
+  wrong. The generated invariant, `!(capper_run && fault_latch)`, uses only
+  real variable names and is technically true of the program (`capper_run`
+  and `fault_latch` are mutually exclusive by construction, both driven from
+  the same `latch` in one scan), but it is not the safety property the
+  program exists to enforce — ground truth is `torque_high -> !capper_run`.
+  This is the "fabricated relationship between real variables" failure mode
+  from the list above, caught by neither schema validation nor
+  `check_props.py`, since both names check out against the source and the
+  YAML is well-formed. `kind_precision` reads 100% on this example because
+  the metric only compares `kind` labels (`invariant` was expected,
+  `invariant` was produced) and cannot see that the expression inside it is
+  wrong.
+
+Three examples is not enough to move the aggregate numbers in the results
+table above, and is not a substitute for a full re-run against `test.jsonl`
+once the DeepSeek/Gemini tasks are folded into the next dataset rebuild. It
+does confirm, on genuinely fresh material, the same two failure modes
+already on record — under-enumeration and semantically-wrong-but-
+syntactically-valid invariants on latch/fault-flag programs — rather than
+surfacing anything new, which is itself useful: retraining at a larger base
+model size is not indicated by this probe. What would plausibly help is more
+training examples pairing a latch/fault-flag program with its correct
+cause-effect invariant (as opposed to a tautology of the latch's own
+wiring), and/or a prompt or training signal that makes the paired
+reachability property less droppable.
+
 ## Deterministic post-check (`ml/scripts/check_props.py`)
 
 ```bash
@@ -302,7 +372,10 @@ one specific class of error, not a correctness guarantee.
    Prioritize: 3+-condition AND-conjunction enable gates (closes the
    remaining `press_two_hand`-style gap directly), multi-property programs
    generally (under-enumeration), and the zero-example `absence`/`assertion`
-   kinds.
+   kinds. The *Held-out probe* above reproduces under-enumeration again on
+   fresh material and adds a concrete new target: latch/fault-flag programs
+   whose correct invariant is a cause-effect relationship on the flag's
+   trigger condition, not a tautology of the latch's own internal wiring.
 2. **`ml/scripts/check_props.py`** — built and validated; a cheap guardrail
    for hallucinated variables and mislabeled `mutual_exclusion`, not a fix
    for polarity inversion or incomplete variable coverage (neither model's
