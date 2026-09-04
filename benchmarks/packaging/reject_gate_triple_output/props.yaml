@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "defect_detect -> gate_actuate"
+    justification: "A detected defect must actuate the reject gate in the same scan; the property is grounded in the trigger, not in gate_actuate's relationship to the two other readouts (counter_enable, line_stop) the same internal latch happens to also drive."
+  - id: P2
+    kind: reachability
+    expression: "defect_detect && !gate_actuate"
+    justification: "Witness: defect_detect=1 reaches gate_actuate=0 in bomb, because reject_latch no longer triggers on the defect sensor at all."

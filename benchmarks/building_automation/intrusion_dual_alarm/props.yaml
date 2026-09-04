@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "sensor_trip -> siren_out"
+    justification: "An intrusion trip must sound the siren in the same scan it is detected; the property is about the trigger reaching this readout, not about siren_out's relationship to the unrelated door_lock readout."
+  - id: P2
+    kind: reachability
+    expression: "sensor_trip && !siren_out"
+    justification: "Witness: sensor_trip=1 reaches siren_out=0 in bomb, because alarm_state no longer latches on the sensor at all."

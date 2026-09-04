@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "purge_fail -> !burner_enable"
+    justification: "A failed pre-ignition purge must lock out the burner; this must hold on the trigger condition itself, not merely on the internal fault_latch/fault_indicator wiring the trigger happens to drive."
+  - id: P2
+    kind: reachability
+    expression: "purge_fail && burner_enable"
+    justification: "Witness: purge_fail=1, burner_req=1 reaches burner_enable=1 in bomb, because the latch mechanism was removed rather than merely reworded."

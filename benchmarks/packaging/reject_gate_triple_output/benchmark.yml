@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: reject_gate_triple_output
+name: "Reject gate fault latch with gate, counter, and line-stop readouts"
+domain: packaging
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored for the esbmc-plc-benchmark-suite to close a training gap found by ml/scripts/build_task_slice.py: a latch that fans out to three independent readouts, where the safety property is about the trigger, not the readouts' mutual relationship."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Removed the defect_detect trigger from reject_latch, so a detected defect no longer actuates the reject gate even though counter_enable and line_stop still read the (now permanently-false) latch."
+      witness: "defect_detect=1 reaches gate_actuate=0."
+features: [contacts, coils, latch, fan_out]
+difficulty: easy
+tags: [safety, packaging, reject, latch-training-example]

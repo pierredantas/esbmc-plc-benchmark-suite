@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "protection_trip -> !breaker_close"
+    justification: "A protection trip must block breaker closure through both latch stages (trip_latch then lockout_latch); the property is grounded in the original trigger two hops upstream, not in the trip_latch/lockout_latch pair's own mutual wiring."
+  - id: P2
+    kind: reachability
+    expression: "protection_trip && breaker_close"
+    justification: "Witness: protection_trip=1, close_req=1 reaches breaker_close=1 in bomb, because lockout_latch stopped reading trip_latch even though trip_latch itself still latches correctly."
