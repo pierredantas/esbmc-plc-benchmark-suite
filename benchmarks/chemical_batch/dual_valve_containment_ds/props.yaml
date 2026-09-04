@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [feed_valve, vent_valve]
+    justification: "Feed and vent valves must never be open together (loss of containment)."
+  - id: P2
+    kind: reachability
+    expression: "feed_valve && vent_valve"
+    justification: "Witness: feed_req=1, vent_req=1 reaches both open in bomb."

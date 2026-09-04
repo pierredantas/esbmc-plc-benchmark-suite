@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: overload_weighing_hold
+name: "Elevator load weighing overload hold latch"
+domain: elevator
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "The brake_lift permissive checks the raw weight_high sensor instead of the overload_latch, permitting movement if the load merely shifts."
+      witness: "weight_high=0, overload_latch=1, req_run=1 reaches brake_lift=1 AND overload_latch=1."
+features: [contacts, coils, latch, interlock]
+difficulty: easy
+tags: [safety, elevator, overload]

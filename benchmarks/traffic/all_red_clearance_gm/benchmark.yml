@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: all_red_clearance_gm
+name: "Traffic all-red clearance verification"
+domain: traffic
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Omitted the XIC(ew_red) interlock from the ns_green output rung."
+      witness: "req_ns_green=1, ew_red=0 reaches ns_green=1 AND ew_red=0."
+features: [contacts, coils, interlock]
+difficulty: easy
+tags: [safety, traffic, clearance]

@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(feed_pump && trip_latch)"
+    justification: "The chemical feed pump must not run while the relief valve trip is latched, to avoid feeding into an overpressure event."
+  - id: P2
+    kind: reachability
+    expression: "feed_pump && trip_latch"
+    justification: "Trigger synthesis: a witness recovers the auto-restart condition when the valve reseats before manual reset."

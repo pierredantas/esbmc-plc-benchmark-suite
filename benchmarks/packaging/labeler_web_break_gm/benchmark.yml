@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: labeler_web_break_gm
+name: "Labeler web break detector latch"
+domain: packaging
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Added an XIO(reset_btn) to the XIO(web_intact) branch, allowing the reset button to mask an active fault and start the drive."
+      witness: "web_intact=0, reset_btn=1, req_run=1 reaches drive_run=1 AND web_intact=0."
+features: [contacts, coils, latch, interlock]
+difficulty: easy
+tags: [safety, packaging, web_handling]

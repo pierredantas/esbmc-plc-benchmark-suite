@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "torque_high -> !capper_run"
+    justification: "Capper must stop if torque exceeds limit."
+  - id: P2
+    kind: reachability
+    expression: "torque_high && capper_run"
+    justification: "Witness: torque_high=1, capper_req=1 reaches capper_run=1 in bomb."

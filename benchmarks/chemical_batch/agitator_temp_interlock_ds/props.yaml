@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "high_temp -> agitator"
+    justification: "Agitator must run when temperature is above high limit."
+  - id: P2
+    kind: reachability
+    expression: "high_temp && !agitator"
+    justification: "Witness: high_temp=1, ag_req=0 reaches violation."

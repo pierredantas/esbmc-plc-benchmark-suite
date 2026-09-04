@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: freeze_stat_trip_ds
+name: "Freeze‑stat trip‑and‑latch"
+domain: hvac
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre Dantas for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "compressor_run follows compressor_req directly, ignoring freeze_stat."
+      witness: "freeze_stat=1, compressor_req=1 reaches compressor_run=1."
+features: [contacts, coils, latch, interlock]
+difficulty: easy
+tags: [hvac, freeze_stat, compressor]

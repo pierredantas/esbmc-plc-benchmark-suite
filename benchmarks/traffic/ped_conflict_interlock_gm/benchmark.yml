@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: ped_conflict_interlock_gm
+name: "Pedestrian walk and turn arrow conflict interlock"
+domain: traffic
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Omitted the XIO(turn_arrow) condition from the ped_walk rung."
+      witness: "req_ped=1, veh_green=0, turn_arrow=1 reaches ped_walk=1 AND turn_arrow=1."
+features: [contacts, coils, interlock]
+difficulty: easy
+tags: [safety, traffic, pedestrian]

@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: stairwell_smoke_exhaust
+name: "Stairwell exhaust fan and damper interlock"
+domain: building_automation
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Omitted the XIO(damper_closed) interlock from the exhaust_fan output."
+      witness: "smoke_alarm=1, damper_closed=1 reaches exhaust_fan=1 AND damper_closed=1."
+features: [contacts, coils, interlock]
+difficulty: easy
+tags: [safety, hvac, fire_life_safety]
