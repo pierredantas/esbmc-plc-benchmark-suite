@@ -5,11 +5,14 @@ benchmark's `props.yaml` safety properties from its program source. Scope is
 deliberately narrow: given one program, emit its properties in the suite's
 schema. No verification, no property checking, nothing else.
 
-The `7b-props-nary-best` checkpoint (Qwen2.5-Coder-7B base model, 243
-examples, iteration 320, the default in `ml/scripts/generate_props.py`) is
-published at
+The `7b-props-nary-best` checkpoint (Qwen2.5-Coder-7B base model, the
+default in `ml/scripts/generate_props.py`) is currently at 369 examples,
+iteration 640 (retrained after the *Retraining round* below; the prior
+243-example/iteration-320 checkpoint is kept as `-best-243ex` for
+comparison). The published copy at
 [huggingface.co/Pvdantas/esbmc-plc-props-slm-lora](https://huggingface.co/Pvdantas/esbmc-plc-props-slm-lora)
-(private) — pull it instead of retraining if you already have access.
+(private) still holds the 243-example weights as of this writing — re-upload
+before treating it as current, or retrain locally per the steps below.
 
 ## Setup
 
@@ -332,6 +335,96 @@ cause-effect invariant (as opposed to a tautology of the latch's own
 wiring), and/or a prompt or training signal that makes the paired
 reachability property less droppable.
 
+## Retraining round: 5 latch benchmarks added, re-probe
+
+Acting on the lever above, 5 new benchmarks were authored specifically
+against the `capper_torque_stop_ds` failure shape — an internal latch
+fanning out to two or more independent readouts, where the correct property
+is grounded in the trigger, not in a relationship between the readouts:
+`hvac/purge_fault_lockout`, `building_automation/intrusion_dual_alarm`,
+`packaging/reject_gate_triple_output`, `power_substation/protection_lockout_cascade`
+(a latch feeding a second latch), `water_treatment/chemical_feed_fault_lockout`.
+Each ships a P1 written the way the target invariant should have been
+written the first time, e.g. `purge_fail -> !burner_enable`, never
+`!(fault_indicator && burner_enable)`.
+
+The corpus grew from 102 to 165 benchmarks over two rounds (the DeepSeek/
+Gemini import, then these 5), so the dataset was rebuilt from scratch
+(243 → 369 records) and the 7B model retrained on the same recipe
+(`ml/lora_config_7b.yaml`, unchanged) against the new corpus:
+
+```bash
+python3 ml/scripts/build_dataset.py --augment-st
+python3 -m mlx_lm lora -c ml/lora_config_7b.yaml
+```
+
+Validation loss across the 4 saved checkpoints: 0.283 (iter 160), 0.259
+(iter 320), 0.197 (iter 480), **0.157 (iter 640, lowest — and, unusually,
+the final iteration rather than a mid-run peak)**. The previous 243-example
+checkpoint is kept as `qwen2.5-coder-7b-props-nary-best-243ex` for
+comparison; `qwen2.5-coder-7b-props-nary-best` now points at iter 640
+of the 369-example run and is `generate_props.py`'s default.
+
+**Re-running the exact 3-benchmark probe from above, same checkpoint slot,
+new weights:**
+
+| Metric | Old (243 ex.) | New (369 ex.) |
+|---|---|---|
+| Property-kind recall | 50% | **100%** |
+| Property-kind precision | 100% | 100% |
+
+The aggregate improvement is real, not a metric artifact — the actual
+generated content changed, not just its shape:
+
+- **`capper_torque_stop_ds` — fixed.** Old: `!(capper_run && fault_latch)`,
+  the tautology-of-wiring failure this retraining round specifically
+  targeted. New: `!(capper_run && torque_high)` — grounded in the actual
+  trigger condition, matching the shape (if not the exact polarity) of
+  ground truth (`torque_high -> !capper_run`, the same relation via De
+  Morgan's).
+- **`dual_valve_containment_gm` — exact match.** Both P1 (`mutual_exclusion`,
+  `[feed_v, vent_v]`) and P2 (reachability) now generated verbatim to
+  ground truth; the old checkpoint had the right P1 but dropped P2.
+- **`vfd_bypass_interlock`** — same pattern, confirmed by the slice
+  aggregate (not re-inspected individually).
+
+**Full held-out set** (`ml/data/test.jsonl`, 51 examples, current 369-record
+corpus and split — not a controlled comparison against the 33-example set
+the results table above was measured on, since both the corpus and the
+split changed): `kind_recall` 87.3%, `kind_precision` 92.2%. Two genuine
+substance points hide inside that number:
+
+- **`intrusion_dual_alarm`** (the one new latch benchmark that landed in
+  `test.jsonl` by the random split — genuinely unseen even by this
+  retraining round): partial generalization. The model did not fall into
+  the tautology trap again (it never related `siren_out` and `door_lock` to
+  each other), but it also converged on a different, real property
+  (`door_lock -> (sensor_trip || lock_req)`) rather than the one this task
+  was built to teach (`sensor_trip -> siren_out`), and again dropped the
+  paired reachability property. The specific failure this round targeted is
+  fixed; full convergence on "always ground the property in the ultimate
+  trigger, on every readout" is not.
+- **`st_swat_level1`, `st_swat_timer1` scored 0.0/0.0 — not a regression.**
+  Both carry a `kind: termination` property that concerns a hazard (an
+  injected non-terminating loop) present only in the benchmark's *malicious*
+  variant. Generation was run against the *legitimate* variant, per
+  `generate_props.py`'s normal one-variant-at-a-time usage — there is no way
+  to infer "this scan can hang" from source that contains no hang. This is a
+  probe-methodology gap (evaluating a cross-variant property from a single
+  variant's source), not evidence the model regressed on `termination`
+  properties it has otherwise seen 28 times in `train.jsonl`.
+
+**Verdict:** the targeted retraining lever worked on the failure mode it was
+built for — the tautology-of-wiring invariant is fixed on every previously-
+probed case — and partially transfers to a genuinely novel latch shape.
+Under-enumeration (dropping the paired reachability property) persists
+across old and new checkpoints alike and remains the most common remaining
+failure. The `termination`-property probe gap above is worth fixing before
+trusting any future `kind: termination` score: either feed both variants
+together or exclude `termination` tasks from single-variant evaluation
+until `evaluate.py` supports it properly.
+
+
 ## Deterministic post-check (`ml/scripts/check_props.py`)
 
 ```bash
@@ -360,27 +453,42 @@ one specific class of error, not a correctness guarantee.
 
 ## Next levers, roughly in order of expected payoff
 
-1. **More real, validated benchmarks targeting the 7B model's own gap** —
-   the 7B checkpoint still under-enumerates (`press_two_hand.st` dropped
-   `light_curtain_clear`) and its aggregate `kind_recall`/`kind_precision`
-   trail every 1.5B checkpoint (see *Base model size*, above). Unlike the
-   1.5B model's polarity-inversion failures, this now looks like a real
-   coverage gap again, not a reasoning-capacity limit, since the 7B model's
-   reasoning on genuinely novel logic is demonstrably strong (3/4 probes
-   correct) — it just needs more of this specific corpus's `mutual_exclusion`
-   idiom and multi-property-enumeration convention to stop drifting from it.
-   Prioritize: 3+-condition AND-conjunction enable gates (closes the
-   remaining `press_two_hand`-style gap directly), multi-property programs
-   generally (under-enumeration), and the zero-example `absence`/`assertion`
-   kinds. The *Held-out probe* above reproduces under-enumeration again on
-   fresh material and adds a concrete new target: latch/fault-flag programs
-   whose correct invariant is a cause-effect relationship on the flag's
-   trigger condition, not a tautology of the latch's own internal wiring.
-2. **`ml/scripts/check_props.py`** — built and validated; a cheap guardrail
+1. **Fix the `termination`-property evaluation gap.** `evaluate.py` feeds
+   the model one variant's source at a time, but a `kind: termination`
+   property (e.g. the SWaT `st_swat_*` tasks) concerns a hazard injected
+   only in the *malicious* variant — there is no way to generate it
+   correctly from the *legitimate* variant's source alone, and the
+   *Retraining round* probe above shows this producing hard 0.0/0.0 scores
+   that look like model failures but are not. Either feed both variants
+   together for a termination task, or exclude `termination` tasks from
+   single-variant scoring, before trusting any future aggregate number that
+   includes them.
+2. **Under-enumeration is still the most common remaining failure**, on
+   both the old and the retrained checkpoint. The *Retraining round* probe's
+   `intrusion_dual_alarm` result shows it persisting even where the
+   targeted tautology-of-wiring bug is fixed: the model produced a
+   different, real property instead of the paired one, dropping
+   reachability again. Multi-property programs generally, and the
+   zero-example `absence`/`assertion` kinds, remain the priority — same
+   target as before, not yet closed by this round.
+3. **More latch-shape variety** — the 5 benchmarks added this round fixed
+   the tautology failure on every previously-probed case but only partly
+   generalized to the one genuinely novel example (`intrusion_dual_alarm`
+   converged on a real property, not the intended one). More examples
+   varying which of several fan-out readouts is the "wrong" one to pick,
+   and more with a cascaded/two-hop trigger like
+   `protection_lockout_cascade`, would test whether that's a data-coverage
+   gap or a genuine reasoning limit, the same distinction the *Base model
+   size* section drew for the 1.5B→7B jump.
+4. **`ml/scripts/check_props.py`** — built and validated; a cheap guardrail
    for hallucinated variables and mislabeled `mutual_exclusion`, not a fix
-   for polarity inversion or incomplete variable coverage (neither model's
+   for polarity inversion, incomplete variable coverage, or the
+   tautology-of-wiring failure this round targeted (none of the model's
    remaining failures are caught by it).
-3. **An even larger base model, or full fine-tuning instead of LoRA** —
-   untested; the 1.5B→7B jump produced a real but mixed result (reasoning
-   up, idiom-adherence down), so it is not obvious a further jump keeps
-   paying off versus just needing more data at the current model size.
+5. **An even larger base model, or full fine-tuning instead of LoRA** —
+   still untested; the 1.5B→7B jump produced a real but mixed result
+   (reasoning up, idiom-adherence down at the time), and this round's
+   retraining on more data closed part of that gap without changing model
+   size, which weakens the case for a further size jump being the next
+   most useful lever.
+
