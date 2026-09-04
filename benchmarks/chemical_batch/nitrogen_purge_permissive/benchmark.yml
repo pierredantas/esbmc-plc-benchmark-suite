@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: nitrogen_purge_permissive
+name: "Reactor nitrogen purge complete permissive"
+domain: chemical_batch
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Added a maint_bypass branch that permits the feed valve to open even if the nitrogen purge is incomplete."
+      witness: "req_feed=1, purge_complete=0, maint_bypass=1, high_pressure=0 reaches feed_v=1 AND purge_complete=0."
+features: [contacts, coils, parallel_branch, permissive, override]
+difficulty: easy
+tags: [safety, chemical_batch, explosion_protection]

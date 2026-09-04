@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(drive_run && !web_intact)"
+    justification: "The labeler drive must never run while the web is physically broken."
+  - id: P2
+    kind: reachability
+    expression: "drive_run && !web_intact"
+    justification: "Trigger synthesis: a witness recovers the state where forcing the reset button runs the machine with a broken web."

@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: palletizer_light_curtain_ds
+name: "Palletizer light‑curtain interlock"
+domain: packaging
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre Dantas for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Removed curtain_broken check from palletizer_run rung."
+      witness: "palletizer_req=1, curtain_broken=1 reaches palletizer_run=1."
+features: [contacts, coils, interlock]
+difficulty: easy
+tags: [packaging, palletizer, light_curtain, safety]

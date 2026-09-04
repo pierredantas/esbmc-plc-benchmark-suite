@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: ped_conflict_interlock_ds
+name: "Pedestrian pushbutton latch"
+domain: traffic
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre Dantas for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "req_latch forced FALSE; ped_walk follows pb_press directly."
+      witness: "pb_press=1 reaches ped_walk=1, req_latch=0."
+features: [contacts, coils, latch]
+difficulty: easy
+tags: [traffic, pedestrian, latch]

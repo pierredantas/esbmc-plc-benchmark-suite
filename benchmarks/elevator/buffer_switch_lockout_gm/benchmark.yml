@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: buffer_switch_lockout_gm
+name: "Elevator pit buffer switch trip and latch"
+domain: elevator
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Modified car_run to read the raw buffer_switch instead of the trip_latch, allowing movement if the switch mechanically clears."
+      witness: "buffer_switch=0, trip_latch=1, req_run=1 reaches car_run=1 AND trip_latch=1."
+features: [contacts, coils, latch, interlock]
+difficulty: easy
+tags: [safety, elevator, buffer]

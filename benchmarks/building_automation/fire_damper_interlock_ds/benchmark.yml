@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: fire_damper_interlock_ds
+name: "Fire damper – AHU shutdown interlock"
+domain: building_automation
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre Dantas for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Removed damper_open check from fan_on rung."
+      witness: "fan_req=1, damper_open=0, fire_alarm=0 reaches fan_on=1."
+features: [contacts, coils, interlock]
+difficulty: easy
+tags: [building_automation, fire, ahu, damper]

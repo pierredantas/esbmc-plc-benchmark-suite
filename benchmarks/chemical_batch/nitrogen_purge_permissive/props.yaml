@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(feed_v && !purge_complete)"
+    justification: "Flammable feed must never enter the reactor until the nitrogen inerting purge is complete."
+  - id: P2
+    kind: reachability
+    expression: "feed_v && !purge_complete"
+    justification: "Trigger synthesis: a witness recovers the override condition that defeats the explosion-proof inerting cycle."

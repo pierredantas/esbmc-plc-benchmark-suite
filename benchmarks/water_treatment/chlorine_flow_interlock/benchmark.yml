@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: chlorine_flow_interlock
+name: "Chlorine dosing minimum flow interlock"
+domain: water_treatment
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Added a maint_mode parallel branch that permits the dosing pump to run regardless of the low_flow sensor state."
+      witness: "req_dose=1, low_flow=1, maint_mode=1 reaches dose_pump=1 AND low_flow=1."
+features: [contacts, coils, parallel_branch, override, interlock]
+difficulty: easy
+tags: [safety, water_treatment, dosing]

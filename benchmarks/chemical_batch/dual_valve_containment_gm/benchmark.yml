@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: dual_valve_containment_gm
+name: "Reactor dual-valve containment interlock"
+domain: chemical_batch
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Removed the XIO(feed_v) interlock from the vent_v rung."
+      witness: "req_feed=1, req_vent=1, stop_cmd=0 reaches feed_v=1 AND vent_v=1."
+features: [contacts, coils, latch, mutual_exclusion, interlock]
+difficulty: easy
+tags: [safety, containment, valves]

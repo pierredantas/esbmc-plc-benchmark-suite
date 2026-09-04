@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(breaker_close && line_live && !sync_ok)"
+    justification: "A breaker must never close onto a live line without a valid synchronization check to prevent out-of-phase damage."
+  - id: P2
+    kind: reachability
+    expression: "breaker_close && line_live && !sync_ok"
+    justification: "Trigger synthesis: a witness recovers the condition where the breaker closes out-of-phase due to bypass."

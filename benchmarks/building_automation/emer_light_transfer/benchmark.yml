@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: emer_light_transfer
+name: "Emergency lighting power transfer mutual exclusion"
+domain: building_automation
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Removed the XIO(norm_cont) interlock from the emergency contactor rung."
+      witness: "req_norm=1, req_emer=1 reaches norm_cont=1 AND emer_cont=1."
+features: [contacts, coils, mutual_exclusion, interlock]
+difficulty: easy
+tags: [safety, electrical, backfeed]
