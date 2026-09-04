@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(ns_green && !ew_red)"
+    justification: "North-South green must never be active unless the East-West phase is confirmed red."
+  - id: P2
+    kind: reachability
+    expression: "ns_green && !ew_red"
+    justification: "Trigger synthesis: a witness recovers the failure to check conflicting phase status."

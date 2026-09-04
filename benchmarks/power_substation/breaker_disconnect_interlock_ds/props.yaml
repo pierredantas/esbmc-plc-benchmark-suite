@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(disconn_open && breaker_closed)"
+    justification: "Disconnector must not open while breaker is closed."
+  - id: P2
+    kind: reachability
+    expression: "disconn_open && breaker_closed"
+    justification: "Witness: req_open=1, breaker_closed=1 reaches violation."

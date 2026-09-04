@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "pressure_hh -> relief_valve"
+    justification: "High‑high pressure must open the relief valve."
+  - id: P2
+    kind: reachability
+    expression: "pressure_hh && !relief_valve"
+    justification: "Witness: pressure_hh=1 reaches relief_valve=0 in bomb."

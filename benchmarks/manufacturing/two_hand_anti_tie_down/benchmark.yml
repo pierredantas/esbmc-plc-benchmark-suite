@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: two_hand_anti_tie_down
+name: "Press two-hand control and light curtain"
+domain: manufacturing
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Removed the XIO(curtain_broken) check from the press_run output."
+      witness: "btn_left=1, btn_right=1, curtain_broken=1 reaches press_run=1 AND curtain_broken=1."
+features: [contacts, coils, interlock]
+difficulty: easy
+tags: [safety, manufacturing, press]

@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(fan_run && freeze_latch)"
+    justification: "The supply fan must remain off while the freeze stat trip is actively latched."
+  - id: P2
+    kind: reachability
+    expression: "fan_run && freeze_latch"
+    justification: "Trigger synthesis: a witness recovers the state where the fan auto-restarts before the trip latch is manually reset."

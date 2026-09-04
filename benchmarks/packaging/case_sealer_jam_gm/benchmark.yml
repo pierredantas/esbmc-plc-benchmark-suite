@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: case_sealer_jam_gm
+name: "Case sealer jam detection and latch"
+domain: packaging
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "The conveyor_run interlock references XIO(jam_sensor) instead of XIO(jam_latch), permitting auto-restart before manual reset."
+      witness: "jam_sensor=0, jam_latch=1, req_run=1 reaches conveyor_run=1 AND jam_latch=1."
+features: [contacts, coils, latch, interlock]
+difficulty: easy
+tags: [safety, packaging, jam_detection]

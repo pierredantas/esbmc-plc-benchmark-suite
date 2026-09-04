@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(normal_phase && track_active)"
+    justification: "Normal traffic phases must absolutely yield to railroad preemption when the track circuit is active."
+  - id: P2
+    kind: reachability
+    expression: "normal_phase && track_active"
+    justification: "Trigger synthesis: a witness recovers the override condition forcing a conflict at the rail crossing."

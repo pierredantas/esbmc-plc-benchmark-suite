@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(lockdown_latch && !forced_alarm && !guard_reset)"
+    justification: "Once triggered, the security lockdown must remain active even if the forced door is closed, until a guard resets it."
+  - id: P2
+    kind: reachability
+    expression: "!lockdown_latch && forced_alarm && !guard_reset"
+    justification: "Trigger synthesis: a witness recovers the failure of the security latch to hold."

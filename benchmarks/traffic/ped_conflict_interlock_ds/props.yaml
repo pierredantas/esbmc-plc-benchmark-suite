@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "ped_walk -> req_latch"
+    justification: "Walk signal must only be active when the request is latched."
+  - id: P2
+    kind: reachability
+    expression: "ped_walk && !req_latch"
+    justification: "Witness: pb_press=1 reaches ped_walk=1, req_latch=0 in bomb."

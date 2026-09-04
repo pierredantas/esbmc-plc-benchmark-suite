@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(brake_lift && overload_latch)"
+    justification: "The elevator brake must not lift while an overload condition is actively latched in the controller."
+  - id: P2
+    kind: reachability
+    expression: "brake_lift && overload_latch"
+    justification: "Trigger synthesis: a witness recovers the state where the car moves despite an un-cleared overload latch."

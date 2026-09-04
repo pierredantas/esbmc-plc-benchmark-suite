@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(doors_open && fire_alarm)"
+    justification: "Elevator doors must not open in response to a hall call when the building fire alarm is active, preventing exposure to fire floors."
+  - id: P2
+    kind: reachability
+    expression: "doors_open && fire_alarm"
+    justification: "Trigger synthesis: a witness recovers the VIP bypass condition that opens the doors during a fire event."

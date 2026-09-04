@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(dose_pump && low_flow)"
+    justification: "Chlorine must never be dosed into a static or low-flow water line due to toxicity and explosion risks."
+  - id: P2
+    kind: reachability
+    expression: "dose_pump && low_flow"
+    justification: "Trigger synthesis: a witness recovers the override condition that forces dosing without flow."

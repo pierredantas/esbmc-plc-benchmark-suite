@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "breaker_close -> close_permit"
+    justification: "Breaker must close only when permissive conditions are met."
+  - id: P2
+    kind: reachability
+    expression: "breaker_close && !close_permit"
+    justification: "Witness: req_close=1 reaches breaker_close=1, close_permit=0 in bomb."
