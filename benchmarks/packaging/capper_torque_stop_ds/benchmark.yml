@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: capper_torque_stop_ds
+name: "Capper torque‑fault stop and lockout"
+domain: packaging
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre Dantas for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "capper_run follows capper_req directly, ignoring torque_high."
+      witness: "torque_high=1, capper_req=1 reaches capper_run=1."
+features: [contacts, coils, latch, interlock]
+difficulty: easy
+tags: [packaging, capper, torque]

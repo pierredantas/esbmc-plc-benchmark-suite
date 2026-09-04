@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(ns_green && ew_green)"
+    justification: "North‑south and east‑west greens must never be simultaneous."
+  - id: P2
+    kind: reachability
+    expression: "ns_green && !timer_done"
+    justification: "Witness in bomb: ns_green_req=1, ew_green=0, timer_done=0 reaches violation."

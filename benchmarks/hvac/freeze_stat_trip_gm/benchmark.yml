@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: freeze_stat_trip_gm
+name: "AHU freeze stat trip and latch"
+domain: hvac
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Modified the fan_run interlock to reference the raw freeze_stat sensor rather than the latch, permitting automatic restart."
+      witness: "freeze_stat=0, freeze_latch=1, req_run=1 reaches fan_run=1 AND freeze_latch=1."
+features: [contacts, coils, latch, interlock]
+difficulty: easy
+tags: [safety, hvac, freeze_protection]

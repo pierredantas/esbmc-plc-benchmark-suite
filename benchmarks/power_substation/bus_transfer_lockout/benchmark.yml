@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: bus_transfer_lockout
+name: "Bus tie make-before-break lockout"
+domain: power_substation
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Omitted the interlock checks, allowing the tie breaker to close unconditionally on request."
+      witness: "req_tie=1, source_a_closed=1, source_b_closed=1 reaches tie_close=1 AND source_a_closed=1 AND source_b_closed=1."
+features: [contacts, coils, parallel_branch, interlock]
+difficulty: easy
+tags: [safety, substation, switchgear]

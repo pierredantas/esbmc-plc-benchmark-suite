@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(doors_open && !door_zone)"
+    justification: "Car and hoistway doors must never open unless the car is physically verified to be within a safe landing zone."
+  - id: P2
+    kind: reachability
+    expression: "doors_open && !door_zone"
+    justification: "Trigger synthesis: a witness recovers the bypass state allowing doors to open outside a landing."

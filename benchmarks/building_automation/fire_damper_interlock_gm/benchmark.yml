@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: fire_damper_interlock_gm
+name: "AHU fire damper proving interlock"
+domain: building_automation
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Added a smoke_override parallel branch that permits the fan to run even if the physical damper is confirmed closed."
+      witness: "req_run=1, damper_open=0, smoke_override=1 reaches ahu_fan=1 AND damper_open=0."
+features: [contacts, coils, parallel_branch, override, interlock]
+difficulty: easy
+tags: [safety, hvac, fire_damper]

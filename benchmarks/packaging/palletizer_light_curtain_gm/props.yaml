@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(safety_latch && !curtain_ok)"
+    justification: "The safety latch must drop instantly when the light curtain is breached, regardless of reset button state."
+  - id: P2
+    kind: reachability
+    expression: "safety_latch && !curtain_ok"
+    justification: "Trigger synthesis: a witness recovers the bypassed state where the latch holds despite a curtain breach."

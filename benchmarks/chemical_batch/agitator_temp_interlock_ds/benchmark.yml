@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: agitator_temp_interlock_ds
+name: "Reactor agitator temperature interlock"
+domain: chemical_batch
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre Dantas for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "Reversed logic: agitator OFF when high_temp."
+      witness: "high_temp=1, ag_req=0 reaches agitator=0."
+features: [contacts, coils, interlock]
+difficulty: easy
+tags: [chemical, reactor, agitator, temperature]

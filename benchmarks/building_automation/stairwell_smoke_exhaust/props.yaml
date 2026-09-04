@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(exhaust_fan && damper_closed)"
+    justification: "The exhaust fan must never pull against a closed isolation damper, preventing duct collapse."
+  - id: P2
+    kind: reachability
+    expression: "exhaust_fan && damper_closed"
+    justification: "Trigger synthesis: a witness recovers the failure to check damper status before fan startup."

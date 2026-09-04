@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "freeze_stat -> !compressor_run"
+    justification: "Compressor must stop when freeze‑stat trips."
+  - id: P2
+    kind: reachability
+    expression: "freeze_stat && compressor_run"
+    justification: "Witness: freeze_stat=1, compressor_req=1 reaches compressor_run=1 in bomb."

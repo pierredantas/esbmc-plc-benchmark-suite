@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: relief_valve_trip_ds
+name: "Pressure relief valve independent trip"
+domain: chemical_batch
+language: LD-textual
+source:
+  origin: authored
+  reference: "Authored by Pierre Dantas for the esbmc-plc-benchmark-suite"
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.ld
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.ld
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.ld
+      seeded_defect: "relief_valve forced FALSE."
+      witness: "pressure_hh=1 reaches relief_valve=0."
+features: [contacts, coils, latch]
+difficulty: easy
+tags: [chemical, relief, pressure, safety]

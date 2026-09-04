@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "palletizer_run -> !curtain_broken"
+    justification: "Palletizer must stop if light curtain is broken."
+  - id: P2
+    kind: reachability
+    expression: "palletizer_run && curtain_broken"
+    justification: "Witness: palletizer_req=1, curtain_broken=1 reaches palletizer_run=1 in bomb."

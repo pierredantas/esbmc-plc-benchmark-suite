@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(ahu_fan && !damper_open)"
+    justification: "The AHU fan must never be energized against a closed fire damper to prevent severe ductwork damage."
+  - id: P2
+    kind: reachability
+    expression: "ahu_fan && !damper_open"
+    justification: "Trigger synthesis: a witness recovers the override condition that dead-heads the fan."
