@@ -25,4 +25,4 @@ variants:
       witness: "req_close=1 reaches breaker_close=1, close_permit=0."
 features: [contacts, coils, interlock]
 difficulty: easy
-tags: [substation, breaker, permissive]
+tags: [substation, breaker, permissive, known-issue-esbmc-7577]

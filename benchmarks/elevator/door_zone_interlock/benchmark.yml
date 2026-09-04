@@ -25,4 +25,4 @@ variants:
       witness: "req_open=1, door_zone=0, fire_bypass=1 reaches doors_open=1 AND door_zone=0."
 features: [contacts, coils, parallel_branch, override, interlock]
 difficulty: easy
-tags: [safety, elevator, doors]
+tags: [safety, elevator, doors, known-issue-esbmc-7577]

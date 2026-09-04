@@ -25,4 +25,4 @@ variants:
       witness: "overspeed_trip=1 reaches brake_applied=0."
 features: [contacts, coils, latch]
 difficulty: easy
-tags: [elevator, overspeed, safety_brake]
+tags: [elevator, overspeed, safety_brake, known-issue-esbmc-7577]

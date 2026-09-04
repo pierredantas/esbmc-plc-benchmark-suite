@@ -25,4 +25,4 @@ variants:
       witness: "fire_alarm=1 reaches normal_run=1."
 features: [contacts, coils, latch]
 difficulty: easy
-tags: [elevator, fire, recall]
+tags: [elevator, fire, recall, known-issue-esbmc-7577]

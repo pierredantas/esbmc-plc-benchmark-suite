@@ -25,4 +25,4 @@ variants:
       witness: "thermal_trip=0, overload_latch=1, req_run=1 reaches motor_run=1 AND overload_latch=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, motor_control, thermal_protection]
+tags: [safety, motor_control, thermal_protection, known-issue-esbmc-7577]

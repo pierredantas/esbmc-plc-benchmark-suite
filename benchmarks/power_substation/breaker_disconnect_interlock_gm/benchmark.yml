@@ -25,4 +25,4 @@ variants:
       witness: "req_disc=1, brk_closed=1, maint_mode=1 reaches disc_cmd=1 AND brk_closed=1."
 features: [contacts, coils, parallel_branch, interlock]
 difficulty: easy
-tags: [safety, arcing, isolation]
+tags: [safety, arcing, isolation, known-issue-esbmc-7577]

@@ -25,4 +25,4 @@ variants:
       witness: "fire_alarm=1, high_pressure=1 reaches fan_run=1 AND high_pressure=1."
 features: [contacts, coils, parallel_branch, override]
 difficulty: easy
-tags: [safety, hvac, fire]
+tags: [safety, hvac, fire, known-issue-esbmc-7577]

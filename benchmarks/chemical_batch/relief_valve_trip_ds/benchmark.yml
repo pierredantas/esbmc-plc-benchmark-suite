@@ -25,4 +25,4 @@ variants:
       witness: "pressure_hh=1 reaches relief_valve=0."
 features: [contacts, coils, latch]
 difficulty: easy
-tags: [chemical, relief, pressure, safety]
+tags: [chemical, relief, pressure, safety, known-issue-esbmc-7577]

@@ -25,4 +25,4 @@ variants:
       witness: "req_close=1, bus1_live=1, bus2_live=1, sync_ok=0 reaches tie_close=1 AND bus1_live=1 AND bus2_live=1 AND sync_ok=0."
 features: [contacts, coils, parallel_branch, permissive]
 difficulty: medium
-tags: [safety, tie_breaker, synchronization]
+tags: [safety, tie_breaker, synchronization, known-issue-esbmc-7577]

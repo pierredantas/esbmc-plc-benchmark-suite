@@ -25,4 +25,4 @@ variants:
       witness: "reset_btn=1, curtain_ok=0 reaches safety_latch=1 AND curtain_ok=0."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, packaging, light_curtain]
+tags: [safety, packaging, light_curtain, known-issue-esbmc-7577]

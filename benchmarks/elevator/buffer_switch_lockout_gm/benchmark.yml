@@ -25,4 +25,4 @@ variants:
       witness: "buffer_switch=0, trip_latch=1, req_run=1 reaches car_run=1 AND trip_latch=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, elevator, buffer]
+tags: [safety, elevator, buffer, known-issue-esbmc-7577]

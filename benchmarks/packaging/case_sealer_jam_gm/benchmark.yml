@@ -25,4 +25,4 @@ variants:
       witness: "jam_sensor=0, jam_latch=1, req_run=1 reaches conveyor_run=1 AND jam_latch=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, packaging, jam_detection]
+tags: [safety, packaging, jam_detection, known-issue-esbmc-7577]

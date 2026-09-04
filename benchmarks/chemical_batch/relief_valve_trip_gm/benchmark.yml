@@ -25,4 +25,4 @@ variants:
       witness: "relief_open=0, trip_latch=1, req_pump=1 reaches feed_pump=1 AND trip_latch=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, chemical_batch, overpressure]
+tags: [safety, chemical_batch, overpressure, known-issue-esbmc-7577]

@@ -25,4 +25,4 @@ variants:
       witness: "pb_press=1 reaches ped_walk=1, req_latch=0."
 features: [contacts, coils, latch]
 difficulty: easy
-tags: [traffic, pedestrian, latch]
+tags: [traffic, pedestrian, latch, known-issue-esbmc-7577]

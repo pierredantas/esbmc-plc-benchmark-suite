@@ -25,4 +25,4 @@ variants:
       witness: "torque_fault=0, fault_latch=1, req_run=1 reaches motor_run=1 AND fault_latch=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, packaging, motor_control]
+tags: [safety, packaging, motor_control, known-issue-esbmc-7577]

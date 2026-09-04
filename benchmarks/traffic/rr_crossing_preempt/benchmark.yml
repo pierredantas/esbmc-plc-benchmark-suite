@@ -25,4 +25,4 @@ variants:
       witness: "track_active=1, req_phase=1, stuck_ped_btn=1 reaches normal_phase=1 AND track_active=1."
 features: [contacts, coils, parallel_branch, override, interlock]
 difficulty: easy
-tags: [safety, traffic, preemption]
+tags: [safety, traffic, preemption, known-issue-esbmc-7577]

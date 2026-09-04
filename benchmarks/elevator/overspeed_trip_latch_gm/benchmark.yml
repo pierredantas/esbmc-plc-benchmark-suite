@@ -25,4 +25,4 @@ variants:
       witness: "speed_ok=1, trip_latch=1, run_cmd=1 reaches car_run=1 AND trip_latch=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, elevator, overspeed]
+tags: [safety, elevator, overspeed, known-issue-esbmc-7577]

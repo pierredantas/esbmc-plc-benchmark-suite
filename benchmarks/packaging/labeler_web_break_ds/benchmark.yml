@@ -25,4 +25,4 @@ variants:
       witness: "web_break=1, labeler_req=1 reaches labeler_run=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [packaging, labeler, web_break]
+tags: [packaging, labeler, web_break, known-issue-esbmc-7577]

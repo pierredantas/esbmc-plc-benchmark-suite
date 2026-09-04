@@ -25,4 +25,4 @@ variants:
       witness: "trip_cmd=1 reaches backup_trip=1, fail_latch=0."
 features: [contacts, coils, latch]
 difficulty: medium
-tags: [substation, breaker, protection]
+tags: [substation, breaker, protection, known-issue-esbmc-7577]

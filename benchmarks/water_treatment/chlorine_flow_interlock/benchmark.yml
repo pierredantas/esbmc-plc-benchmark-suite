@@ -25,4 +25,4 @@ variants:
       witness: "req_dose=1, low_flow=1, maint_mode=1 reaches dose_pump=1 AND low_flow=1."
 features: [contacts, coils, parallel_branch, override, interlock]
 difficulty: easy
-tags: [safety, water_treatment, dosing]
+tags: [safety, water_treatment, dosing, known-issue-esbmc-7577]

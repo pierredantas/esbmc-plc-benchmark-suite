@@ -25,4 +25,4 @@ variants:
       witness: "door_open=0, valid_badge=0, guard_reset=0 (after initial alarm) reaches lockdown_latch=0 despite no reset."
 features: [contacts, coils, latch]
 difficulty: easy
-tags: [safety, security, access_control]
+tags: [safety, security, access_control, known-issue-esbmc-7577]

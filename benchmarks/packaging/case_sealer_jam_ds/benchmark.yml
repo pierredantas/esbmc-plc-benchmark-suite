@@ -25,4 +25,4 @@ variants:
       witness: "jam_detected=1, conveyor_req=1 reaches conveyor_run=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [packaging, jam, conveyor]
+tags: [packaging, jam, conveyor, known-issue-esbmc-7577]
