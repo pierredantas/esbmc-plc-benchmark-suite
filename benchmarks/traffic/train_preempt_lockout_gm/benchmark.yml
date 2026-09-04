@@ -25,4 +25,4 @@ variants:
       witness: "train_detect=1, preempt_reset=1, timer_green=1 reaches veh_green=1 AND train_detect=1."
 features: [contacts, coils, latch, parallel_branch, interlock]
 difficulty: easy
-tags: [safety, traffic, preemption]
+tags: [safety, traffic, preemption, known-issue-esbmc-7577]

@@ -25,4 +25,4 @@ variants:
       witness: "protection_trip=1, close_req=1 reaches breaker_close=1."
 features: [contacts, coils, latch, cascade]
 difficulty: medium
-tags: [safety, substation, lockout, latch-training-example]
+tags: [safety, substation, lockout, latch-training-example, known-issue-esbmc-7577]

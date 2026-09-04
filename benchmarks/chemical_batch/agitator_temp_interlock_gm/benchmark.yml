@@ -25,4 +25,4 @@ variants:
       witness: "req_heat=1, agitator_run=0, maint_override=1, high_temp=0 reaches heater_run=1 AND agitator_run=0."
 features: [contacts, coils, parallel_branch, override, interlock]
 difficulty: easy
-tags: [safety, chemical_batch, heating]
+tags: [safety, chemical_batch, heating, known-issue-esbmc-7577]

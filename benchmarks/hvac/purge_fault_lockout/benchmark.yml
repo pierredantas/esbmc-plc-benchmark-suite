@@ -25,4 +25,4 @@ variants:
       witness: "purge_fail=1, burner_req=1 reaches burner_enable=1."
 features: [contacts, coils, latch, fan_out]
 difficulty: easy
-tags: [safety, hvac, burner, purge, latch-training-example]
+tags: [safety, hvac, burner, purge, latch-training-example, known-issue-esbmc-7577]

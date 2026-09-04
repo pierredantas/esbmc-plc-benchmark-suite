@@ -25,4 +25,4 @@ variants:
       witness: "freeze_stat=0, freeze_latch=1, req_run=1 reaches fan_run=1 AND freeze_latch=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, hvac, freeze_protection]
+tags: [safety, hvac, freeze_protection, known-issue-esbmc-7577]

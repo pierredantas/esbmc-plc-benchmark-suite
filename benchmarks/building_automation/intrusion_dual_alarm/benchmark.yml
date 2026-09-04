@@ -25,4 +25,4 @@ variants:
       witness: "sensor_trip=1 reaches siren_out=0."
 features: [contacts, coils, latch, fan_out]
 difficulty: easy
-tags: [safety, security, intrusion, latch-training-example]
+tags: [safety, security, intrusion, latch-training-example, known-issue-esbmc-7577]

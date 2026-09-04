@@ -25,4 +25,4 @@ variants:
       witness: "conflict_detect=1, sys_reset=1, req_green=1 reaches solid_green=1 AND conflict_detect=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, traffic, conflict_monitor]
+tags: [safety, traffic, conflict_monitor, known-issue-esbmc-7577]

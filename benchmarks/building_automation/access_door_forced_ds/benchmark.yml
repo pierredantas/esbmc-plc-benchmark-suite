@@ -25,4 +25,4 @@ variants:
       witness: "door_forced=1 reaches lock_hold=0."
 features: [contacts, coils, latch]
 difficulty: easy
-tags: [building_automation, access_control, door, alarm]
+tags: [building_automation, access_control, door, alarm, known-issue-esbmc-7577]

@@ -25,4 +25,4 @@ variants:
       witness: "defect_detect=1 reaches gate_actuate=0."
 features: [contacts, coils, latch, fan_out]
 difficulty: easy
-tags: [safety, packaging, reject, latch-training-example]
+tags: [safety, packaging, reject, latch-training-example, known-issue-esbmc-7577]

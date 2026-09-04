@@ -25,4 +25,4 @@ variants:
       witness: "fire_alarm=1, req_hall_call=1, vip_key=1 reaches doors_open=1 AND fire_alarm=1."
 features: [contacts, coils, parallel_branch, override, interlock]
 difficulty: easy
-tags: [safety, elevator, fire_service]
+tags: [safety, elevator, fire_service, known-issue-esbmc-7577]

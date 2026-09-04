@@ -25,4 +25,4 @@ variants:
       witness: "protection_trip=0, lockout_86=1, req_close=1 reaches breaker_close=1 AND lockout_86=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, protection_relay, lockout]
+tags: [safety, protection_relay, lockout, known-issue-esbmc-7577]

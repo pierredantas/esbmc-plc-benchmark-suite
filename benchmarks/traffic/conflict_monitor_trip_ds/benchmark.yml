@@ -25,4 +25,4 @@ variants:
       witness: "conflict_fault=1, manual_reset=0 reaches flash_mode=0."
 features: [contacts, coils, latch]
 difficulty: easy
-tags: [traffic, safety, fallback]
+tags: [traffic, safety, fallback, known-issue-esbmc-7577]

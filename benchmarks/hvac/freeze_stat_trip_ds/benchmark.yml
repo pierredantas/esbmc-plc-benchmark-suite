@@ -25,4 +25,4 @@ variants:
       witness: "freeze_stat=1, compressor_req=1 reaches compressor_run=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [hvac, freeze_stat, compressor]
+tags: [hvac, freeze_stat, compressor, known-issue-esbmc-7577]

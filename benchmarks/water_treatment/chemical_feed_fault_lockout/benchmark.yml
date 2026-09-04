@@ -25,4 +25,4 @@ variants:
       witness: "overdose_sensor=1, dose_req=1 reaches dose_pump_run=1."
 features: [contacts, coils, latch, fan_out]
 difficulty: easy
-tags: [safety, water_treatment, dosing, latch-training-example]
+tags: [safety, water_treatment, dosing, latch-training-example, known-issue-esbmc-7577]

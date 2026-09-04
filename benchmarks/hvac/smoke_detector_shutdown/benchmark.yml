@@ -25,4 +25,4 @@ variants:
       witness: "smoke_detect=0, smoke_latch=1, req_run=1 reaches fan_run=1 AND smoke_latch=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, hvac, fire_life_safety]
+tags: [safety, hvac, fire_life_safety, known-issue-esbmc-7577]

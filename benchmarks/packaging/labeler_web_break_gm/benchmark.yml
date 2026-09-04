@@ -25,4 +25,4 @@ variants:
       witness: "web_intact=0, reset_btn=1, req_run=1 reaches drive_run=1 AND web_intact=0."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, packaging, web_handling]
+tags: [safety, packaging, web_handling, known-issue-esbmc-7577]

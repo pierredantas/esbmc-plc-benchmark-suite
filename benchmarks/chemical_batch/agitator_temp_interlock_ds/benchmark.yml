@@ -25,4 +25,4 @@ variants:
       witness: "high_temp=1, ag_req=0 reaches agitator=0."
 features: [contacts, coils, interlock]
 difficulty: easy
-tags: [chemical, reactor, agitator, temperature]
+tags: [chemical, reactor, agitator, temperature, known-issue-esbmc-7577]

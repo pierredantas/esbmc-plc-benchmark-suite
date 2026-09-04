@@ -25,4 +25,4 @@ variants:
       witness: "req_tie=1, source_a_closed=1, source_b_closed=1 reaches tie_close=1 AND source_a_closed=1 AND source_b_closed=1."
 features: [contacts, coils, parallel_branch, interlock]
 difficulty: easy
-tags: [safety, substation, switchgear]
+tags: [safety, substation, switchgear, known-issue-esbmc-7577]

@@ -25,4 +25,4 @@ variants:
       witness: "req_close=1, line_live=1, sync_ok=0, maint_bypass=1 reaches breaker_close=1 AND line_live=1 AND sync_ok=0."
 features: [contacts, coils, parallel_branch, permissive, interlock]
 difficulty: easy
-tags: [safety, substation, synchronization]
+tags: [safety, substation, synchronization, known-issue-esbmc-7577]

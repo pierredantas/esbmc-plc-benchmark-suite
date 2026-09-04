@@ -25,4 +25,4 @@ variants:
       witness: "req_run=1, damper_open=0, smoke_override=1 reaches ahu_fan=1 AND damper_open=0."
 features: [contacts, coils, parallel_branch, override, interlock]
 difficulty: easy
-tags: [safety, hvac, fire_damper]
+tags: [safety, hvac, fire_damper, known-issue-esbmc-7577]

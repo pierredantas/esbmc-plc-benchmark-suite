@@ -25,4 +25,4 @@ variants:
       witness: "weight_high=0, overload_latch=1, req_run=1 reaches brake_lift=1 AND overload_latch=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, elevator, overload]
+tags: [safety, elevator, overload, known-issue-esbmc-7577]

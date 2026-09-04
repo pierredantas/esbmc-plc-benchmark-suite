@@ -25,4 +25,4 @@ variants:
       witness: "upper_buffer=1 reaches drive_enable=1."
 features: [contacts, coils, latch]
 difficulty: easy
-tags: [elevator, buffer, lockout]
+tags: [elevator, buffer, lockout, known-issue-esbmc-7577]
