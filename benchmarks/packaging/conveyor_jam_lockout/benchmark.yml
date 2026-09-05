@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: conveyor_jam_lockout
+name: "Packaging conveyor jam lockout"
+domain: packaging
+language: ST
+source:
+  origin: authored
+  reference: "Authored to target the temporal/procedural-phrasing translation gap identified in the kiln_door_lockout diagnosis, this time phrasing the second requirement as a sequencing/timing constraint ('stays off for the remainder of that run') tied to a run/cycle boundary rather than a simple set/reset latch. See ml/README.md."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.st
+    expected_verdict: false
+    violated_properties: [P2]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.st
+      seeded_defect: "The belt drive dispatch was reordered to check running before jam_this_run, so once running is TRUE the per-run jam latch is still set internally but no longer consulted by the belt output."
+      witness: "run_start=1 (running=1), then jam_detected=1 without an intervening run_stop reaches belt_drive=1 && jam_this_run=1."
+features: [contacts, coils, latch, state]
+difficulty: medium
+tags: [safety, interlock, latch, packaging, temporal-phrasing-probe]

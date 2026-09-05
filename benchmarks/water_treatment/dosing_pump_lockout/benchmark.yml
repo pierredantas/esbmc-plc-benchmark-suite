@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: dosing_pump_lockout
+name: "Water treatment dosing pump fault lockout"
+domain: water_treatment
+language: ST
+source:
+  origin: authored
+  reference: "Authored to target the temporal/procedural-phrasing translation gap identified in the kiln_door_lockout diagnosis, phrased as a behavioral consequence clause ('any subsequent start command is ignored ... regardless of how many times start is pressed') rather than a state description, to vary the surface form once more. See ml/README.md."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.st
+    expected_verdict: false
+    violated_properties: [P2]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.st
+      seeded_defect: "The pump dispatch was reordered to check start_cmd before dry_run_fault, so a held start command wins the branch the scan the dry-run fault is set, and the fault lockout only takes effect in scans where start_cmd happens to be false."
+      witness: "dosing_pump=1, level_low=1 (latches fault), then level_low=0 with start_cmd=1 reaches dosing_pump=1 && dry_run_fault=1."
+features: [contacts, coils, latch, state]
+difficulty: medium
+tags: [safety, interlock, latch, water-treatment, temporal-phrasing-probe]

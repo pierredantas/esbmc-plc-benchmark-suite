@@ -1,0 +1,14 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(feed_pump && pressure_high)"
+    justification: "The feed pump must never run while reactor pressure is above the safe limit."
+  - id: P2
+    kind: invariant
+    expression: "!(feed_pump && fault_flag)"
+    justification: "Once pressure has exceeded the safe limit, the feed pump must remain shut down even after pressure falls back into range, until an operator manually clears the fault."
+  - id: P3
+    kind: reachability
+    expression: "feed_pump && fault_flag"
+    justification: "Trigger synthesis: a witness recovers the bad state P2 forbids, so the counterexample search has a concrete target when the manual-reset requirement is bypassed."
