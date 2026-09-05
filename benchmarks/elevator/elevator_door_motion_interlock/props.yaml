@@ -1,0 +1,14 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(car_moving && door_open)"
+    justification: "The car must never move while a door is open."
+  - id: P2
+    kind: invariant
+    expression: "!(car_moving && overload_tripped)"
+    justification: "The car must never move while the overload sensor is tripped, independent of the door state."
+  - id: P3
+    kind: reachability
+    expression: "car_moving && overload_tripped"
+    justification: "Trigger synthesis: a witness recovers the bad state P2 forbids, so the counterexample search has a concrete target when the overload interlock is bypassed."

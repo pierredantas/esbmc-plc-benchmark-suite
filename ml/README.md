@@ -9,10 +9,12 @@ The `7b-props-nary-best` checkpoint (Qwen2.5-Coder-7B base model, the
 default in `ml/scripts/generate_props.py`) is currently at 369 examples,
 iteration 640 (retrained after the *Retraining round* below; the prior
 243-example/iteration-320 checkpoint is kept as `-best-243ex` for
-comparison). A newer 377-example/iteration-640 checkpoint exists as
-`qwen2.5-coder-7b-props-nary-best-377ex` but is **not** the default — see
-*Retraining round: 4 new benchmarks* below for why (real aggregate gain,
-confirmed regression on the targeted case). The published copy at
+comparison). Two newer checkpoints exist and are **not** the default:
+`qwen2.5-coder-7b-props-nary-best-377ex` (377 examples) and
+`-best-383ex` (383 examples) — see *Retraining round: 4 new benchmarks*
+and *Diagnosing the kiln_door_lockout regression* below for why (each
+produced a real aggregate gain alongside a confirmed regression, neither
+a clean win). The published copy at
 [huggingface.co/Pvdantas/esbmc-plc-props-slm-lora](https://huggingface.co/Pvdantas/esbmc-plc-props-slm-lora)
 (private) holds the 369-example weights, confirmed byte-identical
 (sha256) to the local `qwen2.5-coder-7b-props-nary-best` checkpoint as of
@@ -550,6 +552,94 @@ plausible") or an artifact of this specific 2-record ground-truth edit
 interacting with LoRA's small effective capacity is not yet known — see
 *Next levers* below.
 
+## Diagnosing the kiln_door_lockout regression: 3 more multi-invariant benchmarks, a narrower root cause, and a new side effect
+
+Following up on the unresolved regression above, three more benchmarks were
+authored specifically to test whether the corpus's near-total absence of
+the 2-invariant-plus-reachability-witness shape (`kiln_door_lockout` was
+the only example among 169 benchmarks) was the cause: `elevator/
+elevator_door_motion_interlock` (two independent hazards, one shared
+actuator), `chemical_batch/mixer_lid_stall_interlock` (two independent
+hazards, two different actuators), and `power_substation/
+breaker_earth_trip_interlock` (two independent guards, one shared output).
+All three ESBMC-verified end to end the same way as every benchmark above.
+Corpus grew 377 → 383 records (169 → 171 benchmarks); all four
+multi-invariant benchmarks (the three new ones plus `kiln_door_lockout`)
+were force-trained. Retrained on the unchanged recipe; best checkpoint at
+iteration 640, val loss 0.175.
+
+**The hypothesis was half right.** Re-running the memorization check (does
+the model reproduce its own training target for each of the four
+multi-invariant benchmarks) found 3 of 4 — elevator, mixer, breaker — now
+generate verbatim, fully correct output. `kiln_door_lockout` still fails
+exactly as before: P1 correct, P2 (the persistence invariant) dropped, P3
+collapsed into a malformed reachability duplicate of P1. So "the shape is
+rare" was real but incomplete as an explanation — three more examples of
+the shape fixed themselves, and the fourth, original one did not.
+
+**Comparing the four benchmarks' source comments narrows the cause.** The
+three that succeeded all phrase their two safety requirements in the same
+parallel template: "X must never happen while Y; separately, X must never
+happen while Z" — both invariants are the identical direct guard-condition
+shape, just with different conditions substituted in. `kiln_door_lockout`'s
+second requirement is not phrased this way: "the element stays locked out
+even after the door closes again, until an operator explicitly resets it"
+is a temporal/procedural description of latching behavior, not a direct
+"never while" clause. Encoding it as `!(heater_element &&
+door_fault_latched)` requires an inferential step none of the other three
+examples exercise: recognizing that "stays locked out until reset"
+describes an internal latch state variable, then writing the invariant over
+that variable rather than restating a condition already given in the
+prompt. The refined diagnosis is narrower than the original: this is not
+"3-property outputs are undertrained" (closed, by this round's evidence),
+it is "translating a temporal/procedural natural-language description of
+latch persistence into a state-variable invariant is still undertrained,"
+and `kiln_door_lockout` is still the only training example that exercises
+it.
+
+**A new side effect showed up in the aggregate.** Full held-out eval (55
+examples, current 383-record corpus and split): `kind_recall` 89.1%,
+`kind_precision` 83.6% — down from the prior round's 98.1%/96.2%. Format
+metrics held at 100%. Breaking down every example that scored below 1.0 on
+either metric (13 of 55): 6 are recall-perfect but precision-docked purely
+for an unrequested extra `reachability` property appended to a
+single-property ground truth the model otherwise got exactly right
+(confirmed on 3 by direct re-generation: `Unlocked && Motor` and similar
+expressions matched ground truth verbatim, the only "error" was a bolted-on
+P2 the ground truth does not have). This reads as over-generalizing the
+"pair an invariant with a reachability witness" pattern that this round
+deliberately reinforced (now present in `kiln_door_lockout` plus the 3 new
+benchmarks, all trained together), rather than a loss of the underlying
+reasoning. The remaining 7 are genuine misses: 4 are one benchmark
+(`chemical_batch/g_vessel_empty_permissive`, clean + bomb + its
+LD-graphical source, ST-augmented into 3 near-duplicate test-split entries)
+where the model now generates a plausible but wrong `invariant` instead of
+ground truth's `mutual_exclusion` between `feed_valve` and
+`discharge_valve` — notably the same domain as the newly added
+`mixer_lid_stall_interlock`, consistent with (not proven to be) some
+cross-contamination from training two chemical_batch examples with
+different idioms in the same run. One more (a SWaT `termination` task) is
+the pre-existing single-variant evaluation gap documented earlier in this
+file, not new. Precision fell further than recall (12.6 points vs. 9.0),
+consistent with the dominant new error being *false positives* (extra
+properties) rather than dropped ones.
+
+**Verdict, and why this checkpoint was also not promoted:** genuine
+progress on the targeted diagnosis (3 of 4 multi-invariant examples fixed,
+and a narrower, better-evidenced root cause for the fourth) came with a
+real new cost (precision regression from over-applying the reachability-
+witness pattern) that was not present in either prior checkpoint. Neither
+`qwen2.5-coder-7b-props-nary-best` (369-example) nor `-best-377ex` is
+replaced by this round's checkpoint
+(`qwen2.5-coder-7b-props-nary-best-383ex`, kept for comparison only). The
+pattern across both regression rounds is the same shape: a small,
+deliberately concentrated batch of same-shaped examples teaches the
+targeted shape but measurably shifts behavior on unrelated, previously-
+correct examples elsewhere in the corpus — worth treating as an expected
+cost of small, homogeneous training batches at this LoRA rank and dataset
+size, not a one-off accident, until a round adds enough shape diversity
+within one batch to avoid it.
+
 ## Deterministic post-check (`ml/scripts/check_props.py`)
 
 ```bash
@@ -578,18 +668,42 @@ one specific class of error, not a correctness guarantee.
 
 ## Next levers, roughly in order of expected payoff
 
-1. **Diagnose the `kiln_door_lockout` regression before retraining again.**
-   The *Retraining round: 4 new benchmarks* section above shows the
-   377-example checkpoint dropping the exact persistence property this
-   benchmark was authored to teach, at both saved checkpoints tested (iter
-   640 and iter 320), while the prior (369-example) checkpoint got it right.
-   Before authoring more latch examples to push through this, check whether
-   it reproduces with a different `--force-train` set, a higher LoRA rank, or
-   more epochs on the same 4 new examples — the current evidence (one
-   benchmark, two checkpoints, both wrong the same way) cannot yet
-   distinguish "needs more data" from "this specific corpus edit destabilized
-   something LoRA-rank-16 can't absorb alongside the rest of the corpus."
-2. **Fix the `termination`-property evaluation gap.** `evaluate.py` feeds
+1. **Author more examples that translate temporal/procedural latch language
+   into a state-variable invariant — not more "two independent never-while
+   clauses" examples.** The *Diagnosing the kiln_door_lockout regression*
+   section above narrowed the cause: 3 new multi-invariant benchmarks
+   fixed themselves once added, ruling out "3-property outputs are rare" as
+   the whole story, but `kiln_door_lockout` still fails because it is still
+   the only training example whose second property requires inferring a
+   latch state variable from a description like "stays locked out until
+   reset," rather than restating a guard condition already given directly
+   in the prompt. The next benchmarks for this lever should vary *how* the
+   persistence requirement is phrased (worded without naming the latch
+   variable, phrased as a timing/sequencing constraint, etc.), not just add
+   more parallel-clause multi-hazard examples like the three just added.
+2. **Fix the reachability-witness over-generation side effect before the
+   next round.** The same diagnostic round found the 383-example checkpoint
+   appending an unrequested `reachability` property to single-property
+   ground truth it otherwise generates correctly (6 of 55 held-out
+   examples, confirmed by direct re-generation matching the `invariant`
+   expression verbatim in each case) — `kind_precision` dropped 96.2% →
+   83.6%, more than `kind_recall`'s 98.1% → 89.1%, consistent with this
+   being the dominant new error. Training a small, homogeneous batch where
+   every added example pairs an invariant with a witness appears to teach
+   the pairing as a default rather than a conditional pattern. Diversifying
+   any future multi-property batch with single-property, no-witness
+   examples in the same training run (not just relying on the rest of the
+   corpus to counterbalance) is the more promising fix than a training
+   hyperparameter change, on current evidence.
+3. **Investigate the new `chemical_batch` cross-contamination signal.**
+   `g_vessel_empty_permissive` (clean + bomb + LD-graphical, a
+   `mutual_exclusion` benchmark unrelated to this round) started generating
+   a plausible-but-wrong `invariant` after `mixer_lid_stall_interlock` was
+   added to the same domain in the same training run. Circumstantial, not
+   proven — worth a controlled check (train with `mixer_lid_stall_interlock`
+   alone vs. with a same-shaped example from a different domain) before
+   concluding domain-adjacency is a real interaction and not coincidence.
+4. **Fix the `termination`-property evaluation gap.** `evaluate.py` feeds
    the model one variant's source at a time, but a `kind: termination`
    property (e.g. the SWaT `st_swat_*` tasks) concerns a hazard injected
    only in the *malicious* variant — there is no way to generate it
@@ -599,7 +713,7 @@ one specific class of error, not a correctness guarantee.
    together for a termination task, or exclude `termination` tasks from
    single-variant scoring, before trusting any future aggregate number that
    includes them.
-2. **Under-enumeration is still the most common remaining failure**, on
+5. **Under-enumeration is still the most common remaining failure**, on
    both the old and the retrained checkpoint. The *Retraining round* probe's
    `intrusion_dual_alarm` result shows it persisting even where the
    targeted tautology-of-wiring bug is fixed: the model produced a
@@ -607,7 +721,7 @@ one specific class of error, not a correctness guarantee.
    reachability again. Multi-property programs generally, and the
    zero-example `absence`/`assertion` kinds, remain the priority — same
    target as before, not yet closed by this round.
-3. **More latch-shape variety** — the 5 benchmarks added this round fixed
+6. **More latch-shape variety** — the 5 benchmarks added this round fixed
    the tautology failure on every previously-probed case but only partly
    generalized to the one genuinely novel example (`intrusion_dual_alarm`
    converged on a real property, not the intended one). More examples
@@ -616,12 +730,12 @@ one specific class of error, not a correctness guarantee.
    `protection_lockout_cascade`, would test whether that's a data-coverage
    gap or a genuine reasoning limit, the same distinction the *Base model
    size* section drew for the 1.5B→7B jump.
-4. **`ml/scripts/check_props.py`** — built and validated; a cheap guardrail
+7. **`ml/scripts/check_props.py`** — built and validated; a cheap guardrail
    for hallucinated variables and mislabeled `mutual_exclusion`, not a fix
    for polarity inversion, incomplete variable coverage, or the
    tautology-of-wiring failure this round targeted (none of the model's
    remaining failures are caught by it).
-5. **An even larger base model, or full fine-tuning instead of LoRA** —
+8. **An even larger base model, or full fine-tuning instead of LoRA** —
    still untested; the 1.5B→7B jump produced a real but mixed result
    (reasoning up, idiom-adherence down at the time), and this round's
    retraining on more data closed part of that gap without changing model

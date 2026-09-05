@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: breaker_earth_trip_interlock
+name: "Substation breaker closing-coil dual interlock"
+domain: power_substation
+language: ST
+source:
+  origin: authored
+  reference: "Authored alongside elevator_door_motion_interlock and mixer_lid_stall_interlock to give the corpus's 2-invariant-plus-reachability-witness shape enough repetition to be learned. Both guards act on the same output (closing_coil), unlike the other two benchmarks added with it, to also cover the shared-actuator structural variant. See ml/README.md."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.st
+    expected_verdict: false
+    violated_properties: [P2]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.st
+      seeded_defect: "The combined guard was reordered to give close_request priority over the protection-trip check (kept ahead only of earth_switch_closed), so a held close_request energises the coil even while a protection trip is latched."
+      witness: "trip_latched=1, close_request=1, earth_switch_closed=0 (single scan) reaches closing_coil=1 while tripped."
+features: [contacts, coils, interlock, multi-invariant]
+difficulty: easy
+tags: [safety, interlock, power-substation, multi-property-probe]

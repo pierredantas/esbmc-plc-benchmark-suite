@@ -1,0 +1,14 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(closing_coil && earth_switch_closed)"
+    justification: "The closing coil must never energise while the earthing switch is closed; closing onto an earthed line is catastrophic."
+  - id: P2
+    kind: invariant
+    expression: "!(closing_coil && trip_latched)"
+    justification: "The closing coil must never energise while a protection trip is latched; closing into a known fault re-energises it."
+  - id: P3
+    kind: reachability
+    expression: "closing_coil && trip_latched"
+    justification: "Trigger synthesis: a witness recovers the bad state P2 forbids, so the counterexample search has a concrete target when the trip interlock is bypassed."
