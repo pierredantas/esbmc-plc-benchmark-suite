@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: kiln_door_lockout
+name: "Industrial kiln door safety latch"
+domain: building_automation
+language: ST
+source:
+  origin: authored
+  reference: "Authored to probe an SLM under-enumeration failure found when generate_props.py produced only the immediate door-open interlock (P1) for this program and silently dropped the fault-latch persistence requirement (P2), despite both being stated explicitly in the source's own header comment. See ml/README.md."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.st
+    expected_verdict: false
+    violated_properties: [P2]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.st
+      seeded_defect: "Heater dispatch reordered to check heat_request before the fault latch, so a pending heat request wins the branch the scan the fault latches, and ELSIF door_fault_latched becomes unreachable once heat_request is true."
+      witness: "door_open=1 (latches fault), then door_open=0 with heat_request=1 reaches heater_element=1 && door_fault_latched=1."
+features: [contacts, coils, latch, state]
+difficulty: medium
+tags: [safety, interlock, latch, kiln, under-enumeration-probe]

@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(overload_tripped && hoist_raise)"
+    justification: "The hoist motor must never raise the load while the overload sensor is tripped, regardless of the operator's raise command."
+  - id: P2
+    kind: reachability
+    expression: "overload_tripped && hoist_raise"
+    justification: "Trigger synthesis: a witness recovers the case where the motor raises the load despite the overload sensor being tripped, matching the seeded defect that lets a stale raise command survive the trip check."

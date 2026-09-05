@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: airlock_pressure_interlock
+name: "Cleanroom airlock door interlock"
+domain: building_automation
+language: ST
+source:
+  origin: authored
+  reference: "Authored for the esbmc-plc-benchmark-suite as a clean peer-actuator mutual_exclusion example, the corpus's dominant shape for that kind, included for breadth rather than to target a known failure."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.st
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.st
+      seeded_defect: "The two door branches were split from an IF/ELSIF chain into independent IF statements, dropping the NOT outer_request / NOT inner_request cross-checks, so both requests arriving in the same scan unlock both doors together."
+      witness: "inner_request=1, outer_request=1, cycle_busy=0 (single scan) reaches inner_unlocked=1 && outer_unlocked=1."
+features: [contacts, coils, mutual_exclusion]
+difficulty: easy
+tags: [safety, interlock, airlock, cleanroom]

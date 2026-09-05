@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!arc_on || (gas_flow_ok && trigger_pull)"
+    justification: "The arc must never strike unless both shielding-gas flow is confirmed and the torch trigger is pulled."
+  - id: P2
+    kind: reachability
+    expression: "arc_on && !gas_flow_ok"
+    justification: "Trigger synthesis: a witness recovers the case where the arc is live while the gas flow sensor reads a dropout, matching the seeded defect that removes the gas interlock from the trigger branch."
