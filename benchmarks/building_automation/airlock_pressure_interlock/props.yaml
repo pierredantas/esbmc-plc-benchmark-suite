@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: mutual_exclusion
+    variables: [inner_unlocked, outer_unlocked]
+    justification: "The inner and outer airlock doors must never both be unlocked at the same time, to maintain pressure differential and contamination control."
+  - id: P2
+    kind: reachability
+    expression: "inner_unlocked && outer_unlocked"
+    justification: "Trigger synthesis: a witness recovers the case where both doors are unlocked simultaneously, matching the seeded defect that lets a stale request bypass the cycle_busy interlock on one side."

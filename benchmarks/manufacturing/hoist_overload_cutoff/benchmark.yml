@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: hoist_overload_cutoff
+name: "Crane hoist overload cutoff"
+domain: manufacturing
+language: ST
+source:
+  origin: authored
+  reference: "Authored for the esbmc-plc-benchmark-suite to add a plain 2-variable cause-effect invariant example (a shape already well represented in the corpus, included for breadth rather than to target a known failure)."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.st
+    expected_verdict: false
+    violated_properties: [P1]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.st
+      seeded_defect: "The overload_tripped guard was reordered from a leading IF to a trailing ELSIF, so IF/ELSIF short-circuiting lets a held raise_command energise hoist_raise even while the overload sensor is tripped."
+      witness: "overload_tripped=1, raise_command=1, lower_command=0 (single scan) reaches hoist_raise=1 while tripped."
+features: [contacts, coils, interlock, priority-inversion]
+difficulty: easy
+tags: [safety, interlock, hoist, overload]

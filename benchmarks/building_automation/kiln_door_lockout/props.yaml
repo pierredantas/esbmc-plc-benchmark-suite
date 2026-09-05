@@ -1,0 +1,14 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(heater_element && door_open)"
+    justification: "The heating element must never be energised while the kiln door is open."
+  - id: P2
+    kind: invariant
+    expression: "!(heater_element && door_fault_latched)"
+    justification: "Once the door has opened during a heat cycle, the heater must stay locked out even after the door closes, until an operator resets it."
+  - id: P3
+    kind: reachability
+    expression: "heater_element && door_fault_latched"
+    justification: "Trigger synthesis: a witness recovers the bad state P2 forbids, so the counterexample search has a concrete target when the lockout is bypassed."

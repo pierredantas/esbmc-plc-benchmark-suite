@@ -9,10 +9,16 @@ The `7b-props-nary-best` checkpoint (Qwen2.5-Coder-7B base model, the
 default in `ml/scripts/generate_props.py`) is currently at 369 examples,
 iteration 640 (retrained after the *Retraining round* below; the prior
 243-example/iteration-320 checkpoint is kept as `-best-243ex` for
-comparison). The published copy at
+comparison). A newer 377-example/iteration-640 checkpoint exists as
+`qwen2.5-coder-7b-props-nary-best-377ex` but is **not** the default — see
+*Retraining round: 4 new benchmarks* below for why (real aggregate gain,
+confirmed regression on the targeted case). The published copy at
 [huggingface.co/Pvdantas/esbmc-plc-props-slm-lora](https://huggingface.co/Pvdantas/esbmc-plc-props-slm-lora)
-(private) still holds the 243-example weights as of this writing — re-upload
-before treating it as current, or retrain locally per the steps below.
+(private) holds the 369-example weights, confirmed byte-identical
+(sha256) to the local `qwen2.5-coder-7b-props-nary-best` checkpoint as of
+this writing — matches the current default, and was deliberately left as
+is rather than updated to the 377-example checkpoint given the regression
+above.
 
 ## Setup
 
@@ -425,6 +431,125 @@ together or exclude `termination` tasks from single-variant evaluation
 until `evaluate.py` supports it properly.
 
 
+## Retraining round: 4 new benchmarks, a ground-truth bug found in review, and a regression on the targeted case
+
+Continuing from the *Held-out probe* and *Retraining round* sections above,
+four more programs were authored specifically to add corpus breadth and probe
+the same under-enumeration failure from a fresh angle:
+`building_automation/kiln_door_lockout` (an internal latch fanning out to
+gate one output, with a persistence/reset requirement — the same shape as
+the prior round's 5 latch benchmarks, but authored independently, with no
+existing `props.yaml` to pattern-match against), `manufacturing/
+welder_gas_shield_interlock` and `manufacturing/hoist_overload_cutoff`
+(plain single-output cause-effect invariants, added for breadth), and
+`building_automation/airlock_pressure_interlock` (a peer-actuator
+`mutual_exclusion` pair, also for breadth). All four ship a clean and a
+fault-injected `bomb` variant, verified end to end with ESBMC via
+`runner/record_via_c.py` (the plain-ST verification path — `iec2c`-compiled
+to C, then plain ESBMC on the generated harness; distinct from the `.ld`/
+`--ld-props` route used for LD-textual benchmarks): every clean variant
+returns SAFE on all properties, every bomb variant returns VIOLATION on
+exactly the property its seeded defect targets, with a counterexample
+matching the intended witness.
+
+**`kiln_door_lockout` was drafted, from source and stated intent alone
+(no automated tool), before any ESBMC run** — a deliberate test of whether
+a large general-purpose model reasoning over one program's header comment
+and control flow produces usable ground truth. It got two of three
+properties right and one wrong: the drafted reachability witness,
+`door_fault_latched && !door_open`, is not a bad state — it is the normal,
+safe state the program passes through after a fault trips and the door
+closes but before an operator resets it. Treating it as a violation witness
+was a category error, caught during the ESBMC verification pass, which
+confirmed the correct witness is `heater_element && door_fault_latched`
+(the actual state P2 forbids). That corrected expression is what shipped to
+`benchmarks/building_automation/kiln_door_lockout/props.yaml`.
+
+**A second copying mistake compounded the first.** The corrected expression
+was verified and reported, but the corpus file was written from an earlier,
+uncorrected copy of the same working directory, so the flawed witness
+(`door_fault_latched && !door_open`) is what actually reached
+`ml/data/train.jsonl` for the first retraining run on this round's corpus.
+This was caught by re-reading the shipped `props.yaml` directly rather than
+trusting the verification report's quoted YAML, re-confirmed against ESBMC
+(bomb.st: VIOLATION on the corrected expression), fixed in place, and the
+dataset and model were rebuilt from the corrected file. The lesson is
+procedural, not statistical: a sub-agent's prose summary of what it fixed
+is not proof of what it wrote to disk, and the two disagreed here without
+either being an obviously invalid YAML or failing schema validation — only
+re-deriving the expected verdict independently caught it.
+
+The corpus grew 369 → 377 records (165 → 169 benchmarks); the 7B model was
+retrained on the unchanged `lora_config_7b.yaml` recipe against the
+corrected corpus, with `kiln_door_lockout` pinned via `--force-train` (the
+one benchmark this round specifically targets; the other three were left to
+the random split and all landed in `train` by chance, so this round carries
+no genuinely-unseen probe the way `st_quad_valve_lockout` did for the prior
+round). Validation loss across the 4 saved checkpoints: 0.485 (iter 160),
+0.296 (iter 320), 0.529 (iter 480), **0.196 (iter 640, lowest, and again the
+final iteration rather than a mid-run trough)**.
+
+**Full held-out set** (`ml/data/test.jsonl`, 53 examples, current 377-record
+corpus and split): `kind_recall` 98.1%, `kind_precision` 96.2% — up from the
+prior round's 87.3%/92.2% on 51 examples. `yaml_valid`, `schema_valid`, and
+`id_format_ok` all held at 100%. The standing 3-benchmark probe
+(`capper_torque_stop_ds`, `dual_valve_containment_gm`, `vfd_bypass_interlock`)
+also held at 100%/100%, confirming the prior round's tautology-of-wiring fix
+is intact.
+
+**But the one case this round was specifically built to fix regressed.**
+Re-running `generate_props.py` on `ml/demo/kiln_door_latch.st` against the
+new checkpoint:
+
+```yaml
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(heater_element && door_open)"
+    justification: "The heating element must never be energised while the kiln door is open."
+  - id: P2
+    kind: reachability
+    expression: "heater_element && door_open"
+    justification: "Trigger synthesis: a witness recovers the bad state P2 forbidding the heating element to be energised while the door is open."
+```
+
+P1 is correct. P2, the fault-latch persistence invariant this benchmark
+exists to teach, is gone entirely, replaced by a malformed reachability
+property: it duplicates P1's bad state rather than witnessing anything new,
+and its own justification text refers to "P2" as the invariant being
+witnessed even though the emitted property's `kind` is `reachability` and
+no such invariant is present. This is worse than the previous (369-example)
+checkpoint's output on the same file, which had produced all three
+properties correctly, including the one this new checkpoint dropped.
+
+Confirmed not a decoding fluke: `generate_props.py` uses greedy decoding
+(`temp=0.0`), so this output is deterministic and reproducible, not sampling
+noise. Also confirmed not a checkpoint-selection artifact: iter 320 (a
+genuine local val-loss minimum, not just noise near the final iteration)
+was tested independently and fails the same way — drops P2, emits the same
+redundant reachability duplicate of P1 — while also scoring worse on the
+standing 3-benchmark probe (83.3% vs. iter 640's 100% kind recall). No saved
+checkpoint from this run reproduces the fix the prior checkpoint already
+had on this exact file.
+
+**Verdict, and why the checkpoint was not promoted to default:** this round
+produced a real aggregate improvement (+11 points recall, +4 points
+precision on the held-out set) and held every previously-confirmed fix, but
+regressed on the specific under-enumeration case it was built to close. A
+checkpoint that improves the average while failing worse on the targeted
+case is not a clean win, and shipping it as `generate_props.py`'s new
+default would hide a known regression behind a good headline number.
+`qwen2.5-coder-7b-props-nary-best` still points at the 369-example/iter-640
+checkpoint; this round's checkpoint is kept as
+`qwen2.5-coder-7b-props-nary-best-377ex` for comparison, not promoted.
+Whether the P2 drop is a data-coverage gap (four single-latch-shape examples
+still is not much signal for "always ground persistence in the latch
+variable, even when a simpler reachability duplicate of P1 is also
+plausible") or an artifact of this specific 2-record ground-truth edit
+interacting with LoRA's small effective capacity is not yet known — see
+*Next levers* below.
+
 ## Deterministic post-check (`ml/scripts/check_props.py`)
 
 ```bash
@@ -453,7 +578,18 @@ one specific class of error, not a correctness guarantee.
 
 ## Next levers, roughly in order of expected payoff
 
-1. **Fix the `termination`-property evaluation gap.** `evaluate.py` feeds
+1. **Diagnose the `kiln_door_lockout` regression before retraining again.**
+   The *Retraining round: 4 new benchmarks* section above shows the
+   377-example checkpoint dropping the exact persistence property this
+   benchmark was authored to teach, at both saved checkpoints tested (iter
+   640 and iter 320), while the prior (369-example) checkpoint got it right.
+   Before authoring more latch examples to push through this, check whether
+   it reproduces with a different `--force-train` set, a higher LoRA rank, or
+   more epochs on the same 4 new examples — the current evidence (one
+   benchmark, two checkpoints, both wrong the same way) cannot yet
+   distinguish "needs more data" from "this specific corpus edit destabilized
+   something LoRA-rank-16 can't absorb alongside the rest of the corpus."
+2. **Fix the `termination`-property evaluation gap.** `evaluate.py` feeds
    the model one variant's source at a time, but a `kind: termination`
    property (e.g. the SWaT `st_swat_*` tasks) concerns a hazard injected
    only in the *malicious* variant — there is no way to generate it
