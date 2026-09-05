@@ -1,0 +1,14 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(agitator_on && lid_open)"
+    justification: "The agitator must never run while the vessel lid is open."
+  - id: P2
+    kind: invariant
+    expression: "!(heater_on && agitator_stalled)"
+    justification: "The heater must never run while the agitator is stalled, to avoid local scorching and pressure buildup around a stationary rotor."
+  - id: P3
+    kind: reachability
+    expression: "heater_on && agitator_stalled"
+    justification: "Trigger synthesis: a witness recovers the bad state P2 forbids, so the counterexample search has a concrete target when the stall interlock is bypassed."

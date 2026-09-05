@@ -17,7 +17,7 @@ model: mlx-community/Qwen2.5-Coder-7B-Instruct-4bit
 train: true
 fine_tune_type: lora
 data: ml/data
-adapter_path: ml/adapters/qwen2.5-coder-7b-props-nary-377ex
+adapter_path: ml/adapters/qwen2.5-coder-7b-props-nary-383ex
 
 num_layers: 8
 batch_size: 1

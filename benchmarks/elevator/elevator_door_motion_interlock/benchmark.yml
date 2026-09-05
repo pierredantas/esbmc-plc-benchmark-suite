@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: elevator_door_motion_interlock
+name: "Elevator door/motion dual interlock"
+domain: elevator
+language: ST
+source:
+  origin: authored
+  reference: "Authored to close a specific SLM coverage gap: the entire 169-benchmark corpus (as of the prior round) had exactly one example pairing two independent invariants with a shared reachability witness (kiln_door_lockout), and the model failed to reproduce even that single training example, dropping one invariant. Authored with two genuinely independent hazards (door state, overload state) on the same actuator, not fan-out from one shared latch, to test whether the failure was structural (output shape) or content-specific (latch fan-out). See ml/README.md."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.st
+    expected_verdict: false
+    violated_properties: [P2]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.st
+      seeded_defect: "The combined door/overload guard was split into a door-only IF and a separate overload IF that only forces a stop, never preventing move_request from starting the car in the same scan the overload sensor trips."
+      witness: "overload_tripped=1, move_request=1, door_open=0 (single scan) reaches car_moving=1 while tripped."
+features: [contacts, coils, interlock, multi-invariant]
+difficulty: easy
+tags: [safety, interlock, elevator, multi-property-probe]

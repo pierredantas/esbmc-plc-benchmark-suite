@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: mixer_lid_stall_interlock
+name: "Batch mixer lid/stall dual interlock"
+domain: chemical_batch
+language: ST
+source:
+  origin: authored
+  reference: "Authored alongside elevator_door_motion_interlock and breaker_earth_trip_interlock to give the corpus's 2-invariant-plus-reachability-witness shape enough repetition to be learned; kiln_door_lockout was previously the only such example and the model failed to reproduce it in training. This variant uses two different actuators (agitator, heater) for the two hazards, a third structural variant from the shared-actuator shape used by the other two. See ml/README.md."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.st
+    expected_verdict: false
+    violated_properties: [P2]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.st
+      seeded_defect: "The heater dispatch was reordered to check heat_request before agitator_stalled, so a pending heat request wins the branch the scan the stall is detected, and ELSIF agitator_stalled becomes unreachable once heat_request is true."
+      witness: "agitator_stalled=1, heat_request=1 (single scan) reaches heater_on=1 while stalled."
+features: [contacts, coils, interlock, multi-invariant]
+difficulty: easy
+tags: [safety, interlock, chemical-batch, multi-property-probe]
