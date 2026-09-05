@@ -14,8 +14,11 @@ comparison). A newer 377-example/iteration-640 checkpoint exists as
 *Retraining round: 4 new benchmarks* below for why (real aggregate gain,
 confirmed regression on the targeted case). The published copy at
 [huggingface.co/Pvdantas/esbmc-plc-props-slm-lora](https://huggingface.co/Pvdantas/esbmc-plc-props-slm-lora)
-(private) still holds the 243-example weights as of this writing — re-upload
-before treating it as current, or retrain locally per the steps below.
+(private) holds the 369-example weights, confirmed byte-identical
+(sha256) to the local `qwen2.5-coder-7b-props-nary-best` checkpoint as of
+this writing — matches the current default, and was deliberately left as
+is rather than updated to the 377-example checkpoint given the regression
+above.
 
 ## Setup
 
