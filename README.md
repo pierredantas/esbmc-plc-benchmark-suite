@@ -91,6 +91,19 @@ tagged `known-issue-esbmc-7577` and carries `validation_status: candidate` rathe
 verdict on one of these was never actually sound. Check a task's tags before trusting its
 expected verdict as tool-confirmed.
 
+**Three more ESBMC LD/FBD front-end defects**, found while cross-checking every recorded
+verdict against its expected one: an `<FBD>`-bodied POU is silently skipped rather than
+rejected, producing an empty scan loop
+([esbmc/esbmc#7578](https://github.com/esbmc/esbmc/issues/7578),
+`chemical_batch/fbd_reactor_2oo3`); a function-block instance's ST body drops any Boolean
+operator (`AND`/`OR`/`XOR`/`NOT`) and its wired inputs are overwritten with fresh `NONDET`
+regardless of the wiring
+([esbmc/esbmc#7579](https://github.com/esbmc/esbmc/issues/7579),
+[#7580](https://github.com/esbmc/esbmc/issues/7580), `manufacturing/g_two_hand_fb`); and a
+pre-existing scan-order defect ([esbmc/esbmc#7352](https://github.com/esbmc/esbmc/issues/7352))
+affects `packaging/guard_door_interlock`. Same convention: each is tagged
+`known-issue-esbmc-<N>`, all three remain `candidate`.
+
 ## Validate
 ```
 pip3 install pyyaml jsonschema

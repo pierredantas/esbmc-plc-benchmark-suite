@@ -25,4 +25,4 @@ variants:
       witness: "Expected SAFE by construction and confirmed on the ladder twin. Both builds report VIOLATION here, because a binary boolean in a function-block body is reduced to its first operand."
 features: [function_block, multi_pou, latch]
 difficulty: medium
-tags: [safety-function, frontend-gap, syntax-pair]
+tags: [safety-function, frontend-gap, syntax-pair, known-issue-esbmc-7579, known-issue-esbmc-7580]
