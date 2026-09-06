@@ -695,15 +695,16 @@ conclusion, since the raw number alone would overstate the damage:
   (wrong `kind`, wrong variable pairing) in a domain neither this nor the
   prior round touched.
 
-**Verdict: the cross-domain idiom-drift cost is now confirmed, not
-circumstantial.** Two independent domains (`chemical_batch` last round,
-`elevator` this round) have each shown a previously-correct
-`mutual_exclusion` benchmark drift to `invariant` after a new multi-invariant
-example was added to the same domain, in both cases on the next retraining
-round rather than immediately. That is no longer coincidence-shaped
-evidence; it is a reproducible pattern across two separate rounds and two
-separate domains, worth treating as a real interaction and testing directly
-(see *Next levers*) rather than caveating away.
+**Verdict at the time of this round: the cross-domain idiom-drift cost
+looked confirmed, not circumstantial** — two independent domains
+(`chemical_batch` last round, `elevator` this round) each showed a
+previously-correct `mutual_exclusion` benchmark drift to `invariant` after
+a new multi-invariant example was added to the same domain. **This
+causal story does not survive a per-checkpoint check — see the
+*Correction* section below, which retracts domain-adjacency as the
+mechanism and identifies the actual distinguishing factor.** Left here
+rather than rewritten, since it accurately records what the evidence
+looked like at this point in the investigation.
 
 **Not promoted to default.** `kiln_door_lockout` being genuinely fixed is
 real progress and the strongest single result of this line of work, but it
@@ -717,6 +718,57 @@ costs something in an adjacent, seemingly unrelated part of the corpus —
 worth treating as the expected shape of progress at this LoRA rank and
 dataset size until a round is designed specifically to counteract it (see
 *Next levers*).
+
+## Correction: the "cross-domain idiom drift" theory was wrong
+
+The prior two sections named domain-adjacency to a new multi-invariant
+benchmark as the cause of `g_vessel_empty_permissive` and `g_elevator_door`
+drifting from `mutual_exclusion` to `invariant`. A controlled check across
+every saved checkpoint (369ex, 377ex, 383ex, 389ex) refutes that as a
+unified explanation:
+
+- **`g_elevator_door` was already wrong at the 377-example checkpoint** —
+  the round that added `kiln_door_lockout` (`building_automation`) and
+  three unrelated benchmarks, none in the `elevator` domain.
+  `elevator_door_motion_interlock` was not added until the *next* round
+  (383ex), one round after the drift had already happened. Domain-adjacency
+  cannot be the cause here: there was no elevator-domain sibling yet.
+- **`g_vessel_empty_permissive` was still correct at 377ex** and only broke
+  at 383ex, the round `mixer_lid_stall_interlock` did join its domain — the
+  coincidence that originally suggested the theory.
+- **`chemical_batch/dual_valve_containment_gm`, in the same domain as
+  `g_vessel_empty_permissive`**, was checked directly on the 389-example
+  checkpoint and still generates the correct `mutual_exclusion` kind and
+  exact variable pairing. If domain-adjacency to a new multi-invariant
+  sibling were the mechanism, this benchmark should be equally exposed —
+  it is not.
+
+**What actually distinguishes the two failing benchmarks from the survivor:**
+`g_elevator_door` and `g_vessel_empty_permissive` have no `.st` source file
+in the repository at all — their only ST training signal is
+`runner/ld_to_st.py`'s auto-generated rendering of their PLCopen XML, which
+carries no comment and no stated safety intent, just bare contact/coil
+names. `dual_valve_containment_gm` has a hand-authored `.st` file with an
+explicit header comment ("must never be open simultaneously") that its
+`props.yaml` justification echoes closely. Confirmed directly: feeding the
+un-augmented XML source of both failing benchmarks to earlier checkpoints
+where they still scored correctly, then to the checkpoint where they first
+failed, shows each one flipping to `invariant` at a different round,
+triggered by an unrelated corpus change each time (one from a different
+domain entirely) — consistent with **comment-less, XML-derived ground
+truth being generally fragile to any sufficiently large retraining shift**,
+not with any specific interaction between a benchmark and a same-domain
+sibling.
+
+This is a corpus-quality finding, not a training-strategy interaction bug:
+some ground truth has no natural-language anchor for the model to lock the
+correct idiom onto, and such examples should be expected to drift on any
+future round that shifts the adapter meaningfully, regardless of what
+domain the round's new benchmarks happen to touch. The fix is not "avoid
+adding examples to the same domain" (the theory this correction retracts)
+but either authoring a comment for benchmarks whose only source is
+XML-derived, or accepting that these specific benchmarks are not reliable
+regression markers for any particular round's changes.
 
 ## Deterministic post-check (`ml/scripts/check_props.py`)
 
@@ -746,21 +798,24 @@ one specific class of error, not a correctness guarantee.
 
 ## Next levers, roughly in order of expected payoff
 
-1. **Confirmed: adding a multi-invariant benchmark to a domain destabilizes
-   that domain's existing `mutual_exclusion` idiom, one round later.** No
-   longer circumstantial — the *kiln_door_lockout fixed* section above shows
-   it in two independent domains: `chemical_batch/g_vessel_empty_permissive`
-   drifted to `invariant` the same round `mixer_lid_stall_interlock` was
-   added, and `elevator/g_elevator_door` drifted the *next* round after
-   `elevator_door_motion_interlock` was added the round before. The one-round
-   lag in the second case means a same-round-only check would have missed
-   it — any controlled test needs to look at least one round past the
-   benchmark's introduction, not just the immediate retraining. Run the
-   controlled check proposed previously (train `mixer_lid_stall_interlock`
-   alone vs. paired with a same-shaped example from a domain that already
-   has no `mutual_exclusion` sibling) before authoring further
-   multi-invariant benchmarks into domains that already carry a
-   `mutual_exclusion` example.
+1. **Author comments for the comment-less, XML-only `mutual_exclusion`
+   benchmarks, or stop treating them as regression markers.** The
+   *Correction* section above retracted the domain-adjacency theory: a
+   per-checkpoint check (369ex → 377ex → 383ex → 389ex) showed
+   `g_elevator_door` and `g_vessel_empty_permissive` each drifting to
+   `invariant` at a different round, each time triggered by an unrelated
+   corpus change (one from a different domain entirely), while
+   `dual_valve_containment_gm` — same domain as one of the failures, but
+   with a hand-authored `.st` file and an explicit safety-intent comment —
+   stayed correct throughout. The actual distinguishing factor is the
+   presence or absence of a natural-language anchor in the training source,
+   not domain-adjacency. Two concrete options: (a) author a short comment
+   for every benchmark whose only ST training signal is `ld_to_st.py`'s
+   auto-generated rendering, giving the model something to lock the correct
+   idiom onto the way `dual_valve_containment_gm` does; or (b) accept these
+   specific benchmarks will drift on any sufficiently large retraining
+   change and stop citing them individually as evidence for or against a
+   given round's changes.
 2. **The reachability-witness over-generation side effect from two rounds
    ago is still present, essentially unchanged (6 of 55 → 6 of 56 held-out
    examples).** `kind_precision` has now fallen twice running (96.2% →
