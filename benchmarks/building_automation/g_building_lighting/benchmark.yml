@@ -8,6 +8,7 @@ source:
   reference: "Authored for this suite to cover this domain with genuine control logic"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The master-off override must always de-energise the lights."
 validation_status: validated
 variants:
   - file: clean.xml

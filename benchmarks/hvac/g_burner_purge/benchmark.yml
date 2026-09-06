@@ -8,6 +8,7 @@ source:
   reference: "Authored from the light-off order in EN 298: purge, prove flame, then admit main gas, with a lockout that needs a manual reset"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The main gas valve must open only after the purge has completed and the flame is proven."
 validation_status: validated
 variants:
   - file: program.xml

@@ -8,6 +8,7 @@ source:
   reference: "Authored from the guard-locking requirement in ISO 14119: the guard stays locked until the hazardous movement has stopped, not until the drive command drops"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The safety guard must never be released while the drive is energised."
 validation_status: validated
 variants:
   - file: program.xml

@@ -8,6 +8,7 @@ source:
   reference: "Authored from the reset requirement in ISO 13850 and ISO 13849-1: the safety function is restored by a separate manual action, never by releasing the actuator"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The drive must never be energised while the emergency stop is actuated."
 validation_status: validated
 variants:
   - file: program.xml

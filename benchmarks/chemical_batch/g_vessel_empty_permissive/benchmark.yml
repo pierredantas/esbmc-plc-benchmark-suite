@@ -8,6 +8,7 @@ source:
   reference: "Authored for this suite, modeling a feed/discharge valve interlock gated by vessel-empty confirmation"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "Feed and discharge valves must never be open together; feed additionally requires the vessel confirmed empty."
 validation_status: candidate
 variants:
   - file: clean.xml

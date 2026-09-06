@@ -8,6 +8,7 @@ source:
   reference: "Graphical PLCopen XML twin of the K-LD textual benchmark (syntax-coverage pair)"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The output must be energised only when at least one of the two inputs is closed."
 validation_status: candidate
 syntax_pair_of: ld_comb_or
 variants:

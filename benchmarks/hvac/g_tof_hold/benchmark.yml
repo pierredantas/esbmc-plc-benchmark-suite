@@ -8,6 +8,7 @@ source:
   reference: "Graphical twin of ld_tof_hold. The textual twin's property, Light implies Pir or Button, is false of an off-delay and is kept as implies_input.props.yaml; props.yaml carries the requirement that does hold"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "While the PIR sees motion the lamp must be lit; the off-delay may only extend that, never shorten it."
 validation_status: candidate
 syntax_pair_of: ld_tof_hold
 variants:

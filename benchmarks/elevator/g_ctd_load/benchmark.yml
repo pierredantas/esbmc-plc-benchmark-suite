@@ -8,6 +8,7 @@ source:
   reference: "Graphical twin of ld_ctd_load. The IEC LD pin is wired but the graphical front end reads only R, so the modelled counter never reloads"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "Load is dominant: the count-down Empty flag and Load must never hold together."
 validation_status: candidate
 syntax_pair_of: ld_ctd_load
 variants:

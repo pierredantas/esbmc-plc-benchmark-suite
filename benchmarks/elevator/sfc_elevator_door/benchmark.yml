@@ -8,6 +8,7 @@ source:
   reference: "Four-step door cycle, authored for SFC language coverage"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The car must never travel with the door open, since anyone standing in the doorway would be exposed to the running shaft."
 validation_status: candidate
 variants:
   - file: clean.xml

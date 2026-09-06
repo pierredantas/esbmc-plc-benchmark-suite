@@ -8,6 +8,7 @@ source:
   reference: "Authored for this suite, modeling a breaker close permissive gated by dead-bus or synchro-check"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "A breaker may close onto a live bus only after synchro-check passes; closing onto a dead bus needs no check."
 validation_status: candidate
 variants:
   - file: clean.xml

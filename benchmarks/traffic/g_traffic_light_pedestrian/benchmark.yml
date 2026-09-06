@@ -10,6 +10,7 @@ source:
   reference: "Beremiz sample projects, github.com/beremiz/beremiz (exemples/svghmi_traffic_light/plc.xml); Beremiz is Free Software for machine automation"
   license: "GPL-2.0-or-later"
 properties_file: props.yaml
+safety_intent: "For the same approach, red and green lights must never be illuminated together, and cars must not have green while pedestrians have green on a conflicting movement."
 validation_status: candidate
 variants:
   - file: plc.xml

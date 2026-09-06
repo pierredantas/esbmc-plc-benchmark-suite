@@ -8,6 +8,7 @@ source:
   reference: "Authored for this suite, modeling a two-incomer/bus-coupler auto-changeover scheme"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The coupler may parallel at most one healthy incomer onto the affected section; all three breakers must never be closed together."
 validation_status: candidate
 variants:
   - file: clean.xml

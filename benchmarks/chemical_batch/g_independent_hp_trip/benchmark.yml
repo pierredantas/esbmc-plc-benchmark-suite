@@ -8,6 +8,7 @@ source:
   reference: "Authored for this suite, modeling a single independent overpressure trip layer distinct from the existing 2-of-3 voted trip"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The independent high-pressure trip must vent whenever pressure is high, regardless of what the batch sequencer is doing."
 validation_status: candidate
 variants:
   - file: clean.xml

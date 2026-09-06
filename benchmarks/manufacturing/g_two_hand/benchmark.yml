@@ -8,6 +8,7 @@ source:
   reference: "Authored from the Type II requirements in ISO 13851: synchronous actuation, anti-tie-down and anti-repeat, so a taped actuator cannot start a cycle"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The ram must descend only while both hand actuators are held; releasing either one must stop the stroke."
 validation_status: validated
 variants:
   - file: program.xml

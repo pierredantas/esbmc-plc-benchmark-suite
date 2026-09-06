@@ -8,6 +8,7 @@ source:
   reference: "Graphical PLCopen XML twin of the K-LD textual benchmark (syntax-coverage pair)"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "Stop always drops the seal-in coil: Run and Stop must never hold together."
 validation_status: validated
 syntax_pair_of: ld_seal_in
 variants:

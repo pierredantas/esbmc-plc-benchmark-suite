@@ -13,6 +13,7 @@ source:
     against the upstream repository on 2026-08-28, so CC-BY-4.0 stands.
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The Open coil must be energised only when both series contacts are closed."
 validation_status: validated
 variants:
   - file: evolution_1.xml

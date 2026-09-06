@@ -8,6 +8,7 @@ source:
   reference: "Authored from the reversal requirement for power-operated doors in EN 13241: an obstruction sends the door back to open rather than pausing it"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The door must never drive down while the photo-eye beam is broken."
 validation_status: candidate
 variants:
   - file: program.xml

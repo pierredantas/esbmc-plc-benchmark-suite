@@ -8,6 +8,7 @@ source:
   reference: "Graphical twin of ld_tp_pulse. Expected VIOLATION: a pulse timer holds its output for the full width after the trigger drops, so Out does not imply Trig"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The pulse output must be asserted only in direct response to a trigger, not spontaneously."
 validation_status: candidate
 syntax_pair_of: ld_tp_pulse
 variants:

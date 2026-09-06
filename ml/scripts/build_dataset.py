@@ -104,7 +104,7 @@ def collect_records(schema, augment_st=False):
             # (LD-graphical/FBD/SFC) yields a second, free training pair.
             if augment_st and src_file.suffix == ".xml":
                 try:
-                    st_source = ld_to_st_translate(str(src_file))
+                    st_source = ld_to_st_translate(str(src_file), comment=meta.get("safety_intent"))
                 except Exception as e:
                     st_source = ""
                     skipped.append((f"{task_id}/{variant['file']}", f"ld_to_st failed: {e}"))

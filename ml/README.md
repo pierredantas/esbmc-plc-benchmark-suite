@@ -9,13 +9,15 @@ The `7b-props-nary-best` checkpoint (Qwen2.5-Coder-7B base model, the
 default in `ml/scripts/generate_props.py`) is currently at 369 examples,
 iteration 640 (retrained after the *Retraining round* below; the prior
 243-example/iteration-320 checkpoint is kept as `-best-243ex` for
-comparison). Three newer checkpoints exist and are **not** the default:
+comparison). Four newer checkpoints exist and are **not** the default:
 `qwen2.5-coder-7b-props-nary-best-377ex` (377 examples), `-best-383ex`
-(383 examples), and `-best-389ex` (389 examples) — see *Retraining round: 4
-new benchmarks*, *Diagnosing the kiln_door_lockout regression*, and *kiln_
-door_lockout fixed with varied latch phrasing* below for why (each produced
-a real gain alongside a confirmed regression, none a clean win). The
-published copy at
+(383 examples), `-best-389ex` (389 examples), and `-best-389ex-intents`
+(389 examples, comments added to XML-only benchmarks, no new content) —
+see *Retraining round: 4 new benchmarks*, *Diagnosing the
+kiln_door_lockout regression*, *kiln_door_lockout fixed with varied latch
+phrasing*, and *Comment injection for XML-only benchmarks* below for why
+(each produced a real gain alongside a confirmed regression, none a clean
+win). The published copy at
 [huggingface.co/Pvdantas/esbmc-plc-props-slm-lora](https://huggingface.co/Pvdantas/esbmc-plc-props-slm-lora)
 (private) holds the 369-example weights, confirmed byte-identical
 (sha256) to the local `qwen2.5-coder-7b-props-nary-best` checkpoint as of
@@ -770,6 +772,94 @@ but either authoring a comment for benchmarks whose only source is
 XML-derived, or accepting that these specific benchmarks are not reliable
 regression markers for any particular round's changes.
 
+## Comment injection for XML-only benchmarks: a partial fix, and a new lesson
+
+Acting on the *Correction* section's conclusion — the actual distinguishing
+factor between drifted and stable `mutual_exclusion` benchmarks is the
+presence of a natural-language safety-intent comment in the training
+source, not domain-adjacency — three changes closed the gap between
+XML-derived and hand-authored ST training pairs:
+
+1. `schema/benchmark.schema.json` gained an optional `safety_intent`
+   string field: a one-sentence, variable-name-independent statement of the
+   safety property.
+2. `runner/ld_to_st.py`'s `render_pou`/`translate` now accept a `comment`
+   parameter and render it as a `(* ... *)` header ahead of the
+   PROGRAM/FUNCTION_BLOCK line — this exists because
+   `xml.etree.ElementTree` silently drops XML comments on parse, so a
+   PLCopen source's own `<!-- -->` annotations, where present, never
+   reached the ST rendering the model actually trains on. `ml/scripts/
+   build_dataset.py` passes `benchmark.yml`'s `safety_intent` through at
+   the ST-augmentation call site.
+3. All 61 benchmarks in the corpus whose only training source is an
+   XML-derived ST rendering (no hand-authored `.st` file) were given a
+   `safety_intent` field, most adapted directly from their existing
+   `props.yaml` justification. Confirmed end to end: the comment now
+   appears in the actual `train`/`valid`/`test.jsonl` records.
+
+**Retrained on the same 389 records** (no new benchmarks, only comments
+added) — corpus composition unchanged, so any change in behavior is
+attributable to the comments plus ordinary training stochasticity, not new
+content. Best checkpoint at iteration 480 (val loss 0.309; unusually not
+the final iteration this time).
+
+**Result: a genuine partial fix, not a clean one.**
+
+- **`g_vessel_empty_permissive` (chemical_batch) is fixed.** Its
+  ST-augmented rendering landed in `valid` this round (never trained on
+  directly), and now generates the correct `mutual_exclusion` kind and
+  variable pairing — a real generalization result, not memorization.
+- **`g_elevator_door` (elevator) is still broken, and a control test shows
+  why a comment alone cannot fix it.** Feeding the *commented* source
+  directly to the *previous* checkpoint (389ex, trained without any
+  comments at all) at inference time still produces `kind: invariant`
+  instead of `mutual_exclusion`. Since that checkpoint never saw the
+  comment during training, this proves the drift is not a missing-context
+  problem a prompt-level annotation can patch — whatever this specific
+  checkpoint learned about this specific benchmark's idiom is more
+  entrenched than that. `g_elevator_door` also landed in `test` this
+  round (not `train`), so this round's retraining never had a chance to
+  re-teach it either way — the comparison needed is retraining with it
+  force-trained, not the random split.
+- **Full held-out eval moved backward: `kind_recall` 74.2%, `kind_precision`
+  75.0%** (60 examples) — down from the prior round's 80.4%/76.8%.
+  Breaking down the 13 sub-1.0 examples: 6 are the pre-existing,
+  already-documented `termination`-evaluation gap (not new — more
+  instances landing in this round's larger split by chance), 4 are
+  `g_elevator_door` (confirmed unresolved, not worse than before), 1 is a
+  low-severity `hvac` partial score, and **2 are a genuinely new failure**:
+  `power_substation/g_bus_coupler_changeover`, an `invariant` over three
+  variables (`incomer_a`, `incomer_b`, `coupler`), now generated as
+  `mutual_exclusion` over only two of the three, dropping `coupler`
+  entirely from both the property and its reasoning. This benchmark is one
+  of the 61 that received a new `safety_intent` comment this round
+  ("may parallel at most one healthy incomer... all three breakers must
+  never be closed together") — plausible that the phrase "at most one"
+  nudged the model toward the `mutual_exclusion` idiom even though the
+  actual forbidden state is a three-way conjunction, though this is not
+  confirmed and could equally be ordinary training variance. Standing
+  3-benchmark probe held at 100%/100%.
+
+**Not promoted.** 74.2%/75.0% is worse than both the currently-published
+default (369-example checkpoint) and the prior round's 389-example
+checkpoint without comments. `qwen2.5-coder-7b-props-nary-best` is
+unchanged. This round's checkpoint is kept as
+`qwen2.5-coder-7b-props-nary-best-389ex-intents` for comparison.
+
+**The tooling and corpus changes are kept regardless of this checkpoint's
+aggregate score.** The schema field, the `ld_to_st.py` fix, and the 61
+authored `safety_intent` entries are correct and independently useful —
+they fixed a real, confirmed case (`g_vessel_empty_permissive`), cost
+nothing in the cases where they didn't help, and are good practice for any
+future XML-derived benchmark. What they are not is a universal fix for
+idiom drift: some drift responds to a comment, some (like
+`g_elevator_door`) is apparently baked more deeply into a specific
+checkpoint's weights and needs a stronger intervention (force-training the
+specific benchmark, not just annotating it), and comments can in principle
+introduce their own new failures by nudging the model toward the wrong
+idiom on a case they weren't meant to touch (`g_bus_coupler_changeover`,
+unconfirmed).
+
 ## Deterministic post-check (`ml/scripts/check_props.py`)
 
 ```bash
@@ -798,25 +888,32 @@ one specific class of error, not a correctness guarantee.
 
 ## Next levers, roughly in order of expected payoff
 
-1. **Author comments for the comment-less, XML-only `mutual_exclusion`
-   benchmarks, or stop treating them as regression markers.** The
-   *Correction* section above retracted the domain-adjacency theory: a
-   per-checkpoint check (369ex → 377ex → 383ex → 389ex) showed
-   `g_elevator_door` and `g_vessel_empty_permissive` each drifting to
-   `invariant` at a different round, each time triggered by an unrelated
-   corpus change (one from a different domain entirely), while
-   `dual_valve_containment_gm` — same domain as one of the failures, but
-   with a hand-authored `.st` file and an explicit safety-intent comment —
-   stayed correct throughout. The actual distinguishing factor is the
-   presence or absence of a natural-language anchor in the training source,
-   not domain-adjacency. Two concrete options: (a) author a short comment
-   for every benchmark whose only ST training signal is `ld_to_st.py`'s
-   auto-generated rendering, giving the model something to lock the correct
-   idiom onto the way `dual_valve_containment_gm` does; or (b) accept these
-   specific benchmarks will drift on any sufficiently large retraining
-   change and stop citing them individually as evidence for or against a
-   given round's changes.
-2. **The reachability-witness over-generation side effect from two rounds
+1. **Force-train `g_elevator_door` directly rather than annotating and
+   hoping.** The *Comment injection for XML-only benchmarks* section above
+   shows the fix worked for `g_vessel_empty_permissive` but not
+   `g_elevator_door`, and a control test (feeding the commented source to a
+   checkpoint that never trained on any comment) proves the comment alone
+   cannot override this specific checkpoint's already-learned idiom
+   preference. `g_elevator_door` also fell into `test` rather than `train`
+   this round by the random split, so retraining never got a chance to
+   re-teach it either way. The next test is narrower and cheaper than
+   another full round: rebuild the dataset with `--force-train
+   g_elevator_door` (comment already in place) and check specifically
+   whether direct training exposure, not just an inference-time comment,
+   fixes it — this isolates "needs a comment and to be trained on" from
+   "resistant to this fix regardless."
+2. **Investigate whether `safety_intent` comments can introduce their own
+   new failures.** `g_bus_coupler_changeover`, one of the 61 benchmarks
+   newly annotated this round, started generating `mutual_exclusion` over
+   2 of 3 variables instead of the correct 3-variable `invariant` —
+   plausibly because the authored comment's phrasing ("at most one
+   healthy incomer") reads like a `mutual_exclusion` cue even though the
+   actual forbidden state is a three-way conjunction. Not confirmed (could
+   be ordinary training variance instead), but worth a targeted check:
+   rephrase this one comment to avoid the "at most one" framing and see if
+   the failure follows the wording. If confirmed, comment phrasing itself
+   needs review for accidental idiom-cueing, not just presence/absence.
+3. **The reachability-witness over-generation side effect from two rounds
    ago is still present, essentially unchanged (6 of 55 → 6 of 56 held-out
    examples).** `kind_precision` has now fallen twice running (96.2% →
    83.6% → 76.8%) across the last three checkpoints without recovering,
@@ -827,7 +924,7 @@ one specific class of error, not a correctness guarantee.
    with single-property, no-witness examples in the same run (not relying
    on the rest of the corpus to counterbalance) remains the most promising
    fix, still untried.
-3. **Fix the `termination`-property evaluation gap.** `evaluate.py` feeds
+4. **Fix the `termination`-property evaluation gap.** `evaluate.py` feeds
    the model one variant's source at a time, but a `kind: termination`
    property (e.g. the SWaT `st_swat_*` tasks) concerns a hazard injected
    only in the *malicious* variant — there is no way to generate it
@@ -837,7 +934,7 @@ one specific class of error, not a correctness guarantee.
    together for a termination task, or exclude `termination` tasks from
    single-variant scoring, before trusting any future aggregate number that
    includes them.
-4. **Under-enumeration is still the most common remaining failure**, on
+5. **Under-enumeration is still the most common remaining failure**, on
    both the old and the retrained checkpoint. The *Retraining round* probe's
    `intrusion_dual_alarm` result shows it persisting even where the
    targeted tautology-of-wiring bug is fixed: the model produced a
@@ -845,7 +942,7 @@ one specific class of error, not a correctness guarantee.
    reachability again. Multi-property programs generally, and the
    zero-example `absence`/`assertion` kinds, remain the priority — same
    target as before, not yet closed by this round.
-5. **More latch-shape variety** — the 5 benchmarks added this round fixed
+6. **More latch-shape variety** — the 5 benchmarks added this round fixed
    the tautology failure on every previously-probed case but only partly
    generalized to the one genuinely novel example (`intrusion_dual_alarm`
    converged on a real property, not the intended one). More examples
@@ -854,12 +951,12 @@ one specific class of error, not a correctness guarantee.
    `protection_lockout_cascade`, would test whether that's a data-coverage
    gap or a genuine reasoning limit, the same distinction the *Base model
    size* section drew for the 1.5B→7B jump.
-6. **`ml/scripts/check_props.py`** — built and validated; a cheap guardrail
+7. **`ml/scripts/check_props.py`** — built and validated; a cheap guardrail
    for hallucinated variables and mislabeled `mutual_exclusion`, not a fix
    for polarity inversion, incomplete variable coverage, or the
    tautology-of-wiring failure this round targeted (none of the model's
    remaining failures are caught by it).
-7. **An even larger base model, or full fine-tuning instead of LoRA** —
+8. **An even larger base model, or full fine-tuning instead of LoRA** —
    still untested; the 1.5B→7B jump produced a real but mixed result
    (reasoning up, idiom-adherence down at the time), and this round's
    retraining on more data closed part of that gap without changing model

@@ -8,6 +8,7 @@ source:
   reference: "Voted trip logic, authored for FBD language coverage"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "Any two of three pressure switches agreeing high must trip the reactor, but a single stuck-high switch must not trip it alone."
 validation_status: candidate
 variants:
   - file: clean.xml

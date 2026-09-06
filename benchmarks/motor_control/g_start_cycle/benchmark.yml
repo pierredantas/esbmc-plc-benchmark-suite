@@ -9,6 +9,7 @@ source:
   reference: "PLC-LD-dataset, github.com/UniboSecurityResearch/PLC-LD-dataset (Iacobelli et al., ICPS 2024, doi:10.1109/ICPS59941.2024.10639995); legitimate/lstart_cycle.xml"
   license: "GPL-3.0"
 properties_file: props.yaml
+safety_intent: "Pressing STOP must release the holding circuit so the motor or cycle cannot remain energised, and simultaneous START and STOP must not leave the cycle active."
 validation_status: candidate
 variants:
   - file: lstart_cycle.xml

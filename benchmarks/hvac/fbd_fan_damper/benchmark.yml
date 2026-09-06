@@ -8,6 +8,7 @@ source:
   reference: "Supply air handler permissive, authored for FBD language coverage"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The fan must never run against a shut damper, and a duct smoke alarm must drop the fan."
 validation_status: candidate
 variants:
   - file: clean.xml
