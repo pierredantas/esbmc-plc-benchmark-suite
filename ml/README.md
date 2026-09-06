@@ -860,6 +860,50 @@ introduce their own new failures by nudging the model toward the wrong
 idiom on a case they weren't meant to touch (`g_bus_coupler_changeover`,
 unconfirmed).
 
+## g_elevator_door resists both fixes: a second confirmed reasoning-limit case
+
+The prior section's open question was whether `g_elevator_door`'s idiom
+drift needed direct training exposure rather than just an inference-time
+comment. It was force-trained (`--force-train g_elevator_door`, its
+`safety_intent` comment already in place, same 389-record corpus,
+retrained on the unchanged recipe, best checkpoint iteration 640, val loss
+0.299) to settle this directly.
+
+**It still fails, and the failure is now a confirmed memorization gap, not
+a training-exposure or missing-context gap.** The exact
+`(commented ST source, mutual_exclusion target)` pair appears twice in
+`train.jsonl` (clean and bomb variant, identical target) — re-running the
+identical prompt against this checkpoint still generates `kind: invariant`
+instead. Two independent interventions have now failed on this one
+benchmark: an inference-time-only comment (prior section, on a checkpoint
+that never trained on any comment), and direct training exposure to the
+comment plus the correct target, twice, in the current round. Neither
+moved it.
+
+This matches the `st_two_hand` case from the *Base model size* section
+much earlier in this file, where the correct answer appeared 8+ times in
+training and the 1.5B checkpoint still fabricated a different, wrong
+expression on its own training example. `g_elevator_door` is the second
+confirmed instance of this pattern at the 7B size: a case where more
+copies of the right answer in the training set does not change the
+output, which is the signature of a reasoning/capacity limit rather than
+a data-coverage gap. Unlike `st_two_hand` (fixed by the 1.5B→7B jump),
+this one persists at 7B, so the next lever to test, if this is worth
+pursuing further, is the one *Base model size* already named as
+untested: an even larger base model or full fine-tuning instead of LoRA.
+
+**Side effect noted, not yet explained:** the standing 3-benchmark probe
+dropped to 83.3%/83.3% this round (from its usual 100%/100%), on
+`vfd_bypass_interlock`, a benchmark unrelated to `g_elevator_door` or this
+round's change. Single data point, could be ordinary training variance
+from removing `g_elevator_door` from the held-out set (which shifted
+every other task's split assignment) rather than a new systematic issue —
+not confirmed either way.
+
+**Not promoted.** Kept as
+`qwen2.5-coder-7b-props-nary-best-389ex-elevator-forced` for comparison.
+`qwen2.5-coder-7b-props-nary-best` is unchanged.
+
 ## Deterministic post-check (`ml/scripts/check_props.py`)
 
 ```bash
@@ -888,20 +932,18 @@ one specific class of error, not a correctness guarantee.
 
 ## Next levers, roughly in order of expected payoff
 
-1. **Force-train `g_elevator_door` directly rather than annotating and
-   hoping.** The *Comment injection for XML-only benchmarks* section above
-   shows the fix worked for `g_vessel_empty_permissive` but not
-   `g_elevator_door`, and a control test (feeding the commented source to a
-   checkpoint that never trained on any comment) proves the comment alone
-   cannot override this specific checkpoint's already-learned idiom
-   preference. `g_elevator_door` also fell into `test` rather than `train`
-   this round by the random split, so retraining never got a chance to
-   re-teach it either way. The next test is narrower and cheaper than
-   another full round: rebuild the dataset with `--force-train
-   g_elevator_door` (comment already in place) and check specifically
-   whether direct training exposure, not just an inference-time comment,
-   fixes it — this isolates "needs a comment and to be trained on" from
-   "resistant to this fix regardless."
+1. **`g_elevator_door` is a confirmed reasoning-limit case at 7B, not a
+   data or comment gap — closed as "needs a bigger model or full
+   fine-tuning," per the *g_elevator_door resists both fixes* section
+   above.** Force-training it directly (comment in place, exact target
+   repeated twice in `train.jsonl`) still produced the wrong `kind` on
+   the identical prompt, matching the `st_two_hand` pattern from *Base
+   model size*. Do not spend another round re-annotating or re-training
+   this specific benchmark expecting a different result from the same
+   kind of intervention — the two interventions available at this model
+   size (more context, more exposure) have both been tried and both
+   failed. Revisit only alongside a base-model-size or full-fine-tuning
+   experiment (*Next levers* #8 below), not on its own.
 2. **Investigate whether `safety_intent` comments can introduce their own
    new failures.** `g_bus_coupler_changeover`, one of the 61 benchmarks
    newly annotated this round, started generating `mutual_exclusion` over
