@@ -9,6 +9,7 @@ source:
     Imported from the Beremiz IEC 61131-3 language test (tests/projects/iec61131_lang_test, CounterSFC function block, checked at aeb89e8 on 2026-08-29). The body is carried over unchanged; only the enclosing POU differs, since upstream declares a function block reading a global ResetCounterValue and this file declares an equivalent PROGRAM taking it as an input, so the task stands alone. Beremiz ships its IDE tree under GPLv2-or-later with no per-file header, which is the license recorded here.
   license: "GPL-2.0-or-later"
 properties_file: props.yaml
+safety_intent: "On a scan where Reset holds, the counter output must equal the supplied reset value rather than the incremented count."
 validation_status: candidate
 syntax_pair_of: st_counter_reset
 variants:

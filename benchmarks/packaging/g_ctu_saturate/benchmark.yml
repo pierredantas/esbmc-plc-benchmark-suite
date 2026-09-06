@@ -8,6 +8,7 @@ source:
   reference: "Graphical twin of ld_ctu_saturate; the R pin is driven by a Reset contact"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "Reset is dominant: the count-up Done flag and Reset must never hold true together."
 validation_status: candidate
 syntax_pair_of: ld_ctu_saturate
 variants:

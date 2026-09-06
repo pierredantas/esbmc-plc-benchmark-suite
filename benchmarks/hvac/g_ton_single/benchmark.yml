@@ -8,6 +8,7 @@ source:
   reference: "Graphical PLCopen XML twin of the K-LD textual benchmark; PT is a duration literal resolved against the task interval"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The on-delay light can be on only while the button is, or was very recently, pressed."
 validation_status: candidate
 syntax_pair_of: ld_ton_single
 variants:

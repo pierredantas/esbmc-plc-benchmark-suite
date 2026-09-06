@@ -8,6 +8,7 @@ source:
   reference: "PLC-LD-dataset, github.com/UniboSecurityResearch/PLC-LD-dataset (Iacobelli et al., ICPS 2024, doi:10.1109/ICPS59941.2024.10639995); legitimate/malicious LLB pair, PLCopen XML"
   license: "GPL-3.0"
 properties_file: props.yaml
+safety_intent: "Every PLC scan cycle must complete; no while-loop may run without its counter advancing, which would hang the scan."
 validation_status: validated
 variants:
   - file: legitimate_lstart_le.xml

@@ -8,6 +8,7 @@ source:
   reference: "Authored for this suite, modeling a latching 86 lockout relay that blocks autoreclose until manual reset"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The lockout relay must block reclose until an explicit manual reset clears it; lockout and reclose must never be true together."
 validation_status: candidate
 variants:
   - file: clean.xml

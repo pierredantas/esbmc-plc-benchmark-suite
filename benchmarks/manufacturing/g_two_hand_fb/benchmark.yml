@@ -8,6 +8,7 @@ source:
   reference: "The ISO 13851 Type II logic of g_two_hand moved into a reusable function block, the shape certified safety libraries ship it in"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The ram must descend only while both hand actuators are held; releasing either one must stop the stroke."
 validation_status: candidate
 syntax_pair_of: g_two_hand
 variants:

@@ -8,6 +8,7 @@ source:
   reference: "Authored for this suite, modeling an ISA-88 phase HELD state entered on agitator-permissive loss"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "A phase held on permissive loss must keep the heater off; only explicitly clearing the hold may re-enable heating."
 validation_status: candidate
 variants:
   - file: clean.xml

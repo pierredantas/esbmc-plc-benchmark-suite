@@ -8,6 +8,7 @@ source:
   reference: "Lessons In Electric Circuits, Volume IV - Digital, Chapter 6 (Fail-safe design), by Tony R. Kuphaldt"
   license: "Design Science License"
 properties_file: props.yaml
+safety_intent: "The motor coil must instantly de-energise if the hardware thermal overload relay physically trips."
 validation_status: candidate
 variants:
   - file: failsafe_motor_latch.xml

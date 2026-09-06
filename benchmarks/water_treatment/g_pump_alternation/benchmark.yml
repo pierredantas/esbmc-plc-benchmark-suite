@@ -8,6 +8,7 @@ source:
   reference: "Authored as a licence-clean counterpart to the imported tank benchmarks: two pumps, one wet well, duty advancing each time the well empties"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "Only one pump may run at a time, so the standby stays available and the rising main is not over-pressured."
 validation_status: candidate
 variants:
   - file: program.xml

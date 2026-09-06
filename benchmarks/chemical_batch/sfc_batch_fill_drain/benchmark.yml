@@ -8,6 +8,7 @@ source:
   reference: "Four-step batch cycle, authored for SFC language coverage"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "Fill and drain must never be open together, since unreacted feed reaching the effluent line is a loss of containment."
 validation_status: candidate
 variants:
   - file: clean.xml

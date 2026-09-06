@@ -8,6 +8,7 @@ source:
   reference: "Graphical PLCopen XML twin of the K-LD textual benchmark (syntax-coverage pair)"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The falling-edge one-shot output must fire only on the scan the input signal goes low, not on every scan it stays low."
 validation_status: validated
 syntax_pair_of: ld_ftrig_edge
 variants:

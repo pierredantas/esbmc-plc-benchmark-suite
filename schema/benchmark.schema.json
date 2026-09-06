@@ -29,6 +29,7 @@
       }
     },
     "properties_file": { "type": "string" },
+    "safety_intent": { "type": "string", "description": "one-sentence natural-language statement of the safety property in plain terms, independent of variable names. Injected as a header comment into runner/ld_to_st.py's ST rendering of an XML-bodied variant, since a hand-authored .st file's own comment does not exist for those; see ml/README.md's XML-only benchmark idiom-drift discussion for why this field exists." },
     "syntax_pair_of": { "type": "string", "description": "id of the twin benchmark in the other syntax, if this is a syntax-coverage pair" },
     "validation_status": {
       "type": "string",

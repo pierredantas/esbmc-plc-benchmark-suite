@@ -8,6 +8,7 @@ source:
   reference: "One of five renderings of the same seal-in latch; the feedback path is an inVariable reading the coil's own output"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "Stop always drops the seal-in coil: Run and Stop must never hold together."
 validation_status: candidate
 syntax_pair_of: ld_seal_in
 variants:

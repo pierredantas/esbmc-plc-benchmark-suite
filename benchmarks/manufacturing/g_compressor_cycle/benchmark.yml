@@ -8,6 +8,7 @@ source:
   reference: "Authored as a receiver-pressure load/unload control with a minimum-off interlock, the usual guard against short-cycling the motor"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The compressor must never load at or above the cut-out pressure."
 validation_status: validated
 variants:
   - file: program.xml

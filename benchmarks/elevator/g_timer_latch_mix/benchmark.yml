@@ -8,6 +8,7 @@ source:
   reference: "Graphical twin of ld_timer_latch_mix: a timer drives a set coil and an acknowledgement drives the reset coil"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "Acknowledge is dominant: the latched alarm and Ack must never hold together."
 validation_status: candidate
 syntax_pair_of: ld_timer_latch_mix
 variants:

@@ -337,8 +337,18 @@ def _var_block(keyword, vars_):
     return f"{keyword}\n" + "\n".join(lines) + "\nEND_VAR\n"
 
 
-def render_pou(pou):
-    """One POU (program or function block) as ST source text."""
+def render_pou(pou, comment=None):
+    """One POU (program or function block) as ST source text.
+
+    `comment` is a plain-English safety-intent statement (from benchmark.yml's
+    optional safety_intent field), rendered as a header comment ahead of the
+    PROGRAM/FUNCTION_BLOCK line. xml.etree.ElementTree silently drops XML
+    comments on parse, so a PLCopen source's own <!-- --> never reaches this
+    function — a comment-less rendering is what training on an XML-only
+    benchmark actually sees, which measurably destabilizes that benchmark's
+    property-kind idiom under retraining (see ml/README.md). Passing the
+    intent through explicitly, rather than relying on the XML, is the fix.
+    """
     lines = pou.statements()
     declared = {name for name, _ in pou.locals_}
     fb_vars = [(name, typ) for name, typ in pou.fb_instances.items()
@@ -346,7 +356,10 @@ def render_pou(pou):
     header = "FUNCTION_BLOCK" if pou.pou_type == "functionBlock" else "PROGRAM"
     footer = "END_FUNCTION_BLOCK" if pou.pou_type == "functionBlock" else "END_PROGRAM"
 
-    parts = [f"{header} {pou.name}"]
+    parts = []
+    if comment:
+        parts.append(f"(* {comment} *)")
+    parts.append(f"{header} {pou.name}")
     parts.append(_var_block("VAR_INPUT", pou.inputs))
     parts.append(_var_block("VAR_OUTPUT", pou.outputs))
     local_decls = pou.locals_ + fb_vars
@@ -356,11 +369,13 @@ def render_pou(pou):
     return "\n".join(p for p in parts if p)
 
 
-def translate(xml_path):
+def translate(xml_path, comment=None):
     """The ST rendering of every LD-bodied <pou> in a PLCopen XML file, in file order.
 
     Returns "" when the file has no LD body at all (a pure FBD/SFC program), so a
     caller can skip offering a translation rather than show an empty one.
+
+    `comment` is passed through to every rendered POU — see render_pou.
     """
     tree = ET.parse(xml_path)
     root = tree.getroot()
@@ -375,7 +390,7 @@ def translate(xml_path):
         pou = Pou(pou_el)
         if pou.ld is None:
             continue
-        rendered.append(render_pou(pou))
+        rendered.append(render_pou(pou, comment=comment))
     return "\n\n".join(rendered)
 
 

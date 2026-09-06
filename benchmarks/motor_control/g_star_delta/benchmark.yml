@@ -8,6 +8,7 @@ source:
   reference: "Authored as the contactor-selection half of a wye-delta starter; the start/stop latch that drives Call is upstream and is the subject of lesson 1.4"
   license: CC-BY-4.0
 properties_file: props.yaml
+safety_intent: "The star and delta contactors must never be closed together, since that shorts the supply through the winding ends."
 validation_status: validated
 variants:
   - file: program.xml
