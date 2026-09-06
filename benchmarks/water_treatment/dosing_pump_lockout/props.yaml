@@ -1,0 +1,14 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(dosing_pump && level_low)"
+    justification: "The dosing pump must never run while the tank level is below the low-level cutoff."
+  - id: P2
+    kind: invariant
+    expression: "!(dosing_pump && dry_run_fault)"
+    justification: "If the pump ever runs dry, any subsequent start command must be ignored and the pump must stay off, until an operator acknowledges the fault."
+  - id: P3
+    kind: reachability
+    expression: "dosing_pump && dry_run_fault"
+    justification: "Trigger synthesis: a witness recovers the bad state P2 forbids, so the counterexample search has a concrete target when the fault acknowledgement requirement is bypassed."

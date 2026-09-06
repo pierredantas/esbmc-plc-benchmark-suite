@@ -1,0 +1,28 @@
+format_version: "0.1"
+id: reactor_pressure_lockout
+name: "Chemical reactor overpressure lockout"
+domain: chemical_batch
+language: ST
+source:
+  origin: authored
+  reference: "Authored to target the temporal/procedural-phrasing translation gap identified in the kiln_door_lockout diagnosis: the second safety requirement is worded as pure natural-language persistence ('remains shut down ... until an operator manually clears the fault') without naming the internal latch variable, unlike elevator_door_motion_interlock / mixer_lid_stall_interlock / breaker_earth_trip_interlock, whose two clauses share one direct guard-condition template. See ml/README.md."
+  license: CC-BY-4.0
+properties_file: props.yaml
+validation_status: candidate
+variants:
+  - file: clean.st
+    expected_verdict: true
+    ground_truth:
+      method: expert
+      confirmed_by: [Pierre Dantas]
+  - file: bomb.st
+    expected_verdict: false
+    violated_properties: [P2]
+    ground_truth:
+      method: fault-injection
+      base_variant: clean.st
+      seeded_defect: "The pump dispatch was reordered to check feed_request before the fault/pressure lockout, so a pending feed request wins the branch the scan the fault is set, and ELSIF fault_flag OR pressure_high becomes unreachable once feed_request is true."
+      witness: "pressure_high=1 (latches fault), then pressure_high=0 with feed_request=1 reaches feed_pump=1 && fault_flag=1."
+features: [contacts, coils, latch, state]
+difficulty: medium
+tags: [safety, interlock, latch, chemical-batch, temporal-phrasing-probe]

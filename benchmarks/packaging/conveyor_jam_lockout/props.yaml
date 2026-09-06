@@ -1,0 +1,14 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!(belt_drive && jam_detected)"
+    justification: "The belt drive must never run while the jam sensor is tripped."
+  - id: P2
+    kind: invariant
+    expression: "!(belt_drive && jam_this_run)"
+    justification: "Once a jam has been detected during a production run, the belt drive must stay off for the remainder of that run, even after the jam clears on its own, so an operator can inspect the line before the next run."
+  - id: P3
+    kind: reachability
+    expression: "belt_drive && jam_this_run"
+    justification: "Trigger synthesis: a witness recovers the bad state P2 forbids, so the counterexample search has a concrete target when the run-lockout is bypassed."
