@@ -9,15 +9,19 @@ The `7b-props-nary-best` checkpoint (Qwen2.5-Coder-7B base model, the
 default in `ml/scripts/generate_props.py`) is currently at 369 examples,
 iteration 640 (retrained after the *Retraining round* below; the prior
 243-example/iteration-320 checkpoint is kept as `-best-243ex` for
-comparison). Four newer checkpoints exist and are **not** the default:
+comparison). Five newer 7B checkpoints exist and are **not** the default:
 `qwen2.5-coder-7b-props-nary-best-377ex` (377 examples), `-best-383ex`
-(383 examples), `-best-389ex` (389 examples), and `-best-389ex-intents`
-(389 examples, comments added to XML-only benchmarks, no new content) —
-see *Retraining round: 4 new benchmarks*, *Diagnosing the
+(383 examples), `-best-389ex` (389 examples), `-best-389ex-intents` (389
+examples, comments added to XML-only benchmarks, no new content), and
+`-best-389ex-elevator-forced` (389 examples, `g_elevator_door`
+force-trained) — see *Retraining round: 4 new benchmarks*, *Diagnosing the
 kiln_door_lockout regression*, *kiln_door_lockout fixed with varied latch
-phrasing*, and *Comment injection for XML-only benchmarks* below for why
-(each produced a real gain alongside a confirmed regression, none a clean
-win). The published copy at
+phrasing*, *Comment injection for XML-only benchmarks*, and *g_elevator_door
+resists both fixes* below for why (each produced a real gain alongside a
+confirmed regression, none a clean win). A 14B-base-model checkpoint,
+`qwen2.5-coder-14b-props-nary-best`, was also trained and evaluated — see
+*14B base model* below — and is likewise not the default. The published
+copy at
 [huggingface.co/Pvdantas/esbmc-plc-props-slm-lora](https://huggingface.co/Pvdantas/esbmc-plc-props-slm-lora)
 (private) holds the 369-example weights, confirmed byte-identical
 (sha256) to the local `qwen2.5-coder-7b-props-nary-best` checkpoint as of
@@ -904,6 +908,106 @@ not confirmed either way.
 `qwen2.5-coder-7b-props-nary-best-389ex-elevator-forced` for comparison.
 `qwen2.5-coder-7b-props-nary-best` is unchanged.
 
+## 14B base model: a mixed result, and the two known reasoning-limit cases persist
+
+The *g_elevator_door resists both fixes* section closed with "revisit only
+alongside a base-model-size or full-fine-tuning experiment." This section
+is that experiment: same 389-example corpus (random split, no
+force-training), same LoRA recipe (rank 16, `batch_size: 1`,
+`grad_checkpoint: true`), `mlx-community/Qwen2.5-Coder-14B-Instruct-4bit`
+in place of the 7B base model (`ml/lora_config_14b.yaml`).
+
+**Feasibility, confirmed first rather than assumed.** This machine has 24GB
+unified memory; the 7B LoRA runs already peaked at ~12.6GB. A smoke test
+(load the 14B base model, generate 20 tokens, no training) confirmed it
+loads and runs correctly at ~8.2GB peak RSS before committing to a full
+training run. Training itself peaked at a stable 18.1-18.2GB throughout,
+no memory-pressure thrashing, no OOM — feasible on this hardware, though
+with less headroom than 7B. Per-iteration throughput was roughly
+20-30% slower (0.13-0.25 it/sec vs. 7B's 0.2-0.5).
+
+Best checkpoint at iteration 480 (val loss 0.289).
+
+**The two reasoning-limit cases named in the prior two sections were
+re-tested directly and both persist at 14B:**
+
+- **`st_two_hand`** (the original 7B-round case: correct answer
+  `!Stroke || (LH && RH)` appears 8+ times in `train.jsonl`) still
+  fabricates a wrong expression: `!Stroke || (Armed && LH && RH)`. Note a
+  correction to the original characterization — `Armed` is a real
+  variable declared in the source (an anti-tie-down state flag), not a
+  hallucinated one, so this is specifically the "fabricated relationship
+  between real variables" failure the README already names as the more
+  concerning class: syntactically valid, uses only genuine variable
+  names, passes schema validation and `check_props.py`, and is still
+  wrong.
+- **`g_elevator_door`** still generates `kind: invariant` instead of
+  `mutual_exclusion`, the same failure confirmed at every 7B checkpoint
+  tested (369ex through 389ex-elevator-forced).
+
+Two independent model-scale jumps (1.5B→7B, 7B→14B) have now each fixed
+some reasoning failures and left others — including these two specific
+cases — completely unmoved. That is stronger evidence for a
+capability/training-data-shape ceiling on this exact style of program
+than for "needs to be bigger," though it does not rule out a much larger
+jump (32B+) mattering; see *Not attempted* below for why that was not
+tried on this hardware.
+
+**Full held-out eval** (`ml/data/test.jsonl`, 60 examples): `kind_recall`
+76.7%, `kind_precision` 80.0%, `yaml_valid`/`schema_valid`/`id_format_ok`
+all 98.3% (59/60) — the first time any checkpoint in this family has
+scored below 100% on the format metrics. Standing 3-benchmark probe held
+at 100%/100%.
+
+Breaking down the 12 examples scoring 0.0 on both `kind_recall` and
+`kind_precision` (all-or-nothing misses, no partial credit anywhere this
+round): 4 are `g_elevator_door` (confirmed, not new), 4 are the
+pre-existing SWaT `termination` single-variant evaluation gap (not new),
+and 4 are `g_bus_coupler_changeover` (the benchmark flagged in the prior
+round as possibly nudged toward the wrong idiom by its own `safety_intent`
+comment's "at most one" phrasing — still failing at 14B, consistent with
+that being a real effect rather than 7B-specific noise, though still not
+confirmed by the controlled rewording test that section proposed).
+**Zero examples this round showed the reachability-witness
+over-generation pattern** that dominated the last three 7B rounds'
+precision loss — a genuine difference from every recent 7B checkpoint,
+though on one round's data alone it is not yet clear whether that is a
+property of 14B specifically or of this particular training run.
+
+**A new, 14B-specific failure mode: decoding degeneration on repetitive
+justification text.** The one format-invalid example
+(`water_treatment`'s multi-PLC SWaT termination task) did not fail on
+reasoning — it entered a repetition loop, generating the same ~80-word
+clause about the injected Govil et al. LLB over and over until `generate_
+props.py`'s `max_tokens=512` cut it off mid-string, leaving an unterminated
+quote and invalid YAML. The training data itself contains near-identical,
+very long boilerplate justifications across every SWaT benchmark (by
+design — they document the same vulnerability class); this is the first
+checkpoint to visibly get stuck reproducing one at inference time. Worth
+watching on any future checkpoint, 14B or otherwise, evaluated against
+this corpus's SWaT tasks.
+
+**Verdict: not promoted, and not a clean argument for the jump.** 76.7%/
+80.0% sits between the last two 7B rounds' numbers, not above either, and
+the two specific cases this experiment was run to test did not improve.
+The absence of the over-generation pattern is a genuine point in 14B's
+favor, and worth another round to see if it holds, but is not enough on
+its own against a worse aggregate, a new decoding failure mode, and no
+progress on the two named target cases. Kept as
+`qwen2.5-coder-14b-props-nary-best` for comparison;
+`qwen2.5-coder-7b-props-nary-best` (369-example) remains
+`generate_props.py`'s default.
+
+**Not attempted: 32B.** `mlx-community/Qwen2.5-Coder-32B-Instruct-4bit`'s
+base weights alone are 18.4GB, leaving under 6GB of headroom on this
+24GB-unified-memory machine for activations, KV cache, and LoRA gradient
+state — the 14B run alone used 18.1-18.2GB with an 8.3GB base model, so
+the equivalent overhead on an 18.4GB base model would plausibly exceed
+24GB. Untested rather than ruled out; would need either more unified
+memory or a training-time memory optimization (gradient accumulation at
+a smaller micro-batch, 8-bit optimizer state, or similar) not currently
+in `ml/lora_config_14b.yaml`'s pattern.
+
 ## Deterministic post-check (`ml/scripts/check_props.py`)
 
 ```bash
@@ -932,18 +1036,16 @@ one specific class of error, not a correctness guarantee.
 
 ## Next levers, roughly in order of expected payoff
 
-1. **`g_elevator_door` is a confirmed reasoning-limit case at 7B, not a
-   data or comment gap — closed as "needs a bigger model or full
-   fine-tuning," per the *g_elevator_door resists both fixes* section
-   above.** Force-training it directly (comment in place, exact target
-   repeated twice in `train.jsonl`) still produced the wrong `kind` on
-   the identical prompt, matching the `st_two_hand` pattern from *Base
-   model size*. Do not spend another round re-annotating or re-training
-   this specific benchmark expecting a different result from the same
-   kind of intervention — the two interventions available at this model
-   size (more context, more exposure) have both been tried and both
-   failed. Revisit only alongside a base-model-size or full-fine-tuning
-   experiment (*Next levers* #8 below), not on its own.
+1. **`g_elevator_door` and `st_two_hand` are confirmed reasoning-limit
+   cases across two model-size jumps, not a data, comment, or model-size
+   gap.** Per *14B base model* above: both cases were retested directly at
+   14B and both still fail the same way they did at 7B. Two independent
+   scale jumps (1.5B→7B, 7B→14B) have each fixed some reasoning failures
+   and left these two completely unmoved — do not expect a further model
+   scale increase alone to resolve them without evidence the failure mode
+   changes with scale. The only remaining untested levers named in this
+   file are 32B+ (blocked on this hardware's memory, see *Not attempted*)
+   and full fine-tuning instead of LoRA (untested at any size).
 2. **Investigate whether `safety_intent` comments can introduce their own
    new failures.** `g_bus_coupler_changeover`, one of the 61 benchmarks
    newly annotated this round, started generating `mutual_exclusion` over
@@ -998,10 +1100,13 @@ one specific class of error, not a correctness guarantee.
    for polarity inversion, incomplete variable coverage, or the
    tautology-of-wiring failure this round targeted (none of the model's
    remaining failures are caught by it).
-8. **An even larger base model, or full fine-tuning instead of LoRA** —
-   still untested; the 1.5B→7B jump produced a real but mixed result
-   (reasoning up, idiom-adherence down at the time), and this round's
-   retraining on more data closed part of that gap without changing model
-   size, which weakens the case for a further size jump being the next
-   most useful lever.
+8. **Full fine-tuning instead of LoRA, at either 7B or 14B, is the one
+   lever in this list that has never been tried.** The 14B jump (see
+   *14B base model* above) produced the same shape of result the 1.5B→7B
+   jump did — real but mixed, with the two specific reasoning-limit cases
+   unmoved by either scale increase — which weakens confidence that a
+   further model-size jump on its own is the next most useful lever.
+   LoRA's rank-16 constraint itself, rather than base model capacity, is
+   now the more plausible remaining bottleneck to test; a 32B attempt is
+   blocked on this hardware's memory (*Not attempted*, above) regardless.
 
