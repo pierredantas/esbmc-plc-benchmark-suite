@@ -20,8 +20,11 @@ phrasing*, *Comment injection for XML-only benchmarks*, and *g_elevator_door
 resists both fixes* below for why (each produced a real gain alongside a
 confirmed regression, none a clean win). A 14B-base-model checkpoint,
 `qwen2.5-coder-14b-props-nary-best`, was also trained and evaluated — see
-*14B base model* below — and is likewise not the default. The published
-copy at
+*14B base model* below — and is likewise not the default. A full-fine-tuning
+attempt at 7B (`qwen2.5-coder-7b-full-finetune-best`) did not converge on
+this hardware's memory-constrained config — see *Full fine-tuning at 7B*
+below — and should not be used for anything beyond documenting what was
+tried. The published copy at
 [huggingface.co/Pvdantas/esbmc-plc-props-slm-lora](https://huggingface.co/Pvdantas/esbmc-plc-props-slm-lora)
 (private) holds the 369-example weights, confirmed byte-identical
 (sha256) to the local `qwen2.5-coder-7b-props-nary-best` checkpoint as of
@@ -1008,6 +1011,75 @@ memory or a training-time memory optimization (gradient accumulation at
 a smaller micro-batch, 8-bit optimizer state, or similar) not currently
 in `ml/lora_config_14b.yaml`'s pattern.
 
+## Full fine-tuning at 7B: infeasible at full scope on this hardware, inconclusive on the reasoning question
+
+The last untested lever named across the *14B base model* and *Next
+levers* sections — full fine-tuning instead of LoRA — was attempted next.
+Result: this hardware cannot run it at a scope large enough to answer the
+question it was meant to answer, and the constrained version that does
+fit did not train to convergence.
+
+**Feasibility, mechanical prerequisite first.** `mlx_lm`'s
+`fine_tune_type: full` unfreezes the model's own layer weights directly
+(`model.freeze()` then `l.unfreeze()` per layer in `mlx_lm/lora.py`), which
+only makes sense against an unquantized checkpoint —
+`mlx-community/Qwen2.5-Coder-7B-Instruct-bf16` (15.2GB), not the 4-bit
+model every LoRA config in this repo uses. `optimizer: sgd` (stateless)
+was chosen over `adamw` (2 extra moment buffers per trained parameter)
+specifically to fit this machine's 24GB budget.
+
+**Two smoke-test OOMs before finding a config that ran at all.**
+`num_layers: 28` (the whole model, 85.7% of parameters trainable) OOM'd
+on the first real training step. `num_layers: 8` (24.5% of parameters)
+also OOM'd at the default `max_seq_length: 4096`. The only combination
+that survived a 10-iteration smoke test: `num_layers: 2` (466M of 7.6B
+parameters, 6.1%) with `max_seq_length: 1024` — peak 17.9GB, no crash.
+That is a materially constrained "full fine-tuning," not the whole model
+on full-length data: roughly 40% of training examples (mostly longer
+PLCopen XML sources) get truncated to a 1024-token prefix. Both target
+benchmarks for this experiment (`st_two_hand`, `g_elevator_door`) were
+confirmed to survive under 1024 tokens in their ST form before accepting
+this constraint, so the specific comparison was still meant to be valid
+even though the run as a whole trains on a degraded slice of the corpus.
+
+**The full 640-iteration run did not converge.** Val loss across the 4
+saved checkpoints: 1.853 (160), 1.746 (320, lowest), 1.886 (480), 2.010
+(640) — every LoRA checkpoint in this file, at any base model size, has
+landed in the 0.15-0.35 range. `1e-5` (chosen conservatively, since a raw
+weight update needed a lower learning rate than a scaled LoRA adapter
+update) combined with `num_layers: 2` and SGD's lack of momentum
+apparently was not enough capacity or signal to actually fit the task in
+640 iterations.
+
+**The generated output confirms this is undertraining, not a reasoning
+result.** Testing `st_two_hand` at the lowest-val-loss checkpoint (iter
+320) produced output the fine-tuned format has never produced at any
+prior round: wrapped in a markdown code fence, `format_version: 1.0`
+instead of the schema-required string `"0.1"`, 10 invented properties
+where every prior checkpoint (LoRA, any base size) produces 1, bare
+variable names as `expression` values (`expression: BothOff`) rather
+than boolean logic, and a misused `kind: absence` (schema requires a
+`subtype` field this output never supplies). The standing 3-benchmark
+probe confirms the same collapse quantitatively: `schema_valid` 0.000
+(100% failure, versus 100% pass at every prior round), `kind_precision`
+0.222. This is not evidence about whether full fine-tuning would fix the
+reasoning-limit cases — the checkpoint never learned the task well enough
+to produce a comparable answer to compare.
+
+**Verdict: inconclusive on the actual question, and not worth a second
+attempt without more memory.** The reasoning-limit question this
+experiment exists to answer (does LoRA's rank-16 constraint, not base
+model capacity, explain `st_two_hand`/`g_elevator_door`) remains open —
+neither confirmed nor refuted, since the constrained run never reached a
+comparable level of task competence to LoRA's checkpoints. Not promoted;
+kept as `qwen2.5-coder-7b-full-finetune-best` for reference, though it
+should not be used for anything beyond documenting what was tried. A
+meaningful full-fine-tuning attempt needs either more unified memory than
+this 24GB machine has, or a training-time memory optimization not
+currently available in this pipeline (gradient accumulation at true
+micro-batch granularity, 8-bit optimizer state, LoRA+ hybrid approaches)
+— untried here, not ruled out in principle.
+
 ## Deterministic post-check (`ml/scripts/check_props.py`)
 
 ```bash
@@ -1100,13 +1172,22 @@ one specific class of error, not a correctness guarantee.
    for polarity inversion, incomplete variable coverage, or the
    tautology-of-wiring failure this round targeted (none of the model's
    remaining failures are caught by it).
-8. **Full fine-tuning instead of LoRA, at either 7B or 14B, is the one
-   lever in this list that has never been tried.** The 14B jump (see
-   *14B base model* above) produced the same shape of result the 1.5B→7B
-   jump did — real but mixed, with the two specific reasoning-limit cases
-   unmoved by either scale increase — which weakens confidence that a
-   further model-size jump on its own is the next most useful lever.
-   LoRA's rank-16 constraint itself, rather than base model capacity, is
-   now the more plausible remaining bottleneck to test; a 32B attempt is
-   blocked on this hardware's memory (*Not attempted*, above) regardless.
+8. **Full fine-tuning at 7B was attempted and is inconclusive on this
+   hardware — not a lever to retry without more memory, per *Full
+   fine-tuning at 7B* above.** Two OOMs (whole-model, then 8 unfrozen
+   layers at 4096 tokens) narrowed the only surviving config to 2
+   unfrozen layers at 1024 tokens, which never converged in 640
+   iterations (val loss plateaued around 1.75-2.0, versus 0.15-0.35 for
+   every LoRA checkpoint) and produced visibly broken output (invented
+   `format_version`, fabricated properties, a misused `kind`). This does
+   not confirm or refute whether LoRA's rank constraint explains
+   `st_two_hand`/`g_elevator_door` — the checkpoint never reached
+   comparable task competence to test that question against. Every
+   remaining item in this section (32B+, a genuinely adequate full
+   fine-tune) is blocked on the same constraint: more unified memory, or
+   a training-time memory optimization (gradient accumulation at true
+   micro-batch granularity, 8-bit optimizer state, or similar) not
+   currently in this pipeline. Both `st_two_hand` and `g_elevator_door`
+   should be treated as open, unresolved reasoning-limit cases going
+   forward, not as evidence for or against any specific cause.
 

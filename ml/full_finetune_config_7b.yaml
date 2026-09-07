@@ -1,0 +1,55 @@
+# Full fine-tuning (all parameters, not a LoRA adapter) for props.yaml
+# generation on the 7B base model, same 389-example dataset the LoRA
+# checkpoints use — tests whether LoRA's rank-16 constraint itself, rather
+# than base model capacity, is the bottleneck behind the two confirmed
+# reasoning-limit cases (st_two_hand, g_elevator_door; see ml/README.md
+# "Next levers" #8 and the *14B base model* section).
+#
+# Requires the UNQUANTIZED bf16 checkpoint, not the 4-bit one the LoRA
+# configs use: mlx_lm's fine_tune_type=full unfreezes the model's own
+# layer weights directly (see mlx_lm/lora.py train_model — model.freeze()
+# then l.unfreeze() per layer), and a QuantizedLinear layer's packed
+# integer weights are not something gradient descent can update
+# meaningfully. mlx-community/Qwen2.5-Coder-7B-Instruct-bf16 (15.2GB) is
+# the corresponding unquantized MLX build.
+#
+# optimizer: sgd, not the adam/adamw every LoRA config in this repo uses.
+# AdamW's per-parameter first/second moment state would roughly triple
+# the ~7.6GB of trainable weights, which does not fit this machine's 24GB
+# unified memory. SGD is stateless.
+#
+# num_layers: 28 (unfreezing the whole model) OOM'd even with SGD; 8
+# layers at max_seq_length 4096 also OOM'd. The combination that actually
+# fits, confirmed by a 10-iteration smoke test (peak 17.9GB, no crash):
+# num_layers 2, max_seq_length 1024. This is a materially constrained
+# version of "full fine-tuning" — 6.1% of parameters (466M/7.6B) trained,
+# and ~1024-token truncation drops roughly 40% of training examples
+# (mostly the longer PLCopen XML sources) to a cut prefix. The two
+# target reasoning-limit-case benchmarks this experiment exists to test
+# (st_two_hand, g_elevator_door) both survive intact under 1024 tokens in
+# their ST form — confirmed before accepting this constraint — so the
+# specific comparison this round cares about is still valid even though
+# the run as a whole trains on a degraded slice of the corpus.
+#
+# Build the dataset first with:
+#   python3 ml/scripts/build_dataset.py --augment-st
+# Run: mlx_lm.lora -c ml/full_finetune_config_7b.yaml
+
+model: mlx-community/Qwen2.5-Coder-7B-Instruct-bf16
+train: true
+fine_tune_type: full
+optimizer: sgd
+data: ml/data
+adapter_path: ml/adapters/qwen2.5-coder-7b-full-finetune
+
+num_layers: 2
+batch_size: 1
+iters: 640
+val_batches: 10
+learning_rate: 1e-5
+steps_per_report: 20
+steps_per_eval: 80
+save_every: 160
+max_seq_length: 1024
+grad_checkpoint: true
+seed: 42
