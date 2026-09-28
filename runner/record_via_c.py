@@ -33,6 +33,7 @@ import time
 import yaml
 
 from paths import portable
+from record import rewrite_implication
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TOOLS = pathlib.Path(os.environ.get("PLC_TOOLS", pathlib.Path.home() / "plc-tools"))
@@ -173,6 +174,8 @@ def properties(props_path):
     out, skipped = [], []
     for prop in props.get("properties", []):
         kind, expr = prop.get("kind"), prop.get("expression")
+        # C reads `a -> b` as member access, so implication is spelled out first.
+        expr = rewrite_implication(expr) if expr else expr
         if kind == "invariant" and expr:
             out.append((prop["id"], expr))
         elif kind == "absence" and expr:
