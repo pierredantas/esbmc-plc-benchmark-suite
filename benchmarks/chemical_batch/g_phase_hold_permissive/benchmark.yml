@@ -9,7 +9,7 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 safety_intent: "A phase held on permissive loss must keep the heater off; only explicitly clearing the hold may re-enable heating."
-validation_status: candidate
+validation_status: validated
 variants:
   - file: clean.xml
     expected_verdict: true
@@ -25,4 +25,4 @@ variants:
       witness: "Scan 1: run_command=1, agitator_ok=0 latches held. A later scan with run_command=0, resume_command=0, maint=1 asserts heater while held is still latched."
 features: [contacts, coils]
 difficulty: medium
-tags: [safety, sequence, security, llb, authored, known-issue-esbmc-7577]
+tags: [safety, sequence, security, llb, authored]

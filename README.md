@@ -90,6 +90,9 @@ tagged `known-issue-esbmc-7577` and carries `validation_status: candidate` rathe
 `validated` until the upstream fix lands, whatever its prior status said — a tool-confirmed
 verdict on one of these was never actually sound. Check a task's tags before trusting its
 expected verdict as tool-confirmed.
+The defect no longer reproduces on ESBMC master (2c5cffd98a); tasks whose verdicts were then
+confirmed by two independent routes were promoted and lost the tag
+(`docs/validation_2026-09-27.md`).
 
 **Three more ESBMC LD/FBD front-end defects**, found while cross-checking every recorded
 verdict against its expected one: an `<FBD>`-bodied POU is silently skipped rather than

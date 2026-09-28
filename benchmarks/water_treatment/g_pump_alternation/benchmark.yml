@@ -9,7 +9,7 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 safety_intent: "Only one pump may run at a time, so the standby stays available and the rising main is not over-pressured."
-validation_status: candidate
+validation_status: validated
 variants:
   - file: program.xml
     expected_verdict: true
@@ -25,4 +25,4 @@ variants:
       witness: "Both variants satisfy props.yaml. alternation_check.props.yaml refutes on the working alternation; on the stuck variant neither build can discharge it, and the unknown is the recorded result."
 features: [contacts, coils, toggle, mutual_exclusion]
 difficulty: medium
-tags: [discriminator, k-induction-limit, known-issue-esbmc-7577]
+tags: [discriminator, k-induction-limit]

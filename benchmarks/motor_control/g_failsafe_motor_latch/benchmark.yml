@@ -9,7 +9,7 @@ source:
   license: "Design Science License"
 properties_file: props.yaml
 safety_intent: "The motor coil must instantly de-energise if the hardware thermal overload relay physically trips."
-validation_status: candidate
+validation_status: validated
 variants:
   - file: failsafe_motor_latch.xml
     expected_verdict: true

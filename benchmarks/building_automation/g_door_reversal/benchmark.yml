@@ -9,7 +9,7 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 safety_intent: "The door must never drive down while the photo-eye beam is broken."
-validation_status: candidate
+validation_status: validated
 variants:
   - file: program.xml
     expected_verdict: true
@@ -25,4 +25,4 @@ variants:
       witness: "Both variants satisfy props.yaml. reversal_check.props.yaml separates them, and v8.4 answers it the way the momentary variant does because it drops the latch."
 features: [contacts, coils, latch]
 difficulty: easy
-tags: [discriminator, en-13241, known-issue-esbmc-7577]
+tags: [discriminator, en-13241]
