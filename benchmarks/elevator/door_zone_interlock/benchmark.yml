@@ -8,7 +8,7 @@ source:
   reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: candidate
+validation_status: validated
 variants:
   - file: clean.ld
     expected_verdict: true
@@ -25,4 +25,4 @@ variants:
       witness: "req_open=1, door_zone=0, fire_bypass=1 reaches doors_open=1 AND door_zone=0."
 features: [contacts, coils, parallel_branch, override, interlock]
 difficulty: easy
-tags: [safety, elevator, doors, known-issue-esbmc-7577]
+tags: [safety, elevator, doors]

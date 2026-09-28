@@ -9,7 +9,7 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 safety_intent: "Feed and discharge valves must never be open together; feed additionally requires the vessel confirmed empty."
-validation_status: candidate
+validation_status: validated
 variants:
   - file: clean.xml
     expected_verdict: true
@@ -25,4 +25,4 @@ variants:
       witness: "feed_cmd=1, discharge_cmd=1, vessel_empty=0, maint=1 opens feed_valve while discharge_valve is also open."
 features: [contacts, coils]
 difficulty: medium
-tags: [safety, interlock, security, llb, authored, known-issue-esbmc-7577]
+tags: [safety, interlock, security, llb, authored]

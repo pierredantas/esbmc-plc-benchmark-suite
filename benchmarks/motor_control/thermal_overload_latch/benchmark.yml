@@ -8,7 +8,7 @@ source:
   reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: candidate
+validation_status: validated
 variants:
   - file: clean.ld
     expected_verdict: true
@@ -25,4 +25,4 @@ variants:
       witness: "thermal_trip=0, overload_latch=1, req_run=1 reaches motor_run=1 AND overload_latch=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, motor_control, thermal_protection, known-issue-esbmc-7577]
+tags: [safety, motor_control, thermal_protection]

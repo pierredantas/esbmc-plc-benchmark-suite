@@ -9,7 +9,7 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 safety_intent: "A breaker may close onto a live bus only after synchro-check passes; closing onto a dead bus needs no check."
-validation_status: candidate
+validation_status: validated
 variants:
   - file: clean.xml
     expected_verdict: true
@@ -25,4 +25,4 @@ variants:
       witness: "close_request=1, bus_live=1, sync_check_ok=0, maint=1 closes the breaker onto a live, unchecked bus."
 features: [contacts, coils]
 difficulty: medium
-tags: [safety, interlock, security, llb, authored, known-issue-esbmc-7577]
+tags: [safety, interlock, security, llb, authored]

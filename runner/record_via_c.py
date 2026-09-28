@@ -33,7 +33,7 @@ import time
 import yaml
 
 from paths import portable
-from record import rewrite_implication
+from record import combine, rewrite_implication
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TOOLS = pathlib.Path(os.environ.get("PLC_TOOLS", pathlib.Path.home() / "plc-tools"))
@@ -194,11 +194,24 @@ def properties(props_path):
             out.append((prop["id"], "!(" + " && ".join(prop["variables"]) + ")"))
         elif kind == "termination":
             out.append((prop["id"], None))
+        elif kind == "reachable" and expr:
+            continue  # a required witness: see witnesses()
         else:
             skipped.append(f'{prop["id"]}:{kind}')
-    if not out:
+    if not out and not witnesses(props_path):
         raise RuntimeError("no property this route can express: " + ", ".join(skipped))
     return out
+
+
+def witnesses(props_path):
+    """Each `reachable` property as (id, claim that fails once the state is reached).
+
+    Reaching the state is what satisfies it, so it gets a harness of its own whose
+    only assertion is the negated state: a counterexample there is the witness."""
+    props = yaml.safe_load(props_path.read_text(encoding="utf-8"))
+    return [(prop["id"], f'!({rewrite_implication(prop["expression"])})')
+            for prop in props.get("properties", [])
+            if prop.get("kind") == "reachable" and prop.get("expression")]
 
 
 def entry_struct(program, header):
@@ -236,9 +249,16 @@ def build(program, props_path, workdir, scans):
     struct_name = entry_struct(program, header)
     harness_file = outdir / "harness.c"
     pou = (struct_name, struct_name[: -len("_data__")])
-    harness_file.write_text(harness(pou, declared_vars(header), inputs_of(program),
-                                    properties(props_path), scans), encoding="utf-8")
-    return harness_file, outdir
+    variables, ins = declared_vars(header), inputs_of(program)
+    harness_file.write_text(harness(pou, variables, ins, properties(props_path), scans),
+                            encoding="utf-8")
+    witness_files = []
+    for prop_id, claim in witnesses(props_path):
+        path = outdir / f"witness_{prop_id}.c"
+        path.write_text(harness(pou, variables, ins, [(prop_id, claim)], scans),
+                        encoding="utf-8")
+        witness_files.append((prop_id, path))
+    return harness_file, outdir, witness_files
 
 
 def elide(trace, head=60, tail=60):
@@ -364,13 +384,20 @@ def verify(esbmc, generated, task, timeout, scans):
 def build_record(args, paths, generated):
     """Every build's answer, plus what it was asked."""
     program, props_path = paths
-    harness_file, outdir = generated
+    harness_file, outdir, witness_files = generated
     expected = args.expected == "true"
     runs = {}
     for spec in args.tool:
         label, path = spec.split("=", 1)
         result = verify(path, (harness_file, outdir),
                         (expected, is_termination(props_path)), args.timeout, args.scans)
+        reached = {pid: verify(path, (wfile, outdir), (False, False), args.timeout,
+                               args.scans)["verdict"]
+                   for pid, wfile in witness_files}
+        if reached:
+            result["witnesses"] = {pid: {"VIOLATION": "reached", "SAFE": "unreached"}
+                                   .get(v, v) for pid, v in reached.items()}
+            result["verdict"] = combine(result["verdict"], reached)
         result["tool"] = tool_info(path)
         result["command"] = (
             f"runner/record_via_c.py {os.path.relpath(program, ROOT)} "
@@ -400,8 +427,9 @@ def main():
     expected = args.expected == "true"
 
     with tempfile.TemporaryDirectory() as tmp:
-        harness_file, outdir = build(program, props_path, pathlib.Path(tmp), args.scans)
-        runs = build_record(args, (program, props_path), (harness_file, outdir))
+        generated = build(program, props_path, pathlib.Path(tmp), args.scans)
+        harness_file = generated[0]
+        runs = build_record(args, (program, props_path), generated)
         record = {
             "schema_version": "0.4", "route": "via-c", "scans": args.scans,
             "toolchain": toolchain_info(),

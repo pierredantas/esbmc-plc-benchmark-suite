@@ -9,7 +9,7 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 safety_intent: "The output must be energised only when at least one of the two inputs is closed."
-validation_status: candidate
+validation_status: validated
 syntax_pair_of: ld_comb_or
 variants:
   - file: program.xml
@@ -22,4 +22,4 @@ metrics:
   variables: 3
 features: [contacts, coils, parallel_branch]
 difficulty: easy
-tags: [feature, semantics, syntax-pair, known-issue-esbmc-7577]
+tags: [feature, semantics, syntax-pair]

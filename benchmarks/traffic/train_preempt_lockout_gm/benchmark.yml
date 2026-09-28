@@ -8,7 +8,7 @@ source:
   reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: candidate
+validation_status: validated
 variants:
   - file: clean.ld
     expected_verdict: true
@@ -25,4 +25,4 @@ variants:
       witness: "train_detect=1, preempt_reset=1, timer_green=1 reaches veh_green=1 AND train_detect=1."
 features: [contacts, coils, latch, parallel_branch, interlock]
 difficulty: easy
-tags: [safety, traffic, preemption, known-issue-esbmc-7577]
+tags: [safety, traffic, preemption]

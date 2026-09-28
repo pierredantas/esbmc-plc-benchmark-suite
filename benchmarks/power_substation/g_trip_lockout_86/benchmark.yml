@@ -9,7 +9,7 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 safety_intent: "The lockout relay must block reclose until an explicit manual reset clears it; lockout and reclose must never be true together."
-validation_status: candidate
+validation_status: validated
 variants:
   - file: clean.xml
     expected_verdict: true
@@ -25,4 +25,4 @@ variants:
       witness: "protection_trip=1, manual_reset=0, reclose_request=1, maint=1 latches lockout and simultaneously asserts reclose."
 features: [contacts, coils]
 difficulty: medium
-tags: [safety, interlock, security, llb, authored, known-issue-esbmc-7577]
+tags: [safety, interlock, security, llb, authored]

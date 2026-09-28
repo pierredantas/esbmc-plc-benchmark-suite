@@ -8,7 +8,7 @@ source:
   reference: "Authored for the esbmc-plc-benchmark-suite to close a training gap found by ml/scripts/build_task_slice.py: a latch that feeds a second latch, where the safety property must trace back through both hops to the original trigger."
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: candidate
+validation_status: validated
 variants:
   - file: clean.ld
     expected_verdict: true
@@ -25,4 +25,4 @@ variants:
       witness: "protection_trip=1, close_req=1 reaches breaker_close=1."
 features: [contacts, coils, latch, cascade]
 difficulty: medium
-tags: [safety, substation, lockout, latch-training-example, known-issue-esbmc-7577]
+tags: [safety, substation, lockout, latch-training-example]

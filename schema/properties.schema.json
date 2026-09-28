@@ -22,7 +22,7 @@
         "id": { "type": "string", "pattern": "^P[0-9]+$" },
         "kind": {
           "type": "string",
-          "enum": ["invariant", "mutual_exclusion", "absence", "reachability", "assertion", "termination"]
+          "enum": ["invariant", "mutual_exclusion", "absence", "reachability", "reachable", "assertion", "termination"]
         },
         "expression": { "type": "string" },
         "variables": { "type": "array", "items": { "type": "string" }, "minItems": 2 },
@@ -36,7 +36,7 @@
           "then": { "required": ["variables"] }
         },
         {
-          "if": { "properties": { "kind": { "enum": ["invariant", "reachability"] } } },
+          "if": { "properties": { "kind": { "enum": ["invariant", "reachability", "reachable"] } } },
           "then": { "required": ["expression"] }
         },
         {

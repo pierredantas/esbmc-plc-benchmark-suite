@@ -8,7 +8,7 @@ source:
   reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: candidate
+validation_status: validated
 variants:
   - file: clean.ld
     expected_verdict: true
@@ -25,4 +25,4 @@ variants:
       witness: "relief_open=0, trip_latch=1, req_pump=1 reaches feed_pump=1 AND trip_latch=1."
 features: [contacts, coils, latch, interlock]
 difficulty: easy
-tags: [safety, chemical_batch, overpressure, known-issue-esbmc-7577]
+tags: [safety, chemical_batch, overpressure]

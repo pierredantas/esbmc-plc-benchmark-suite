@@ -8,7 +8,7 @@ source:
   reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: candidate
+validation_status: validated
 variants:
   - file: clean.ld
     expected_verdict: true
@@ -25,4 +25,4 @@ variants:
       witness: "req_dose=1, low_flow=1, maint_mode=1 reaches dose_pump=1 AND low_flow=1."
 features: [contacts, coils, parallel_branch, override, interlock]
 difficulty: easy
-tags: [safety, water_treatment, dosing, known-issue-esbmc-7577]
+tags: [safety, water_treatment, dosing]

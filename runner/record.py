@@ -89,21 +89,52 @@ def rewrite_implication(expr):
 
 
 def props_for_esbmc(props_path, tmp_dir):
-    """The props.yaml ESBMC actually reads: unchanged, unless some property uses
-    `->`, in which case a rewritten copy is written into `tmp_dir` and returned
-    instead. `properties_file` in the record still names the original."""
+    """The props.yaml files ESBMC actually reads, as (main, witnesses).
+
+    `main` holds every property ESBMC checks as a claim, with `->` rewritten, or is
+    None when there are none. `witnesses` pairs each `reachable` property's id with a
+    file asking ESBMC for that state as a `reachability` claim: `--ld-props` has no
+    kind that fails when a state is *not* reached, so each gets a run of its own.
+    `properties_file` in the record still names the original.
+    """
     with open(props_path, encoding="utf-8") as fh:
-        text = fh.read()
-    props = yaml.safe_load(text)
-    if not any("->" in (p.get("expression") or "") for p in props.get("properties", [])):
-        return props_path
+        props = yaml.safe_load(fh)
+    if not any("->" in (p.get("expression") or "") or p.get("kind") == "reachable"
+               for p in props.get("properties", [])):
+        return props_path, []
     for p in props.get("properties", []):
         if p.get("expression"):
             p["expression"] = rewrite_implication(p["expression"])
-    rewritten = os.path.join(tmp_dir, "props_no_implies.yaml")
-    with open(rewritten, "w", encoding="utf-8") as fh:
-        yaml.safe_dump(props, fh)
-    return rewritten
+    claims = [p for p in props.get("properties", []) if p.get("kind") != "reachable"]
+    witnesses = []
+    for p in props.get("properties", []):
+        if p.get("kind") != "reachable":
+            continue
+        path = os.path.join(tmp_dir, f'witness_{p["id"]}.yaml')
+        with open(path, "w", encoding="utf-8") as fh:
+            yaml.safe_dump({"properties": [{**p, "kind": "reachability"}]}, fh)
+        witnesses.append((p["id"], path))
+    main = None
+    if claims:
+        main = os.path.join(tmp_dir, "props_esbmc.yaml")
+        with open(main, "w", encoding="utf-8") as fh:
+            yaml.safe_dump({**props, "properties": claims}, fh)
+    return main, witnesses
+
+
+def combine(claims, witnesses):
+    """One verdict from the claim run and the required-witness runs.
+
+    A witness run that reports SAFE never reached its state, which fails the task
+    just as a violated claim does."""
+    if claims == "VIOLATION" or "SAFE" in witnesses.values():
+        return "VIOLATION"
+    if claims != "SAFE":
+        return claims
+    for verdict in witnesses.values():
+        if verdict != "VIOLATION":
+            return verdict
+    return "SAFE"
 
 
 def encoding(esbmc, program):
@@ -232,13 +263,27 @@ def verify(esbmc, paths, props_path, timeout, mode, converted):
             "cpu_time_s": round(time.time() - start, 3), "counterexample": trace}
 
 
-def record_one(label, esbmc, args, props_path, pvars):
+def record_one(label, esbmc, args, props_paths, pvars):
     """Everything one build has to say about this task."""
+    props_path, witness_paths = props_paths
     lines, counts = encoding(esbmc, args.program)
     missing, gate = check_gate(counts, pvars)
     expected = args.expected == "true"
-    result = verify(esbmc, (args.program, args.source), props_path, args.timeout,
-                    resolve_mode(args.mode, expected), args.converted_from_text_ld)
+    paths = (args.program, args.source)
+    if props_path or args.watchdog_only or not witness_paths:
+        result = verify(esbmc, paths, props_path, args.timeout,
+                        resolve_mode(args.mode, expected), args.converted_from_text_ld)
+    else:
+        result = {"command": None, "verdict": "SAFE", "proof": None,
+                  "cpu_time_s": 0.0, "counterexample": None}
+    # k-induction: a counterexample reaches the state, a proof shows it never is.
+    witnesses = {pid: verify(esbmc, paths, path, args.timeout, "kinduction",
+                             args.converted_from_text_ld)["verdict"]
+                 for pid, path in witness_paths}
+    if witnesses:
+        result["witnesses"] = {pid: {"VIOLATION": "reached", "SAFE": "unreached"}
+                               .get(v, v) for pid, v in witnesses.items()}
+        result["verdict"] = combine(result["verdict"], witnesses)
     expected_v = "SAFE" if expected else "VIOLATION"
     if result["verdict"] in ("error", "unknown"):
         status = result["verdict"]
@@ -278,8 +323,10 @@ def main():
     pvars = property_variables(props)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
-        props_path = None if args.watchdog_only else props_for_esbmc(args.props, tmp_dir)
-        runs = dict(record_one(t.split("=", 1)[0], t.split("=", 1)[1], args, props_path, pvars)
+        props_paths = ((None, []) if args.watchdog_only
+                       else props_for_esbmc(args.props, tmp_dir))
+        runs = dict(record_one(t.split("=", 1)[0], t.split("=", 1)[1], args, props_paths,
+                               pvars)
                     for t in args.tool)
 
     record = {
