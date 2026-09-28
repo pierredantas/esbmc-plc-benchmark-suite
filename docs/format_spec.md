@@ -104,7 +104,8 @@ properties:
 | `invariant` | expression holds in every scan | always true | SAFE programs |
 | `mutual_exclusion` | listed `variables` never simultaneously true | never co-active | SAFE |
 | `absence` | no runtime error of `subtype` (overflow, div0, array-oob) | error unreachable | SAFE |
-| `reachability` | a state satisfying `expression` IS reachable | witness exists | VIOLATION / trigger-synthesis |
+| `reachability` | a state satisfying `expression` is a bug: reaching it violates the task | state unreachable | trigger synthesis: the counterexample is the witness |
+| `reachable` | a state satisfying `expression` must be reachable | witness found within the bound | SAFE; a behavior the program must be able to show, such as a latch holding after its trigger clears |
 | `assertion` | inline assertion at `location` holds | assertion never fails | SAFE |
 | `termination` | every scan cycle completes (no non-terminating loop) within the scan-watchdog budget | no scan hangs | SAFE; violated by non-termination LLBs (checked via `--ld-scan-watchdog`) |
 
@@ -113,7 +114,14 @@ properties:
   `AND OR NOT`, `= <> < <= > >=`, `+ - * /`, parentheses. No temporal operators in v0.1.
 - `absence` carries `subtype: overflow|div_zero|array_bounds`.
 - Each property is checked **independently**; a task's overall verdict is `false`
-  iff any expected-SAFE property is violated or any expected-reachable state is unreachable.
+  iff any `invariant`, `mutual_exclusion`, `absence`, `assertion` or `termination`
+  property is violated, any `reachability` state is reached, or any `reachable` state
+  is not reached (the LD route proves that by k-induction; the via-C route checks a
+  fixed number of scans, 8 by default in `record_all.py`).
+- `reachable` exists because the vocabulary has no temporal operators: when a fault
+  removes behavior rather than adding it (a seal-in dropped from a latch), every
+  state of the faulty program is also a state of the correct one, so no per-scan
+  invariant separates them; a state only the correct program can reach does.
 
 ---
 
