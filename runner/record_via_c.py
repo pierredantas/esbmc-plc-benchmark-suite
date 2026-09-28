@@ -140,6 +140,14 @@ def harness(pou, variables, ins, expressions, scans):
     body += [write(name, NONDET.get(types.get(resolve(name), "BOOL"), "nondet_int()"))
              for name in ins]
     body.append(f"    {prefix}_body__(&d);")
+    # A property may name a variable the program never reads, as a bomb that
+    # drops an input does; it is still an input, so the harness supplies it.
+    known = {n.upper() for _k, _t, n in variables} | {n.upper() for n in ins}
+    free = sorted({name for _id, expr in expressions if expr
+                   for name in re.findall(r"\b[A-Za-z_]\w*\b", expr)
+                   if name.upper() not in known
+                   and name.upper() not in ("TRUE", "FALSE")})
+    body += [f"    BOOL {name} = nondet_bool();" for name in free]
     for prop_id, expr in expressions:
         if expr is None:   # termination: the unwinding assertion carries it
             continue
