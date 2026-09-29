@@ -37,4 +37,4 @@ The suite now has 122 validated and 53 candidate tasks.
 - **36 with no LD route** (ST, FBD, SFC, IL): their only route is via-C, so the two-route rule cannot be met.
 - **14 LD tasks settled by the LD route only**, because the via-C run times out: the timer and counter programs, and the graphical tank programs. The cost is in the route, not the program: on MatIEC's generated C for `g_ctd_load`, an 8-scan harness does not finish in 900 s under k-induction nor in 300 s under plain unwinding, while a 3-scan harness finishes in 40 s but is too shallow to reach the preset.
 - **2 graphical LD tasks with no verdict**: `g_fwd_rev_interlock`, and `g_traffic_light_pedestrian`, whose ST MatIEC rejects.
-- **`manufacturing/g_two_hand_fb`**: both variants agree on both routes; it keeps `known-issue-esbmc-7580` until esbmc/esbmc#8034 is merged.
+- **`manufacturing/g_two_hand_fb`**: both variants agree on both routes; it kept `known-issue-esbmc-7580` until esbmc/esbmc#8034 was merged (September 29, 2026), and is now validated, with no known-issue tag left in the suite.
