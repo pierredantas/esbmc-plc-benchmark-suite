@@ -11,10 +11,11 @@ included. Blocks (TON, counters, user-defined function blocks) are not emitted;
 those files are still written by hand.
 
 A rung can instead be {coil, literal}: the coil is driven directly by the
-constant TRUE/FALSE, rendered as an <inVariable> rather than a contact chain
-(a bare `OTE(x) := TRUE ;`/`FALSE ;` rung has no contact to draw). Mixing
-`literal` with `branches`/`tail` on the same rung is not meaningful and is
-rejected.
+constant TRUE/FALSE (a bare `OTE(x) := TRUE ;`/`FALSE ;` rung has no contact to
+draw). The left rail powers the coil every scan: a plain coil for TRUE, a reset
+coil for FALSE, which is `x := FALSE` each scan. An <inVariable> literal would
+carry no power flow, and ESBMC refuses a coil it cannot drive. Mixing `literal`
+with `branches`/`tail` on the same rung is not meaningful and is rejected.
 
     from ld_from_rungs import build
     T, F = True, False
@@ -60,22 +61,12 @@ def build(name, ins, outs, rungs):
         nid += 1
         return nid - 1
 
-    def literal_source(value, x, y):
-        nonlocal nid
-        elems.append(f'<inVariable localId="{nid}" height="20" width="20">'
-                     f'<position x="{x}" y="{y}" /><connectionPointOut>'
-                     f'<relPosition x="20" y="10" /></connectionPointOut>'
-                     f'<expression>{"TRUE" if value else "FALSE"}</expression></inVariable>')
-        nid += 1
-        return nid - 1
-
     for rung in rungs:
         if "literal" in rung:
             if rung.get("branches") or rung.get("tail"):
                 raise ValueError(f"rung {rung['coil']!r}: literal cannot be combined "
                                   "with branches/tail")
-            ends, top = [literal_source(rung["literal"], 20, y)], y
-            x = 40
+            ends, top, x = [0], y, 20
         else:
             ends, top = [], y
             for branch in rung["branches"]:
@@ -88,7 +79,8 @@ def build(name, ins, outs, rungs):
             for var, neg in rung.get("tail", []):
                 ends, x = [contact(var, neg, x, top, ends)], x + 20
         conns = "".join(f'<connection refLocalId="{e}" />' for e in ends)
-        elems.append(f'<coil localId="{nid}" negated="false" storage="none">'
+        storage = "reset" if rung.get("literal") is False else "none"
+        elems.append(f'<coil localId="{nid}" negated="false" storage="{storage}">'
                      f'<position x="{x}" y="{top}" /><connectionPointIn>{conns}'
                      f'</connectionPointIn><connectionPointOut /><variable>{rung["coil"]}</variable></coil>')
         nid += 1

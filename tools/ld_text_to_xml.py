@@ -216,10 +216,15 @@ def to_xml_rungs(rungs):
     return out
 
 
-def translate(name, text):
-    """The PLCopen XML rendering of one .ld source's full program."""
+def translate(name, text, inputs=()):
+    """The PLCopen XML rendering of one .ld source's full program.
+
+    The DSL declares nothing, so a variable named in `inputs` but not in any rung
+    (a sensor a bomb variant stopped reading) is declared as an input here.
+    """
     rungs = parse_program(text)
     ins, outs = variables(rungs)
+    ins += [v for v in inputs if v not in ins and v not in outs]
     return build_xml(name, ins, outs, to_xml_rungs(rungs))
 
 

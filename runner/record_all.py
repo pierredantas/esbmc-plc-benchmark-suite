@@ -36,6 +36,7 @@ DEEP = 64  # scans to retry at when a fused bomb hides below the default depth
 
 sys.path.insert(0, str(ROOT / "tools"))
 from ld_text_to_xml import ParseError, translate  # noqa: E402
+from record import property_variables  # noqa: E402
 
 
 def is_termination(props_path):
@@ -110,7 +111,8 @@ def record(task, tools, timeout):
     if converted:
         copy = program.with_name(program.stem + "__xml.ld")
         try:
-            xml = translate(program.stem, program.read_text(encoding="utf-8"))
+            pvars = property_variables(yaml.safe_load(props.read_text(encoding="utf-8")))
+            xml = translate(program.stem, program.read_text(encoding="utf-8"), pvars)
         except ParseError as e:
             return f'SKIP {task["name"]}: {e}'
         copy.write_text(xml, encoding="utf-8")
