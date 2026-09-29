@@ -11,7 +11,7 @@ properties_file: props.yaml
 validation_status: candidate
 variants:
   - file: tp_pulse.ld
-    expected_verdict: true
+    expected_verdict: false
     ground_truth:
       method: expert
 features: [tp, contacts, coils]
