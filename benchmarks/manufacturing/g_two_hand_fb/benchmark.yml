@@ -9,7 +9,7 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 safety_intent: "The ram must descend only while both hand actuators are held; releasing either one must stop the stroke."
-validation_status: candidate
+validation_status: validated
 syntax_pair_of: g_two_hand
 variants:
   - file: program.xml
@@ -26,4 +26,4 @@ variants:
       witness: "Expected SAFE by construction and confirmed on the ladder twin. Both builds report VIOLATION here, because a binary boolean in a function-block body is reduced to its first operand."
 features: [function_block, multi_pou, latch]
 difficulty: medium
-tags: [safety-function, frontend-gap, syntax-pair, known-issue-esbmc-7580]
+tags: [safety-function, frontend-gap, syntax-pair]

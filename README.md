@@ -106,9 +106,9 @@ regardless of the wiring
 [#7580](https://github.com/esbmc/esbmc/issues/7580), `manufacturing/g_two_hand_fb`); and a
 pre-existing scan-order defect ([esbmc/esbmc#7352](https://github.com/esbmc/esbmc/issues/7352))
 affects `packaging/guard_door_interlock`. Same convention: each is tagged
-`known-issue-esbmc-<N>` while the defect reproduces on ESBMC master. #7578, #7579 and #7352
-are fixed there (esbmc/esbmc#7365, #8035, #8036), so only `known-issue-esbmc-7580` remains, until
-esbmc/esbmc#8034 is merged (`docs/validation_2026-09-29.md`).
+`known-issue-esbmc-<N>` while the defect reproduces on ESBMC master. #7578, #7579, #7352
+and #7580 are fixed there (esbmc/esbmc#7365, #8035, #8036, #8034), so no known-issue tag remains
+(`docs/validation_2026-09-29.md`, `docs/validation_2026-09-29b.md`).
 
 ## Validate
 ```
