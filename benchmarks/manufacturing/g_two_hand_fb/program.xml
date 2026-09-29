@@ -15,7 +15,7 @@ Stroke := (Stroke OR Armed) AND LH AND RH;
 ]]></xhtml:p></ST></body>
     </pou>
     <pou name="g_two_hand_fb" pouType="program">
-      <interface><inputVars><variable name="LH"><type><BOOL /></type></variable><variable name="RH"><type><BOOL /></type></variable></inputVars><outputVars><variable name="Stroke"><type><BOOL /></type></variable></outputVars></interface>
+      <interface><inputVars><variable name="LH"><type><BOOL /></type></variable><variable name="RH"><type><BOOL /></type></variable></inputVars><outputVars><variable name="Stroke"><type><BOOL /></type></variable></outputVars><localVars><variable name="THC0"><type><derived name="TwoHandII" /></type></variable></localVars></interface>
       <body><LD>
         <leftPowerRail localId="0"><position x="0" y="0" /><connectionPointOut formalParameter="none" /></leftPowerRail>
         <inVariable localId="3" height="20" width="60"><position x="20" y="30" /><connectionPointOut><relPosition x="60" y="10" /></connectionPointOut><expression>LH</expression></inVariable>
@@ -33,7 +33,7 @@ Stroke := (Stroke OR Armed) AND LH AND RH;
             <variable formalParameter="Stroke"><connectionPointOut><relPosition x="120" y="40" /></connectionPointOut></variable>
           </outputVariables>
         </block>
-        <outVariable localId="6" height="20" width="60" negated="false"><position x="260" y="40" /><connectionPointIn><relPosition x="0" y="10" /><connection refLocalId="5" formalParameter="Stroke" /></connectionPointIn><expression>Stroke</expression></outVariable>
+        <outVariable localId="6" height="20" width="60" negated="false"><position x="260" y="40" /><connectionPointIn><relPosition x="0" y="10" /><connection refLocalId="5" formalParameter="Stroke"><position x="220" y="50" /></connection></connectionPointIn><expression>Stroke</expression></outVariable>
         <rightPowerRail localId="2147483646"><position x="400" y="0" /><connectionPointIn /></rightPowerRail>
       </LD></body>
     </pou>
