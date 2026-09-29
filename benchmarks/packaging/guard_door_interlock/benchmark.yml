@@ -8,7 +8,7 @@ source:
   reference: "Authored by Pierre for the esbmc-plc-benchmark-suite"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: candidate
+validation_status: validated
 variants:
   - file: clean.ld
     expected_verdict: true
@@ -25,4 +25,4 @@ variants:
       witness: "req_run=1, guard_closed=0 reaches machine_run=1 AND guard_closed=0."
 features: [contacts, coils, interlock]
 difficulty: easy
-tags: [safety, packaging, guarding, known-issue-esbmc-7352]
+tags: [safety, packaging, guarding]

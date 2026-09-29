@@ -92,7 +92,8 @@ verdict on one of these was never actually sound. Check a task's tags before tru
 expected verdict as tool-confirmed.
 The defect no longer reproduces on ESBMC master (2c5cffd98a); tasks whose verdicts were then
 confirmed by two independent routes were promoted and lost the tag
-(`docs/validation_2026-09-27.md`).
+(`docs/validation_2026-09-27.md`), and the tag was removed from the rest
+(`docs/validation_2026-09-29.md`).
 
 **Three more ESBMC LD/FBD front-end defects**, found while cross-checking every recorded
 verdict against its expected one: an `<FBD>`-bodied POU is silently skipped rather than
@@ -105,7 +106,9 @@ regardless of the wiring
 [#7580](https://github.com/esbmc/esbmc/issues/7580), `manufacturing/g_two_hand_fb`); and a
 pre-existing scan-order defect ([esbmc/esbmc#7352](https://github.com/esbmc/esbmc/issues/7352))
 affects `packaging/guard_door_interlock`. Same convention: each is tagged
-`known-issue-esbmc-<N>`, all three remain `candidate`.
+`known-issue-esbmc-<N>` while the defect reproduces on ESBMC master. #7578, #7579 and #7352
+are fixed there (esbmc/esbmc#7365, #8035, #8036), so only `known-issue-esbmc-7580` remains, until
+esbmc/esbmc#8034 is merged (`docs/validation_2026-09-29.md`).
 
 ## Validate
 ```
