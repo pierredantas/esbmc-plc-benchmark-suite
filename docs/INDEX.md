@@ -124,7 +124,7 @@ The [portal catalog](https://pierredantas.github.io/esbmc-plc-benchmark-suite/be
 | packaging | LD-textual | `labeler_web_break_gm` | 2 | SAFE/VIOL | easy |
 | packaging | LD-textual | `ld_ctu_saturate` | 1 | SAFE | easy |
 | packaging | LD-textual | `ld_ftrig_edge` | 1 | SAFE | easy |
-| packaging | LD-textual | `ld_tp_pulse` | 1 | SAFE | easy |
+| packaging | LD-textual | `ld_tp_pulse` | 1 | VIOL | easy |
 | packaging | LD-textual | `palletizer_light_curtain_ds` | 2 | SAFE/VIOL | easy |
 | packaging | LD-textual | `palletizer_light_curtain_gm` | 2 | SAFE/VIOL | easy |
 | packaging | LD-textual | `reject_gate_triple_output` | 2 | SAFE/VIOL | easy |

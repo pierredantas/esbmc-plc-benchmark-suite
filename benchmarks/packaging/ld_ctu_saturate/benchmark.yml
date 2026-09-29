@@ -8,7 +8,7 @@ source:
   reference: "K-LD executable-semantics feature suite (rung10_wp2/family)"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: candidate
+validation_status: validated
 variants:
   - file: ctu_saturate.ld
     expected_verdict: true
