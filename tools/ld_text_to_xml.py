@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 """Convert the suite's plain-text LD DSL (OTE/XIC/XIO rungs) to PLCopen XML.
 
-The DSL used by benchmarks/**/{clean,bomb}.ld is a small combinational grammar:
+The DSL used by benchmarks/**/*.ld is a small grammar:
 
-    OTE(coil) := <expr> ;
+    OTE|OTL|OTU(coil) := <expr> ;
+    TON|TOF|TP(Q, PT, <expr IN>) ;
+    CTU(Q, PV, <expr CU>, <expr R>) ;   CTD(Q, PV, <expr CD>, <expr LD>) ;
     <expr>    := <term> ('+' <term>)*
     <term>    := <factor> ('*' <factor>)*
     <factor>  := 'XIC' '(' IDENT ')' | 'XIO' '(' IDENT ')'
                | 'TRUE' | 'FALSE' | '(' <expr> ')'
 
 XIC is a normally-open contact (var), XIO a normally-closed one (NOT var), '*' is
-AND (series), '+' is OR (parallel branches). This covers every rung actually
-written in the corpus (confirmed by survey: no TON/TOF/TP/CTU/CTD/OTL/OTU/SET/RST
-appear in any of the plain-text .ld files this module targets); a file that uses
-one of those raises rather than silently mis-converting it.
+AND (series), '+' is OR (parallel branches). OTL/OTU are set/reset coils. A block's
+Q drives a coil on the variable its first argument names; PT counts scans of the
+10 ms task. Anything else (CTUD, SET, RST, R_TRIG, F_TRIG) raises rather than
+silently mis-converting.
 
 The expression is expanded into a flat sum of AND-terms (distributing '*' over
 '+'), which is exactly the {coil, branches} shape tools/ld_from_rungs.py already
@@ -45,7 +47,7 @@ TOKEN_RE = re.compile(rf"""
   | (?P<WS>\s+)
 """, re.VERBOSE)
 
-UNSUPPORTED = re.compile(r"\b(TON|TOF|TP|CTU|CTD|CTUD|OTL|OTU|SET|RST|R_TRIG|F_TRIG)\b")
+UNSUPPORTED = re.compile(r"\b(CTUD|SET|RST|R_TRIG|F_TRIG)\b")
 
 
 class ParseError(ValueError):
@@ -141,78 +143,109 @@ class Parser:
         return terms
 
 
-RUNG_RE = re.compile(rf"OTE\((?P<coil>{IDENT})\)\s*:=\s*(?P<rhs>.+?)\s*;\s*$")
+RUNG_RE = re.compile(rf"(?P<op>OTE|OTL|OTU)\((?P<coil>{IDENT})\)\s*:=\s*(?P<rhs>.+?)\s*;\s*$")
+# TON|TOF|TP(Q, PT, IN) and CTU(Q, PV, CU, R) / CTD(Q, PV, CD, LD); presets count
+# scans, as the LD front end reads a plain integer preset.
+BLOCK_RE = re.compile(rf"(?P<fb>TON|TOF|TP|CTU|CTD)\((?P<args>.*)\)\s*;\s*$")
+PINS = {"TON": ["IN"], "TOF": ["IN"], "TP": ["IN"], "CTU": ["CU", "R"], "CTD": ["CD", "LD"]}
+
+
+def split_args(text):
+    """Top-level comma-separated arguments; commas inside parentheses stay put."""
+    out, depth, cur = [], 0, ""
+    for ch in text:
+        depth += ch == "("
+        depth -= ch == ")"
+        if ch == "," and depth == 0:
+            out.append(cur.strip())
+            cur = ""
+        else:
+            cur += ch
+    return out + [cur.strip()]
+
+
+def parse_line(line):
+    """One rung: {coil, op, terms} or {block, q, preset, pins}."""
+    m = RUNG_RE.match(line)
+    if m:
+        return dict(op=m.group("op"), coil=m.group("coil"),
+                    terms=Parser(tokenize(m.group("rhs")), line).parse())
+    m = BLOCK_RE.match(line)
+    if not m:
+        raise ParseError(f"line is neither 'OTE|OTL|OTU(coil) := <expr> ;' nor a "
+                          f"TON/TOF/TP/CTU/CTD block: {line!r}")
+    fb, args = m.group("fb"), split_args(m.group("args"))
+    if len(args) != 2 + len(PINS[fb]) or not re.fullmatch(IDENT, args[0]) \
+            or not args[1].isdigit():
+        raise ParseError(f"{fb} takes (Q, preset, {', '.join(PINS[fb])}): {line!r}")
+    return dict(block=fb, q=args[0], preset=int(args[1]),
+                pins=[(pin, Parser(tokenize(a), line).parse())
+                      for pin, a in zip(PINS[fb], args[2:])])
 
 
 def parse_program(text):
-    """Every OTE rung in a .ld source, as (coil, sum_of_products) pairs, in file order."""
-    unsupported = UNSUPPORTED.search(text)
+    """Every rung in a .ld source, in file order."""
+    lines = [ln.strip() for ln in text.splitlines()]
+    lines = [ln for ln in lines if ln and not ln.startswith("//") and not ln.startswith("(*")]
+    unsupported = UNSUPPORTED.search("\n".join(lines))
     if unsupported:
         raise ParseError(f"unsupported block {unsupported.group(0)!r}: this converter "
-                          "only handles combinational OTE/XIC/XIO rungs; stateful "
-                          "function blocks need a hand-written PLCopen XML body")
-    rungs = []
-    for line in text.splitlines():
-        line = line.strip()
-        if not line or line.startswith("//") or line.startswith("(*"):
-            continue
-        m = RUNG_RE.match(line)
-        if not m:
-            raise ParseError(f"line does not match 'OTE(coil) := <expr> ;': {line!r}")
-        terms = Parser(tokenize(m.group("rhs")), line).parse()
-        rungs.append((m.group("coil"), terms))
-    return rungs
+                          "handles OTE/OTL/OTU rungs and TON/TOF/TP/CTU/CTD blocks; "
+                          "anything else needs a hand-written PLCopen XML body")
+    return [parse_line(ln) for ln in lines]
+
+
+def targets(rung):
+    return rung["q"] if "block" in rung else rung["coil"]
+
+
+def reads(rung):
+    groups = [t for _, t in rung["pins"]] if "block" in rung else [rung["terms"]]
+    return [var for terms in groups for term in terms for var, _ in term if var]
 
 
 def variables(rungs):
-    """(inputs, outputs) as they first appear: outputs are every OTE target, inputs
-    everything else read on a right-hand side. A variable can be both (a latch
-    coil fed back into its own rung); it counts as an output only."""
-    outs, ins = [], []
-    seen_out, seen_in = set(), set()
-    for coil, terms in rungs:
-        if coil not in seen_out:
-            seen_out.add(coil)
-            outs.append(coil)
-    for coil, terms in rungs:
-        for term in terms:
-            for var, _ in term:
-                if var is None or var in seen_out or var in seen_in:
-                    continue
-                seen_in.add(var)
-                ins.append(var)
+    """(inputs, outputs) as they first appear: outputs are every coil target and
+    block output, inputs everything else a rung reads. A variable can be both (a
+    latch coil fed back into its own rung); it counts as an output only."""
+    outs = list(dict.fromkeys(targets(r) for r in rungs))
+    ins = list(dict.fromkeys(v for r in rungs for v in reads(r) if v not in outs))
     return ins, outs
 
 
-def to_rung_dicts(rungs):
-    """sum-of-products -> tools.ld_from_rungs' {coil, branches} shape.
-
-    A literal term (var is None) has no contacts at all; ld_from_rungs.build()
-    does not model that, so literal-only coils are reported separately by the
-    caller instead of forcing an empty branch through the contact-chain builder.
-    """
-    out = []
-    for coil, terms in rungs:
-        if any(var is None for term in terms for var, _ in term):
-            raise ParseError(f"coil {coil!r} is driven by a TRUE/FALSE literal; "
-                              "emit it as a literal coil, not via to_rung_dicts")
-        out.append(dict(coil=coil, branches=[list(term) for term in terms]))
-    return out
+STORAGE = {"OTE": "none", "OTL": "set", "OTU": "reset"}
+TICK_MS = 10  # the task interval tools/ld_from_rungs.py writes
 
 
 def to_xml_rungs(rungs):
-    """sum-of-products -> tools.ld_from_rungs' rung dicts, literal coils included."""
+    """Parsed rungs -> tools.ld_from_rungs' rung dicts."""
     out = []
-    for coil, terms in rungs:
-        if terms == [[(None, False)]]:
-            out.append(dict(coil=coil, literal=True))
-        elif terms == [[(None, True)]]:
-            out.append(dict(coil=coil, literal=False))
+    for rung in rungs:
+        if "block" in rung:
+            groups = [t for _, t in rung["pins"]]
+            if any(var is None for terms in groups for term in terms for var, _ in term):
+                raise ParseError(f"{rung['block']} {rung['q']!r}: a TRUE/FALSE literal on "
+                                  "a block pin is not representable")
+            q = rung["q"]
+            timer = rung["block"] in ("TON", "TOF", "TP")
+            out.append(dict(block=rung["block"], q=q,
+                            inst=q[:-2] if q.endswith("_Q") else q + "_FB",
+                            preset=f"T#{rung['preset'] * TICK_MS}ms" if timer
+                            else str(rung["preset"]),
+                            pins=[(pin, [list(term) for term in terms])
+                                  for pin, terms in rung["pins"]]))
+            continue
+        coil, terms = rung["coil"], rung["terms"]
+        if terms in ([[(None, False)]], [[(None, True)]]):
+            if rung["op"] != "OTE":
+                raise ParseError(f"{rung['op']}({coil}) driven by a literal")
+            out.append(dict(coil=coil, literal=terms == [[(None, False)]]))
         elif any(var is None for term in terms for var, _ in term):
             raise ParseError(f"coil {coil!r} mixes a TRUE/FALSE literal with contacts; "
                               "not representable as a single rung")
         else:
-            out.append(dict(coil=coil, branches=[list(term) for term in terms]))
+            out.append(dict(coil=coil, storage=STORAGE[rung["op"]],
+                            branches=[list(term) for term in terms]))
     return out
 
 
