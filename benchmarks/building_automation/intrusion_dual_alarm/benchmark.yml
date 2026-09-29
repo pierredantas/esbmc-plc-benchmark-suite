@@ -8,7 +8,7 @@ source:
   reference: "Authored for the esbmc-plc-benchmark-suite to close a training gap found by ml/scripts/build_task_slice.py: a latch that fans out to two independent readouts, where the safety property is about the trigger, not the readouts' mutual relationship."
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: candidate
+validation_status: validated
 variants:
   - file: clean.ld
     expected_verdict: true
