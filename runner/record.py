@@ -283,7 +283,10 @@ def overflow_check(esbmc, paths, converted, pvars):
     claims = run_esbmc(esbmc, [program, "--overflow-check", *SOUND, "--show-claims"])
     if not re.search(r"overflow\(", claims):
         return {"verdict": "no arithmetic", "command": None}
-    args = [program, "--incremental-bmc", "--unwind", BMC_DEPTH, "--overflow-check", *SOUND]
+    # Plain BMC: incremental BMC reports UNKNOWN, not SUCCESSFUL, on a scan loop
+    # that has no bug within the bound.
+    args = [program, "--unwind", BMC_DEPTH, "--no-unwinding-assertions",
+            "--overflow-check", *SOUND]
     txt = run_esbmc(esbmc, args)
     if re.search(r"verification failed", txt, re.I):
         verdict = "overflow"
