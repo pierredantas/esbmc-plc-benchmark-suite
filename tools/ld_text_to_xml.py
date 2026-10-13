@@ -24,8 +24,9 @@ rendered as an <inVariable> instead of a contact chain (ld_to_st.py already read
 <inVariable><expression> as a literal source, so this is not a new element type
 for the suite's own XML consumer).
 
-    python3 -m tools.ld_text_to_xml benchmarks/traffic/all_red_clearance_ds/clean.ld
+    python3 -m tools.ld_text_to_xml benchmarks/traffic/all_red_clearance_ds/clean.ld [--inputs a,b]
 """
+import argparse
 import os
 import re
 import sys
@@ -262,12 +263,16 @@ def translate(name, text, inputs=()):
 
 
 def main():
-    if len(sys.argv) != 2:
-        print(__doc__)
-        raise SystemExit(1)
-    path = sys.argv[1]
-    name = os.path.splitext(os.path.basename(path))[0]
-    print(translate(name, open(path, encoding="utf-8").read()))
+    ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    ap.add_argument("source")
+    ap.add_argument("--inputs", default="",
+                    help="comma-separated property variables to declare as inputs "
+                         "when no rung names them, as record_all.py passes them")
+    args = ap.parse_args()
+    name = os.path.splitext(os.path.basename(args.source))[0]
+    inputs = [v for v in args.inputs.split(",") if v]
+    with open(args.source, encoding="utf-8") as fh:
+        print(translate(name, fh.read(), inputs))
 
 
 if __name__ == "__main__":
