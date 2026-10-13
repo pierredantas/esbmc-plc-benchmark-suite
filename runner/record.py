@@ -27,6 +27,10 @@ import yaml
 from paths import ROOT, portable
 
 WATCHDOG = ["--ld-scan-watchdog", "--ld-scan-budget", "8"]
+# User function-block bodies are translated in the mode that refuses what it
+# cannot model; the default over-approximates calls and drops call statements.
+SOUND = ["--ld-sound-mode"]
+BMC_DEPTH = "20"
 IDENT = re.compile(r"[A-Za-z_][A-Za-z_0-9]*")
 KEYWORDS = {"true", "false", "TRUE", "FALSE", "AND", "OR", "NOT"}
 NOISE = re.compile(r"^\s*(//|\^+|$)")
@@ -102,6 +106,7 @@ def props_for_esbmc(props_path, tmp_dir):
     if not any("->" in (p.get("expression") or "") or p.get("kind") == "reachable"
                for p in props.get("properties", [])):
         return props_path, []
+    os.makedirs(tmp_dir, exist_ok=True)
     for p in props.get("properties", []):
         if p.get("expression"):
             p["expression"] = rewrite_implication(p["expression"])
@@ -215,7 +220,7 @@ def counterexample(txt):
     return elide(match.group(0).strip()).replace(str(ROOT) + os.sep, "")
 
 
-def command_line(esbmc, args, program, source, converted):
+def command_line(esbmc, args, program, source, converted, pvars=()):
     """The command a reader can replay, including the copy ESBMC's extension forces.
 
     ESBMC picks its LD front end from the file extension, so a PLCopen `.xml` is
@@ -223,19 +228,21 @@ def command_line(esbmc, args, program, source, converted):
     names a file the repository does not contain.
 
     A source written in the plain-text LD DSL is not byte-identical to what ESBMC
-    read: `tools/ld_text_to_xml.py` converted it to PLCopen XML first. Printing a
-    plain `cp` there would name a command that feeds ESBMC a file it cannot parse.
+    read: `tools/ld_text_to_xml.py` converted it to PLCopen XML first, declaring the
+    property variables no rung names (record_all.py passes them), so the printed
+    conversion passes them too.
     """
     shown = " ".join([os.path.basename(esbmc), *(portable(a) for a in args)])
     if source and source != program and converted:
-        return (f"python3 -m tools.ld_text_to_xml {portable(source)} > {portable(program)}"
-                f"\n{shown}")
+        inputs = f" --inputs {','.join(pvars)}" if pvars else ""
+        return (f"python3 -m tools.ld_text_to_xml {portable(source)}{inputs}"
+                f" > {portable(program)}\n{shown}")
     if source and source != program:
         return f"cp {portable(source)} {portable(program)}\n{shown}"
     return shown
 
 
-def verify(esbmc, paths, props_path, timeout, mode, converted):
+def verify(esbmc, paths, props_path, timeout, mode, converted, pvars=()):
     """Run the verification and classify the outcome.
 
     `paths` is (program, source): the file ESBMC reads, and the file that lives in the
@@ -243,9 +250,10 @@ def verify(esbmc, paths, props_path, timeout, mode, converted):
     or when `source` is in the plain-text LD DSL and was converted to XML first.
     """
     program, source = paths
-    flags = ["--k-induction"] if mode == "kinduction" else ["--incremental-bmc", "--unwind", "20"]
+    flags = (["--k-induction"] if mode == "kinduction"
+             else ["--incremental-bmc", "--unwind", BMC_DEPTH])
     props = ["--ld-props", props_path] if props_path else []
-    args = [program, *props, *flags, *WATCHDOG, "--timeout", f"{timeout}s"]
+    args = [program, *props, *flags, *WATCHDOG, *SOUND, "--timeout", f"{timeout}s"]
     start = time.time()
     txt = run_esbmc(esbmc, args)
     if re.search(r"verification successful", txt, re.I):
@@ -258,9 +266,34 @@ def verify(esbmc, paths, props_path, timeout, mode, converted):
         verdict = "unknown"
     trace = counterexample(txt) if verdict == "VIOLATION" else None
     proof = re.search(r"Solution found by (.+)", txt)
-    return {"command": command_line(esbmc, args, program, source, converted),
+    return {"command": command_line(esbmc, args, program, source, converted, pvars),
             "verdict": verdict, "proof": proof.group(1).strip() if proof else None,
             "cpu_time_s": round(time.time() - start, 3), "counterexample": trace}
+
+
+def overflow_check(esbmc, paths, converted, pvars):
+    """H1, no arithmetic overflow, for a SAFE verdict.
+
+    k-induction cannot carry it: --overflow-check turns off ESBMC's inductive step,
+    so the property run and this one are separate. A program with no overflow claim
+    does no arithmetic, and H1 holds outright; otherwise BMC looks for an overflow to
+    the same depth the violation runs use.
+    """
+    program, source = paths
+    claims = run_esbmc(esbmc, [program, "--overflow-check", *SOUND, "--show-claims"])
+    if not re.search(r"overflow\(", claims):
+        return {"verdict": "no arithmetic", "command": None}
+    args = [program, "--incremental-bmc", "--unwind", BMC_DEPTH, "--overflow-check", *SOUND]
+    txt = run_esbmc(esbmc, args)
+    if re.search(r"verification failed", txt, re.I):
+        verdict = "overflow"
+    elif re.search(r"verification successful", txt, re.I):
+        verdict = f"no overflow to depth {BMC_DEPTH}"
+    else:
+        verdict = "unknown"
+    return {"verdict": verdict,
+            "command": command_line(esbmc, args, program, source, converted, pvars),
+            "counterexample": counterexample(txt) if verdict == "overflow" else None}
 
 
 def record_one(label, esbmc, args, props_paths, pvars):
@@ -272,21 +305,29 @@ def record_one(label, esbmc, args, props_paths, pvars):
     paths = (args.program, args.source)
     if props_path or args.watchdog_only or not witness_paths:
         result = verify(esbmc, paths, props_path, args.timeout,
-                        resolve_mode(args.mode, expected), args.converted_from_text_ld)
+                        resolve_mode(args.mode, expected), args.converted_from_text_ld, pvars)
     else:
         result = {"command": None, "verdict": "SAFE", "proof": None,
                   "cpu_time_s": 0.0, "counterexample": None}
     # k-induction: a counterexample reaches the state, a proof shows it never is.
-    witnesses = {pid: verify(esbmc, paths, path, args.timeout, "kinduction",
-                             args.converted_from_text_ld)["verdict"]
-                 for pid, path in witness_paths}
+    witness_runs = {pid: verify(esbmc, paths, path, args.timeout, "kinduction",
+                                args.converted_from_text_ld, pvars)
+                    for pid, path in witness_paths}
+    witnesses = {pid: run["verdict"] for pid, run in witness_runs.items()}
     if witnesses:
         result["witnesses"] = {pid: {"VIOLATION": "reached", "SAFE": "unreached"}
                                .get(v, v) for pid, v in witnesses.items()}
+        result["witness_commands"] = {pid: run["command"]
+                                      for pid, run in witness_runs.items()}
         result["verdict"] = combine(result["verdict"], witnesses)
+    if result["verdict"] == "SAFE":
+        result["h1"] = overflow_check(esbmc, paths, args.converted_from_text_ld, pvars)
     expected_v = "SAFE" if expected else "VIOLATION"
     if result["verdict"] in ("error", "unknown"):
         status = result["verdict"]
+    elif result.get("h1", {}).get("verdict") == "overflow":
+        # The SAFE verdict assumes H1, which this program breaks.
+        status = "h1_violated"
     else:
         status = "correct" if result["verdict"] == expected_v else "wrong"
     return label, {"tool": tool_info(esbmc), "status": status,
@@ -322,12 +363,17 @@ def main():
         props = yaml.safe_load(fh)
     pvars = property_variables(props)
 
+    # The rewritten property files are kept beside the record, so each stored
+    # command names a file that still exists.
     with tempfile.TemporaryDirectory() as tmp_dir:
+        props_dir = os.path.splitext(args.out)[0] + "__props" if args.out else tmp_dir
         props_paths = ((None, []) if args.watchdog_only
-                       else props_for_esbmc(args.props, tmp_dir))
+                       else props_for_esbmc(args.props, props_dir))
         runs = dict(record_one(t.split("=", 1)[0], t.split("=", 1)[1], args, props_paths,
                                pvars)
                     for t in args.tool)
+    with open(args.source or args.program, encoding="utf-8") as fh:
+        user_fbs = 'pouType="functionBlock"' in fh.read()
 
     record = {
         "schema_version": "0.3",
@@ -337,6 +383,9 @@ def main():
         "properties": props.get("properties", []),
         "property_variables": pvars,
         "expected_verdict": "SAFE" if args.expected == "true" else "VIOLATION",
+        # Programs with user function blocks lie outside Theorem 1 (H6); the
+        # results table reports them on a row of their own.
+        "user_function_blocks": user_fbs,
         "runs": runs,
     }
 
