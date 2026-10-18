@@ -2,8 +2,8 @@ Tony Kuphaldt's *Lessons In Electric Circuits* teaches ladder logic the way most
 first meet it: a forward/reverse starter with a cross-interlock, a fail-safe stop wired
 through normally-closed contacts. Both rungs are correct relay diagrams, drawn the way
 an electrician reads them, contacts and coils resolving together. Transcribe them into a
-scanned PLC program and one of the two stops being correct, not because the transcription
-was careless, but because a scan cycle is not a relay panel.
+scanned PLC program and both stay safe, but for a reason the relay diagram never needed,
+and an earlier version of the verifier got that reason wrong.
 
 ## The interlock, as drawn
 
@@ -17,50 +17,38 @@ There is no "before". Contacts and coils are simultaneous.
 
 {{files: benchmarks/motor_control/g_fwd_rev_interlock/fwd_rev_interlock.xml | benchmarks/motor_control/g_fwd_rev_interlock/props.yaml}}
 
-## The property, and the proof it fails
+## The property, and the proof that it holds
 
 {{show: benchmarks/motor_control/g_fwd_rev_interlock/props.yaml}}
 
 {{record: g_fwd_rev_interlock__fwd_rev_interlock}}
 
-Read the trace. `START_FWD` and `START_REV` come up true together on the first scan,
-`STOP` is false, and both `M1_FWD` and `M2_REV` follow. The interlock a relay panel
-enforces for free costs a PLC its first scan.
+k-induction proves the property at k = 2, and ESBMC proves it again, also at k = 2, on the C
+that MatIEC generates from the same file. Two independent routes, one answer: the two
+contactors are never closed together at the end of a scan.
 
-## Why the scan cycle breaks it
+## What the scan cycle changes
 
-A scanned program cannot evaluate two coils simultaneously. Somewhere in program order,
-`M1_FWD` is computed before `M2_REV`, or after it, and whichever contact reads the other
-coil's value reads last scan's value, because this scan's has not been computed yet. The
-front end's own encoding makes the dependency explicit:
+A scanned program cannot evaluate two coils at once, so it evaluates them in order. The
+forward rung is drawn above the reverse rung, the runtime takes the drawing order, and the
+reverse rung's normally-closed `M1_FWD` contact reads the value the forward rung wrote a
+moment earlier in the same scan. Press both start buttons on one scan with the motor
+stopped: the forward coil energizes, and the reverse rung sees it and stays off. The
+interlock holds from the very first scan.
 
-```text
-ASSIGN M1_FWD__prev = M1_FWD;
-ASSIGN M2_REV__prev = M2_REV;
-...
-ASSIGN M1_FWD = START_FWD && !M2_REV__prev;
-...
-ASSIGN M2_REV = START_REV && !M1_FWD__prev;
-```
+This benchmark used to carry the opposite label. An earlier ESBMC LD front end read every
+coil's previous-scan value, so on the first scan both interlock contacts saw false and
+both coils came on together. That counterexample was an artifact of the translator, not
+of the program ([esbmc/esbmc#7352](https://github.com/esbmc/esbmc/issues/7352), fixed in
+[#8036](https://github.com/esbmc/esbmc/pull/8036)), and the label was corrected once two
+routes agreed that the property holds.
 
-On scan 1, `M1_FWD__prev` and `M2_REV__prev` both start false, because nothing has run
-yet. Press both start buttons in the same instant, on the same scan, and neither
-interlock contact has anything to block on. From scan 2 onward the interlock does exactly
-what the diagram promises. The gap is one scan wide and it is enough.
+{{predict: g_fwd_rev_interlock__fwd_rev_interlock | If the reverse rung were drawn above the forward rung, which contactor would win when both start buttons are pressed on one scan with the motor stopped?}}
 
-{{predict: g_fwd_rev_interlock__fwd_rev_interlock | If START_FWD and START_REV are asserted one scan apart rather than together, does the property still fail?}}
-
-It does not. Whichever coil's `__prev` value updates first is read by the other rung on
-the following scan, and the interlock closes normally. The counterexample above needs the
-exact coincidence of both starts landing in the same scan, which is a real input a
-maintenance panel with two buttons under two thumbs can produce, and a fault the relay
-original never had to survive.
-
-A same-scan mutual exclusion, `M1_FWD := START_FWD AND NOT START_REV AND NOT M2_REV`,
-closes the gap by making each direction's own demand block the other outright rather than
-only through the other coil's settled state. That is a different rung from the one the
-textbook draws, which is the point: the transcription is faithful, and faithful is not
-the same as safe once the medium changes.
+The reverse one. Safety does not depend on the order, but priority does. A relay panel
+gives the race to whichever contact physically closes first; a scanned program gives it to
+whichever rung comes first in the drawing, every time. That is a design decision the
+transcription makes silently, and it is worth stating in the program's documentation.
 
 ## The fail-safe latch, and a property that would not parse
 
@@ -109,11 +97,11 @@ rather than around it.
 
 ## What the pair says together
 
-Two textbook rungs, two different ways a formalism-blind transcription can go wrong. One
-failure sits in the program: a relay-simultaneity assumption carried into a scan cycle
-without checking whether the cycle preserves it. The other sits in the tool: a natural,
-correct way to state a safety property that the property language cannot parse. Neither
-would have surfaced from reading the ladder diagram alone, and both surfaced from trying
-to prove something about it.
+Two textbook rungs, two different lessons. The interlock shows that a verifier's model of
+the scan cycle has to match the runtime's: a translator that read previous-scan values
+reported a hazard the program does not have, and the fix was in the tool, not in the
+ladder. The fail-safe latch shows a natural, correct way to state a safety property that
+the property language cannot parse. Neither would have surfaced from reading the ladder
+diagram alone, and both surfaced from trying to prove something about it.
 
 [Reproducing](../../reproducing.md) has the commands.

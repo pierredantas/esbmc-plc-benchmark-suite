@@ -97,7 +97,7 @@ The [portal catalog](https://pierredantas.github.io/esbmc-plc-benchmark-suite/be
 | motor_control | IL | `il_seal_in` | 1 | SAFE | easy |
 | motor_control | LD-graphical | `g_estop_reset` | 2 | SAFE/SAFE | easy |
 | motor_control | LD-graphical | `g_failsafe_motor_latch` | 1 | SAFE | easy |
-| motor_control | LD-graphical | `g_fwd_rev_interlock` | 1 | VIOL | easy |
+| motor_control | LD-graphical | `g_fwd_rev_interlock` | 1 | SAFE | easy |
 | motor_control | LD-graphical | `g_motor_interlock` | 2 | SAFE/VIOL | easy |
 | motor_control | LD-graphical | `g_seal_in` | 1 | SAFE | easy |
 | motor_control | LD-graphical | `g_star_delta` | 2 | SAFE/SAFE | easy |

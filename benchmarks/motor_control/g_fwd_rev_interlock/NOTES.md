@@ -8,14 +8,13 @@
 - Transcribed the cross-interlocked FWD/REV motor-starter rung into PLCopen XML: each
   direction's coil is wired through the other direction's normally-closed contact.
 
-- **Recorded as VIOLATION, not the SAFE the textbook diagram implies.** The interlock
-  contact reads the *other* coil's state from the previous scan (`M2_REV__prev`,
-  `M1_FWD__prev`), because a coil cannot gate on its own not-yet-computed value within
-  the same scan. On the first scan both are 0/false, so pressing START_FWD and
-  START_REV at the same instant energizes both M1_FWD and M2_REV together before either
-  interlock contact has a true previous-scan value to block on. ESBMC finds this with
-  `START_FWD=1, START_REV=1, STOP=0` on scan 1. A relay-based implementation of this
-  diagram does not have this race (contacts and coils are simultaneous, not scanned),
-  so the defect is specific to translating the rung into a scan-cycle PLC without an
-  explicit same-scan mutual exclusion. Recorded at
-  `results/records/g_fwd_rev_interlock__fwd_rev_interlock.json`.
+- **SAFE, corrected on 2026-10-18 from an earlier VIOLATION label.** The rungs run in program
+  order, so the reverse rung reads `M1_FWD` after the forward rung has written it in the same scan;
+  with the motor stopped and both start buttons pressed on one scan, the forward coil energizes and
+  the reverse coil stays off. Both coils can therefore never be on together at a scan boundary. The old label came from a
+  counterexample that only an earlier ESBMC LD front end produced, because it read every coil's
+  previous-scan value (esbmc/esbmc#7352, fixed in #8036). k-induction proves P1 at k = 2 on the LD
+  front end and on ESBMC over MATIEC's C of the same program. What a scan cycle does change is
+  priority, not safety: when both starts arrive in one scan with the motor stopped, the rung drawn
+  first wins, where a relay
+  panel would settle on whichever contact closed first.
