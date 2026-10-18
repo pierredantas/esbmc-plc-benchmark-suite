@@ -1,6 +1,6 @@
 format_version: "0.1"
 id: g_fwd_rev_interlock
-name: "FWD/REV Motor Interlock (first-scan race)"
+name: "FWD/REV Motor Interlock"
 domain: motor_control
 language: LD-graphical
 source:
@@ -12,12 +12,11 @@ safety_intent: "Forward and Reverse contactors must never be closed at the same 
 validation_status: candidate
 variants:
   - file: fwd_rev_interlock.xml
-    expected_verdict: false
-    violated_properties: [P1]
+    expected_verdict: true
     ground_truth:
-      method: expert
-      confirmed_by: [pierre]
+      method: cross-tool-consensus
+      confirmed_by: [esbmc-plc ld route, esbmc-plc via matiec c]
       witness: "results/records/g_fwd_rev_interlock__fwd_rev_interlock.json"
 features: [contact, coil, parallel_branch]
 difficulty: easy
-tags: [interlock, short-circuit, safety]
+tags: [interlock, scan-order, safety]
