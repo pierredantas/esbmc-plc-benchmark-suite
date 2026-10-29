@@ -1,0 +1,102 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:35:49Z",
+  "program": "benchmarks/chemical_batch/agitator_temp_interlock_ds/bomb.ld",
+  "properties_file": "benchmarks/chemical_batch/agitator_temp_interlock_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "high_temp -> agitator",
+      "justification": "Agitator must run when temperature is above high limit."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "high_temp && !agitator",
+      "justification": "Witness: high_temp=1, ag_req=0 reaches violation."
+    }
+  ],
+  "property_variables": [
+    "agitator",
+    "high_temp"
+  ],
+  "expected_verdict": "VIOLATION",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN ag_req=NONDET(_Bool);",
+          "        ASSIGN high_temp=NONDET(_Bool);",
+          "        ASSIGN agitator=1 && ag_req && !high_temp;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "ag_req": 1,
+          "high_temp": 1,
+          "agitator": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/chemical_batch/agitator_temp_interlock_ds/bomb.ld --inputs agitator,high_temp > benchmarks/chemical_batch/agitator_temp_interlock_ds/bomb__xml.ld\nesbmc84_mem.sh benchmarks/chemical_batch/agitator_temp_interlock_ds/bomb__xml.ld --ld-props results/records/agitator_temp_interlock_ds__bomb__props/props_esbmc.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.034,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  ag_req = 0\n\nState 2  thread 0\n----------------------------------------------------\n  high_temp = 1\n\nState 3  thread 0\n----------------------------------------------------\n  agitator = 0\n\nState 4 file benchmarks/chemical_batch/agitator_temp_interlock_ds/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/chemical_batch/agitator_temp_interlock_ds/bomb__xml.ld\n  P1\n  !(high_temp && !agitator)"
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 6",
+          "        ASSIGN ag_req=NONDET(_Bool);",
+          "        ASSIGN high_temp=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf3=0;",
+          "     2: IF !(1 && ag_req) THEN GOTO 3",
+          "        ASSIGN pf3=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf4=0;",
+          "     4: IF !(1 && pf3 && !high_temp) THEN GOTO 5",
+          "        ASSIGN pf4=1;",
+          "     5: ASSIGN agitator=1 && pf4;",
+          "        GOTO 1",
+          "     6:"
+        ],
+        "assignment_counts": {
+          "ag_req": 1,
+          "high_temp": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "agitator": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/chemical_batch/agitator_temp_interlock_ds/bomb.ld --inputs agitator,high_temp > benchmarks/chemical_batch/agitator_temp_interlock_ds/bomb__xml.ld\nesbmc86_mem.sh benchmarks/chemical_batch/agitator_temp_interlock_ds/bomb__xml.ld --ld-props results/records/agitator_temp_interlock_ds__bomb__props/props_esbmc.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.046,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  ag_req = 0\n\nState 2  thread 0\n----------------------------------------------------\n  high_temp = 1\n\nState 3  thread 0\n----------------------------------------------------\n  agitator = 0\n\nState 4 file benchmarks/chemical_batch/agitator_temp_interlock_ds/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/chemical_batch/agitator_temp_interlock_ds/bomb__xml.ld\n  P1\n  !(high_temp && !agitator)\n\n\n** Results:\nbenchmarks/chemical_batch/agitator_temp_interlock_ds/bomb__xml.ld\n  FAILED       [global.assertion.1]  line 0  P1\n  NOT CHECKED  [global.assertion.2]  line 0  P2\n\n** 1 of 2 properties failed, 1 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
+    }
+  }
+}

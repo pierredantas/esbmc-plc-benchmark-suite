@@ -28,7 +28,7 @@ def first_read_before_write(text):
     return ret
 h1rec={}
 for f in glob.glob(SUITE+"/results/records/*.json"):
-    d=json.load(open(f)); r=d['runs']['v8.5']; h=(r.get('h1') or {}).get('verdict')
+    d=json.load(open(f)); r=d['runs']['v8.6']; h=(r.get('h1') or {}).get('verdict')
     bid=os.path.basename(f).split('__')[0]; h1rec.setdefault(bid,set()).add(h)
 issues=[];cnt=collections.Counter()
 for bp in sorted(glob.glob(SUITE+"/benchmarks/*/*/benchmark.yml")):

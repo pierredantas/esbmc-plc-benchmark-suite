@@ -1,0 +1,132 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:36:59Z",
+  "program": "benchmarks/water_treatment/g_tank_stop_ge/malicious_mstop_ge.xml",
+  "properties_file": "benchmarks/water_treatment/g_tank_stop_ge/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "termination",
+      "justification": "Every PLC scan cycle must complete (no non-terminating loop). The malicious variant injects a Govil et al. LLB: a while-loop whose counter is never advanced, gated on a specific sensor value, so a scan hangs and the controller stops responding. Program context: Stop on level >= threshold (GE block)."
+    }
+  ],
+  "property_variables": [],
+  "expected_verdict": "VIOLATION",
+  "user_function_blocks": true,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 7",
+          "        ASSIGN TLB2=NONDET(signed int);",
+          "        ASSIGN TLB1=NONDET(signed int);",
+          "        ASSIGN STOP=NONDET(_Bool);",
+          "        ASSIGN START=NONDET(_Bool);",
+          "        ASSIGN IN1=NONDET(signed int);",
+          "        ASSIGN VALUE=NONDET(signed int);",
+          "        ASSIGN IN1=NONDET(signed int);",
+          "        ASSIGN IN2=NONDET(signed int);",
+          "        ASSIGN IN1=NONDET(signed int);",
+          "        ASSIGN IN_TLB1=NONDET(signed int);",
+          "        ASSIGN IN_TLB2=NONDET(signed int);",
+          "        ASSIGN CYCLE_ON=1 && CYCLE_ON && !STOP;",
+          "        ASSIGN valves_handler0__IN1=NONDET(signed int);",
+          "        ASSIGN valves_handler0__IN_TLB1=NONDET(signed int);",
+          "        ASSIGN valves_handler0__IN_TLB2=NONDET(signed int);",
+          "        ASSIGN valves_handler0__real_value=valves_handler0__IN1 - 5;",
+          "        IF !(valves_handler0__real_value <= valves_handler0__IN_TLB2) THEN GOTO 2",
+          "        ASSIGN valves_handler0__OUT_MV2=(signed int)0;",
+          "        ASSIGN valves_handler0__OUT_MV1=1;",
+          "     2: IF !(valves_handler0__real_value >= valves_handler0__IN_TLB1) THEN GOTO 3",
+          "        ASSIGN valves_handler0__OUT_MV2=(signed int)1;",
+          "        ASSIGN valves_handler0__OUT_MV1=0;",
+          "     3: ASSIGN MV1=valves_handler0__OUT_MV1;",
+          "        ASSIGN MV2=(_Bool)valves_handler0__OUT_MV2;",
+          "        ASSIGN stop_cycle0__OUT_MV1=0;",
+          "        ASSIGN stop_cycle0__OUT_MV2=(signed int)0;",
+          "        ASSIGN MV1=stop_cycle0__OUT_MV1;",
+          "        ASSIGN MV2=(_Bool)stop_cycle0__OUT_MV2;",
+          "        ASSIGN GE_00__IN1=NONDET(signed int);",
+          "        ASSIGN GE_00__IN2=NONDET(signed int);",
+          "        ASSIGN GE_00__OUT=0;",
+          "        IF !(GE_00__IN1 >= GE_00__IN2) THEN GOTO 4",
+          "        ASSIGN GE_00__OUT=1;",
+          "     4: ASSIGN GE_00__i=0;",
+          "        IF !(GE_00__IN1 == 12) THEN GOTO 6",
+          "     5: IF !(GE_00__i < 4) THEN GOTO 6",
+          "        ASSIGN GE_00__OUT=0;",
+          "        GOTO 5",
+          "     6: GOTO 1",
+          "     7:"
+        ],
+        "assignment_counts": {
+          "TLB2": 1,
+          "TLB1": 1,
+          "STOP": 1,
+          "START": 1,
+          "IN1": 3,
+          "VALUE": 1,
+          "IN2": 1,
+          "IN_TLB1": 1,
+          "IN_TLB2": 1,
+          "CYCLE_ON": 1,
+          "valves_handler0__IN1": 1,
+          "valves_handler0__IN_TLB1": 1,
+          "valves_handler0__IN_TLB2": 1,
+          "valves_handler0__real_value": 1,
+          "valves_handler0__OUT_MV2": 2,
+          "valves_handler0__OUT_MV1": 2,
+          "MV1": 2,
+          "MV2": 2,
+          "stop_cycle0__OUT_MV1": 1,
+          "stop_cycle0__OUT_MV2": 1,
+          "GE_00__IN1": 1,
+          "GE_00__IN2": 1,
+          "GE_00__OUT": 3,
+          "GE_00__i": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/water_treatment/g_tank_stop_ge/malicious_mstop_ge.xml benchmarks/water_treatment/g_tank_stop_ge/malicious_mstop_ge.ld\nesbmc84_mem.sh benchmarks/water_treatment/g_tank_stop_ge/malicious_mstop_ge.ld --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.059,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  GE_00__IN1 = 12 (00000000 00000000 00000000 00001100)\n\nState 2  thread 0\n----------------------------------------------------\nViolated property:\n  assertion GE_00____wd0 <= 8\n  GE_00____wd0 <= 8"
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "error",
+      "encoding": {
+        "scan_body": [
+          "Target: 64-bit little-endian aarch64-unknown-macos with esbmclibc",
+          "Parsing /private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/rep1/suite/benchmarks/water_treatment/g_tank_stop_ge/malicious_mstop_ge.ld",
+          "ERROR: UnsupportedConstruct(GE_0, tier=2)",
+          "ERROR: PARSING ERROR"
+        ],
+        "assignment_counts": {},
+        "not_driven_by_body": [],
+        "gate": "fail"
+      },
+      "command": "cp benchmarks/water_treatment/g_tank_stop_ge/malicious_mstop_ge.xml benchmarks/water_treatment/g_tank_stop_ge/malicious_mstop_ge.ld\nesbmc86_mem.sh benchmarks/water_treatment/g_tank_stop_ge/malicious_mstop_ge.ld --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "error",
+      "proof": null,
+      "cpu_time_s": 0.04,
+      "counterexample": null
+    }
+  }
+}

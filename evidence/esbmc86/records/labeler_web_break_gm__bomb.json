@@ -1,0 +1,138 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:36:32Z",
+  "program": "benchmarks/packaging/labeler_web_break_gm/bomb.ld",
+  "properties_file": "benchmarks/packaging/labeler_web_break_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(drive_run && !web_intact)",
+      "justification": "The labeler drive must never run while the web is physically broken."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "drive_run && !web_intact",
+      "justification": "Trigger synthesis: a witness recovers the state where forcing the reset button runs the machine with a broken web."
+    }
+  ],
+  "property_variables": [
+    "drive_run",
+    "web_intact"
+  ],
+  "expected_verdict": "VIOLATION",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN web_intact=NONDET(_Bool);",
+          "        ASSIGN reset_btn=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        ASSIGN drive_run=1 && req_run && !fault_latch;",
+          "        ASSIGN fault_latch=1 && !web_intact && !reset_btn;",
+          "        ASSIGN fault_latch=1 && fault_latch && !reset_btn;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "web_intact": 1,
+          "reset_btn": 1,
+          "req_run": 1,
+          "drive_run": 1,
+          "fault_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/labeler_web_break_gm/bomb.ld --inputs drive_run,web_intact > benchmarks/packaging/labeler_web_break_gm/bomb__xml.ld\nesbmc84_mem.sh benchmarks/packaging/labeler_web_break_gm/bomb__xml.ld --ld-props benchmarks/packaging/labeler_web_break_gm/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.03,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  web_intact = 0\n\nState 2  thread 0\n----------------------------------------------------\n  req_run = 1\n\nState 3  thread 0\n----------------------------------------------------\n  drive_run = 1\n\nState 4 file benchmarks/packaging/labeler_web_break_gm/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/packaging/labeler_web_break_gm/bomb__xml.ld\n  P1\n  !(drive_run && !web_intact)"
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 17",
+          "        ASSIGN web_intact=NONDET(_Bool);",
+          "        ASSIGN reset_btn=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf3=0;",
+          "     2: IF !(1 && !web_intact) THEN GOTO 3",
+          "        ASSIGN pf3=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf4=0;",
+          "     4: IF !(1 && pf3 && !reset_btn) THEN GOTO 5",
+          "        ASSIGN pf4=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN pf5=0;",
+          "     6: IF !(1 && fault_latch) THEN GOTO 7",
+          "        ASSIGN pf5=1;",
+          "     7: IF !1 THEN GOTO 8",
+          "        ASSIGN pf6=0;",
+          "     8: IF !(1 && pf5 && !reset_btn) THEN GOTO 9",
+          "        ASSIGN pf6=1;",
+          "     9: IF !1 THEN GOTO 10",
+          "        ASSIGN fault_latch__pf0=0;",
+          "    10: IF !(1 && pf4) THEN GOTO 11",
+          "        ASSIGN fault_latch__pf0=1;",
+          "    11: IF !(1 && pf6) THEN GOTO 12",
+          "        ASSIGN fault_latch__pf0=1;",
+          "    12: ASSIGN fault_latch=1 && fault_latch__pf0;",
+          "        IF !1 THEN GOTO 13",
+          "        ASSIGN pf8=0;",
+          "    13: IF !(1 && req_run) THEN GOTO 14",
+          "        ASSIGN pf8=1;",
+          "    14: IF !1 THEN GOTO 15",
+          "        ASSIGN pf9=0;",
+          "    15: IF !(1 && pf8 && !fault_latch) THEN GOTO 16",
+          "        ASSIGN pf9=1;",
+          "    16: ASSIGN drive_run=1 && pf9;",
+          "        GOTO 1",
+          "    17:"
+        ],
+        "assignment_counts": {
+          "web_intact": 1,
+          "reset_btn": 1,
+          "req_run": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "pf5": 2,
+          "pf6": 2,
+          "fault_latch__pf0": 3,
+          "fault_latch": 1,
+          "pf8": 2,
+          "pf9": 2,
+          "drive_run": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/labeler_web_break_gm/bomb.ld --inputs drive_run,web_intact > benchmarks/packaging/labeler_web_break_gm/bomb__xml.ld\nesbmc86_mem.sh benchmarks/packaging/labeler_web_break_gm/bomb__xml.ld --ld-props benchmarks/packaging/labeler_web_break_gm/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.044,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  web_intact = 0\n\nState 2  thread 0\n----------------------------------------------------\n  reset_btn = 1\n\nState 3  thread 0\n----------------------------------------------------\n  req_run = 1\n\nState 4  thread 0\n----------------------------------------------------\n  fault_latch = 0\n\nState 5  thread 0\n----------------------------------------------------\n  drive_run = 1\n\nState 6 file benchmarks/packaging/labeler_web_break_gm/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/packaging/labeler_web_break_gm/bomb__xml.ld\n  P1\n  !(drive_run && !web_intact)\n\n\n** Results:\nbenchmarks/packaging/labeler_web_break_gm/bomb__xml.ld\n  FAILED       [global.assertion.1]  line 0  P1\n  NOT CHECKED  [global.assertion.2]  line 0  P2\n\n** 1 of 2 properties failed, 1 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
+    }
+  }
+}

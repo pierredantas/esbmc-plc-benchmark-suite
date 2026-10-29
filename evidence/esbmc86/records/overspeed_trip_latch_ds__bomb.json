@@ -1,0 +1,95 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:36:05Z",
+  "program": "benchmarks/elevator/overspeed_trip_latch_ds/bomb.ld",
+  "properties_file": "benchmarks/elevator/overspeed_trip_latch_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "overspeed_trip -> brake_applied",
+      "justification": "Overspeed trip must apply the brake."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "overspeed_trip && !brake_applied",
+      "justification": "Witness: overspeed_trip=1 reaches brake_applied=0 in bomb."
+    }
+  ],
+  "property_variables": [
+    "brake_applied",
+    "overspeed_trip"
+  ],
+  "expected_verdict": "VIOLATION",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 3",
+          "        ASSIGN overspeed_trip=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN brake_applied=0;",
+          "     2: GOTO 1",
+          "     3:"
+        ],
+        "assignment_counts": {
+          "overspeed_trip": 1,
+          "brake_applied": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/elevator/overspeed_trip_latch_ds/bomb.ld --inputs brake_applied,overspeed_trip > benchmarks/elevator/overspeed_trip_latch_ds/bomb__xml.ld\nesbmc84_mem.sh benchmarks/elevator/overspeed_trip_latch_ds/bomb__xml.ld --ld-props results/records/overspeed_trip_latch_ds__bomb__props/props_esbmc.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.032,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  overspeed_trip = 1\n\nState 2 file benchmarks/elevator/overspeed_trip_latch_ds/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/elevator/overspeed_trip_latch_ds/bomb__xml.ld\n  P1\n  !(overspeed_trip && !brake_applied)"
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 5",
+          "        ASSIGN overspeed_trip=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN brake_applied__pf0=0;",
+          "     2: IF !1 THEN GOTO 3",
+          "        ASSIGN brake_applied__pf0=1;",
+          "     3: IF !(1 && brake_applied__pf0) THEN GOTO 4",
+          "        ASSIGN brake_applied=0;",
+          "     4: GOTO 1",
+          "     5:"
+        ],
+        "assignment_counts": {
+          "overspeed_trip": 1,
+          "brake_applied__pf0": 2,
+          "brake_applied": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/elevator/overspeed_trip_latch_ds/bomb.ld --inputs brake_applied,overspeed_trip > benchmarks/elevator/overspeed_trip_latch_ds/bomb__xml.ld\nesbmc86_mem.sh benchmarks/elevator/overspeed_trip_latch_ds/bomb__xml.ld --ld-props results/records/overspeed_trip_latch_ds__bomb__props/props_esbmc.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.044,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  overspeed_trip = 1\n\nState 2 file benchmarks/elevator/overspeed_trip_latch_ds/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/elevator/overspeed_trip_latch_ds/bomb__xml.ld\n  P1\n  !(overspeed_trip && !brake_applied)\n\n\n** Results:\nbenchmarks/elevator/overspeed_trip_latch_ds/bomb__xml.ld\n  FAILED       [global.assertion.1]  line 0  P1\n  NOT CHECKED  [global.assertion.2]  line 0  P2\n\n** 1 of 2 properties failed, 1 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
+    }
+  }
+}

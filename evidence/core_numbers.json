@@ -152,9 +152,9 @@
   32,
   33,
   32,
+  32,
   34,
-  33,
-  32
+  33
  ],
  "f84": {
   "att": 125,
@@ -167,22 +167,22 @@
   "agree": 84,
   "gf_match": 12
  },
- "f85": {
+ "f86": {
   "att": 125,
   "notatt": 61,
-  "gatefail": 14,
-  "gate": 111,
+  "gatefail": 17,
+  "gate": 108,
   "unk": 0,
   "wrong": 0,
-  "h1": 9,
-  "agree": 102,
+  "h1": 7,
+  "agree": 101,
   "gf_match": 0
  },
  "conf": {
   "a4_nusmv": 62,
   "a4_either": 73,
-  "a5_nusmv": 71,
-  "a5_either": 91
+  "a6_nusmv": 71,
+  "a6_either": 91
  },
  "nusmv": 71,
  "nusmv_split": {
@@ -202,7 +202,7 @@
    "n": 7,
    "tried": 7,
    "m84": 0,
-   "m85": 0,
+   "m86": 0,
    "nusmv": 0,
    "plcverif": 0,
    "h1": 0
@@ -211,7 +211,7 @@
    "n": 3,
    "tried": 0,
    "m84": 0,
-   "m85": 0,
+   "m86": 0,
    "nusmv": 0,
    "plcverif": 0,
    "h1": 0
@@ -220,16 +220,16 @@
    "n": 88,
    "tried": 88,
    "m84": 69,
-   "m85": 77,
+   "m86": 76,
    "nusmv": 59,
    "plcverif": 66,
-   "h1": 9
+   "h1": 7
   },
   "lang:LD-textual": {
    "n": 25,
    "tried": 25,
    "m84": 15,
-   "m85": 25,
+   "m86": 25,
    "nusmv": 12,
    "plcverif": 25,
    "h1": 0
@@ -238,7 +238,7 @@
    "n": 5,
    "tried": 5,
    "m84": 0,
-   "m85": 0,
+   "m86": 0,
    "nusmv": 0,
    "plcverif": 0,
    "h1": 0
@@ -247,7 +247,7 @@
    "n": 58,
    "tried": 0,
    "m84": 0,
-   "m85": 0,
+   "m86": 0,
    "nusmv": 0,
    "plcverif": 0,
    "h1": 0
@@ -256,7 +256,7 @@
    "n": 122,
    "tried": 75,
    "m84": 58,
-   "m85": 65,
+   "m86": 65,
    "nusmv": 57,
    "plcverif": 62,
    "h1": 0
@@ -265,7 +265,7 @@
    "n": 27,
    "tried": 27,
    "m84": 15,
-   "m85": 27,
+   "m86": 27,
    "nusmv": 12,
    "plcverif": 27,
    "h1": 0
@@ -274,37 +274,37 @@
    "n": 37,
    "tried": 23,
    "m84": 11,
-   "m85": 10,
+   "m86": 9,
    "nusmv": 2,
    "plcverif": 2,
-   "h1": 9
+   "h1": 7
   },
   "status:candidate": {
    "n": 81,
    "tried": 28,
    "m84": 6,
-   "m85": 13,
+   "m86": 13,
    "nusmv": 1,
    "plcverif": 13,
-   "h1": 2
+   "h1": 1
   },
   "status:validated": {
    "n": 105,
    "tried": 97,
    "m84": 78,
-   "m85": 89,
+   "m86": 88,
    "nusmv": 70,
    "plcverif": 78,
-   "h1": 7
+   "h1": 6
   },
   "ALL": {
    "n": 186,
    "tried": 125,
    "m84": 84,
-   "m85": 102,
+   "m86": 101,
    "nusmv": 71,
    "plcverif": 91,
-   "h1": 9
+   "h1": 7
   }
  },
  "uncovered": {
@@ -380,11 +380,9 @@
  ],
  "h1_ids": [
   "g_start_cycle",
-  "g_stop_eq",
   "g_tank_assignment",
   "g_tank_start_eq",
   "g_tank_start_le",
-  "g_tank_stop_ge",
   "g_tank_substitution_coil",
   "g_tank_value_filtering",
   "g_tank_valves"

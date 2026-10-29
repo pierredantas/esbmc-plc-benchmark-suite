@@ -1,0 +1,106 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:36:52Z",
+  "program": "benchmarks/traffic/ped_conflict_interlock_gm/bomb.ld",
+  "properties_file": "benchmarks/traffic/ped_conflict_interlock_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(ped_walk && turn_arrow)",
+      "justification": "Pedestrian walk signal must not activate concurrently with a conflicting vehicle turn arrow."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "ped_walk && turn_arrow",
+      "justification": "Trigger synthesis: a witness recovers the missing interlock condition leading to a pedestrian conflict."
+    }
+  ],
+  "property_variables": [
+    "ped_walk",
+    "turn_arrow"
+  ],
+  "expected_verdict": "VIOLATION",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_ped=NONDET(_Bool);",
+          "        ASSIGN veh_green=NONDET(_Bool);",
+          "        ASSIGN turn_arrow=NONDET(_Bool);",
+          "        ASSIGN ped_walk=1 && req_ped && !veh_green;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_ped": 1,
+          "veh_green": 1,
+          "turn_arrow": 1,
+          "ped_walk": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/traffic/ped_conflict_interlock_gm/bomb.ld --inputs ped_walk,turn_arrow > benchmarks/traffic/ped_conflict_interlock_gm/bomb__xml.ld\nesbmc84_mem.sh benchmarks/traffic/ped_conflict_interlock_gm/bomb__xml.ld --ld-props benchmarks/traffic/ped_conflict_interlock_gm/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.032,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  req_ped = 1\n\nState 2  thread 0\n----------------------------------------------------\n  veh_green = 0\n\nState 3  thread 0\n----------------------------------------------------\n  turn_arrow = 1\n\nState 4  thread 0\n----------------------------------------------------\n  ped_walk = 1\n\nState 5 file benchmarks/traffic/ped_conflict_interlock_gm/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/traffic/ped_conflict_interlock_gm/bomb__xml.ld\n  P1\n  !(ped_walk && turn_arrow)"
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 6",
+          "        ASSIGN req_ped=NONDET(_Bool);",
+          "        ASSIGN veh_green=NONDET(_Bool);",
+          "        ASSIGN turn_arrow=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf3=0;",
+          "     2: IF !(1 && req_ped) THEN GOTO 3",
+          "        ASSIGN pf3=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf4=0;",
+          "     4: IF !(1 && pf3 && !veh_green) THEN GOTO 5",
+          "        ASSIGN pf4=1;",
+          "     5: ASSIGN ped_walk=1 && pf4;",
+          "        GOTO 1",
+          "     6:"
+        ],
+        "assignment_counts": {
+          "req_ped": 1,
+          "veh_green": 1,
+          "turn_arrow": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "ped_walk": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/traffic/ped_conflict_interlock_gm/bomb.ld --inputs ped_walk,turn_arrow > benchmarks/traffic/ped_conflict_interlock_gm/bomb__xml.ld\nesbmc86_mem.sh benchmarks/traffic/ped_conflict_interlock_gm/bomb__xml.ld --ld-props benchmarks/traffic/ped_conflict_interlock_gm/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.045,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  req_ped = 1\n\nState 2  thread 0\n----------------------------------------------------\n  veh_green = 0\n\nState 3  thread 0\n----------------------------------------------------\n  turn_arrow = 1\n\nState 4  thread 0\n----------------------------------------------------\n  ped_walk = 1\n\nState 5 file benchmarks/traffic/ped_conflict_interlock_gm/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/traffic/ped_conflict_interlock_gm/bomb__xml.ld\n  P1\n  !(ped_walk && turn_arrow)\n\n\n** Results:\nbenchmarks/traffic/ped_conflict_interlock_gm/bomb__xml.ld\n  FAILED       [global.assertion.1]  line 0  P1\n  NOT CHECKED  [global.assertion.2]  line 0  P2\n\n** 1 of 2 properties failed, 1 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
+    }
+  }
+}

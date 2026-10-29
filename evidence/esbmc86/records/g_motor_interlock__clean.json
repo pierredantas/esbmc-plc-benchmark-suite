@@ -1,0 +1,126 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:36:21Z",
+  "program": "benchmarks/motor_control/g_motor_interlock/clean.xml",
+  "properties_file": "benchmarks/motor_control/motor_interlock/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "mutual_exclusion",
+      "variables": [
+        "Motor_A",
+        "Motor_B"
+      ],
+      "justification": "Forward/reverse contactors must never be energised together (contactor short / mechanical damage)."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "Motor_A && Motor_B",
+      "justification": "Trigger synthesis: a witness recovers the secret-knock input combination that violates the interlock."
+    }
+  ],
+  "property_variables": [
+    "Motor_A",
+    "Motor_B"
+  ],
+  "expected_verdict": "SAFE",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN fwd=NONDET(_Bool);",
+          "        ASSIGN rev=NONDET(_Bool);",
+          "        ASSIGN maint=NONDET(_Bool);",
+          "        ASSIGN Motor_B=1 && rev;",
+          "        ASSIGN Motor_A=1 && fwd && !rev;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "fwd": 1,
+          "rev": 1,
+          "maint": 1,
+          "Motor_B": 1,
+          "Motor_A": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/motor_control/g_motor_interlock/clean.xml benchmarks/motor_control/g_motor_interlock/clean.ld\nesbmc84_mem.sh benchmarks/motor_control/g_motor_interlock/clean.ld --ld-props benchmarks/motor_control/motor_interlock/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.039,
+      "counterexample": null,
+      "h1": {
+        "verdict": "no arithmetic",
+        "command": null
+      }
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 8",
+          "        ASSIGN fwd=NONDET(_Bool);",
+          "        ASSIGN rev=NONDET(_Bool);",
+          "        ASSIGN maint=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf3=0;",
+          "     2: IF !(1 && fwd) THEN GOTO 3",
+          "        ASSIGN pf3=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf4=0;",
+          "     4: IF !(1 && pf3 && !rev) THEN GOTO 5",
+          "        ASSIGN pf4=1;",
+          "     5: ASSIGN Motor_A=1 && pf4;",
+          "        IF !1 THEN GOTO 6",
+          "        ASSIGN pf6=0;",
+          "     6: IF !(1 && rev) THEN GOTO 7",
+          "        ASSIGN pf6=1;",
+          "     7: ASSIGN Motor_B=1 && pf6;",
+          "        GOTO 1",
+          "     8:"
+        ],
+        "assignment_counts": {
+          "fwd": 1,
+          "rev": 1,
+          "maint": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "Motor_A": 1,
+          "pf6": 2,
+          "Motor_B": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "cp benchmarks/motor_control/g_motor_interlock/clean.xml benchmarks/motor_control/g_motor_interlock/clean.ld\nesbmc86_mem.sh benchmarks/motor_control/g_motor_interlock/clean.ld --ld-props benchmarks/motor_control/motor_interlock/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.055,
+      "counterexample": null,
+      "h1": {
+        "verdict": "no arithmetic",
+        "command": null
+      }
+    }
+  }
+}

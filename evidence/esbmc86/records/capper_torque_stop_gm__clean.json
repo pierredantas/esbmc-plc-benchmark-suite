@@ -1,0 +1,137 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:36:26Z",
+  "program": "benchmarks/packaging/capper_torque_stop_gm/clean.ld",
+  "properties_file": "benchmarks/packaging/capper_torque_stop_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(motor_run && fault_latch)",
+      "justification": "The capper motor must remain disabled while a high-torque fault is actively latched."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "motor_run && fault_latch",
+      "justification": "Trigger synthesis: a witness recovers the state where the motor auto-restarts without a manual reset."
+    }
+  ],
+  "property_variables": [
+    "fault_latch",
+    "motor_run"
+  ],
+  "expected_verdict": "SAFE",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN torque_fault=NONDET(_Bool);",
+          "        ASSIGN fault_reset=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        ASSIGN motor_run=1 && req_run && !fault_latch;",
+          "        ASSIGN fault_latch=1 && torque_fault;",
+          "        ASSIGN fault_latch=1 && fault_latch && !fault_reset;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "torque_fault": 1,
+          "fault_reset": 1,
+          "req_run": 1,
+          "motor_run": 1,
+          "fault_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/capper_torque_stop_gm/clean.ld --inputs fault_latch,motor_run > benchmarks/packaging/capper_torque_stop_gm/clean__xml.ld\nesbmc84_mem.sh benchmarks/packaging/capper_torque_stop_gm/clean__xml.ld --ld-props benchmarks/packaging/capper_torque_stop_gm/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.033,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  torque_fault = 1\n\nState 2  thread 0\n----------------------------------------------------\n  fault_reset = 0\n\nState 3  thread 0\n----------------------------------------------------\n  req_run = 1\n\nState 4  thread 0\n----------------------------------------------------\n  motor_run = 1\n\nState 5  thread 0\n----------------------------------------------------\n  fault_latch = 1\n\nState 6  thread 0\n----------------------------------------------------\n  fault_latch = 1\n\nState 7 file benchmarks/packaging/capper_torque_stop_gm/clean__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/packaging/capper_torque_stop_gm/clean__xml.ld\n  P1\n  !(motor_run && fault_latch)"
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 15",
+          "        ASSIGN torque_fault=NONDET(_Bool);",
+          "        ASSIGN fault_reset=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf3=0;",
+          "     2: IF !(1 && torque_fault) THEN GOTO 3",
+          "        ASSIGN pf3=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf4=0;",
+          "     4: IF !(1 && fault_latch) THEN GOTO 5",
+          "        ASSIGN pf4=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN pf5=0;",
+          "     6: IF !(1 && pf4 && !fault_reset) THEN GOTO 7",
+          "        ASSIGN pf5=1;",
+          "     7: IF !1 THEN GOTO 8",
+          "        ASSIGN fault_latch__pf0=0;",
+          "     8: IF !(1 && pf3) THEN GOTO 9",
+          "        ASSIGN fault_latch__pf0=1;",
+          "     9: IF !(1 && pf5) THEN GOTO 10",
+          "        ASSIGN fault_latch__pf0=1;",
+          "    10: ASSIGN fault_latch=1 && fault_latch__pf0;",
+          "        IF !1 THEN GOTO 11",
+          "        ASSIGN pf7=0;",
+          "    11: IF !(1 && req_run) THEN GOTO 12",
+          "        ASSIGN pf7=1;",
+          "    12: IF !1 THEN GOTO 13",
+          "        ASSIGN pf8=0;",
+          "    13: IF !(1 && pf7 && !fault_latch) THEN GOTO 14",
+          "        ASSIGN pf8=1;",
+          "    14: ASSIGN motor_run=1 && pf8;",
+          "        GOTO 1",
+          "    15:"
+        ],
+        "assignment_counts": {
+          "torque_fault": 1,
+          "fault_reset": 1,
+          "req_run": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "pf5": 2,
+          "fault_latch__pf0": 3,
+          "fault_latch": 1,
+          "pf7": 2,
+          "pf8": 2,
+          "motor_run": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/capper_torque_stop_gm/clean.ld --inputs fault_latch,motor_run > benchmarks/packaging/capper_torque_stop_gm/clean__xml.ld\nesbmc86_mem.sh benchmarks/packaging/capper_torque_stop_gm/clean__xml.ld --ld-props benchmarks/packaging/capper_torque_stop_gm/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.056,
+      "counterexample": null,
+      "h1": {
+        "verdict": "no arithmetic",
+        "command": null
+      }
+    }
+  }
+}

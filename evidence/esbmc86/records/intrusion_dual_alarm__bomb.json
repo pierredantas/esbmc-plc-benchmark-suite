@@ -1,0 +1,130 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:35:46Z",
+  "program": "benchmarks/building_automation/intrusion_dual_alarm/bomb.ld",
+  "properties_file": "benchmarks/building_automation/intrusion_dual_alarm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "sensor_trip -> siren_out",
+      "justification": "An intrusion trip must sound the siren in the same scan it is detected; the property is about the trigger reaching this readout, not about siren_out's relationship to the unrelated door_lock readout."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "sensor_trip && !siren_out",
+      "justification": "Witness: sensor_trip=1 reaches siren_out=0 in bomb, because alarm_state no longer latches on the sensor at all."
+    }
+  ],
+  "property_variables": [
+    "sensor_trip",
+    "siren_out"
+  ],
+  "expected_verdict": "VIOLATION",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 3",
+          "        ASSIGN lock_req=NONDET(_Bool);",
+          "        ASSIGN sensor_trip=NONDET(_Bool);",
+          "        ASSIGN door_lock=1 && alarm_state;",
+          "        ASSIGN door_lock=1 && lock_req;",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN alarm_state=0;",
+          "     2: ASSIGN siren_out=1 && alarm_state;",
+          "        GOTO 1",
+          "     3:"
+        ],
+        "assignment_counts": {
+          "lock_req": 1,
+          "sensor_trip": 1,
+          "door_lock": 2,
+          "alarm_state": 1,
+          "siren_out": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/building_automation/intrusion_dual_alarm/bomb.ld --inputs sensor_trip,siren_out > benchmarks/building_automation/intrusion_dual_alarm/bomb__xml.ld\nesbmc84_mem.sh benchmarks/building_automation/intrusion_dual_alarm/bomb__xml.ld --ld-props results/records/intrusion_dual_alarm__bomb__props/props_esbmc.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.034,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  sensor_trip = 1\n\nState 2 file benchmarks/building_automation/intrusion_dual_alarm/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/building_automation/intrusion_dual_alarm/bomb__xml.ld\n  P1\n  !(sensor_trip && !siren_out)"
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 14",
+          "        ASSIGN lock_req=NONDET(_Bool);",
+          "        ASSIGN sensor_trip=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN alarm_state__pf0=0;",
+          "     2: IF !1 THEN GOTO 3",
+          "        ASSIGN alarm_state__pf0=1;",
+          "     3: IF !(1 && alarm_state__pf0) THEN GOTO 4",
+          "        ASSIGN alarm_state=0;",
+          "     4: IF !1 THEN GOTO 5",
+          "        ASSIGN pf4=0;",
+          "     5: IF !(1 && alarm_state) THEN GOTO 6",
+          "        ASSIGN pf4=1;",
+          "     6: ASSIGN siren_out=1 && pf4;",
+          "        IF !1 THEN GOTO 7",
+          "        ASSIGN pf6=0;",
+          "     7: IF !(1 && alarm_state) THEN GOTO 8",
+          "        ASSIGN pf6=1;",
+          "     8: IF !1 THEN GOTO 9",
+          "        ASSIGN pf7=0;",
+          "     9: IF !(1 && lock_req) THEN GOTO 10",
+          "        ASSIGN pf7=1;",
+          "    10: IF !1 THEN GOTO 11",
+          "        ASSIGN door_lock__pf1=0;",
+          "    11: IF !(1 && pf6) THEN GOTO 12",
+          "        ASSIGN door_lock__pf1=1;",
+          "    12: IF !(1 && pf7) THEN GOTO 13",
+          "        ASSIGN door_lock__pf1=1;",
+          "    13: ASSIGN door_lock=1 && door_lock__pf1;",
+          "        GOTO 1",
+          "    14:"
+        ],
+        "assignment_counts": {
+          "lock_req": 1,
+          "sensor_trip": 1,
+          "alarm_state__pf0": 2,
+          "alarm_state": 1,
+          "pf4": 2,
+          "siren_out": 1,
+          "pf6": 2,
+          "pf7": 2,
+          "door_lock__pf1": 3,
+          "door_lock": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/building_automation/intrusion_dual_alarm/bomb.ld --inputs sensor_trip,siren_out > benchmarks/building_automation/intrusion_dual_alarm/bomb__xml.ld\nesbmc86_mem.sh benchmarks/building_automation/intrusion_dual_alarm/bomb__xml.ld --ld-props results/records/intrusion_dual_alarm__bomb__props/props_esbmc.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.047,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  sensor_trip = 1\n\nState 2 file benchmarks/building_automation/intrusion_dual_alarm/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/building_automation/intrusion_dual_alarm/bomb__xml.ld\n  P1\n  !(sensor_trip && !siren_out)\n\n\n** Results:\nbenchmarks/building_automation/intrusion_dual_alarm/bomb__xml.ld\n  FAILED       [global.assertion.1]  line 0  P1\n  NOT CHECKED  [global.assertion.2]  line 0  P2\n\n** 1 of 2 properties failed, 1 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
+    }
+  }
+}
