@@ -1,0 +1,146 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:36:55Z",
+  "program": "benchmarks/water_treatment/chemical_feed_fault_lockout/clean.ld",
+  "properties_file": "benchmarks/water_treatment/chemical_feed_fault_lockout/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "overdose_sensor -> !dose_pump_run",
+      "justification": "An overdose condition must stop the dosing pump in the same scan it is sensed; the property is grounded in the sensor trigger, not in dose_pump_run's relationship to the unrelated fault_lamp readout."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "overdose_sensor && dose_pump_run",
+      "justification": "Witness: overdose_sensor=1, dose_req=1 reaches dose_pump_run=1 in bomb, because dose_fault no longer latches on the overdose sensor at all."
+    }
+  ],
+  "property_variables": [
+    "dose_pump_run",
+    "overdose_sensor"
+  ],
+  "expected_verdict": "SAFE",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "wrong",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN overdose_sensor=NONDET(_Bool);",
+          "        ASSIGN tech_reset=NONDET(_Bool);",
+          "        ASSIGN dose_req=NONDET(_Bool);",
+          "        ASSIGN fault_lamp=1 && dose_fault;",
+          "        ASSIGN dose_fault=1 && overdose_sensor;",
+          "        ASSIGN dose_fault=1 && dose_fault && !tech_reset;",
+          "        ASSIGN dose_pump_run=1 && dose_req && !dose_fault;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "overdose_sensor": 1,
+          "tech_reset": 1,
+          "dose_req": 1,
+          "fault_lamp": 1,
+          "dose_fault": 2,
+          "dose_pump_run": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/water_treatment/chemical_feed_fault_lockout/clean.ld --inputs dose_pump_run,overdose_sensor > benchmarks/water_treatment/chemical_feed_fault_lockout/clean__xml.ld\nesbmc84_mem.sh benchmarks/water_treatment/chemical_feed_fault_lockout/clean__xml.ld --ld-props results/records/chemical_feed_fault_lockout__clean__props/props_esbmc.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.035,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  overdose_sensor = 1\n\nState 2  thread 0\n----------------------------------------------------\n  tech_reset = 1\n\nState 3  thread 0\n----------------------------------------------------\n  dose_req = 1\n\nState 4  thread 0\n----------------------------------------------------\n  dose_fault = 1\n\nState 5  thread 0\n----------------------------------------------------\n  dose_fault = 0\n\nState 6  thread 0\n----------------------------------------------------\n  dose_pump_run = 1\n\nState 7 file benchmarks/water_treatment/chemical_feed_fault_lockout/clean__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/water_treatment/chemical_feed_fault_lockout/clean__xml.ld\n  P1\n  !(overdose_sensor && !(!dose_pump_run))"
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 17",
+          "        ASSIGN overdose_sensor=NONDET(_Bool);",
+          "        ASSIGN tech_reset=NONDET(_Bool);",
+          "        ASSIGN dose_req=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf3=0;",
+          "     2: IF !(1 && overdose_sensor) THEN GOTO 3",
+          "        ASSIGN pf3=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf4=0;",
+          "     4: IF !(1 && dose_fault) THEN GOTO 5",
+          "        ASSIGN pf4=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN pf5=0;",
+          "     6: IF !(1 && pf4 && !tech_reset) THEN GOTO 7",
+          "        ASSIGN pf5=1;",
+          "     7: IF !1 THEN GOTO 8",
+          "        ASSIGN dose_fault__pf0=0;",
+          "     8: IF !(1 && pf3) THEN GOTO 9",
+          "        ASSIGN dose_fault__pf0=1;",
+          "     9: IF !(1 && pf5) THEN GOTO 10",
+          "        ASSIGN dose_fault__pf0=1;",
+          "    10: ASSIGN dose_fault=1 && dose_fault__pf0;",
+          "        IF !1 THEN GOTO 11",
+          "        ASSIGN pf7=0;",
+          "    11: IF !(1 && dose_fault) THEN GOTO 12",
+          "        ASSIGN pf7=1;",
+          "    12: ASSIGN fault_lamp=1 && pf7;",
+          "        IF !1 THEN GOTO 13",
+          "        ASSIGN pf9=0;",
+          "    13: IF !(1 && dose_req) THEN GOTO 14",
+          "        ASSIGN pf9=1;",
+          "    14: IF !1 THEN GOTO 15",
+          "        ASSIGN pf10=0;",
+          "    15: IF !(1 && pf9 && !dose_fault) THEN GOTO 16",
+          "        ASSIGN pf10=1;",
+          "    16: ASSIGN dose_pump_run=1 && pf10;",
+          "        GOTO 1",
+          "    17:"
+        ],
+        "assignment_counts": {
+          "overdose_sensor": 1,
+          "tech_reset": 1,
+          "dose_req": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "pf5": 2,
+          "dose_fault__pf0": 3,
+          "dose_fault": 1,
+          "pf7": 2,
+          "fault_lamp": 1,
+          "pf9": 2,
+          "pf10": 2,
+          "dose_pump_run": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/water_treatment/chemical_feed_fault_lockout/clean.ld --inputs dose_pump_run,overdose_sensor > benchmarks/water_treatment/chemical_feed_fault_lockout/clean__xml.ld\nesbmc86_mem.sh benchmarks/water_treatment/chemical_feed_fault_lockout/clean__xml.ld --ld-props results/records/chemical_feed_fault_lockout__clean__props/props_esbmc.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.054,
+      "counterexample": null,
+      "h1": {
+        "verdict": "no arithmetic",
+        "command": null
+      }
+    }
+  }
+}

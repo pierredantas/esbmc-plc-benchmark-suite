@@ -1,0 +1,117 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:35:40Z",
+  "program": "benchmarks/building_automation/access_door_forced_ds/bomb.ld",
+  "properties_file": "benchmarks/building_automation/access_door_forced_ds/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "door_forced -> lock_hold",
+      "justification": "If door is forced open, the lock must be engaged (door held locked)."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "door_forced && !lock_hold",
+      "justification": "Witness: door_forced=1 reaches lock_hold=0 in bomb."
+    }
+  ],
+  "property_variables": [
+    "door_forced",
+    "lock_hold"
+  ],
+  "expected_verdict": "VIOLATION",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 5",
+          "        ASSIGN door_forced=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN alarm_latch=0;",
+          "     2: IF !1 THEN GOTO 3",
+          "        ASSIGN latch=0;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN lock_hold=0;",
+          "     4: GOTO 1",
+          "     5:"
+        ],
+        "assignment_counts": {
+          "door_forced": 1,
+          "alarm_latch": 1,
+          "latch": 1,
+          "lock_hold": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/building_automation/access_door_forced_ds/bomb.ld --inputs door_forced,lock_hold > benchmarks/building_automation/access_door_forced_ds/bomb__xml.ld\nesbmc84_mem.sh benchmarks/building_automation/access_door_forced_ds/bomb__xml.ld --ld-props results/records/access_door_forced_ds__bomb__props/props_esbmc.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.026,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  door_forced = 1\n\nState 2 file benchmarks/building_automation/access_door_forced_ds/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/building_automation/access_door_forced_ds/bomb__xml.ld\n  P1\n  !(door_forced && !lock_hold)"
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 11",
+          "        ASSIGN door_forced=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN latch__pf0=0;",
+          "     2: IF !1 THEN GOTO 3",
+          "        ASSIGN latch__pf0=1;",
+          "     3: IF !(1 && latch__pf0) THEN GOTO 4",
+          "        ASSIGN latch=0;",
+          "     4: IF !1 THEN GOTO 5",
+          "        ASSIGN alarm_latch__pf1=0;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN alarm_latch__pf1=1;",
+          "     6: IF !(1 && alarm_latch__pf1) THEN GOTO 7",
+          "        ASSIGN alarm_latch=0;",
+          "     7: IF !1 THEN GOTO 8",
+          "        ASSIGN lock_hold__pf2=0;",
+          "     8: IF !1 THEN GOTO 9",
+          "        ASSIGN lock_hold__pf2=1;",
+          "     9: IF !(1 && lock_hold__pf2) THEN GOTO 10",
+          "        ASSIGN lock_hold=0;",
+          "    10: GOTO 1",
+          "    11:"
+        ],
+        "assignment_counts": {
+          "door_forced": 1,
+          "latch__pf0": 2,
+          "latch": 1,
+          "alarm_latch__pf1": 2,
+          "alarm_latch": 1,
+          "lock_hold__pf2": 2,
+          "lock_hold": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/building_automation/access_door_forced_ds/bomb.ld --inputs door_forced,lock_hold > benchmarks/building_automation/access_door_forced_ds/bomb__xml.ld\nesbmc86_mem.sh benchmarks/building_automation/access_door_forced_ds/bomb__xml.ld --ld-props results/records/access_door_forced_ds__bomb__props/props_esbmc.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.043,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  door_forced = 1\n\nState 2 file benchmarks/building_automation/access_door_forced_ds/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/building_automation/access_door_forced_ds/bomb__xml.ld\n  P1\n  !(door_forced && !lock_hold)\n\n\n** Results:\nbenchmarks/building_automation/access_door_forced_ds/bomb__xml.ld\n  FAILED       [global.assertion.1]  line 0  P1\n  NOT CHECKED  [global.assertion.2]  line 0  P2\n\n** 1 of 2 properties failed, 1 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
+    }
+  }
+}

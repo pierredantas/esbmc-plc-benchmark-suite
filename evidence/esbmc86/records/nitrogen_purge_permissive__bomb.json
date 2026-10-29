@@ -1,0 +1,138 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:35:56Z",
+  "program": "benchmarks/chemical_batch/nitrogen_purge_permissive/bomb.ld",
+  "properties_file": "benchmarks/chemical_batch/nitrogen_purge_permissive/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(feed_v && !purge_complete)",
+      "justification": "Flammable feed must never enter the reactor until the nitrogen inerting purge is complete."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "feed_v && !purge_complete",
+      "justification": "Trigger synthesis: a witness recovers the override condition that defeats the explosion-proof inerting cycle."
+    }
+  ],
+  "property_variables": [
+    "feed_v",
+    "purge_complete"
+  ],
+  "expected_verdict": "VIOLATION",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_feed=NONDET(_Bool);",
+          "        ASSIGN purge_complete=NONDET(_Bool);",
+          "        ASSIGN high_pressure=NONDET(_Bool);",
+          "        ASSIGN maint_bypass=NONDET(_Bool);",
+          "        ASSIGN feed_v=1 && req_feed && purge_complete && !high_pressure;",
+          "        ASSIGN feed_v=1 && req_feed && maint_bypass && !high_pressure;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_feed": 1,
+          "purge_complete": 1,
+          "high_pressure": 1,
+          "maint_bypass": 1,
+          "feed_v": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/chemical_batch/nitrogen_purge_permissive/bomb.ld --inputs feed_v,purge_complete > benchmarks/chemical_batch/nitrogen_purge_permissive/bomb__xml.ld\nesbmc84_mem.sh benchmarks/chemical_batch/nitrogen_purge_permissive/bomb__xml.ld --ld-props benchmarks/chemical_batch/nitrogen_purge_permissive/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.032,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  req_feed = 1\n\nState 2  thread 0\n----------------------------------------------------\n  purge_complete = 0\n\nState 3  thread 0\n----------------------------------------------------\n  high_pressure = 0\n\nState 4  thread 0\n----------------------------------------------------\n  maint_bypass = 1\n\nState 5  thread 0\n----------------------------------------------------\n  feed_v = 1\n\nState 6 file benchmarks/chemical_batch/nitrogen_purge_permissive/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/chemical_batch/nitrogen_purge_permissive/bomb__xml.ld\n  P1\n  !(feed_v && !purge_complete)"
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 17",
+          "        ASSIGN req_feed=NONDET(_Bool);",
+          "        ASSIGN purge_complete=NONDET(_Bool);",
+          "        ASSIGN high_pressure=NONDET(_Bool);",
+          "        ASSIGN maint_bypass=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf3=0;",
+          "     2: IF !(1 && req_feed) THEN GOTO 3",
+          "        ASSIGN pf3=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf4=0;",
+          "     4: IF !(1 && pf3 && purge_complete) THEN GOTO 5",
+          "        ASSIGN pf4=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN pf5=0;",
+          "     6: IF !(1 && pf4 && !high_pressure) THEN GOTO 7",
+          "        ASSIGN pf5=1;",
+          "     7: IF !1 THEN GOTO 8",
+          "        ASSIGN pf6=0;",
+          "     8: IF !(1 && req_feed) THEN GOTO 9",
+          "        ASSIGN pf6=1;",
+          "     9: IF !1 THEN GOTO 10",
+          "        ASSIGN pf7=0;",
+          "    10: IF !(1 && pf6 && maint_bypass) THEN GOTO 11",
+          "        ASSIGN pf7=1;",
+          "    11: IF !1 THEN GOTO 12",
+          "        ASSIGN pf8=0;",
+          "    12: IF !(1 && pf7 && !high_pressure) THEN GOTO 13",
+          "        ASSIGN pf8=1;",
+          "    13: IF !1 THEN GOTO 14",
+          "        ASSIGN feed_v__pf0=0;",
+          "    14: IF !(1 && pf5) THEN GOTO 15",
+          "        ASSIGN feed_v__pf0=1;",
+          "    15: IF !(1 && pf8) THEN GOTO 16",
+          "        ASSIGN feed_v__pf0=1;",
+          "    16: ASSIGN feed_v=1 && feed_v__pf0;",
+          "        GOTO 1",
+          "    17:"
+        ],
+        "assignment_counts": {
+          "req_feed": 1,
+          "purge_complete": 1,
+          "high_pressure": 1,
+          "maint_bypass": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "pf5": 2,
+          "pf6": 2,
+          "pf7": 2,
+          "pf8": 2,
+          "feed_v__pf0": 3,
+          "feed_v": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/chemical_batch/nitrogen_purge_permissive/bomb.ld --inputs feed_v,purge_complete > benchmarks/chemical_batch/nitrogen_purge_permissive/bomb__xml.ld\nesbmc86_mem.sh benchmarks/chemical_batch/nitrogen_purge_permissive/bomb__xml.ld --ld-props benchmarks/chemical_batch/nitrogen_purge_permissive/props.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.046,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  req_feed = 1\n\nState 2  thread 0\n----------------------------------------------------\n  purge_complete = 0\n\nState 3  thread 0\n----------------------------------------------------\n  high_pressure = 0\n\nState 4  thread 0\n----------------------------------------------------\n  maint_bypass = 1\n\nState 5  thread 0\n----------------------------------------------------\n  feed_v = 1\n\nState 6 file benchmarks/chemical_batch/nitrogen_purge_permissive/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/chemical_batch/nitrogen_purge_permissive/bomb__xml.ld\n  P1\n  !(feed_v && !purge_complete)\n\n\n** Results:\nbenchmarks/chemical_batch/nitrogen_purge_permissive/bomb__xml.ld\n  FAILED       [global.assertion.1]  line 0  P1\n  NOT CHECKED  [global.assertion.2]  line 0  P2\n\n** 1 of 2 properties failed, 1 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
+    }
+  }
+}

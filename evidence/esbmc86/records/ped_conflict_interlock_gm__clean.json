@@ -1,0 +1,119 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:36:51Z",
+  "program": "benchmarks/traffic/ped_conflict_interlock_gm/clean.ld",
+  "properties_file": "benchmarks/traffic/ped_conflict_interlock_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(ped_walk && turn_arrow)",
+      "justification": "Pedestrian walk signal must not activate concurrently with a conflicting vehicle turn arrow."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "ped_walk && turn_arrow",
+      "justification": "Trigger synthesis: a witness recovers the missing interlock condition leading to a pedestrian conflict."
+    }
+  ],
+  "property_variables": [
+    "ped_walk",
+    "turn_arrow"
+  ],
+  "expected_verdict": "SAFE",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_ped=NONDET(_Bool);",
+          "        ASSIGN veh_green=NONDET(_Bool);",
+          "        ASSIGN turn_arrow=NONDET(_Bool);",
+          "        ASSIGN ped_walk=1 && req_ped && !veh_green && !turn_arrow;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_ped": 1,
+          "veh_green": 1,
+          "turn_arrow": 1,
+          "ped_walk": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/traffic/ped_conflict_interlock_gm/clean.ld --inputs ped_walk,turn_arrow > benchmarks/traffic/ped_conflict_interlock_gm/clean__xml.ld\nesbmc84_mem.sh benchmarks/traffic/ped_conflict_interlock_gm/clean__xml.ld --ld-props benchmarks/traffic/ped_conflict_interlock_gm/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.04,
+      "counterexample": null,
+      "h1": {
+        "verdict": "no arithmetic",
+        "command": null
+      }
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 8",
+          "        ASSIGN req_ped=NONDET(_Bool);",
+          "        ASSIGN veh_green=NONDET(_Bool);",
+          "        ASSIGN turn_arrow=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf3=0;",
+          "     2: IF !(1 && req_ped) THEN GOTO 3",
+          "        ASSIGN pf3=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf4=0;",
+          "     4: IF !(1 && pf3 && !veh_green) THEN GOTO 5",
+          "        ASSIGN pf4=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN pf5=0;",
+          "     6: IF !(1 && pf4 && !turn_arrow) THEN GOTO 7",
+          "        ASSIGN pf5=1;",
+          "     7: ASSIGN ped_walk=1 && pf5;",
+          "        GOTO 1",
+          "     8:"
+        ],
+        "assignment_counts": {
+          "req_ped": 1,
+          "veh_green": 1,
+          "turn_arrow": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "pf5": 2,
+          "ped_walk": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/traffic/ped_conflict_interlock_gm/clean.ld --inputs ped_walk,turn_arrow > benchmarks/traffic/ped_conflict_interlock_gm/clean__xml.ld\nesbmc86_mem.sh benchmarks/traffic/ped_conflict_interlock_gm/clean__xml.ld --ld-props benchmarks/traffic/ped_conflict_interlock_gm/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.054,
+      "counterexample": null,
+      "h1": {
+        "verdict": "no arithmetic",
+        "command": null
+      }
+    }
+  }
+}

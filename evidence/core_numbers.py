@@ -10,7 +10,7 @@ ids=set(B)
 St={r['id']:r for r in json.load(open(S+"/structural.json")) if r['id'] in ids}
 for i in ids:
     if i=='g_ppu_evolution_1': St[i]['cls']='authored domain'
-E=[r for r in json.load(open(S+"/smv_gen/evidence.json")) if r['id'] in ids]
+E=[r for r in json.load(open("/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/evidence86.json")) if r['id'] in ids]
 pv=json.load(open(S+"/plcverif_final.json"))
 for r in E:
     r['cls']=St[r['id']]['cls']; k="%s__%s"%(r['id'],r['file'].rsplit('.',1)[0]); r['pvc']=pv.get(k) in('SAFE','VIOLATION'); r['nvc']=r['nusmv'] in('SAFE','VIOLATION')
@@ -44,23 +44,23 @@ N['st_swat_assign']=[St[i]['coils'] for i in ids if i.startswith('st_swat')]
 def funnel(t):
     att=[r for r in E if r['s'+t]!='-']; g=[r for r in att if r['g'+t]=='pass']
     return dict(att=len(att),notatt=len(E)-len(att),gatefail=len(att)-len(g),gate=len(g),unk=sum(r['s'+t]=='unknown' for r in g),wrong=sum(r['s'+t]=='wrong' for r in g),h1=sum(r['s'+t]=='h1_violated' for r in g),agree=sum(r['s'+t]=='correct' for r in g),gf_match=sum(r['s'+t]=='correct' for r in att if r['g'+t]=='fail'))
-N['f84']=funnel('84'); N['f85']=funnel('85')
-a4=[r for r in E if r['s84']=='correct' and r['g84']=='pass']; a5=[r for r in E if r['s85']=='correct' and r['g85']=='pass']
-N['conf']=dict(a4_nusmv=sum(r['nvc'] for r in a4),a4_either=sum(r['nvc'] or r['pvc'] for r in a4),a5_nusmv=sum(r['nvc'] for r in a5),a5_either=sum(r['nvc'] or r['pvc'] for r in a5))
+N['f84']=funnel('84'); N['f86']=funnel('86')
+a4=[r for r in E if r['s84']=='correct' and r['g84']=='pass']; a6=[r for r in E if r['s86']=='correct' and r['g86']=='pass']
+N['conf']=dict(a4_nusmv=sum(r['nvc'] for r in a4),a4_either=sum(r['nvc'] or r['pvc'] for r in a4),a6_nusmv=sum(r['nvc'] for r in a6),a6_either=sum(r['nvc'] or r['pvc'] for r in a6))
 N['nusmv']=sum(r['nvc'] for r in E); N['nusmv_split']=dict(collections.Counter(r['nusmv'] for r in E if r['nvc'])); N['plcverif']=sum(r['pvc'] for r in E); N['either']=sum(r['nvc'] or r['pvc'] for r in E)
 N['plcverif_split']=dict(collections.Counter(pv["%s__%s"%(r['id'],r['file'].rsplit('.',1)[0])] for r in E if r['pvc']))
 N['bench_conf_either']=len({r['id'] for r in E})-len({r['id'] for r in E if not(r['nvc'] or r['pvc'])})
 N['bench_conf_nusmv']=len({r['id'] for r in E})-len({r['id'] for r in E if not r['nvc']})
 def row(sub): 
-    a=[r for r in sub if r['s85']!='-']
-    return dict(n=len(sub),tried=len(a),m84=sum(r['s84']=='correct' and r['g84']=='pass' for r in sub),m85=sum(r['s85']=='correct' and r['g85']=='pass' for r in sub),nusmv=sum(r['nvc'] for r in sub),plcverif=sum(r['pvc'] for r in sub),h1=sum(r['s85']=='h1_violated' for r in sub))
+    a=[r for r in sub if r['s86']!='-']
+    return dict(n=len(sub),tried=len(a),m84=sum(r['s84']=='correct' and r['g84']=='pass' for r in sub),m86=sum(r['s86']=='correct' and r['g86']=='pass' for r in sub),nusmv=sum(r['nvc'] for r in sub),plcverif=sum(r['pvc'] for r in sub),h1=sum(r['s86']=='h1_violated' for r in sub))
 N['rows']={}
 for k in ('lang','cls','status'):
     for v in sorted(set(r[k] for r in E)): N['rows'][k+':'+v]=row([r for r in E if r[k]==v])
 N['rows']['ALL']=row(E)
 N['uncovered']=dict(total=sum(1 for r in E if not(r['nvc'] or r['pvc'])),by_lang=dict(collections.Counter(r['lang'] for r in E if not(r['nvc'] or r['pvc']))))
 N['wrong84']=[(r['id'],r['file']) for r in E if r['s84']=='wrong' and r['g84']=='pass']; N['unknown84']=[(r['id'],r['file'],r['exp']) for r in E if r['s84']=='unknown' and r['g84']=='pass']
-N['h1_ids']=sorted({r['id'] for r in E if r['s85']=='h1_violated'})
+N['h1_ids']=sorted({r['id'] for r in E if r['s86']=='h1_violated'})
 N['conf_status']=dict(collections.Counter((r['status'],bool(r['nvc'] or r['pvc'])) for r in E).items().__iter__().__class__ and {str(k):v for k,v in collections.Counter((r['status'],bool(r['nvc'] or r['pvc'])) for r in E).items()})
 sem=yaml.safe_load(open("/Users/user/Claude/4_Papers/ESBMC-Benchmark-Suite (Springer - Scientific Reports)/revision-evidence/semantics.yml")); sem={k:v for k,v in sem.items() if k in ids}
 N['sem']=dict(retained=sum('retained_state' in v for v in sem.values()),timer=sum('timer_counter_model' in v for v in sem.values()),h1=sum('arithmetic' in v for v in sem.values()),scope=dict(collections.Counter(v['verdict_scope'] for v in sem.values())),
@@ -68,5 +68,5 @@ N['sem']=dict(retained=sum('retained_state' in v for v in sem.values()),timer=su
    hold_candidate=sum(1 for k,v in sem.items() if v['verdict_scope']!='semantics-dependent' and B[k]['validation_status']=='candidate'))
 iss=json.load(open(S+"/audit_issues.json")); N['audit_issues_in_core']=len([i for i in iss if i[0] in ids]); N['audit_retained']=len([i for i in iss if i[0] in ids and i[1]=='retained_state']); N['audit_scope']=len([i for i in iss if i[0] in ids and i[1]=='scope'])
 N['feat']=dict(comparison=sum('comparison' in b.get('features',[]) for b in B.values()),function_block=sum('function_block' in b.get('features',[]) for b in B.values()),multi_pou=sum('multi_pou' in b.get('features',[]) for b in B.values()))
-json.dump(N,open("/Users/user/Claude/4_Papers/ESBMC-Benchmark-Suite (Springer - Scientific Reports)/revision-evidence/core_numbers.json","w"),indent=1,default=str)
+json.dump(N,open("/Users/user/Claude/4_Papers/ESBMC-Benchmark-Suite (Springer - Scientific Reports)/revision-evidence/core_numbers_v86.json","w"),indent=1,default=str)
 print(json.dumps(N,indent=0,default=str)[:6500])

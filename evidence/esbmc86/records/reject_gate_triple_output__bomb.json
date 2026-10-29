@@ -1,0 +1,140 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:36:35Z",
+  "program": "benchmarks/packaging/reject_gate_triple_output/bomb.ld",
+  "properties_file": "benchmarks/packaging/reject_gate_triple_output/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "defect_detect -> gate_actuate",
+      "justification": "A detected defect must actuate the reject gate in the same scan; the property is grounded in the trigger, not in gate_actuate's relationship to the two other readouts (counter_enable, line_stop) the same internal latch happens to also drive."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "defect_detect && !gate_actuate",
+      "justification": "Witness: defect_detect=1 reaches gate_actuate=0 in bomb, because reject_latch no longer triggers on the defect sensor at all."
+    }
+  ],
+  "property_variables": [
+    "defect_detect",
+    "gate_actuate"
+  ],
+  "expected_verdict": "VIOLATION",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 3",
+          "        ASSIGN line_running=NONDET(_Bool);",
+          "        ASSIGN bypass_key=NONDET(_Bool);",
+          "        ASSIGN defect_detect=NONDET(_Bool);",
+          "        ASSIGN counter_enable=1 && reject_latch && line_running;",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN reject_latch=0;",
+          "     2: ASSIGN gate_actuate=1 && reject_latch;",
+          "        ASSIGN line_stop=1 && reject_latch && !bypass_key;",
+          "        GOTO 1",
+          "     3:"
+        ],
+        "assignment_counts": {
+          "line_running": 1,
+          "bypass_key": 1,
+          "defect_detect": 1,
+          "counter_enable": 1,
+          "reject_latch": 1,
+          "gate_actuate": 1,
+          "line_stop": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/reject_gate_triple_output/bomb.ld --inputs defect_detect,gate_actuate > benchmarks/packaging/reject_gate_triple_output/bomb__xml.ld\nesbmc84_mem.sh benchmarks/packaging/reject_gate_triple_output/bomb__xml.ld --ld-props results/records/reject_gate_triple_output__bomb__props/props_esbmc.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.033,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  defect_detect = 1\n\nState 2 file benchmarks/packaging/reject_gate_triple_output/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/packaging/reject_gate_triple_output/bomb__xml.ld\n  P1\n  !(defect_detect && !gate_actuate)"
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 15",
+          "        ASSIGN line_running=NONDET(_Bool);",
+          "        ASSIGN bypass_key=NONDET(_Bool);",
+          "        ASSIGN defect_detect=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN reject_latch__pf0=0;",
+          "     2: IF !1 THEN GOTO 3",
+          "        ASSIGN reject_latch__pf0=1;",
+          "     3: IF !(1 && reject_latch__pf0) THEN GOTO 4",
+          "        ASSIGN reject_latch=0;",
+          "     4: IF !1 THEN GOTO 5",
+          "        ASSIGN pf4=0;",
+          "     5: IF !(1 && reject_latch) THEN GOTO 6",
+          "        ASSIGN pf4=1;",
+          "     6: ASSIGN gate_actuate=1 && pf4;",
+          "        IF !1 THEN GOTO 7",
+          "        ASSIGN pf6=0;",
+          "     7: IF !(1 && reject_latch) THEN GOTO 8",
+          "        ASSIGN pf6=1;",
+          "     8: IF !1 THEN GOTO 9",
+          "        ASSIGN pf7=0;",
+          "     9: IF !(1 && pf6 && line_running) THEN GOTO 10",
+          "        ASSIGN pf7=1;",
+          "    10: ASSIGN counter_enable=1 && pf7;",
+          "        IF !1 THEN GOTO 11",
+          "        ASSIGN pf9=0;",
+          "    11: IF !(1 && reject_latch) THEN GOTO 12",
+          "        ASSIGN pf9=1;",
+          "    12: IF !1 THEN GOTO 13",
+          "        ASSIGN pf10=0;",
+          "    13: IF !(1 && pf9 && !bypass_key) THEN GOTO 14",
+          "        ASSIGN pf10=1;",
+          "    14: ASSIGN line_stop=1 && pf10;",
+          "        GOTO 1",
+          "    15:"
+        ],
+        "assignment_counts": {
+          "line_running": 1,
+          "bypass_key": 1,
+          "defect_detect": 1,
+          "reject_latch__pf0": 2,
+          "reject_latch": 1,
+          "pf4": 2,
+          "gate_actuate": 1,
+          "pf6": 2,
+          "pf7": 2,
+          "counter_enable": 1,
+          "pf9": 2,
+          "pf10": 2,
+          "line_stop": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/reject_gate_triple_output/bomb.ld --inputs defect_detect,gate_actuate > benchmarks/packaging/reject_gate_triple_output/bomb__xml.ld\nesbmc86_mem.sh benchmarks/packaging/reject_gate_triple_output/bomb__xml.ld --ld-props results/records/reject_gate_triple_output__bomb__props/props_esbmc.yaml --incremental-bmc --unwind 20 --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "VIOLATION",
+      "proof": null,
+      "cpu_time_s": 0.045,
+      "counterexample": "State 1  thread 0\n----------------------------------------------------\n  defect_detect = 1\n\nState 2 file benchmarks/packaging/reject_gate_triple_output/bomb__xml.ld thread 0\n----------------------------------------------------\nViolated property:\n  file benchmarks/packaging/reject_gate_triple_output/bomb__xml.ld\n  P1\n  !(defect_detect && !gate_actuate)\n\n\n** Results:\nbenchmarks/packaging/reject_gate_triple_output/bomb__xml.ld\n  FAILED       [global.assertion.1]  line 0  P1\n  NOT CHECKED  [global.assertion.2]  line 0  P2\n\n** 1 of 2 properties failed, 1 not checked\n   (this mode stops at the first violation; use --multi-property for a verdict on every property)"
+    }
+  }
+}

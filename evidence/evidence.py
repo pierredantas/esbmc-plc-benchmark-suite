@@ -16,7 +16,7 @@ for bp in sorted(glob.glob(SUITE + "/benchmarks/*/*/benchmark.yml")):
         f = v["file"]; exp = "SAFE" if v["expected_verdict"] else "VIOLATION"
         name = f.rsplit(".", 1)[0]; key = "%s__%s" % (b["id"], name)
         r = rec.get(key) or rec.get(b["id"] + "__" + ("clean" if v["expected_verdict"] else "bomb")) or {}
-        e84 = (r.get("runs", {}).get("v8.4") or {}); e85 = (r.get("runs", {}).get("v8.5") or {})
+        e84 = (r.get("runs", {}).get("v8.4") or {}); e86 = (r.get("runs", {}).get("v8.6") or {})
         nv = "-"
         src = os.path.join(d, f)
         try:
@@ -35,8 +35,8 @@ for bp in sorted(glob.glob(SUITE + "/benchmarks/*/*/benchmark.yml")):
         rows.append(dict(id=b["id"], file=f, domain=b["domain"], lang=b["language"], origin=b["source"]["origin"],
                          status=b.get("validation_status"), method=v["ground_truth"]["method"], diff=b.get("difficulty"),
                          exp=exp, s84=e84.get("status", "-"), v84=e84.get("verdict", "-"), g84=(e84.get("encoding") or {}).get("gate", "-"),
-                         s85=e85.get("status", "-"), v85=e85.get("verdict", "-"), g85=(e85.get("encoding") or {}).get("gate", "-"),
-                         t84=e84.get("cpu_time_s"), t85=e85.get("cpu_time_s"), nusmv=nv))
+                         s86=e86.get("status", "-"), v86=e86.get("verdict", "-"), g86=(e86.get("encoding") or {}).get("gate", "-"),
+                         t84=e84.get("cpu_time_s"), t86=e86.get("cpu_time_s"), nusmv=nv))
 json.dump(rows, open(OUT + "/evidence.json", "w"), indent=1)
 print(len(rows), collections.Counter(r["nusmv"] for r in rows))
 print("nusmv agree", sum(1 for r in rows if r["nusmv"] == r["exp"]), "disagree", sum(1 for r in rows if r["nusmv"] in ("SAFE", "VIOLATION") and r["nusmv"] != r["exp"]))

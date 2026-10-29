@@ -1,138 +1,138 @@
-id,file,domain,lang,origin,cls,status,method,diff,exp,s84,v84,g84,s85,v85,g85,t84,t85,nusmv,core_suite
-access_door_forced_ds,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.027,0.062,SAFE,no
-access_door_forced_ds,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.034,0.047,-,no
-access_door_forced_gm,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.031,0.055,SAFE,no
-access_door_forced_gm,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.033,0.377,VIOLATION,no
+id,file,domain,lang,origin,cls,status,method,diff,exp,s84,v84,g84,s86,v86,g86,t84,t86,nusmv,core_suite
+access_door_forced_ds,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.027,0.069,SAFE,no
+access_door_forced_ds,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.034,0.043,-,no
+access_door_forced_gm,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.031,0.051,SAFE,no
+access_door_forced_gm,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.033,0.389,VIOLATION,no
 airlock_pressure_interlock,clean.st,building_automation,ST,authored,authored domain,candidate,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
 airlock_pressure_interlock,bomb.st,building_automation,ST,authored,authored domain,candidate,fault-injection,easy,VIOLATION,-,-,-,-,-,-,,,-,yes
-emer_light_transfer,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.052,SAFE,no
-emer_light_transfer,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.231,0.043,VIOLATION,no
-fire_damper_interlock_ds,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.042,0.053,SAFE,no
-fire_damper_interlock_ds,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.042,VIOLATION,no
-fire_damper_interlock_gm,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.055,SAFE,no
-fire_damper_interlock_gm,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.042,VIOLATION,no
-g_building_lighting,clean.xml,building_automation,LD-graphical,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.036,0.054,SAFE,yes
+emer_light_transfer,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.05,SAFE,no
+emer_light_transfer,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.231,0.04,VIOLATION,no
+fire_damper_interlock_ds,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.042,0.05,SAFE,no
+fire_damper_interlock_ds,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.044,VIOLATION,no
+fire_damper_interlock_gm,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.048,SAFE,no
+fire_damper_interlock_gm,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.04,VIOLATION,no
+g_building_lighting,clean.xml,building_automation,LD-graphical,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.036,0.051,SAFE,yes
 g_building_lighting,bomb.xml,building_automation,LD-graphical,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.045,VIOLATION,yes
-g_comb_mixed,program.xml,building_automation,LD-graphical,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.053,SAFE,yes
+g_comb_mixed,program.xml,building_automation,LD-graphical,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.054,SAFE,yes
 g_comb_or,program.xml,building_automation,LD-graphical,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.052,SAFE,yes
-g_door_reversal,program.xml,building_automation,LD-graphical,authored,authored domain,validated,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.04,0.055,SAFE,yes
-g_door_reversal,momentary.xml,building_automation,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.053,SAFE,yes
-intrusion_dual_alarm,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.035,0.053,SAFE,yes
-intrusion_dual_alarm,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.049,-,yes
+g_door_reversal,program.xml,building_automation,LD-graphical,authored,authored domain,validated,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.04,0.051,SAFE,yes
+g_door_reversal,momentary.xml,building_automation,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.052,SAFE,yes
+intrusion_dual_alarm,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.035,0.052,SAFE,yes
+intrusion_dual_alarm,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.047,-,yes
 kiln_door_lockout,clean.st,building_automation,ST,authored,authored domain,candidate,expert,medium,SAFE,-,-,-,-,-,-,,,-,yes
 kiln_door_lockout,bomb.st,building_automation,ST,authored,authored domain,candidate,fault-injection,medium,VIOLATION,-,-,-,-,-,-,,,-,yes
-ld_comb_mixed,comb_mixed.ld,building_automation,LD-textual,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.054,SAFE,yes
-ld_comb_or,comb_or.ld,building_automation,LD-textual,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.036,0.055,SAFE,yes
+ld_comb_mixed,comb_mixed.ld,building_automation,LD-textual,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.052,SAFE,yes
+ld_comb_or,comb_or.ld,building_automation,LD-textual,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.036,0.052,SAFE,yes
 st_door_reversal,door_reversal.st,building_automation,ST,authored,authored domain,validated,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
 stairwell_pressurization_ds,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.043,0.052,SAFE,no
-stairwell_pressurization_ds,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.045,VIOLATION,no
-stairwell_pressurization_gm,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.058,SAFE,no
-stairwell_pressurization_gm,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.23,0.046,VIOLATION,no
-stairwell_smoke_exhaust,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.054,SAFE,no
-stairwell_smoke_exhaust,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.042,VIOLATION,no
+stairwell_pressurization_ds,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.047,VIOLATION,no
+stairwell_pressurization_gm,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.052,SAFE,no
+stairwell_pressurization_gm,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.23,0.044,VIOLATION,no
+stairwell_smoke_exhaust,clean.ld,building_automation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.053,SAFE,no
+stairwell_smoke_exhaust,bomb.ld,building_automation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.044,VIOLATION,no
 agitator_temp_interlock_ds,clean.ld,chemical_batch,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.031,0.052,SAFE,no
 agitator_temp_interlock_ds,bomb.ld,chemical_batch,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.034,0.046,VIOLATION,no
-agitator_temp_interlock_gm,clean.ld,chemical_batch,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.055,SAFE,no
-agitator_temp_interlock_gm,bomb.ld,chemical_batch,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.045,VIOLATION,no
-dual_valve_containment_ds,clean.ld,chemical_batch,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.041,0.051,SAFE,no
-dual_valve_containment_ds,bomb.ld,chemical_batch,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.046,VIOLATION,no
-dual_valve_containment_gm,clean.ld,chemical_batch,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.055,SAFE,no
-dual_valve_containment_gm,bomb.ld,chemical_batch,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.275,0.045,VIOLATION,no
-fbd_reactor_2oo3,clean.xml,chemical_batch,FBD,authored,authored domain,candidate,expert,medium,SAFE,wrong,VIOLATION,fail,error,error,fail,0.03,0.039,-,yes
-fbd_reactor_2oo3,bomb.xml,chemical_batch,FBD,authored,authored domain,candidate,fault-injection,medium,VIOLATION,correct,VIOLATION,fail,error,error,fail,0.031,0.04,-,yes
-g_batch_mixer,clean.xml,chemical_batch,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.052,SAFE,yes
-g_batch_mixer,bomb.xml,chemical_batch,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.041,VIOLATION,yes
-g_batch_reactor,clean.xml,chemical_batch,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.054,SAFE,yes
+agitator_temp_interlock_gm,clean.ld,chemical_batch,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.054,SAFE,no
+agitator_temp_interlock_gm,bomb.ld,chemical_batch,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.044,VIOLATION,no
+dual_valve_containment_ds,clean.ld,chemical_batch,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.041,0.052,SAFE,no
+dual_valve_containment_ds,bomb.ld,chemical_batch,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.044,VIOLATION,no
+dual_valve_containment_gm,clean.ld,chemical_batch,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.054,SAFE,no
+dual_valve_containment_gm,bomb.ld,chemical_batch,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.275,0.046,VIOLATION,no
+fbd_reactor_2oo3,clean.xml,chemical_batch,FBD,authored,authored domain,candidate,expert,medium,SAFE,wrong,VIOLATION,fail,error,error,fail,0.03,0.04,-,yes
+fbd_reactor_2oo3,bomb.xml,chemical_batch,FBD,authored,authored domain,candidate,fault-injection,medium,VIOLATION,correct,VIOLATION,fail,error,error,fail,0.031,0.042,-,yes
+g_batch_mixer,clean.xml,chemical_batch,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.051,SAFE,yes
+g_batch_mixer,bomb.xml,chemical_batch,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.048,VIOLATION,yes
+g_batch_reactor,clean.xml,chemical_batch,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.056,SAFE,yes
 g_batch_reactor,bomb.xml,chemical_batch,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.044,VIOLATION,yes
-g_independent_hp_trip,clean.xml,chemical_batch,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.049,SAFE,yes
-g_independent_hp_trip,bomb.xml,chemical_batch,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.045,VIOLATION,yes
-g_phase_hold_permissive,clean.xml,chemical_batch,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.058,SAFE,yes
-g_phase_hold_permissive,bomb.xml,chemical_batch,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.043,VIOLATION,yes
-g_vessel_empty_permissive,clean.xml,chemical_batch,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.041,0.053,SAFE,yes
+g_independent_hp_trip,clean.xml,chemical_batch,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.05,SAFE,yes
+g_independent_hp_trip,bomb.xml,chemical_batch,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.043,VIOLATION,yes
+g_phase_hold_permissive,clean.xml,chemical_batch,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.052,SAFE,yes
+g_phase_hold_permissive,bomb.xml,chemical_batch,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.046,VIOLATION,yes
+g_vessel_empty_permissive,clean.xml,chemical_batch,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.041,0.051,SAFE,yes
 g_vessel_empty_permissive,bomb.xml,chemical_batch,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.033,0.043,VIOLATION,yes
 mixer_lid_stall_interlock,clean.st,chemical_batch,ST,authored,authored domain,candidate,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
 mixer_lid_stall_interlock,bomb.st,chemical_batch,ST,authored,authored domain,candidate,fault-injection,easy,VIOLATION,-,-,-,-,-,-,,,-,yes
-nitrogen_purge_permissive,clean.ld,chemical_batch,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.05,SAFE,no
-nitrogen_purge_permissive,bomb.ld,chemical_batch,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.045,VIOLATION,no
+nitrogen_purge_permissive,clean.ld,chemical_batch,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.058,SAFE,no
+nitrogen_purge_permissive,bomb.ld,chemical_batch,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.046,VIOLATION,no
 reactor_pressure_lockout,clean.st,chemical_batch,ST,authored,authored domain,candidate,expert,medium,SAFE,-,-,-,-,-,-,,,-,yes
 reactor_pressure_lockout,bomb.st,chemical_batch,ST,authored,authored domain,candidate,fault-injection,medium,VIOLATION,-,-,-,-,-,-,,,-,yes
-relief_valve_trip_ds,clean.ld,chemical_batch,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.034,0.052,SAFE,no
+relief_valve_trip_ds,clean.ld,chemical_batch,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.034,0.053,SAFE,no
 relief_valve_trip_ds,bomb.ld,chemical_batch,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.027,0.043,-,no
-relief_valve_trip_gm,clean.ld,chemical_batch,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.053,SAFE,no
-relief_valve_trip_gm,bomb.ld,chemical_batch,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.245,0.05,VIOLATION,no
-sfc_batch_fill_drain,clean.xml,chemical_batch,SFC,authored,authored domain,candidate,expert,easy,SAFE,correct,SAFE,fail,error,error,fail,0.029,0.037,-,yes
-sfc_batch_fill_drain,bomb.xml,chemical_batch,SFC,authored,authored domain,candidate,fault-injection,easy,VIOLATION,unknown,unknown,fail,error,error,fail,0.126,0.039,-,yes
-buffer_switch_lockout_ds,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.037,0.052,SAFE,no
-buffer_switch_lockout_ds,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.046,VIOLATION,no
+relief_valve_trip_gm,clean.ld,chemical_batch,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.054,SAFE,no
+relief_valve_trip_gm,bomb.ld,chemical_batch,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.245,0.049,VIOLATION,no
+sfc_batch_fill_drain,clean.xml,chemical_batch,SFC,authored,authored domain,candidate,expert,easy,SAFE,correct,SAFE,fail,error,error,fail,0.029,0.04,-,yes
+sfc_batch_fill_drain,bomb.xml,chemical_batch,SFC,authored,authored domain,candidate,fault-injection,easy,VIOLATION,unknown,unknown,fail,error,error,fail,0.126,0.038,-,yes
+buffer_switch_lockout_ds,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.037,0.056,SAFE,no
+buffer_switch_lockout_ds,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.043,VIOLATION,no
 buffer_switch_lockout_gm,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.053,SAFE,no
-buffer_switch_lockout_gm,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.246,0.048,VIOLATION,no
-door_zone_interlock,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.053,SAFE,no
-door_zone_interlock,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.046,VIOLATION,no
+buffer_switch_lockout_gm,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.246,0.051,VIOLATION,no
+door_zone_interlock,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.055,SAFE,no
+door_zone_interlock,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.045,VIOLATION,no
 elevator_door_motion_interlock,clean.st,elevator,ST,authored,authored domain,candidate,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
 elevator_door_motion_interlock,bomb.st,elevator,ST,authored,authored domain,candidate,fault-injection,easy,VIOLATION,-,-,-,-,-,-,,,-,yes
-fire_service_recall_ds,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.036,0.054,SAFE,no
-fire_service_recall_ds,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.033,0.046,VIOLATION,no
-fire_service_recall_gm,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.053,SAFE,no
-fire_service_recall_gm,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.045,VIOLATION,no
-g_ctd_load,program.xml,elevator,LD-graphical,authored,authored micro,candidate,expert,medium,SAFE,correct,SAFE,fail,correct,SAFE,pass,0.033,0.055,-,yes
-g_elevator_door,clean.xml,elevator,LD-graphical,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.055,SAFE,yes
-g_elevator_door,bomb.xml,elevator,LD-graphical,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.044,VIOLATION,yes
-g_timer_latch_mix,program.xml,elevator,LD-graphical,authored,authored micro,candidate,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.053,-,yes
-ld_ctd_load,ctd_load.ld,elevator,LD-textual,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.033,0.055,-,yes
-ld_timer_latch_mix,timer_latch_mix.ld,elevator,LD-textual,authored,authored micro,candidate,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.033,0.052,-,yes
+fire_service_recall_ds,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.036,0.052,SAFE,no
+fire_service_recall_ds,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.033,0.044,VIOLATION,no
+fire_service_recall_gm,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.055,SAFE,no
+fire_service_recall_gm,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.043,VIOLATION,no
+g_ctd_load,program.xml,elevator,LD-graphical,authored,authored micro,candidate,expert,medium,SAFE,correct,SAFE,fail,correct,SAFE,pass,0.033,0.057,-,yes
+g_elevator_door,clean.xml,elevator,LD-graphical,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.054,SAFE,yes
+g_elevator_door,bomb.xml,elevator,LD-graphical,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.043,VIOLATION,yes
+g_timer_latch_mix,program.xml,elevator,LD-graphical,authored,authored micro,candidate,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.054,-,yes
+ld_ctd_load,ctd_load.ld,elevator,LD-textual,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.033,0.057,-,yes
+ld_timer_latch_mix,timer_latch_mix.ld,elevator,LD-textual,authored,authored micro,candidate,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.033,0.051,-,yes
 overload_weighing_hold,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.031,0.054,SAFE,no
-overload_weighing_hold,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.245,0.047,VIOLATION,no
-overspeed_trip_latch_ds,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.027,0.048,SAFE,no
+overload_weighing_hold,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.245,0.055,VIOLATION,no
+overspeed_trip_latch_ds,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.027,0.051,SAFE,no
 overspeed_trip_latch_ds,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.044,-,no
-overspeed_trip_latch_gm,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.032,0.053,SAFE,no
-overspeed_trip_latch_gm,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.256,0.05,VIOLATION,no
-sfc_elevator_door,clean.xml,elevator,SFC,authored,authored domain,candidate,expert,medium,SAFE,correct,SAFE,fail,error,error,fail,0.031,0.039,-,yes
-sfc_elevator_door,bomb.xml,elevator,SFC,authored,authored domain,candidate,fault-injection,medium,VIOLATION,unknown,unknown,fail,error,error,fail,0.129,0.038,-,yes
-fbd_fan_damper,clean.xml,hvac,FBD,authored,authored domain,candidate,expert,easy,SAFE,correct,SAFE,fail,error,error,fail,0.033,0.042,-,yes
-fbd_fan_damper,bomb.xml,hvac,FBD,authored,authored domain,candidate,fault-injection,easy,VIOLATION,unknown,unknown,fail,error,error,fail,0.126,0.041,-,yes
+overspeed_trip_latch_gm,clean.ld,elevator,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.032,0.056,SAFE,no
+overspeed_trip_latch_gm,bomb.ld,elevator,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.256,0.051,VIOLATION,no
+sfc_elevator_door,clean.xml,elevator,SFC,authored,authored domain,candidate,expert,medium,SAFE,correct,SAFE,fail,error,error,fail,0.031,0.04,-,yes
+sfc_elevator_door,bomb.xml,elevator,SFC,authored,authored domain,candidate,fault-injection,medium,VIOLATION,unknown,unknown,fail,error,error,fail,0.129,0.04,-,yes
+fbd_fan_damper,clean.xml,hvac,FBD,authored,authored domain,candidate,expert,easy,SAFE,correct,SAFE,fail,error,error,fail,0.033,0.043,-,yes
+fbd_fan_damper,bomb.xml,hvac,FBD,authored,authored domain,candidate,fault-injection,easy,VIOLATION,unknown,unknown,fail,error,error,fail,0.126,0.038,-,yes
 freeze_stat_trip_ds,clean.ld,hvac,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.036,0.053,SAFE,no
 freeze_stat_trip_ds,bomb.ld,hvac,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.044,VIOLATION,no
-freeze_stat_trip_gm,clean.ld,hvac,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.052,SAFE,no
+freeze_stat_trip_gm,clean.ld,hvac,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.055,SAFE,no
 freeze_stat_trip_gm,bomb.ld,hvac,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.243,0.047,VIOLATION,no
-g_burner_purge,program.xml,hvac,LD-graphical,authored,authored domain,validated,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.036,0.054,SAFE,yes
-g_burner_purge,self_clearing.xml,hvac,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.053,SAFE,yes
-g_hvac_fan_delay,clean.xml,hvac,LD-graphical,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.054,SAFE,yes
-g_hvac_fan_delay,bomb.xml,hvac,LD-graphical,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.045,VIOLATION,yes
+g_burner_purge,program.xml,hvac,LD-graphical,authored,authored domain,validated,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.036,0.055,SAFE,yes
+g_burner_purge,self_clearing.xml,hvac,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.052,SAFE,yes
+g_hvac_fan_delay,clean.xml,hvac,LD-graphical,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.052,SAFE,yes
+g_hvac_fan_delay,bomb.xml,hvac,LD-graphical,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.043,VIOLATION,yes
 g_tof_hold,program.xml,hvac,LD-graphical,authored,authored micro,candidate,expert,medium,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.052,-,yes
-g_ton_single,program.xml,hvac,LD-graphical,authored,authored micro,candidate,expert,easy,SAFE,correct,SAFE,fail,correct,SAFE,pass,0.031,0.054,-,yes
-ld_tof_hold,tof_hold.ld,hvac,LD-textual,authored,authored micro,candidate,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.032,0.056,-,yes
-ld_ton_single,ton_single.ld,hvac,LD-textual,authored,authored micro,candidate,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.031,0.052,-,yes
-purge_fault_lockout,clean.ld,hvac,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.034,0.055,SAFE,yes
-purge_fault_lockout,bomb.ld,hvac,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.044,-,yes
-smoke_detector_shutdown,clean.ld,hvac,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.029,0.054,SAFE,no
-smoke_detector_shutdown,bomb.ld,hvac,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.253,0.049,VIOLATION,no
+g_ton_single,program.xml,hvac,LD-graphical,authored,authored micro,candidate,expert,easy,SAFE,correct,SAFE,fail,correct,SAFE,pass,0.031,0.051,-,yes
+ld_tof_hold,tof_hold.ld,hvac,LD-textual,authored,authored micro,candidate,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.032,0.052,-,yes
+ld_ton_single,ton_single.ld,hvac,LD-textual,authored,authored micro,candidate,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.031,0.051,-,yes
+purge_fault_lockout,clean.ld,hvac,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.034,0.053,SAFE,yes
+purge_fault_lockout,bomb.ld,hvac,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.046,-,yes
+smoke_detector_shutdown,clean.ld,hvac,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.029,0.052,SAFE,no
+smoke_detector_shutdown,bomb.ld,hvac,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.253,0.048,VIOLATION,no
 st_burner_purge,burner_purge.st,hvac,ST,authored,authored domain,validated,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
 counter_scalability,bomb_N00255.st,manufacturing,ST,authored,authored domain,candidate,expert,medium,VIOLATION,-,-,-,-,-,-,,,-,yes
 counter_scalability,bomb_N01023.st,manufacturing,ST,authored,authored domain,candidate,expert,medium,VIOLATION,-,-,-,-,-,-,,,-,yes
 counter_scalability,bomb_N04095.st,manufacturing,ST,authored,authored domain,candidate,expert,medium,VIOLATION,-,-,-,-,-,-,,,-,yes
 counter_scalability,bomb_N16383.st,manufacturing,ST,authored,authored domain,candidate,expert,medium,VIOLATION,-,-,-,-,-,-,,,-,yes
 counter_scalability,bomb_N32767.st,manufacturing,ST,authored,authored domain,candidate,expert,medium,VIOLATION,-,-,-,-,-,-,,,-,yes
-fbd_comb_and,program.xml,manufacturing,FBD,authored,authored domain,candidate,expert,easy,SAFE,correct,SAFE,fail,error,error,fail,0.033,0.043,-,yes
+fbd_comb_and,program.xml,manufacturing,FBD,authored,authored domain,candidate,expert,easy,SAFE,correct,SAFE,fail,error,error,fail,0.033,0.042,-,yes
 fbd_counter_reset,program.xml,manufacturing,FBD,beremiz,third-party,candidate,expert,easy,SAFE,error,error,fail,error,error,fail,0.028,0.041,-,yes
-g_comb_and,program.xml,manufacturing,LD-graphical,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.053,SAFE,yes
-g_compressor_cycle,program.xml,manufacturing,LD-graphical,authored,authored domain,validated,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.036,0.051,SAFE,yes
-g_compressor_cycle,short_cycle.xml,manufacturing,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.053,SAFE,yes
+g_comb_and,program.xml,manufacturing,LD-graphical,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.051,SAFE,yes
+g_compressor_cycle,program.xml,manufacturing,LD-graphical,authored,authored domain,validated,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.036,0.053,SAFE,yes
+g_compressor_cycle,short_cycle.xml,manufacturing,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.052,SAFE,yes
 g_conveyor_interlock,clean.xml,manufacturing,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.054,SAFE,yes
-g_conveyor_interlock,bomb.xml,manufacturing,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.043,VIOLATION,yes
-g_guard_lock,program.xml,manufacturing,LD-graphical,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,fail,correct,SAFE,pass,0.037,0.051,-,yes
-g_guard_lock,no_rundown.xml,manufacturing,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.055,SAFE,yes
-g_ppu_evolution_1,evolution_1.xml,manufacturing,LD-graphical,ppu,third-party,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.052,-,yes
-g_two_hand,program.xml,manufacturing,LD-graphical,authored,authored domain,validated,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.053,SAFE,yes
-g_two_hand,type_i.xml,manufacturing,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.035,0.052,SAFE,yes
-g_two_hand_fb,program.xml,manufacturing,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,fail,correct,SAFE,pass,0.035,0.052,-,yes
-g_two_hand_fb,type_i.xml,manufacturing,LD-graphical,authored,authored domain,validated,fault-injection,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.049,-,yes
+g_conveyor_interlock,bomb.xml,manufacturing,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.047,VIOLATION,yes
+g_guard_lock,program.xml,manufacturing,LD-graphical,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,fail,correct,SAFE,pass,0.037,0.054,-,yes
+g_guard_lock,no_rundown.xml,manufacturing,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.052,SAFE,yes
+g_ppu_evolution_1,evolution_1.xml,manufacturing,LD-graphical,ppu,third-party,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.051,-,yes
+g_two_hand,program.xml,manufacturing,LD-graphical,authored,authored domain,validated,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.052,SAFE,yes
+g_two_hand,type_i.xml,manufacturing,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.035,0.053,SAFE,yes
+g_two_hand_fb,program.xml,manufacturing,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,fail,correct,SAFE,pass,0.035,0.054,-,yes
+g_two_hand_fb,type_i.xml,manufacturing,LD-graphical,authored,authored domain,validated,fault-injection,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.051,-,yes
 hoist_overload_cutoff,clean.st,manufacturing,ST,authored,authored domain,candidate,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
 hoist_overload_cutoff,bomb.st,manufacturing,ST,authored,authored domain,candidate,fault-injection,easy,VIOLATION,-,-,-,-,-,-,,,-,yes
 il_comb_and,comb_and.il,manufacturing,IL,authored,authored domain,candidate,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
 il_counter_reset,counter_reset.il,manufacturing,IL,beremiz,third-party,candidate,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
-ld_comb_and,comb_and.ld,manufacturing,LD-textual,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.054,SAFE,yes
-ld_ton_chain2,ton_chain2.ld,manufacturing,LD-textual,authored,authored micro,candidate,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.032,0.057,-,yes
-sfc_counter_reset,program.xml,manufacturing,SFC,beremiz,third-party,candidate,expert,easy,SAFE,error,error,fail,error,error,fail,0.027,0.039,-,yes
+ld_comb_and,comb_and.ld,manufacturing,LD-textual,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.053,SAFE,yes
+ld_ton_chain2,ton_chain2.ld,manufacturing,LD-textual,authored,authored micro,candidate,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.032,0.053,-,yes
+sfc_counter_reset,program.xml,manufacturing,SFC,beremiz,third-party,candidate,expert,easy,SAFE,error,error,fail,error,error,fail,0.027,0.042,-,yes
 st_comb_and,comb_and.st,manufacturing,ST,authored,authored domain,candidate,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
 st_compressor_cycle,compressor_cycle.st,manufacturing,ST,authored,authored domain,validated,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
 st_counter_reset,counter_reset.st,manufacturing,ST,beremiz,third-party,candidate,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
@@ -140,148 +140,148 @@ st_guard_lock,guard_lock.st,manufacturing,ST,authored,authored domain,validated,
 st_three_pump_lockout,clean.st,manufacturing,ST,authored,authored domain,candidate,expert,medium,SAFE,-,-,-,-,-,-,,,-,yes
 st_three_pump_lockout,bomb.st,manufacturing,ST,authored,authored domain,candidate,fault-injection,medium,VIOLATION,-,-,-,-,-,-,,,-,yes
 st_two_hand,two_hand.st,manufacturing,ST,authored,authored domain,validated,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
-two_hand_anti_tie_down,clean.ld,manufacturing,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.054,SAFE,no
-two_hand_anti_tie_down,bomb.ld,manufacturing,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.043,VIOLATION,no
+two_hand_anti_tie_down,clean.ld,manufacturing,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.051,SAFE,no
+two_hand_anti_tie_down,bomb.ld,manufacturing,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.048,VIOLATION,no
 welder_gas_shield_interlock,clean.st,manufacturing,ST,authored,authored domain,candidate,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
 welder_gas_shield_interlock,bomb.st,manufacturing,ST,authored,authored domain,candidate,fault-injection,easy,VIOLATION,-,-,-,-,-,-,,,-,yes
 fbd_seal_in,program.xml,motor_control,FBD,authored,authored domain,candidate,expert,easy,SAFE,correct,SAFE,fail,error,error,fail,0.033,0.04,-,yes
 g_estop_reset,program.xml,motor_control,LD-graphical,authored,authored domain,validated,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.036,0.051,SAFE,yes
-g_estop_reset,auto_reset.xml,motor_control,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.053,SAFE,yes
-g_failsafe_motor_latch,failsafe_motor_latch.xml,motor_control,LD-graphical,lessons-electric-circuits,third-party,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.055,SAFE,yes
-g_fwd_rev_interlock,fwd_rev_interlock.xml,motor_control,LD-graphical,lessons-electric-circuits,third-party,candidate,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.053,SAFE,yes
-g_motor_interlock,clean.xml,motor_control,LD-graphical,authored,authored micro,validated,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.052,SAFE,yes
-g_motor_interlock,bomb.xml,motor_control,LD-graphical,authored,authored micro,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.027,0.043,VIOLATION,yes
-g_seal_in,program.xml,motor_control,LD-graphical,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.049,SAFE,yes
-g_star_delta,program.xml,motor_control,LD-graphical,authored,authored domain,validated,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.054,SAFE,yes
-g_star_delta,no_deadtime.xml,motor_control,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.054,SAFE,yes
-g_start_cycle,lstart_cycle.xml,motor_control,LD-graphical,plc-ld-dataset,third-party,candidate,expert,easy,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.037,0.052,-,yes
-g_stop_eq,lstop_eq.xml,motor_control,LD-graphical,plc-ld-dataset,third-party,candidate,expert,easy,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.036,0.051,-,yes
+g_estop_reset,auto_reset.xml,motor_control,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.05,SAFE,yes
+g_failsafe_motor_latch,failsafe_motor_latch.xml,motor_control,LD-graphical,lessons-electric-circuits,third-party,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.054,SAFE,yes
+g_fwd_rev_interlock,fwd_rev_interlock.xml,motor_control,LD-graphical,lessons-electric-circuits,third-party,candidate,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.054,SAFE,yes
+g_motor_interlock,clean.xml,motor_control,LD-graphical,authored,authored micro,validated,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.055,SAFE,yes
+g_motor_interlock,bomb.xml,motor_control,LD-graphical,authored,authored micro,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.027,0.044,VIOLATION,yes
+g_seal_in,program.xml,motor_control,LD-graphical,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.051,SAFE,yes
+g_star_delta,program.xml,motor_control,LD-graphical,authored,authored domain,validated,cross-tool-consensus,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.052,SAFE,yes
+g_star_delta,no_deadtime.xml,motor_control,LD-graphical,authored,authored domain,validated,fault-injection,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.055,SAFE,yes
+g_start_cycle,lstart_cycle.xml,motor_control,LD-graphical,plc-ld-dataset,third-party,candidate,expert,easy,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.037,0.051,-,yes
+g_stop_eq,lstop_eq.xml,motor_control,LD-graphical,plc-ld-dataset,third-party,candidate,expert,easy,SAFE,h1_violated,SAFE,pass,error,error,fail,0.036,0.042,-,yes
 il_seal_in,seal_in.il,motor_control,IL,authored,authored domain,candidate,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
-ld_latch_basic,latch_basic.ld,motor_control,LD-textual,authored,authored micro,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.033,0.054,-,yes
-ld_seal_in,seal_in.ld,motor_control,LD-textual,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.053,SAFE,yes
+ld_latch_basic,latch_basic.ld,motor_control,LD-textual,authored,authored micro,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.033,0.052,-,yes
+ld_seal_in,seal_in.ld,motor_control,LD-textual,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.052,SAFE,yes
 motor_interlock,clean.st,motor_control,ST,authored,authored domain,candidate,cross-tool-consensus,easy,SAFE,-,-,-,-,-,-,,,-,yes
 motor_interlock,bomb.st,motor_control,ST,authored,authored domain,candidate,fault-injection,easy,VIOLATION,-,-,-,-,-,-,,,-,yes
 st_estop_reset,estop_reset.st,motor_control,ST,authored,authored domain,validated,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
 st_seal_in,seal_in.st,motor_control,ST,authored,authored domain,candidate,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
 st_star_delta,star_delta.st,motor_control,ST,authored,authored domain,validated,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
-thermal_overload_latch,clean.ld,motor_control,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.031,0.052,SAFE,no
-thermal_overload_latch,bomb.ld,motor_control,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.245,0.05,VIOLATION,no
-vfd_bypass_interlock,clean.ld,motor_control,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.055,SAFE,no
-vfd_bypass_interlock,bomb.ld,motor_control,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.231,0.046,VIOLATION,no
-capper_torque_stop_ds,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.026,0.051,SAFE,no
-capper_torque_stop_ds,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.043,-,no
-capper_torque_stop_gm,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.033,0.055,SAFE,no
+thermal_overload_latch,clean.ld,motor_control,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.031,0.056,SAFE,no
+thermal_overload_latch,bomb.ld,motor_control,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.245,0.047,VIOLATION,no
+vfd_bypass_interlock,clean.ld,motor_control,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.052,SAFE,no
+vfd_bypass_interlock,bomb.ld,motor_control,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.231,0.044,VIOLATION,no
+capper_torque_stop_ds,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.026,0.048,SAFE,no
+capper_torque_stop_ds,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.047,-,no
+capper_torque_stop_gm,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.033,0.056,SAFE,no
 capper_torque_stop_gm,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.246,0.047,VIOLATION,no
-case_sealer_jam_ds,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.035,0.047,SAFE,no
-case_sealer_jam_ds,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.047,-,no
-case_sealer_jam_gm,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.028,0.054,SAFE,no
-case_sealer_jam_gm,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.245,0.046,VIOLATION,no
+case_sealer_jam_ds,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.035,0.054,SAFE,no
+case_sealer_jam_ds,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.044,-,no
+case_sealer_jam_gm,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.028,0.053,SAFE,no
+case_sealer_jam_gm,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.245,0.047,VIOLATION,no
 conveyor_jam_lockout,clean.st,packaging,ST,authored,authored domain,candidate,expert,medium,SAFE,-,-,-,-,-,-,,,-,yes
 conveyor_jam_lockout,bomb.st,packaging,ST,authored,authored domain,candidate,fault-injection,medium,VIOLATION,-,-,-,-,-,-,,,-,yes
-g_ctu_saturate,program.xml,packaging,LD-graphical,authored,authored micro,candidate,expert,medium,SAFE,correct,SAFE,fail,correct,SAFE,pass,0.03,0.048,-,yes
-g_ftrig_edge,program.xml,packaging,LD-graphical,authored,authored micro,validated,expert,easy,SAFE,unknown,unknown,pass,correct,SAFE,pass,0.329,0.049,SAFE,yes
+g_ctu_saturate,program.xml,packaging,LD-graphical,authored,authored micro,candidate,expert,medium,SAFE,correct,SAFE,fail,correct,SAFE,pass,0.03,0.053,-,yes
+g_ftrig_edge,program.xml,packaging,LD-graphical,authored,authored micro,validated,expert,easy,SAFE,unknown,unknown,pass,correct,SAFE,pass,0.329,0.048,SAFE,yes
 g_packaging_filler,clean.xml,packaging,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.052,SAFE,yes
-g_packaging_filler,bomb.xml,packaging,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.043,VIOLATION,yes
-g_tp_pulse,program.xml,packaging,LD-graphical,authored,authored micro,candidate,expert,medium,VIOLATION,unknown,unknown,fail,correct,VIOLATION,pass,0.12,0.049,-,yes
-guard_door_interlock,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.033,0.055,SAFE,no
-guard_door_interlock,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.048,VIOLATION,no
+g_packaging_filler,bomb.xml,packaging,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.045,VIOLATION,yes
+g_tp_pulse,program.xml,packaging,LD-graphical,authored,authored micro,candidate,expert,medium,VIOLATION,unknown,unknown,fail,correct,VIOLATION,pass,0.12,0.046,-,yes
+guard_door_interlock,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.033,0.053,SAFE,no
+guard_door_interlock,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.045,VIOLATION,no
 labeler_web_break_ds,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.033,0.053,SAFE,no
-labeler_web_break_ds,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.033,0.039,-,no
-labeler_web_break_gm,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.053,SAFE,no
+labeler_web_break_ds,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.033,0.044,-,no
+labeler_web_break_gm,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.052,SAFE,no
 labeler_web_break_gm,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.044,VIOLATION,no
 ld_ctu_saturate,ctu_saturate.ld,packaging,LD-textual,authored,authored micro,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.033,0.052,-,yes
-ld_ftrig_edge,ftrig_edge.ld,packaging,LD-textual,authored,authored micro,validated,expert,easy,SAFE,unknown,unknown,pass,correct,SAFE,pass,0.324,0.048,SAFE,yes
-ld_tp_pulse,tp_pulse.ld,packaging,LD-textual,authored,authored micro,candidate,expert,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.114,0.044,-,yes
-palletizer_light_curtain_ds,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.033,0.044,SAFE,no
-palletizer_light_curtain_ds,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.025,0.041,VIOLATION,no
-palletizer_light_curtain_gm,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.052,SAFE,no
-palletizer_light_curtain_gm,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.045,VIOLATION,no
-reject_gate_triple_output,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.037,0.054,SAFE,yes
-reject_gate_triple_output,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.047,-,yes
-breaker_disconnect_interlock_ds,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.046,SAFE,no
+ld_ftrig_edge,ftrig_edge.ld,packaging,LD-textual,authored,authored micro,validated,expert,easy,SAFE,unknown,unknown,pass,correct,SAFE,pass,0.324,0.05,SAFE,yes
+ld_tp_pulse,tp_pulse.ld,packaging,LD-textual,authored,authored micro,candidate,expert,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.114,0.05,-,yes
+palletizer_light_curtain_ds,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.033,0.053,SAFE,no
+palletizer_light_curtain_ds,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.025,0.042,VIOLATION,no
+palletizer_light_curtain_gm,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.053,SAFE,no
+palletizer_light_curtain_gm,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.044,VIOLATION,no
+reject_gate_triple_output,clean.ld,packaging,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.037,0.055,SAFE,yes
+reject_gate_triple_output,bomb.ld,packaging,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.045,-,yes
+breaker_disconnect_interlock_ds,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.052,SAFE,no
 breaker_disconnect_interlock_ds,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.044,VIOLATION,no
-breaker_disconnect_interlock_gm,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.031,0.055,SAFE,no
-breaker_disconnect_interlock_gm,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.045,VIOLATION,no
+breaker_disconnect_interlock_gm,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.031,0.051,SAFE,no
+breaker_disconnect_interlock_gm,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.043,VIOLATION,no
 breaker_earth_trip_interlock,clean.st,power_substation,ST,authored,authored domain,candidate,expert,easy,SAFE,-,-,-,-,-,-,,,-,yes
 breaker_earth_trip_interlock,bomb.st,power_substation,ST,authored,authored domain,candidate,fault-injection,easy,VIOLATION,-,-,-,-,-,-,,,-,yes
-bus_transfer_lockout,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.042,0.056,SAFE,no
-bus_transfer_lockout,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.046,VIOLATION,no
+bus_transfer_lockout,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.042,0.055,SAFE,no
+bus_transfer_lockout,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.047,VIOLATION,no
 dead_bus_close_permissive_ds,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.034,0.053,SAFE,no
-dead_bus_close_permissive_ds,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.034,0.045,-,no
-dead_bus_close_permissive_gm,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.054,SAFE,no
-dead_bus_close_permissive_gm,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.045,VIOLATION,no
+dead_bus_close_permissive_ds,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.034,0.047,-,no
+dead_bus_close_permissive_gm,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.052,SAFE,no
+dead_bus_close_permissive_gm,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.046,VIOLATION,no
 g_bus_coupler_changeover,clean.xml,power_substation,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.04,0.054,SAFE,yes
-g_bus_coupler_changeover,bomb.xml,power_substation,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.045,VIOLATION,yes
-g_busbar_interlock,clean.xml,power_substation,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.055,SAFE,yes
+g_bus_coupler_changeover,bomb.xml,power_substation,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.043,VIOLATION,yes
+g_busbar_interlock,clean.xml,power_substation,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.051,SAFE,yes
 g_busbar_interlock,bomb.xml,power_substation,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.044,VIOLATION,yes
-g_dead_bus_close_check,clean.xml,power_substation,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.055,SAFE,yes
-g_dead_bus_close_check,bomb.xml,power_substation,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.044,VIOLATION,yes
-g_substation_breaker,clean.xml,power_substation,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.041,0.052,SAFE,yes
-g_substation_breaker,bomb.xml,power_substation,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.047,VIOLATION,yes
-g_transformer_protect,clean.xml,power_substation,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.036,0.055,SAFE,yes
-g_transformer_protect,bomb.xml,power_substation,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.045,VIOLATION,yes
-g_trip_lockout_86,clean.xml,power_substation,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.04,0.053,SAFE,yes
-g_trip_lockout_86,bomb.xml,power_substation,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.045,VIOLATION,yes
-protection_lockout_cascade,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,medium,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.033,0.054,SAFE,yes
+g_dead_bus_close_check,clean.xml,power_substation,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.052,SAFE,yes
+g_dead_bus_close_check,bomb.xml,power_substation,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.043,VIOLATION,yes
+g_substation_breaker,clean.xml,power_substation,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.041,0.051,SAFE,yes
+g_substation_breaker,bomb.xml,power_substation,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.043,VIOLATION,yes
+g_transformer_protect,clean.xml,power_substation,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.036,0.051,SAFE,yes
+g_transformer_protect,bomb.xml,power_substation,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.042,VIOLATION,yes
+g_trip_lockout_86,clean.xml,power_substation,LD-graphical,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.04,0.051,SAFE,yes
+g_trip_lockout_86,bomb.xml,power_substation,LD-graphical,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.043,VIOLATION,yes
+protection_lockout_cascade,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,medium,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.033,0.056,SAFE,yes
 protection_lockout_cascade,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.034,0.047,VIOLATION,yes
-sync_check_relay_ds,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.044,0.053,SAFE,no
-sync_check_relay_ds,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.033,0.045,VIOLATION,no
-sync_check_relay_gm,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.054,SAFE,no
-sync_check_relay_gm,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.046,VIOLATION,no
-trip_lockout_relay_ds,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,medium,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.033,0.053,SAFE,no
-trip_lockout_relay_ds,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.047,VIOLATION,no
-trip_lockout_relay_gm,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.055,SAFE,no
-trip_lockout_relay_gm,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.248,0.052,VIOLATION,no
-all_red_clearance_ds,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.054,SAFE,no
+sync_check_relay_ds,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.044,0.051,SAFE,no
+sync_check_relay_ds,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.033,0.044,VIOLATION,no
+sync_check_relay_gm,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.052,SAFE,no
+sync_check_relay_gm,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.047,VIOLATION,no
+trip_lockout_relay_ds,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,medium,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.033,0.055,SAFE,no
+trip_lockout_relay_ds,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.044,VIOLATION,no
+trip_lockout_relay_gm,clean.ld,power_substation,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.054,SAFE,no
+trip_lockout_relay_gm,bomb.ld,power_substation,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.248,0.047,VIOLATION,no
+all_red_clearance_ds,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.053,SAFE,no
 all_red_clearance_ds,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.045,VIOLATION,no
-all_red_clearance_gm,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.04,0.051,SAFE,no
-all_red_clearance_gm,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.045,VIOLATION,no
-conflict_monitor_trip_ds,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.036,0.056,SAFE,no
-conflict_monitor_trip_ds,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.047,-,no
-conflict_monitor_trip_gm,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.054,SAFE,no
+all_red_clearance_gm,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.04,0.053,SAFE,no
+all_red_clearance_gm,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.044,VIOLATION,no
+conflict_monitor_trip_ds,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.036,0.055,SAFE,no
+conflict_monitor_trip_ds,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.044,-,no
+conflict_monitor_trip_gm,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.03,0.053,SAFE,no
 conflict_monitor_trip_gm,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.046,VIOLATION,no
-g_rtrig_edge,program.xml,traffic,LD-graphical,authored,authored micro,validated,expert,easy,SAFE,unknown,unknown,pass,correct,SAFE,pass,0.324,0.045,SAFE,yes
-g_traffic_light,clean.xml,traffic,LD-graphical,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.036,0.049,SAFE,yes
-g_traffic_light,bomb.xml,traffic,LD-graphical,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.043,VIOLATION,yes
+g_rtrig_edge,program.xml,traffic,LD-graphical,authored,authored micro,validated,expert,easy,SAFE,unknown,unknown,pass,correct,SAFE,pass,0.324,0.054,SAFE,yes
+g_traffic_light,clean.xml,traffic,LD-graphical,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.036,0.052,SAFE,yes
+g_traffic_light,bomb.xml,traffic,LD-graphical,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.044,VIOLATION,yes
 g_traffic_light_pedestrian,plc.xml,traffic,LD-graphical,beremiz,third-party,candidate,expert,medium,SAFE,correct,SAFE,fail,error,error,fail,0.035,0.041,-,yes
-ld_edge_counter,edge_counter.ld,traffic,LD-textual,authored,authored micro,candidate,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.056,-,yes
-ld_rtrig_edge,rtrig_edge.ld,traffic,LD-textual,authored,authored micro,validated,expert,easy,SAFE,unknown,unknown,pass,correct,SAFE,pass,0.325,0.045,SAFE,yes
+ld_edge_counter,edge_counter.ld,traffic,LD-textual,authored,authored micro,candidate,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.034,0.052,-,yes
+ld_rtrig_edge,rtrig_edge.ld,traffic,LD-textual,authored,authored micro,validated,expert,easy,SAFE,unknown,unknown,pass,correct,SAFE,pass,0.325,0.052,SAFE,yes
 ped_conflict_interlock_ds,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.036,0.055,SAFE,no
-ped_conflict_interlock_ds,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.027,0.044,-,no
-ped_conflict_interlock_gm,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.04,0.053,SAFE,no
-ped_conflict_interlock_gm,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.044,VIOLATION,no
-rr_crossing_preempt,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.032,0.054,SAFE,no
-rr_crossing_preempt,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.047,VIOLATION,no
-train_preempt_lockout_ds,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.042,0.054,SAFE,no
-train_preempt_lockout_ds,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.046,VIOLATION,no
-train_preempt_lockout_gm,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.031,0.053,SAFE,no
-train_preempt_lockout_gm,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.044,VIOLATION,no
-backwash_valve_lockout,clean.ld,water_treatment,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.054,SAFE,no
-backwash_valve_lockout,bomb.ld,water_treatment,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.228,0.039,VIOLATION,no
-chemical_feed_fault_lockout,clean.ld,water_treatment,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.031,0.052,SAFE,yes
-chemical_feed_fault_lockout,bomb.ld,water_treatment,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.047,-,yes
-chlorine_flow_interlock,clean.ld,water_treatment,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.052,SAFE,no
-chlorine_flow_interlock,bomb.ld,water_treatment,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.046,VIOLATION,no
+ped_conflict_interlock_ds,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.027,0.046,-,no
+ped_conflict_interlock_gm,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.04,0.054,SAFE,no
+ped_conflict_interlock_gm,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.028,0.045,VIOLATION,no
+rr_crossing_preempt,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.032,0.05,SAFE,no
+rr_crossing_preempt,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.032,0.042,VIOLATION,no
+train_preempt_lockout_ds,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.042,0.05,SAFE,no
+train_preempt_lockout_ds,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.045,VIOLATION,no
+train_preempt_lockout_gm,clean.ld,traffic,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.031,0.052,SAFE,no
+train_preempt_lockout_gm,bomb.ld,traffic,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.031,0.043,VIOLATION,no
+backwash_valve_lockout,clean.ld,water_treatment,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.038,0.053,SAFE,no
+backwash_valve_lockout,bomb.ld,water_treatment,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,unknown,unknown,pass,correct,VIOLATION,pass,0.228,0.044,VIOLATION,no
+chemical_feed_fault_lockout,clean.ld,water_treatment,LD-textual,authored,authored domain,validated,expert,easy,SAFE,wrong,VIOLATION,pass,correct,SAFE,pass,0.031,0.054,SAFE,yes
+chemical_feed_fault_lockout,bomb.ld,water_treatment,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.029,0.044,-,yes
+chlorine_flow_interlock,clean.ld,water_treatment,LD-textual,authored,authored domain,validated,expert,easy,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.039,0.05,SAFE,no
+chlorine_flow_interlock,bomb.ld,water_treatment,LD-textual,authored,authored domain,validated,fault-injection,easy,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.03,0.043,VIOLATION,no
 dosing_pump_lockout,clean.st,water_treatment,ST,authored,authored domain,candidate,expert,medium,SAFE,-,-,-,-,-,-,,,-,yes
 dosing_pump_lockout,bomb.st,water_treatment,ST,authored,authored domain,candidate,fault-injection,medium,VIOLATION,-,-,-,-,-,-,,,-,yes
 g_pump_alternation,program.xml,water_treatment,LD-graphical,authored,authored domain,validated,cross-tool-consensus,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.037,0.056,SAFE,yes
-g_pump_alternation,stuck_duty.xml,water_treatment,LD-graphical,authored,authored domain,validated,fault-injection,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.033,0.051,SAFE,yes
-g_tank_assignment,legitimate_lassignment.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.033,0.045,-,yes
-g_tank_assignment,malicious_massignment.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.067,0.079,-,yes
-g_tank_start_eq,legitimate_lstart_eq.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.034,0.05,-,yes
-g_tank_start_eq,malicious_mstart_eq.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.061,0.079,-,yes
-g_tank_start_le,legitimate_lstart_le.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.033,0.047,-,yes
-g_tank_start_le,malicious_mstart_le.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.058,0.075,-,yes
-g_tank_stop_ge,legitimate_lstop_ge.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.034,0.045,-,yes
-g_tank_stop_ge,malicious_mstop_ge.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.061,0.076,-,yes
+g_pump_alternation,stuck_duty.xml,water_treatment,LD-graphical,authored,authored domain,validated,fault-injection,medium,SAFE,correct,SAFE,pass,correct,SAFE,pass,0.033,0.045,SAFE,yes
+g_tank_assignment,legitimate_lassignment.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.033,0.046,-,yes
+g_tank_assignment,malicious_massignment.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.067,0.078,-,yes
+g_tank_start_eq,legitimate_lstart_eq.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.034,0.049,-,yes
+g_tank_start_eq,malicious_mstart_eq.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.061,0.074,-,yes
+g_tank_start_le,legitimate_lstart_le.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.033,0.046,-,yes
+g_tank_start_le,malicious_mstart_le.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.058,0.072,-,yes
+g_tank_stop_ge,legitimate_lstop_ge.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,h1_violated,SAFE,pass,error,error,fail,0.034,0.041,-,yes
+g_tank_stop_ge,malicious_mstop_ge.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,error,error,fail,0.061,0.04,-,yes
 g_tank_sub_function,legitimate_lsub_function.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,correct,SAFE,pass,error,error,fail,0.033,0.042,-,yes
 g_tank_sub_function,malicious_msub_function.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.058,0.074,-,yes
-g_tank_substitution_coil,legitimate_lsubstitution_coil.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.032,0.048,-,yes
-g_tank_substitution_coil,malicious_msubstitution_coil.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.059,0.071,-,yes
+g_tank_substitution_coil,legitimate_lsubstitution_coil.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.032,0.047,-,yes
+g_tank_substitution_coil,malicious_msubstitution_coil.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.059,0.072,-,yes
 g_tank_value_filtering,legitimate_lvalue_filtering.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.029,0.047,-,yes
-g_tank_value_filtering,malicious_mvalue_filtering.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.057,0.076,-,yes
-g_tank_valves,legitimate_lvalves_handler.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.028,0.039,-,yes
-g_tank_valves,malicious_mvalves_handler.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.057,0.072,-,yes
+g_tank_value_filtering,malicious_mvalue_filtering.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.057,0.079,-,yes
+g_tank_valves,legitimate_lvalves_handler.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,cross-tool-consensus,medium,SAFE,h1_violated,SAFE,pass,h1_violated,SAFE,pass,0.028,0.047,-,yes
+g_tank_valves,malicious_mvalves_handler.xml,water_treatment,LD-graphical,plc-ld-dataset,third-party,validated,fault-injection,medium,VIOLATION,correct,VIOLATION,pass,correct,VIOLATION,pass,0.057,0.075,-,yes
 sensor_forge,clean.st,water_treatment,ST,authored,authored domain,candidate,cross-tool-consensus,medium,SAFE,-,-,-,-,-,-,,,-,yes
 sensor_forge,bomb.st,water_treatment,ST,authored,authored domain,candidate,fault-injection,medium,VIOLATION,-,-,-,-,-,-,,,-,yes
 st_pump_alternation,pump_alternation.st,water_treatment,ST,authored,authored domain,validated,expert,medium,SAFE,-,-,-,-,-,-,,,-,yes

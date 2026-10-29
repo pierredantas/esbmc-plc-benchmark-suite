@@ -1,0 +1,146 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:36:34Z",
+  "program": "benchmarks/packaging/palletizer_light_curtain_gm/clean.ld",
+  "properties_file": "benchmarks/packaging/palletizer_light_curtain_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(safety_latch && !curtain_ok)",
+      "justification": "The safety latch must drop instantly when the light curtain is breached, regardless of reset button state."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "safety_latch && !curtain_ok",
+      "justification": "Trigger synthesis: a witness recovers the bypassed state where the latch holds despite a curtain breach."
+    }
+  ],
+  "property_variables": [
+    "curtain_ok",
+    "safety_latch"
+  ],
+  "expected_verdict": "SAFE",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN curtain_ok=NONDET(_Bool);",
+          "        ASSIGN reset_btn=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        ASSIGN machine_run=1 && req_run && safety_latch;",
+          "        ASSIGN safety_latch=1 && curtain_ok && safety_latch;",
+          "        ASSIGN safety_latch=1 && curtain_ok && reset_btn;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "curtain_ok": 1,
+          "reset_btn": 1,
+          "req_run": 1,
+          "machine_run": 1,
+          "safety_latch": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/palletizer_light_curtain_gm/clean.ld --inputs curtain_ok,safety_latch > benchmarks/packaging/palletizer_light_curtain_gm/clean__xml.ld\nesbmc84_mem.sh benchmarks/packaging/palletizer_light_curtain_gm/clean__xml.ld --ld-props benchmarks/packaging/palletizer_light_curtain_gm/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.038,
+      "counterexample": null,
+      "h1": {
+        "verdict": "no arithmetic",
+        "command": null
+      }
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 17",
+          "        ASSIGN curtain_ok=NONDET(_Bool);",
+          "        ASSIGN reset_btn=NONDET(_Bool);",
+          "        ASSIGN req_run=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf3=0;",
+          "     2: IF !(1 && curtain_ok) THEN GOTO 3",
+          "        ASSIGN pf3=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf4=0;",
+          "     4: IF !(1 && pf3 && safety_latch) THEN GOTO 5",
+          "        ASSIGN pf4=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN pf5=0;",
+          "     6: IF !(1 && curtain_ok) THEN GOTO 7",
+          "        ASSIGN pf5=1;",
+          "     7: IF !1 THEN GOTO 8",
+          "        ASSIGN pf6=0;",
+          "     8: IF !(1 && pf5 && reset_btn) THEN GOTO 9",
+          "        ASSIGN pf6=1;",
+          "     9: IF !1 THEN GOTO 10",
+          "        ASSIGN safety_latch__pf0=0;",
+          "    10: IF !(1 && pf4) THEN GOTO 11",
+          "        ASSIGN safety_latch__pf0=1;",
+          "    11: IF !(1 && pf6) THEN GOTO 12",
+          "        ASSIGN safety_latch__pf0=1;",
+          "    12: ASSIGN safety_latch=1 && safety_latch__pf0;",
+          "        IF !1 THEN GOTO 13",
+          "        ASSIGN pf8=0;",
+          "    13: IF !(1 && req_run) THEN GOTO 14",
+          "        ASSIGN pf8=1;",
+          "    14: IF !1 THEN GOTO 15",
+          "        ASSIGN pf9=0;",
+          "    15: IF !(1 && pf8 && safety_latch) THEN GOTO 16",
+          "        ASSIGN pf9=1;",
+          "    16: ASSIGN machine_run=1 && pf9;",
+          "        GOTO 1",
+          "    17:"
+        ],
+        "assignment_counts": {
+          "curtain_ok": 1,
+          "reset_btn": 1,
+          "req_run": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "pf5": 2,
+          "pf6": 2,
+          "safety_latch__pf0": 3,
+          "safety_latch": 1,
+          "pf8": 2,
+          "pf9": 2,
+          "machine_run": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/packaging/palletizer_light_curtain_gm/clean.ld --inputs curtain_ok,safety_latch > benchmarks/packaging/palletizer_light_curtain_gm/clean__xml.ld\nesbmc86_mem.sh benchmarks/packaging/palletizer_light_curtain_gm/clean__xml.ld --ld-props benchmarks/packaging/palletizer_light_curtain_gm/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.053,
+      "counterexample": null,
+      "h1": {
+        "verdict": "no arithmetic",
+        "command": null
+      }
+    }
+  }
+}

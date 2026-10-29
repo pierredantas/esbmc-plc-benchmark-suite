@@ -1,0 +1,187 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:35:51Z",
+  "program": "benchmarks/chemical_batch/dual_valve_containment_gm/clean.ld",
+  "properties_file": "benchmarks/chemical_batch/dual_valve_containment_gm/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "mutual_exclusion",
+      "variables": [
+        "feed_v",
+        "vent_v"
+      ],
+      "justification": "Feed and vent valves must never open simultaneously to prevent hazardous chemical pass-through."
+    },
+    {
+      "id": "P2",
+      "kind": "reachability",
+      "expression": "feed_v && vent_v",
+      "justification": "Trigger synthesis: a witness recovers the simultaneous request condition that breaches containment."
+    }
+  ],
+  "property_variables": [
+    "feed_v",
+    "vent_v"
+  ],
+  "expected_verdict": "SAFE",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 2",
+          "        ASSIGN req_feed=NONDET(_Bool);",
+          "        ASSIGN stop_cmd=NONDET(_Bool);",
+          "        ASSIGN req_vent=NONDET(_Bool);",
+          "        ASSIGN vent_v=1 && req_vent && !stop_cmd && !feed_v;",
+          "        ASSIGN vent_v=1 && vent_v && !stop_cmd && !feed_v;",
+          "        ASSIGN feed_v=1 && req_feed && !stop_cmd && !vent_v;",
+          "        ASSIGN feed_v=1 && feed_v && !stop_cmd && !vent_v;",
+          "        GOTO 1",
+          "     2:"
+        ],
+        "assignment_counts": {
+          "req_feed": 1,
+          "stop_cmd": 1,
+          "req_vent": 1,
+          "vent_v": 2,
+          "feed_v": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/chemical_batch/dual_valve_containment_gm/clean.ld --inputs feed_v,vent_v > benchmarks/chemical_batch/dual_valve_containment_gm/clean__xml.ld\nesbmc84_mem.sh benchmarks/chemical_batch/dual_valve_containment_gm/clean__xml.ld --ld-props benchmarks/chemical_batch/dual_valve_containment_gm/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.04,
+      "counterexample": null,
+      "h1": {
+        "verdict": "no arithmetic",
+        "command": null
+      }
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 32",
+          "        ASSIGN req_feed=NONDET(_Bool);",
+          "        ASSIGN stop_cmd=NONDET(_Bool);",
+          "        ASSIGN req_vent=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf3=0;",
+          "     2: IF !(1 && req_feed) THEN GOTO 3",
+          "        ASSIGN pf3=1;",
+          "     3: IF !1 THEN GOTO 4",
+          "        ASSIGN pf4=0;",
+          "     4: IF !(1 && pf3 && !stop_cmd) THEN GOTO 5",
+          "        ASSIGN pf4=1;",
+          "     5: IF !1 THEN GOTO 6",
+          "        ASSIGN pf5=0;",
+          "     6: IF !(1 && pf4 && !vent_v) THEN GOTO 7",
+          "        ASSIGN pf5=1;",
+          "     7: IF !1 THEN GOTO 8",
+          "        ASSIGN pf6=0;",
+          "     8: IF !(1 && feed_v) THEN GOTO 9",
+          "        ASSIGN pf6=1;",
+          "     9: IF !1 THEN GOTO 10",
+          "        ASSIGN pf7=0;",
+          "    10: IF !(1 && pf6 && !stop_cmd) THEN GOTO 11",
+          "        ASSIGN pf7=1;",
+          "    11: IF !1 THEN GOTO 12",
+          "        ASSIGN pf8=0;",
+          "    12: IF !(1 && pf7 && !vent_v) THEN GOTO 13",
+          "        ASSIGN pf8=1;",
+          "    13: IF !1 THEN GOTO 14",
+          "        ASSIGN feed_v__pf0=0;",
+          "    14: IF !(1 && pf5) THEN GOTO 15",
+          "        ASSIGN feed_v__pf0=1;",
+          "    15: IF !(1 && pf8) THEN GOTO 16",
+          "        ASSIGN feed_v__pf0=1;",
+          "    16: ASSIGN feed_v=1 && feed_v__pf0;",
+          "        IF !1 THEN GOTO 17",
+          "        ASSIGN pf10=0;",
+          "    17: IF !(1 && req_vent) THEN GOTO 18",
+          "        ASSIGN pf10=1;",
+          "    18: IF !1 THEN GOTO 19",
+          "        ASSIGN pf11=0;",
+          "    19: IF !(1 && pf10 && !stop_cmd) THEN GOTO 20",
+          "        ASSIGN pf11=1;",
+          "    20: IF !1 THEN GOTO 21",
+          "        ASSIGN pf12=0;",
+          "    21: IF !(1 && pf11 && !feed_v) THEN GOTO 22",
+          "        ASSIGN pf12=1;",
+          "    22: IF !1 THEN GOTO 23",
+          "        ASSIGN pf13=0;",
+          "    23: IF !(1 && vent_v) THEN GOTO 24",
+          "        ASSIGN pf13=1;",
+          "    24: IF !1 THEN GOTO 25",
+          "        ASSIGN pf14=0;",
+          "    25: IF !(1 && pf13 && !stop_cmd) THEN GOTO 26",
+          "        ASSIGN pf14=1;",
+          "    26: IF !1 THEN GOTO 27",
+          "        ASSIGN pf15=0;",
+          "    27: IF !(1 && pf14 && !feed_v) THEN GOTO 28",
+          "        ASSIGN pf15=1;",
+          "    28: IF !1 THEN GOTO 29",
+          "        ASSIGN vent_v__pf1=0;",
+          "    29: IF !(1 && pf12) THEN GOTO 30",
+          "        ASSIGN vent_v__pf1=1;",
+          "    30: IF !(1 && pf15) THEN GOTO 31",
+          "        ASSIGN vent_v__pf1=1;",
+          "    31: ASSIGN vent_v=1 && vent_v__pf1;",
+          "        GOTO 1",
+          "    32:"
+        ],
+        "assignment_counts": {
+          "req_feed": 1,
+          "stop_cmd": 1,
+          "req_vent": 1,
+          "pf3": 2,
+          "pf4": 2,
+          "pf5": 2,
+          "pf6": 2,
+          "pf7": 2,
+          "pf8": 2,
+          "feed_v__pf0": 3,
+          "feed_v": 1,
+          "pf10": 2,
+          "pf11": 2,
+          "pf12": 2,
+          "pf13": 2,
+          "pf14": 2,
+          "pf15": 2,
+          "vent_v__pf1": 3,
+          "vent_v": 1
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/chemical_batch/dual_valve_containment_gm/clean.ld --inputs feed_v,vent_v > benchmarks/chemical_batch/dual_valve_containment_gm/clean__xml.ld\nesbmc86_mem.sh benchmarks/chemical_batch/dual_valve_containment_gm/clean__xml.ld --ld-props benchmarks/chemical_batch/dual_valve_containment_gm/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.054,
+      "counterexample": null,
+      "h1": {
+        "verdict": "no arithmetic",
+        "command": null
+      }
+    }
+  }
+}

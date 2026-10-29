@@ -1,6 +1,6 @@
 Evidence for the Scientific Reports revision (2026-10-28).
 Suite: esbmc-plc-benchmark-suite local tree at tag v1.2.0 (HEAD 6d1e3c3), 175 benchmarks, 302 variants.
-ESBMC v8.4.0 (released) and ESBMC 8.5.0 development build (branch fix/ld-external-writes, commit b3afea3935), ladder route,
+ESBMC v8.4.0 and ESBMC v8.6.0 (both released; 8.6.0 compiled from tag v8.6, commit 5836d7c4, with Z3 4.13.3), ladder route,
   record_all.py --timeout 120, peak memory via /usr/bin/time -l wrapper. Beremiz/MatIEC route not run (not installed).
 NuSMV 2.7.1 built from source (arm64). xml2smv.py: independent PLCopen XML to SMV translator (sequential scan order).
 evidence.py builds variants_302.csv (one row per variant). translation_check.tsv: 57 graphical variants, truth-table
@@ -12,3 +12,10 @@ evidence.py builds variants_302.csv (one row per variant). translation_check.tsv
 used in main.tex and response-to-reviewers.tex (output: core_numbers.json). public_sample_size.py, audit_semantics.py,
 structural_classes.json, provenance_class.json and plcverif_verdicts_208.json back the other claims.
 The suite repository itself still holds the 58 until the release is cut; remove them before tagging.
+
+2026-10-29 update (release v1.3.1): the 8.5.0 development-build columns are replaced by released ESBMC 8.6.0 (columns s86, v86, g86,
+t86 in variants_302.csv; core_numbers.json regenerated). esbmc86/ holds the build script, five-run timing and memory scripts, the
+BMC-depth and refusal extractors, and the per-variant records of run 1 for both builds (esbmc86/records/). 8.4.0 reproduces the
+earlier 8.4.0 results on all 125 attempted variants. 8.6.0 agrees on 101 variants, returns no unknown result and no disagreement,
+and refuses 17 variants with UnsupportedConstruct, among them three that use EQ or GE comparison blocks. The scripts keep the
+absolute paths of the machine that produced them.

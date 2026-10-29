@@ -1,0 +1,130 @@
+{
+  "schema_version": "0.3",
+  "recorded_at": "2026-10-29T22:36:03Z",
+  "program": "benchmarks/elevator/ld_timer_latch_mix/timer_latch_mix.ld",
+  "properties_file": "benchmarks/elevator/ld_timer_latch_mix/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!(Alarm && Ack)",
+      "justification": "Acknowledge is dominant: the latched alarm and Ack never hold together."
+    }
+  ],
+  "property_variables": [
+    "Ack",
+    "Alarm"
+  ],
+  "expected_verdict": "SAFE",
+  "user_function_blocks": false,
+  "runs": {
+    "v8.4": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc84_mem.sh",
+        "raw": "ESBMC version 8.4.0 64-bit aarch64 macos",
+        "version": "8.4.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 4",
+          "        ASSIGN Trig=NONDET(_Bool);",
+          "        ASSIGN Ack=NONDET(_Bool);",
+          "        IF !(1 && Ack) THEN GOTO 2",
+          "        ASSIGN Alarm=0;",
+          "     2: IF !(1 && T0) THEN GOTO 3",
+          "        ASSIGN Alarm=1;",
+          "     3: GOTO 1",
+          "     4:"
+        ],
+        "assignment_counts": {
+          "Trig": 1,
+          "Ack": 1,
+          "Alarm": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/elevator/ld_timer_latch_mix/timer_latch_mix.ld --inputs Ack,Alarm > benchmarks/elevator/ld_timer_latch_mix/timer_latch_mix__xml.ld\nesbmc84_mem.sh benchmarks/elevator/ld_timer_latch_mix/timer_latch_mix__xml.ld --ld-props benchmarks/elevator/ld_timer_latch_mix/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.034,
+      "counterexample": null,
+      "h1": {
+        "verdict": "no arithmetic",
+        "command": null
+      }
+    },
+    "v8.6": {
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/run86/esbmc86_mem.sh",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "version": "8.6.0",
+        "commit": null,
+        "platform": "aarch64 macos"
+      },
+      "status": "correct",
+      "encoding": {
+        "scan_body": [
+          "     1: IF !1 THEN GOTO 13",
+          "        ASSIGN Trig=NONDET(_Bool);",
+          "        ASSIGN Ack=NONDET(_Bool);",
+          "        IF !1 THEN GOTO 2",
+          "        ASSIGN pf3=0;",
+          "     2: IF !(1 && Trig) THEN GOTO 3",
+          "        ASSIGN pf3=1;",
+          "     3: ASSIGN T0_FB__IN=1 && pf3;",
+          "        IF !(T0_FB__IN && __timer_prev_T0_FB) THEN GOTO 5",
+          "        IF !(T0_FB__ET < T0_FB__PT) THEN GOTO 4",
+          "        ASSIGN T0_FB__ET=T0_FB__ET + 1;",
+          "     4: GOTO 6",
+          "     5: ASSIGN T0_FB__ET=0;",
+          "     6: ASSIGN T0_FB__Q=T0_FB__IN && __timer_prev_T0_FB && T0_FB__ET >= T0_FB__PT;",
+          "        ASSIGN __timer_prev_T0_FB=T0_FB__IN;",
+          "        ASSIGN T0=1 && T0_FB__Q;",
+          "        IF !1 THEN GOTO 7",
+          "        ASSIGN pf7=0;",
+          "     7: IF !(1 && T0) THEN GOTO 8",
+          "        ASSIGN pf7=1;",
+          "     8: IF !(1 && pf7) THEN GOTO 9",
+          "        ASSIGN Alarm=1;",
+          "     9: IF !1 THEN GOTO 10",
+          "        ASSIGN pf9=0;",
+          "    10: IF !(1 && Ack) THEN GOTO 11",
+          "        ASSIGN pf9=1;",
+          "    11: IF !(1 && pf9) THEN GOTO 12",
+          "        ASSIGN Alarm=0;",
+          "    12: GOTO 1",
+          "    13:"
+        ],
+        "assignment_counts": {
+          "Trig": 1,
+          "Ack": 1,
+          "pf3": 2,
+          "T0_FB__IN": 1,
+          "T0_FB__ET": 2,
+          "T0_FB__Q": 1,
+          "__timer_prev_T0_FB": 1,
+          "T0": 1,
+          "pf7": 2,
+          "Alarm": 2,
+          "pf9": 2
+        },
+        "not_driven_by_body": [],
+        "gate": "pass"
+      },
+      "command": "python3 -m tools.ld_text_to_xml benchmarks/elevator/ld_timer_latch_mix/timer_latch_mix.ld --inputs Ack,Alarm > benchmarks/elevator/ld_timer_latch_mix/timer_latch_mix__xml.ld\nesbmc86_mem.sh benchmarks/elevator/ld_timer_latch_mix/timer_latch_mix__xml.ld --ld-props benchmarks/elevator/ld_timer_latch_mix/props.yaml --k-induction --ld-scan-watchdog --ld-scan-budget 8 --ld-sound-mode --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the inductive step (k = 2)",
+      "cpu_time_s": 0.051,
+      "counterexample": null,
+      "h1": {
+        "verdict": "no overflow to depth 20",
+        "command": "python3 -m tools.ld_text_to_xml benchmarks/elevator/ld_timer_latch_mix/timer_latch_mix.ld --inputs Ack,Alarm > benchmarks/elevator/ld_timer_latch_mix/timer_latch_mix__xml.ld\nesbmc86_mem.sh benchmarks/elevator/ld_timer_latch_mix/timer_latch_mix__xml.ld --unwind 20 --no-unwinding-assertions --overflow-check --ld-sound-mode",
+        "counterexample": null
+      }
+    }
+  }
+}
