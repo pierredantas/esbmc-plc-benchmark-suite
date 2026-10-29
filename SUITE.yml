@@ -1,6 +1,6 @@
 format_version: "0.1"
 name: "IEC 61131-3 Formal Verification Benchmark Suite"
-version: "1.1.1"
+version: "1.3.0"
 license: CC-BY-4.0                    # suite-level; per-program license in each benchmark.yml
 zenodo_doi: "TBD"
 maintainers:
@@ -20,7 +20,7 @@ domains:
   - power_substation
 # Targets, not a census. The portal's benchmarks catalog counts what the tree actually
 # holds, because a number written here goes stale the next time a program is added.
-# Tree stood at 100 benchmarks as of 2026-09-02, all six domain gates at or above target.
+# Tree stands at 117 benchmarks as of 2026-10-29.
 composition_target:            # reweighted 2026-07-09 to match real ecosystem supply
   LD-textual: 15                # scarce: only the K-LD .ld DSL exists; tree holds 15
   LD-graphical: 25             # abundant: PLCopen XML (PLC-LD-dataset, PPU); tree holds 53

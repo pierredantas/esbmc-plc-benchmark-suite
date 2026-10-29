@@ -1,12 +1,11 @@
 cff-version: 1.2.0
 title: >-
-  A Benchmark Suite and Ground-Truth Methodology for Formal
-  Verification of IEC 61131-3 Ladder Diagram Programs
+  A Benchmark Suite with Semantics-Qualified Expected Verdicts for Formal Verification of IEC 61131-3 Programs
 message: >-
   If you use this benchmark suite, please cite both the
   accompanying paper and this artifact.
 type: dataset
-version: 1.2.0
+version: 1.3.0
 license: CC-BY-4.0
 doi: 10.5281/zenodo.21642385
 repository-code: https://github.com/pierredantas/esbmc-plc-benchmark-suite
@@ -14,6 +13,9 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.21642385
     description: Version-independent DOI, always resolving to the latest release
+  - type: doi
+    value: 10.5281/zenodo.23447432
+    description: DOI of the archived v1.2.0 release (also holds 58 language-model benchmarks removed in v1.3.0)
   - type: doi
     value: 10.5281/zenodo.22257881
     description: DOI of the archived v1.1.1 release
@@ -24,16 +26,15 @@ identifiers:
     value: 10.5281/zenodo.21642386
     description: DOI of the archived v1.0.1 release
 abstract: >-
-  A suite of 100 IEC 61131-3 benchmarks over 152 program variants
-  (15 textual Ladder Diagram, 88 graphical Ladder Diagram, 34
+  A suite of 117 IEC 61131-3 benchmarks over 186 program variants
+  (25 textual Ladder Diagram, 88 graphical Ladder Diagram, 58
   Structured Text, 7 Function Block Diagram, 5 Sequential Function
   Chart, 3 Instruction List) across ten industrial domains, each
-  paired with a formal safety property, a machine-checkable
-  expected verdict, a recorded ground-truth method, and a
-  triggering witness for every violation. Packaged in an
-  SV-COMP-compatible layout with a JSON Schema, validator, tool
-  adapters, a one-command re-check harness, and a companion
-  teaching portal of worked lessons built from the recorded runs.
+  paired with a formal safety property, an expected verdict
+  qualified by the semantics it assumes, a recorded derivation
+  method, and a triggering witness for every violation. Packaged in
+  an SV-COMP-compatible layout with a JSON Schema, validator, tool
+  adapters, and a one-command re-check harness.
 authors:
   - given-names: Pierre
     family-names: Dantas
