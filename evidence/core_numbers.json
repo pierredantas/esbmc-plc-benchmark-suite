@@ -1,0 +1,418 @@
+{
+ "bench": 117,
+ "var": 186,
+ "safe": 123,
+ "viol": 63,
+ "lang_bench": {
+  "LD-textual": 20,
+  "LD-graphical": 53,
+  "ST": 33,
+  "IL": 3,
+  "FBD": 5,
+  "SFC": 3
+ },
+ "lang_var": {
+  "ST": 58,
+  "LD-graphical": 88,
+  "LD-textual": 25,
+  "FBD": 7,
+  "SFC": 5,
+  "IL": 3
+ },
+ "domain": {
+  "traffic": 5,
+  "packaging": 9,
+  "motor_control": 16,
+  "hvac": 9,
+  "manufacturing": 23,
+  "building_automation": 10,
+  "chemical_batch": 9,
+  "power_substation": 8,
+  "elevator": 7,
+  "water_treatment": 21
+ },
+ "diff": {
+  "easy": 69,
+  "medium": 42,
+  "hard": 6
+ },
+ "variants_per_bench": {
+  "1": 51,
+  "2": 65,
+  "5": 1
+ },
+ "twins": 31,
+ "validated": 65,
+ "candidate": 52,
+ "class": {
+  "third-party": {
+   "bench": 23,
+   "var": 37,
+   "validated": 9,
+   "coils": [
+    1,
+    0,
+    34
+   ],
+   "cont": [
+    4,
+    0,
+    8
+   ]
+  },
+  "authored micro": {
+   "bench": 27,
+   "var": 27,
+   "validated": 15,
+   "coils": [
+    1,
+    1,
+    3
+   ],
+   "cont": [
+    3,
+    1,
+    6
+   ]
+  },
+  "authored domain": {
+   "bench": 67,
+   "var": 122,
+   "validated": 41,
+   "coils": [
+    3,
+    0,
+    13
+   ],
+   "cont": [
+    0,
+    0,
+    11
+   ]
+  }
+ },
+ "origin_sources": {
+  "authored": 93,
+  "beremiz": 5,
+  "plc-ld-dataset": 10,
+  "lessons-electric-circuits": 2,
+  "ppu": 1,
+  "swat": 6
+ },
+ "method": {
+  "expert": {
+   "all": 95,
+   "validated": 49
+  },
+  "fault-injection": {
+   "all": 65,
+   "validated": 40
+  },
+  "cross-tool-consensus": {
+   "all": 26,
+   "validated": 16
+  }
+ },
+ "props": {
+  "invariant": 98,
+  "mutual_exclusion": 16,
+  "reachability": 21,
+  "termination": 14
+ },
+ "props_total": 149,
+ "ld": {
+  "n": 73,
+  "coils_med": 2,
+  "coils_iqr": [
+   1.0,
+   2.0
+  ],
+  "cont_med": 4,
+  "cont_iqr": [
+   3.0,
+   5.5
+  ],
+  "coils_max": 4,
+  "cont_max": 11,
+  "el_med": 6,
+  "el_iqr": [
+   4.0,
+   9.0
+  ],
+  "el_max": 15,
+  "ge10": 0.1506849315068493,
+  "ge10n": 11,
+  "ge30": 0
+ },
+ "gr_with_block": [
+  19,
+  53
+ ],
+ "st_swat_assign": [
+  32,
+  33,
+  32,
+  34,
+  33,
+  32
+ ],
+ "f84": {
+  "att": 125,
+  "notatt": 61,
+  "gatefail": 19,
+  "gate": 106,
+  "unk": 5,
+  "wrong": 8,
+  "h1": 9,
+  "agree": 84,
+  "gf_match": 12
+ },
+ "f85": {
+  "att": 125,
+  "notatt": 61,
+  "gatefail": 14,
+  "gate": 111,
+  "unk": 0,
+  "wrong": 0,
+  "h1": 9,
+  "agree": 102,
+  "gf_match": 0
+ },
+ "conf": {
+  "a4_nusmv": 62,
+  "a4_either": 73,
+  "a5_nusmv": 71,
+  "a5_either": 91
+ },
+ "nusmv": 71,
+ "nusmv_split": {
+  "SAFE": 52,
+  "VIOLATION": 19
+ },
+ "plcverif": 91,
+ "either": 91,
+ "plcverif_split": {
+  "SAFE": 66,
+  "VIOLATION": 25
+ },
+ "bench_conf_either": 60,
+ "bench_conf_nusmv": 40,
+ "rows": {
+  "lang:FBD": {
+   "n": 7,
+   "tried": 7,
+   "m84": 0,
+   "m85": 0,
+   "nusmv": 0,
+   "plcverif": 0,
+   "h1": 0
+  },
+  "lang:IL": {
+   "n": 3,
+   "tried": 0,
+   "m84": 0,
+   "m85": 0,
+   "nusmv": 0,
+   "plcverif": 0,
+   "h1": 0
+  },
+  "lang:LD-graphical": {
+   "n": 88,
+   "tried": 88,
+   "m84": 69,
+   "m85": 77,
+   "nusmv": 59,
+   "plcverif": 66,
+   "h1": 9
+  },
+  "lang:LD-textual": {
+   "n": 25,
+   "tried": 25,
+   "m84": 15,
+   "m85": 25,
+   "nusmv": 12,
+   "plcverif": 25,
+   "h1": 0
+  },
+  "lang:SFC": {
+   "n": 5,
+   "tried": 5,
+   "m84": 0,
+   "m85": 0,
+   "nusmv": 0,
+   "plcverif": 0,
+   "h1": 0
+  },
+  "lang:ST": {
+   "n": 58,
+   "tried": 0,
+   "m84": 0,
+   "m85": 0,
+   "nusmv": 0,
+   "plcverif": 0,
+   "h1": 0
+  },
+  "cls:authored domain": {
+   "n": 122,
+   "tried": 75,
+   "m84": 58,
+   "m85": 65,
+   "nusmv": 57,
+   "plcverif": 62,
+   "h1": 0
+  },
+  "cls:authored micro": {
+   "n": 27,
+   "tried": 27,
+   "m84": 15,
+   "m85": 27,
+   "nusmv": 12,
+   "plcverif": 27,
+   "h1": 0
+  },
+  "cls:third-party": {
+   "n": 37,
+   "tried": 23,
+   "m84": 11,
+   "m85": 10,
+   "nusmv": 2,
+   "plcverif": 2,
+   "h1": 9
+  },
+  "status:candidate": {
+   "n": 81,
+   "tried": 28,
+   "m84": 6,
+   "m85": 13,
+   "nusmv": 1,
+   "plcverif": 13,
+   "h1": 2
+  },
+  "status:validated": {
+   "n": 105,
+   "tried": 97,
+   "m84": 78,
+   "m85": 89,
+   "nusmv": 70,
+   "plcverif": 78,
+   "h1": 7
+  },
+  "ALL": {
+   "n": 186,
+   "tried": 125,
+   "m84": 84,
+   "m85": 102,
+   "nusmv": 71,
+   "plcverif": 91,
+   "h1": 9
+  }
+ },
+ "uncovered": {
+  "total": 95,
+  "by_lang": {
+   "ST": 58,
+   "FBD": 7,
+   "SFC": 5,
+   "LD-graphical": 22,
+   "IL": 3
+  }
+ },
+ "wrong84": [
+  [
+   "intrusion_dual_alarm",
+   "clean.ld"
+  ],
+  [
+   "g_tof_hold",
+   "program.xml"
+  ],
+  [
+   "ld_tof_hold",
+   "tof_hold.ld"
+  ],
+  [
+   "purge_fault_lockout",
+   "clean.ld"
+  ],
+  [
+   "ld_latch_basic",
+   "latch_basic.ld"
+  ],
+  [
+   "reject_gate_triple_output",
+   "clean.ld"
+  ],
+  [
+   "protection_lockout_cascade",
+   "clean.ld"
+  ],
+  [
+   "chemical_feed_fault_lockout",
+   "clean.ld"
+  ]
+ ],
+ "unknown84": [
+  [
+   "g_ftrig_edge",
+   "program.xml",
+   "SAFE"
+  ],
+  [
+   "ld_ftrig_edge",
+   "ftrig_edge.ld",
+   "SAFE"
+  ],
+  [
+   "ld_tp_pulse",
+   "tp_pulse.ld",
+   "VIOLATION"
+  ],
+  [
+   "g_rtrig_edge",
+   "program.xml",
+   "SAFE"
+  ],
+  [
+   "ld_rtrig_edge",
+   "rtrig_edge.ld",
+   "SAFE"
+  ]
+ ],
+ "h1_ids": [
+  "g_start_cycle",
+  "g_stop_eq",
+  "g_tank_assignment",
+  "g_tank_start_eq",
+  "g_tank_start_le",
+  "g_tank_stop_ge",
+  "g_tank_substitution_coil",
+  "g_tank_value_filtering",
+  "g_tank_valves"
+ ],
+ "conf_status": {
+  "('candidate', False)": 68,
+  "('validated', True)": 78,
+  "('validated', False)": 27,
+  "('candidate', True)": 13
+ },
+ "sem": {
+  "retained": 56,
+  "timer": 18,
+  "h1": 9,
+  "scope": {
+   "holds under the stated scan order": 89,
+   "semantics-dependent": 28
+  },
+  "sd_validated": 12,
+  "sd_candidate": 16,
+  "hold_candidate": 36
+ },
+ "audit_issues_in_core": 0,
+ "audit_retained": 0,
+ "audit_scope": 0,
+ "feat": {
+  "comparison": 15,
+  "function_block": 15,
+  "multi_pou": 7
+ }
+}
