@@ -1,0 +1,51 @@
+49 variants
+fbd_reactor_2oo3__clean SAFE -> rts-/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/fbd_reactor_2oo3__clean.json
+fbd_reactor_2oo3__bomb VIOLATION -> orts-/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/fbd_reactor_2oo3__bomb.json
+sfc_batch_fill_drain__clean SAFE -> /f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/sfc_batch_fill_drain__clean.json
+sfc_batch_fill_drain__bomb VIOLATION -> -/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/sfc_batch_fill_drain__bomb.json
+sfc_elevator_door__clean SAFE -> ts-/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/sfc_elevator_door__clean.json
+sfc_elevator_door__bomb VIOLATION -> rts-/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/sfc_elevator_door__bomb.json
+fbd_fan_damper__clean SAFE -> ports-/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/fbd_fan_damper__clean.json
+fbd_fan_damper__bomb VIOLATION -> eports-/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/fbd_fan_damper__bomb.json
+fbd_comb_and__program SAFE -> ports-/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/fbd_comb_and__program.json
+fbd_counter_reset__program SAFE -> -/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/fbd_counter_reset__program.json
+g_ppu_evolution_1__evolution_1 SAFE -> RuntimeError: no POU instance struct in the generated header
+g_two_hand_fb__program SAFE -> orts-/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/g_two_hand_fb__program.json
+g_two_hand_fb__type_i SAFE -> ports-/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/g_two_hand_fb__type_i.json
+il_comb_and__comb_and SAFE -> ports-/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/il_comb_and__comb_and.json
+il_counter_reset__counter_reset SAFE -> 04d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/il_counter_reset__counter_reset.json
+sfc_counter_reset__program SAFE -> -/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/sfc_counter_reset__program.json
+fbd_seal_in__program SAFE -> eports-/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/fbd_seal_in__program.json
+g_start_cycle__lstart_cycle SAFE -> /f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/g_start_cycle__lstart_cycle.json
+g_stop_eq__lstop_eq SAFE -> Reports-/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/g_stop_eq__lstop_eq.json
+il_seal_in__seal_in SAFE -> Reports-/f6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/il_seal_in__seal_in.json
+g_traffic_light_pedestrian__plc SAFE -> 7 error(s) found. Bailing out!
+g_tank_assignment__legitimate_lassignment SAFE -> -466a-aa68-dc95e168034c/scratchpad/viac_out/g_tank_assignment__legitimate_lassignment.json
+g_tank_assignment__malicious_massignment VIOLATION -> d-466a-aa68-dc95e168034c/scratchpad/viac_out/g_tank_assignment__malicious_massignment.json
+g_tank_start_eq__legitimate_lstart_eq SAFE -> 0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/g_tank_start_eq__legitimate_lstart_eq.json
+g_tank_start_eq__malicious_mstart_eq VIOLATION -> -0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/g_tank_start_eq__malicious_mstart_eq.json
+g_tank_start_le__legitimate_lstart_le SAFE -> 0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/g_tank_start_le__legitimate_lstart_le.json
+g_tank_start_le__malicious_mstart_le VIOLATION -> -0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/g_tank_start_le__malicious_mstart_le.json
+g_tank_stop_ge__legitimate_lstop_ge SAFE -> d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/g_tank_stop_ge__legitimate_lstop_ge.json
+g_tank_stop_ge__malicious_mstop_ge VIOLATION -> 7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/g_tank_stop_ge__malicious_mstop_ge.json
+g_tank_sub_function__legitimate_lsub_function SAFE -> a-aa68-dc95e168034c/scratchpad/viac_out/g_tank_sub_function__legitimate_lsub_function.json
+g_tank_sub_function__malicious_msub_function VIOLATION -> 6a-aa68-dc95e168034c/scratchpad/viac_out/g_tank_sub_function__malicious_msub_function.json
+g_tank_substitution_coil__legitimate_lsubstitution_coil SAFE -> 5e168034c/scratchpad/viac_out/g_tank_substitution_coil__legitimate_lsubstitution_coil.json
+g_tank_substitution_coil__malicious_msubstitution_coil VIOLATION -> 95e168034c/scratchpad/viac_out/g_tank_substitution_coil__malicious_msubstitution_coil.json
+g_tank_value_filtering__legitimate_lvalue_filtering SAFE -> -dc95e168034c/scratchpad/viac_out/g_tank_value_filtering__legitimate_lvalue_filtering.json
+g_tank_value_filtering__malicious_mvalue_filtering VIOLATION -> 8-dc95e168034c/scratchpad/viac_out/g_tank_value_filtering__malicious_mvalue_filtering.json
+g_tank_valves__legitimate_lvalves_handler SAFE -> -466a-aa68-dc95e168034c/scratchpad/viac_out/g_tank_valves__legitimate_lvalves_handler.json
+g_tank_valves__malicious_mvalves_handler VIOLATION -> d-466a-aa68-dc95e168034c/scratchpad/viac_out/g_tank_valves__malicious_mvalves_handler.json
+st_swat_eq1__sleg_EQ1_0 SAFE -> 6 error(s) found. Bailing out!
+st_swat_eq1__smal_EQ1_0 VIOLATION -> Parsing failed because of too many consecutive syntax errors. Bailing out!
+st_swat_ge1__sleg_GE1_0 SAFE -> 6 error(s) found. Bailing out!
+st_swat_ge1__smal_GE1_0 VIOLATION -> Parsing failed because of too many consecutive syntax errors. Bailing out!
+st_swat_le1__sleg_LE1_0 SAFE -> 6 error(s) found. Bailing out!
+st_swat_le1__smal_LE1_0 VIOLATION -> Parsing failed because of too many consecutive syntax errors. Bailing out!
+st_swat_level1__sleg_level1_0 SAFE -> 6 error(s) found. Bailing out!
+st_swat_level1__smal_level1_0 VIOLATION -> 6 error(s) found. Bailing out!
+st_swat_sub1__sleg_sub1_0 SAFE -> 6 error(s) found. Bailing out!
+st_swat_sub1__smal_sub1_0 VIOLATION -> 6 error(s) found. Bailing out!
+st_swat_timer1__sleg_timer1_0 SAFE -> 6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/st_swat_timer1__sleg_timer1_0.json
+st_swat_timer1__smal_timer1_0 VIOLATION -> 6604d7d-0afd-466a-aa68-dc95e168034c/scratchpad/viac_out/st_swat_timer1__smal_timer1_0.json
+FINISHED

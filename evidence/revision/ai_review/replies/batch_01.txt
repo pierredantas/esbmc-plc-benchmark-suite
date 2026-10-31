@@ -1,0 +1,8 @@
+airlock_pressure_interlock,ST,statement,no,no,no,no,holds-under-stated-order,high,"Outputs are assigned unconditionally across all branches with no internal state or timers."
+breaker_earth_trip_interlock,ST,statement,no,no,no,no,holds-under-stated-order,high,"The output closing_coil is completely assigned in all execution branches purely from current inputs."
+chemical_feed_fault_lockout,LD-textual,rung,yes,no,no,no,holds-under-stated-order,high,"The dose_fault coil uses a self-holding seal-in branch that retains state across scans."
+conveyor_jam_lockout,ST,statement,yes,no,no,no,holds-under-stated-order,high,"Internal variables running and jam_this_run retain their state across scans to implement the lockout."
+counter_scalability,ST,statement,yes,no,yes,no,semantics-dependent,high,"Unbounded integer increment on scan_cnt can overflow and governs the armed condition checked by the property."
+dosing_pump_lockout,ST,statement,yes,no,no,no,holds-under-stated-order,high,"The dry_run_fault flag and dosing_pump read before write retain state across scans."
+elevator_door_motion_interlock,ST,statement,no,no,no,no,holds-under-stated-order,high,"The car_moving output is combinational and unconditionally assigned in all branches without retained state."
+fbd_comb_and,FBD,tool-defined,no,no,no,no,holds-under-stated-order,high,"The program is a purely combinational AND block diagram whose block execution order is tool-defined."

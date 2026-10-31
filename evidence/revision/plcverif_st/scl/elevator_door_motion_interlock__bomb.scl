@@ -1,0 +1,26 @@
+FUNCTION_BLOCK ELEVATOR_CONTROL
+  VAR_INPUT
+    door_open : BOOL;
+    overload_tripped : BOOL;
+    move_request : BOOL;
+  END_VAR
+  VAR
+    car_moving : BOOL;
+  END_VAR
+
+BEGIN
+IF door_open THEN
+    car_moving := FALSE;
+  ELSIF move_request THEN
+    car_moving := TRUE;
+  ELSE
+    car_moving := FALSE;
+  END_IF;
+
+  IF overload_tripped AND NOT move_request THEN
+    car_moving := FALSE;
+  END_IF;
+  //#ASSERT NOT (car_moving AND door_open) : P1
+  //#ASSERT NOT (car_moving AND overload_tripped) : P2
+  //#ASSERT NOT (car_moving AND overload_tripped) : P3
+END_FUNCTION_BLOCK

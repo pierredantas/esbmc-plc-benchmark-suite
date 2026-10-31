@@ -1,0 +1,11 @@
+255 84 {'result': ('VIOLATION', 'correct', 1.538), 'wall': 1.8, 'rss_mib': 319.2}
+255 86 {'result': ('VIOLATION', 'correct', 1.456), 'wall': 1.7, 'rss_mib': 337.2}
+1023 84 {'result': ('VIOLATION', 'correct', 1.728), 'wall': 1.9, 'rss_mib': 353.6}
+1023 86 {'result': ('VIOLATION', 'correct', 1.817), 'wall': 2.0, 'rss_mib': 406.4}
+4095 84 {'result': ('VIOLATION', 'correct', 6.318), 'wall': 6.5, 'rss_mib': 532.2}
+4095 86 {'result': ('VIOLATION', 'correct', 4.71), 'wall': 4.9, 'rss_mib': 564.8}
+16383 84 {'result': ('VIOLATION', 'correct', 63.125), 'wall': 63.3, 'rss_mib': 1145.6}
+16383 86 {'result': ('VIOLATION', 'correct', 20.014), 'wall': 20.2, 'rss_mib': 1209.4}
+32767 84 {'result': ('timeout', 'wrong', 120.08), 'wall': 120.3, 'rss_mib': 536.0}
+32767 86 {'result': ('VIOLATION', 'correct', 63.617), 'wall': 63.8, 'rss_mib': 2094.3}
+FINISHED

@@ -1,0 +1,33 @@
+FUNCTION_BLOCK RELIEF
+  VAR_INPUT
+    over_press : BOOL;
+  END_VAR
+  VAR
+    valve_open : BOOL;
+    reported_open : BOOL;
+    fuse  : INT  := 0;
+    armed : BOOL := FALSE;
+  END_VAR
+
+BEGIN
+fuse := fuse + 1;
+  IF fuse >= 50 THEN
+    armed := TRUE;
+  END_IF;
+
+  IF over_press THEN
+    valve_open := TRUE;
+  ELSE
+    valve_open := FALSE;
+  END_IF;
+
+  
+  IF armed THEN
+    valve_open    := FALSE;   
+    reported_open := TRUE;    
+  ELSE
+    reported_open := valve_open;
+  END_IF;
+  //#ASSERT reported_open = valve_open : P1
+  //#ASSERT NOT (reported_open AND NOT valve_open) : P2
+END_FUNCTION_BLOCK

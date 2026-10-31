@@ -1,0 +1,51 @@
+{
+ "summary": {
+  "benchmarks": 117,
+  "classes": 105,
+  "singleton": 97,
+  "largest": 4,
+  "multi": 8,
+  "multi_members": 20,
+  "cross_classes": 6,
+  "cross_members": 16,
+  "cross_benchmarks_any": 16
+ },
+ "classes": [
+  [
+   "breaker_earth_trip_interlock",
+   "elevator_door_motion_interlock"
+  ],
+  [
+   "chemical_feed_fault_lockout",
+   "purge_fault_lockout"
+  ],
+  [
+   "g_batch_mixer",
+   "g_batch_reactor",
+   "g_elevator_door"
+  ],
+  [
+   "g_building_lighting",
+   "g_busbar_interlock",
+   "g_motor_interlock",
+   "g_traffic_light"
+  ],
+  [
+   "g_conveyor_interlock",
+   "g_substation_breaker",
+   "g_transformer_protect"
+  ],
+  [
+   "g_tank_assignment",
+   "g_tank_valves"
+  ],
+  [
+   "kiln_door_lockout",
+   "reactor_pressure_lockout"
+  ],
+  [
+   "st_swat_level1",
+   "st_swat_sub1"
+  ]
+ ]
+}

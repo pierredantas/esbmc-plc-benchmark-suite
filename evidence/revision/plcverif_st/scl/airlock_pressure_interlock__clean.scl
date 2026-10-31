@@ -1,0 +1,25 @@
+FUNCTION_BLOCK AIRLOCK_CONTROL
+  VAR_INPUT
+    inner_request : BOOL;
+    outer_request : BOOL;
+    cycle_busy : BOOL;
+  END_VAR
+  VAR
+    inner_unlocked : BOOL;
+    outer_unlocked : BOOL;
+  END_VAR
+
+BEGIN
+IF NOT cycle_busy AND inner_request AND NOT outer_request THEN
+    inner_unlocked := TRUE;
+    outer_unlocked := FALSE;
+  ELSIF NOT cycle_busy AND outer_request AND NOT inner_request THEN
+    inner_unlocked := FALSE;
+    outer_unlocked := TRUE;
+  ELSE
+    inner_unlocked := FALSE;
+    outer_unlocked := FALSE;
+  END_IF;
+  //#ASSERT NOT (inner_unlocked AND outer_unlocked) : P1
+  //#ASSERT NOT (inner_unlocked AND outer_unlocked) : P2
+END_FUNCTION_BLOCK

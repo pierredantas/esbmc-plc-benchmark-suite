@@ -1,0 +1,19 @@
+FUNCTION_BLOCK STATION
+  VAR_INPUT
+    LevelHigh : BOOL;
+    LevelLow  : BOOL;
+  END_VAR
+  VAR_OUTPUT
+    Call  : BOOL;
+    Duty  : BOOL;
+    PumpA : BOOL;
+    PumpB : BOOL;
+  END_VAR
+
+BEGIN
+Call := (Call OR LevelHigh) AND NOT LevelLow;
+  Duty := (Duty AND NOT LevelLow) OR (NOT Duty AND LevelLow);
+  PumpA := Call AND NOT Duty;
+  PumpB := Call AND Duty;
+  //#ASSERT NOT (PumpA AND PumpB) : P1
+END_FUNCTION_BLOCK

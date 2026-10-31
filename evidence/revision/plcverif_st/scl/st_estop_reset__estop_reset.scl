@@ -1,0 +1,20 @@
+FUNCTION_BLOCK DRIVE
+  VAR_INPUT
+    EStop : BOOL;
+    Reset : BOOL;
+    Start : BOOL;
+  END_VAR
+  VAR_OUTPUT
+    ResetEdge  : BOOL;
+    Safe       : BOOL;
+    Run        : BOOL;
+    Reset_prev : BOOL;
+  END_VAR
+
+BEGIN
+ResetEdge := Reset_prev AND NOT Reset;
+  Safe := (Safe OR ResetEdge) AND NOT EStop;
+  Run := Safe AND Start AND NOT EStop;
+  Reset_prev := Reset;
+  //#ASSERT NOT (Run AND EStop) : P1
+END_FUNCTION_BLOCK

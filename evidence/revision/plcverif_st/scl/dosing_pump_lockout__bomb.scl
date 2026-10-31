@@ -1,0 +1,31 @@
+FUNCTION_BLOCK DOSING_CONTROL
+  VAR_INPUT
+    level_low : BOOL;
+    start_cmd : BOOL;
+    ack_fault : BOOL;
+  END_VAR
+  VAR
+    dosing_pump : BOOL;
+    dry_run_fault : BOOL := FALSE;
+  END_VAR
+
+BEGIN
+IF dosing_pump AND level_low THEN
+    dry_run_fault := TRUE;
+  ELSIF ack_fault THEN
+    dry_run_fault := FALSE;
+  END_IF;
+
+  IF level_low THEN
+    dosing_pump := FALSE;
+  ELSIF start_cmd THEN
+    dosing_pump := TRUE;
+  ELSIF dry_run_fault THEN
+    dosing_pump := FALSE;
+  ELSE
+    dosing_pump := FALSE;
+  END_IF;
+  //#ASSERT NOT (dosing_pump AND level_low) : P1
+  //#ASSERT NOT (dosing_pump AND dry_run_fault) : P2
+  //#ASSERT NOT (dosing_pump AND dry_run_fault) : P3
+END_FUNCTION_BLOCK

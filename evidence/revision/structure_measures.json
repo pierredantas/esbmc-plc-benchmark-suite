@@ -1,0 +1,513 @@
+[
+ {
+  "id": "chemical_feed_fault_lockout",
+  "lang": "LD-textual",
+  "rungs": 3,
+  "nesting": 2,
+  "coupling": 2
+ },
+ {
+  "id": "g_batch_mixer",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_batch_reactor",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_building_lighting",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_burner_purge",
+  "lang": "LD-graphical",
+  "rungs": 4,
+  "nesting": 2,
+  "coupling": 2
+ },
+ {
+  "id": "g_bus_coupler_changeover",
+  "lang": "LD-graphical",
+  "rungs": 3,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_busbar_interlock",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_comb_and",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_comb_mixed",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 2,
+  "coupling": 0
+ },
+ {
+  "id": "g_comb_or",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_compressor_cycle",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 3,
+  "coupling": 0
+ },
+ {
+  "id": "g_conveyor_interlock",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_ctd_load",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_ctu_saturate",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_dead_bus_close_check",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 2,
+  "coupling": 0
+ },
+ {
+  "id": "g_door_reversal",
+  "lang": "LD-graphical",
+  "rungs": 3,
+  "nesting": 2,
+  "coupling": 2
+ },
+ {
+  "id": "g_elevator_door",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_estop_reset",
+  "lang": "LD-graphical",
+  "rungs": 4,
+  "nesting": 2,
+  "coupling": 3
+ },
+ {
+  "id": "g_failsafe_motor_latch",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 2,
+  "coupling": 0
+ },
+ {
+  "id": "g_ftrig_edge",
+  "lang": "LD-graphical",
+  "rungs": 3,
+  "nesting": 1,
+  "coupling": 2
+ },
+ {
+  "id": "g_fwd_rev_interlock",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 2,
+  "coupling": 2
+ },
+ {
+  "id": "g_guard_lock",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 2,
+  "coupling": 1
+ },
+ {
+  "id": "g_hvac_fan_delay",
+  "lang": "LD-graphical",
+  "rungs": 3,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_independent_hp_trip",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 0,
+  "coupling": 0
+ },
+ {
+  "id": "g_motor_interlock",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_packaging_filler",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_phase_hold_permissive",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 2,
+  "coupling": 1
+ },
+ {
+  "id": "g_ppu_evolution_1",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_pump_alternation",
+  "lang": "LD-graphical",
+  "rungs": 4,
+  "nesting": 2,
+  "coupling": 2
+ },
+ {
+  "id": "g_rtrig_edge",
+  "lang": "LD-graphical",
+  "rungs": 3,
+  "nesting": 1,
+  "coupling": 2
+ },
+ {
+  "id": "g_seal_in",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 2,
+  "coupling": 0
+ },
+ {
+  "id": "g_star_delta",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_start_cycle",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 2,
+  "coupling": 0
+ },
+ {
+  "id": "g_stop_eq",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 2,
+  "coupling": 0
+ },
+ {
+  "id": "g_substation_breaker",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_tank_assignment",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 2,
+  "coupling": 0
+ },
+ {
+  "id": "g_tank_start_eq",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 4,
+  "coupling": 0
+ },
+ {
+  "id": "g_tank_start_le",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 4,
+  "coupling": 0
+ },
+ {
+  "id": "g_tank_stop_ge",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 2,
+  "coupling": 0
+ },
+ {
+  "id": "g_tank_sub_function",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 2,
+  "coupling": 0
+ },
+ {
+  "id": "g_tank_substitution_coil",
+  "lang": "LD-graphical",
+  "rungs": 0,
+  "nesting": 0,
+  "coupling": 0
+ },
+ {
+  "id": "g_tank_value_filtering",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 2,
+  "coupling": 0
+ },
+ {
+  "id": "g_tank_valves",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 2,
+  "coupling": 0
+ },
+ {
+  "id": "g_timer_latch_mix",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_tof_hold",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_ton_single",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_tp_pulse",
+  "lang": "LD-graphical",
+  "rungs": 1,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_traffic_light",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_traffic_light_pedestrian",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_transformer_protect",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "g_trip_lockout_86",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 2,
+  "coupling": 1
+ },
+ {
+  "id": "g_two_hand",
+  "lang": "LD-graphical",
+  "rungs": 3,
+  "nesting": 2,
+  "coupling": 2
+ },
+ {
+  "id": "g_two_hand_fb",
+  "lang": "LD-graphical",
+  "rungs": 0,
+  "nesting": 0,
+  "coupling": 0
+ },
+ {
+  "id": "g_vessel_empty_permissive",
+  "lang": "LD-graphical",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "intrusion_dual_alarm",
+  "lang": "LD-textual",
+  "rungs": 3,
+  "nesting": 2,
+  "coupling": 2
+ },
+ {
+  "id": "ld_comb_and",
+  "lang": "LD-textual",
+  "rungs": 1,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "ld_comb_mixed",
+  "lang": "LD-textual",
+  "rungs": 1,
+  "nesting": 2,
+  "coupling": 0
+ },
+ {
+  "id": "ld_comb_or",
+  "lang": "LD-textual",
+  "rungs": 1,
+  "nesting": 1,
+  "coupling": 0
+ },
+ {
+  "id": "ld_ctd_load",
+  "lang": "LD-textual",
+  "rungs": 2,
+  "nesting": 0,
+  "coupling": 1
+ },
+ {
+  "id": "ld_ctu_saturate",
+  "lang": "LD-textual",
+  "rungs": 2,
+  "nesting": 0,
+  "coupling": 1
+ },
+ {
+  "id": "ld_edge_counter",
+  "lang": "LD-textual",
+  "rungs": 4,
+  "nesting": 1,
+  "coupling": 3
+ },
+ {
+  "id": "ld_ftrig_edge",
+  "lang": "LD-textual",
+  "rungs": 3,
+  "nesting": 1,
+  "coupling": 2
+ },
+ {
+  "id": "ld_latch_basic",
+  "lang": "LD-textual",
+  "rungs": 2,
+  "nesting": 0,
+  "coupling": 0
+ },
+ {
+  "id": "ld_rtrig_edge",
+  "lang": "LD-textual",
+  "rungs": 3,
+  "nesting": 1,
+  "coupling": 2
+ },
+ {
+  "id": "ld_seal_in",
+  "lang": "LD-textual",
+  "rungs": 1,
+  "nesting": 2,
+  "coupling": 0
+ },
+ {
+  "id": "ld_timer_latch_mix",
+  "lang": "LD-textual",
+  "rungs": 3,
+  "nesting": 0,
+  "coupling": 1
+ },
+ {
+  "id": "ld_tof_hold",
+  "lang": "LD-textual",
+  "rungs": 2,
+  "nesting": 1,
+  "coupling": 1
+ },
+ {
+  "id": "ld_ton_chain2",
+  "lang": "LD-textual",
+  "rungs": 4,
+  "nesting": 1,
+  "coupling": 3
+ },
+ {
+  "id": "ld_ton_single",
+  "lang": "LD-textual",
+  "rungs": 2,
+  "nesting": 0,
+  "coupling": 1
+ },
+ {
+  "id": "ld_tp_pulse",
+  "lang": "LD-textual",
+  "rungs": 2,
+  "nesting": 0,
+  "coupling": 1
+ },
+ {
+  "id": "protection_lockout_cascade",
+  "lang": "LD-textual",
+  "rungs": 3,
+  "nesting": 2,
+  "coupling": 2
+ },
+ {
+  "id": "purge_fault_lockout",
+  "lang": "LD-textual",
+  "rungs": 3,
+  "nesting": 2,
+  "coupling": 2
+ },
+ {
+  "id": "reject_gate_triple_output",
+  "lang": "LD-textual",
+  "rungs": 4,
+  "nesting": 2,
+  "coupling": 3
+ }
+]

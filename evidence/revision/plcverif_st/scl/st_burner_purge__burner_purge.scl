@@ -1,0 +1,22 @@
+FUNCTION_BLOCK BURNER
+  VAR_INPUT
+    CallForHeat : BOOL;
+    PurgeDone   : BOOL;
+    FlameProven : BOOL;
+    FlameFail   : BOOL;
+    ResetBtn    : BOOL;
+  END_VAR
+  VAR_OUTPUT
+    Fan       : BOOL;
+    Lockout   : BOOL;
+    Pilot     : BOOL;
+    MainValve : BOOL;
+  END_VAR
+
+BEGIN
+Fan := CallForHeat;
+  Lockout := (Lockout OR FlameFail) AND NOT ResetBtn;
+  Pilot := CallForHeat AND PurgeDone AND NOT Lockout;
+  MainValve := CallForHeat AND PurgeDone AND FlameProven AND NOT Lockout;
+  //#ASSERT NOT MainValve OR (PurgeDone AND FlameProven) : P1
+END_FUNCTION_BLOCK

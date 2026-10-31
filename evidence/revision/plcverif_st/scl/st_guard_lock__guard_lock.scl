@@ -1,0 +1,20 @@
+FUNCTION_BLOCK CELL
+  VAR_INPUT
+    OpenReq    : BOOL;
+    DoorClosed : BOOL;
+    RunCmd     : BOOL;
+  END_VAR
+  VAR_OUTPUT
+    Motor    : BOOL;
+    Unlocked : BOOL;
+  END_VAR
+  VAR
+    Rundown : TON;
+  END_VAR
+
+BEGIN
+Rundown(IN := NOT Motor, PT := T#30ms);
+  Unlocked := Rundown.Q AND OpenReq;
+  Motor := RunCmd AND DoorClosed AND NOT OpenReq;
+  //#ASSERT NOT (Unlocked AND Motor) : P1
+END_FUNCTION_BLOCK

@@ -1,0 +1,22 @@
+FUNCTION_BLOCK WELDER_CONTROL
+  VAR_INPUT
+    gas_flow_ok : BOOL;
+    trigger_pull : BOOL;
+  END_VAR
+  VAR
+    arc_on : BOOL;
+  END_VAR
+
+BEGIN
+IF NOT gas_flow_ok THEN
+    arc_on := FALSE;
+  END_IF;
+
+  IF trigger_pull THEN
+    arc_on := TRUE;
+  ELSE
+    arc_on := FALSE;
+  END_IF;
+  //#ASSERT NOT arc_on OR (gas_flow_ok AND trigger_pull) : P1
+  //#ASSERT NOT (arc_on AND NOT gas_flow_ok) : P2
+END_FUNCTION_BLOCK

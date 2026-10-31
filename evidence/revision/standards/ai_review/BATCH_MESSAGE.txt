@@ -1,0 +1,15 @@
+Review the attached batch exactly as specified in your instructions.
+
+Return two CSV blocks, with no commentary and no code fences, separated by one line containing only ----
+
+Block 1, one row per program in this batch, columns:
+benchmark,language,implements_cited_requirement,requirements_considered,requirements_not_covered,confidence,reasoning
+
+Block 2, one row per surviving mutant listed for the programs in this batch, columns:
+benchmark,mutant_id,mutant,classification,reasoning
+
+Allowed values:
+implements_cited_requirement: yes | partly | no
+confidence: high | medium | low
+classification: required_by_clause | harmless | unclear
+Put every text field that contains a comma in double quotes. Do not search the web.

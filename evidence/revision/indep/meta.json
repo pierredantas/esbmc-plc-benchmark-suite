@@ -1,0 +1,26 @@
+{
+ "press_safety": {
+  "id": "3cc2a1145ae980c7",
+  "repo": "omarfaruq-ai/Real-Time-Systems",
+  "path": "Exercise 5/Project Files/plc.xml",
+  "license": "GPL-2.0",
+  "commit": "e0e0ca3b1c9d43650af55e10eaa44bcf8780b895",
+  "sha": "c8a8ccbf3f556138682c5217af52619ccde69772"
+ },
+ "cocktail": {
+  "id": "ed06f04b9a9ec321",
+  "repo": "solarfiretech/Pallas",
+  "path": "Examples/OpenPLCEditor/Pallas/src/build/OpenPLC Runtime v4/src/plc.xml",
+  "license": "Apache-2.0",
+  "commit": "ead8f71ea242df2cd386def12bcd1d1c3311305d",
+  "sha": "b95361a7443b757c2d786af597fa550a3b624d54"
+ },
+ "step_seq": {
+  "id": "b0ddf8a0455d7aff",
+  "repo": "jjv432/SeniorDesign",
+  "path": "OpenPLCFolders/Lab2b/plc.xml",
+  "license": "MIT",
+  "commit": "519ab1ed223ad66c95c558542cc073cf3e8e7288",
+  "sha": "cf7b0ffd52202601825a61d3648b97aca046b6d4"
+ }
+}

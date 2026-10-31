@@ -1,0 +1,4 @@
+benchmark,language,field,reviewer_answer,record_value,reviewer_confidence,reviewer_reasoning,expected_verdicts,adjudication (reviewer right / record right / both defensible),adjudicator_comment
+conveyor_jam_lockout,ST,retained_state,yes,no,high,Internal variables running and jam_this_run retain their state across scans to implement the lockout.,SAFE/VIOLATION,,
+counter_scalability,ST,overflow_possible,yes,no,high,Unbounded integer increment on scan_cnt can overflow and governs the armed condition checked by the property.,VIOLATION,,
+counter_scalability,ST,verdict_scope,semantics-dependent,holds-under-stated-order,high,Unbounded integer increment on scan_cnt can overflow and governs the armed condition checked by the property.,VIOLATION,,

@@ -1,0 +1,48 @@
+{
+  "schema_version": "0.4",
+  "route": "via-c",
+  "scans": 8,
+  "toolchain": {
+    "beremiz": {
+      "path": "~/plc-tools/beremiz",
+      "commit": "df4370c",
+      "dirty": false
+    },
+    "matiec": {
+      "path": "~/plc-tools/matiec",
+      "commit": "7949c0b",
+      "dirty": false
+    }
+  },
+  "recorded_at": "2026-10-30T18:48:22Z",
+  "program": "benchmarks/manufacturing/il_comb_and/comb_and.il",
+  "properties_file": "benchmarks/manufacturing/il_comb_and/props.yaml",
+  "properties": [
+    {
+      "id": "P1",
+      "kind": "invariant",
+      "expression": "!Y || (A && B && C)",
+      "justification": "Output Y is energised only when all series contacts A, B and C are closed."
+    }
+  ],
+  "expected_verdict": "SAFE",
+  "generated_c": "#include \"iec_std_lib.h\"\n#include \"POUS.h\"\n#include \"POUS.c\"\n\nint main(void) {\n  DRIVE_data__ d = {0};\n  DRIVE_init__(&d, 0);\n  for (int scan = 0; scan < 8; scan++) {\n    __SET_VAR(d., A, , nondet_bool());\n    __SET_VAR(d., B, , nondet_bool());\n    __SET_VAR(d., C, , nondet_bool());\n    DRIVE_body__(&d);\n    __ESBMC_assert(!__GET_VAR(d.Y,) || (__GET_VAR(d.A,) && __GET_VAR(d.B,) && __GET_VAR(d.C,)), \"P1\");\n  }\n  return 0;\n}",
+  "runs": {
+    "v8.6": {
+      "solver_command": "esbmc <generated>/harness.c -I $PLC_TOOLS/matiec/lib/C -I <generated> --k-induction --timeout 120s",
+      "verdict": "SAFE",
+      "proof": "the forward condition; all states are reachable (k = 9)",
+      "cpu_time_s": 2.542,
+      "counterexample": null,
+      "tool": {
+        "path": "/private/tmp/claude-502/-Users-user-Claude-4-Papers-ESBMC-Benchmark-Suite--Springer---Scientific-Reports-/9808ce5c-61da-4ccd-9a0e-9bfc09950a37/scratchpad/esbmc86src/build/src/esbmc/esbmc",
+        "raw": "ESBMC version 8.6.0 64-bit aarch64 macos",
+        "commit": null,
+        "version": "8.6.0",
+        "platform": "aarch64 macos"
+      },
+      "command": "runner/record_via_c.py benchmarks/manufacturing/il_comb_and/comb_and.il benchmarks/manufacturing/il_comb_and/props.yaml true --tool v8.6=<path-to-esbmc>",
+      "status": "correct"
+    }
+  }
+}

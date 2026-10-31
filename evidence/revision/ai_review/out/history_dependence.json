@@ -1,0 +1,1019 @@
+{
+ "airlock_pressure_interlock": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "breaker_earth_trip_interlock": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 1
+ },
+ "chemical_feed_fault_lockout": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "DOSE_FAULT",
+   "DOSE_PUMP_RUN",
+   "FAULT_LAMP"
+  ],
+  "inputs": 3,
+  "state_candidates": 3
+ },
+ "conveyor_jam_lockout": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "BELT_DRIVE",
+   "JAM_THIS_RUN",
+   "RUNNING"
+  ],
+  "inputs": 3,
+  "state_candidates": 3
+ },
+ "counter_scalability": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "PUMP"
+  ],
+  "inputs": 2,
+  "state_candidates": 3
+ },
+ "dosing_pump_lockout": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "DOSING_PUMP",
+   "DRY_RUN_FAULT"
+  ],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "elevator_door_motion_interlock": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 1
+ },
+ "fbd_comb_and": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "fbd_counter_reset": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CNT",
+   "OUT",
+   "_TMP_ADD4_OUT",
+   "_TMP_SEL7_OUT"
+  ],
+  "inputs": 2,
+  "state_candidates": 4
+ },
+ "fbd_fan_damper": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 3
+ },
+ "fbd_reactor_2oo3": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 5
+ },
+ "fbd_seal_in": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "RUN",
+   "_TMP_AND6_OUT",
+   "_TMP_OR4_OUT"
+  ],
+  "inputs": 2,
+  "state_candidates": 4
+ },
+ "g_batch_mixer": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 4,
+  "state_candidates": 2
+ },
+ "g_batch_reactor": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 4,
+  "state_candidates": 2
+ },
+ "g_building_lighting": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "g_burner_purge": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "LOCKOUT",
+   "MAINVALVE",
+   "PILOT"
+  ],
+  "inputs": 5,
+  "state_candidates": 4
+ },
+ "g_bus_coupler_changeover": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 3
+ },
+ "g_busbar_interlock": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "g_comb_and": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 1
+ },
+ "g_comb_mixed": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 1
+ },
+ "g_comb_or": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 2,
+  "state_candidates": 1
+ },
+ "g_compressor_cycle": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "LOAD"
+  ],
+  "inputs": 3,
+  "state_candidates": 1
+ },
+ "g_conveyor_interlock": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 4,
+  "state_candidates": 2
+ },
+ "g_ctd_load": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "EMPTY"
+  ],
+  "inputs": 2,
+  "state_candidates": 1
+ },
+ "g_ctu_saturate": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "DONE"
+  ],
+  "inputs": 2,
+  "state_candidates": 1
+ },
+ "g_dead_bus_close_check": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 4,
+  "state_candidates": 1
+ },
+ "g_door_reversal": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "MOVEDOWN",
+   "MOVEUP",
+   "REVERSING"
+  ],
+  "inputs": 4,
+  "state_candidates": 3
+ },
+ "g_elevator_door": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 4,
+  "state_candidates": 2
+ },
+ "g_estop_reset": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "RESETEDGE",
+   "RUN",
+   "SAFE"
+  ],
+  "inputs": 3,
+  "state_candidates": 4
+ },
+ "g_failsafe_motor_latch": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "MOTOR_RUN"
+  ],
+  "inputs": 3,
+  "state_candidates": 1
+ },
+ "g_ftrig_edge": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "FALL",
+   "ONESHOT"
+  ],
+  "inputs": 1,
+  "state_candidates": 3
+ },
+ "g_fwd_rev_interlock": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "M1_FWD",
+   "M2_REV"
+  ],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "g_guard_lock": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "UNLOCKED"
+  ],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "g_hvac_fan_delay": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 4,
+  "state_candidates": 3
+ },
+ "g_independent_hp_trip": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 1
+ },
+ "g_motor_interlock": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "g_packaging_filler": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 4,
+  "state_candidates": 2
+ },
+ "g_phase_hold_permissive": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "HEATER",
+   "HELD"
+  ],
+  "inputs": 4,
+  "state_candidates": 2
+ },
+ "g_ppu_evolution_1": {
+  "status": "failed",
+  "reason": "'NoneType' object has no attribute 'group'"
+ },
+ "g_pump_alternation": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CALL",
+   "DUTY",
+   "PUMPA",
+   "PUMPB"
+  ],
+  "inputs": 2,
+  "state_candidates": 4
+ },
+ "g_rtrig_edge": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "ONESHOT",
+   "RISE"
+  ],
+  "inputs": 1,
+  "state_candidates": 3
+ },
+ "g_seal_in": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "RUN"
+  ],
+  "inputs": 2,
+  "state_candidates": 1
+ },
+ "g_star_delta": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "g_start_cycle": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CYCLE_ON",
+   "MV1",
+   "MV2"
+  ],
+  "inputs": 5,
+  "state_candidates": 3
+ },
+ "g_stop_eq": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CYCLE_ON",
+   "MV1",
+   "MV2"
+  ],
+  "inputs": 6,
+  "state_candidates": 5
+ },
+ "g_substation_breaker": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 4,
+  "state_candidates": 2
+ },
+ "g_tank_assignment": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CYCLE_ON",
+   "MV1",
+   "MV2"
+  ],
+  "inputs": 5,
+  "state_candidates": 3
+ },
+ "g_tank_start_eq": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CYCLE_ON"
+  ],
+  "inputs": 6,
+  "state_candidates": 5
+ },
+ "g_tank_start_le": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CYCLE_ON",
+   "MV1",
+   "MV2"
+  ],
+  "inputs": 6,
+  "state_candidates": 5
+ },
+ "g_tank_stop_ge": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CYCLE_ON",
+   "MV1",
+   "MV2"
+  ],
+  "inputs": 6,
+  "state_candidates": 5
+ },
+ "g_tank_sub_function": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CYCLE_ON",
+   "MV1",
+   "MV2"
+  ],
+  "inputs": 5,
+  "state_candidates": 6
+ },
+ "g_tank_substitution_coil": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CYCLE_ON",
+   "MV1",
+   "MV2"
+  ],
+  "inputs": 5,
+  "state_candidates": 3
+ },
+ "g_tank_value_filtering": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CYCLE_ON",
+   "MV1"
+  ],
+  "inputs": 5,
+  "state_candidates": 3
+ },
+ "g_tank_valves": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CYCLE_ON",
+   "MV1",
+   "MV2"
+  ],
+  "inputs": 5,
+  "state_candidates": 3
+ },
+ "g_timer_latch_mix": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "ALARM"
+  ],
+  "inputs": 2,
+  "state_candidates": 1
+ },
+ "g_tof_hold": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "LIGHT"
+  ],
+  "inputs": 2,
+  "state_candidates": 1
+ },
+ "g_ton_single": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "LIGHT"
+  ],
+  "inputs": 1,
+  "state_candidates": 1
+ },
+ "g_tp_pulse": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "OUT"
+  ],
+  "inputs": 1,
+  "state_candidates": 1
+ },
+ "g_traffic_light": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "g_traffic_light_pedestrian": {
+  "status": "failed",
+  "reason": "iec2c: pecification in variable declaration.\n\n7 error(s) found. Bailing out!\n"
+ },
+ "g_transformer_protect": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 4,
+  "state_candidates": 2
+ },
+ "g_trip_lockout_86": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "LOCKOUT",
+   "RECLOSE"
+  ],
+  "inputs": 4,
+  "state_candidates": 2
+ },
+ "g_two_hand": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "ARMED",
+   "STROKE"
+  ],
+  "inputs": 2,
+  "state_candidates": 3
+ },
+ "g_two_hand_fb": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "STROKE"
+  ],
+  "inputs": 2,
+  "state_candidates": 1
+ },
+ "g_vessel_empty_permissive": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 4,
+  "state_candidates": 2
+ },
+ "hoist_overload_cutoff": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "il_comb_and": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 1
+ },
+ "il_counter_reset": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CNT",
+   "OUT"
+  ],
+  "inputs": 2,
+  "state_candidates": 2
+ },
+ "il_seal_in": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "RUN"
+  ],
+  "inputs": 2,
+  "state_candidates": 1
+ },
+ "intrusion_dual_alarm": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "ALARM_STATE",
+   "DOOR_LOCK",
+   "SIREN_OUT"
+  ],
+  "inputs": 3,
+  "state_candidates": 3
+ },
+ "kiln_door_lockout": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "DOOR_FAULT_LATCHED",
+   "HEATER_ELEMENT"
+  ],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "ld_comb_and": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 1
+ },
+ "ld_comb_mixed": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 1
+ },
+ "ld_comb_or": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 2,
+  "state_candidates": 1
+ },
+ "ld_ctd_load": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CTD0_Q",
+   "EMPTY"
+  ],
+  "inputs": 2,
+  "state_candidates": 2
+ },
+ "ld_ctu_saturate": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CTU0_Q",
+   "DONE"
+  ],
+  "inputs": 2,
+  "state_candidates": 2
+ },
+ "ld_edge_counter": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "RISE"
+  ],
+  "inputs": 2,
+  "state_candidates": 4
+ },
+ "ld_ftrig_edge": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "FALL",
+   "ONESHOT"
+  ],
+  "inputs": 1,
+  "state_candidates": 3
+ },
+ "ld_latch_basic": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "Q"
+  ],
+  "inputs": 2,
+  "state_candidates": 1
+ },
+ "ld_rtrig_edge": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "ONESHOT",
+   "RISE"
+  ],
+  "inputs": 1,
+  "state_candidates": 3
+ },
+ "ld_seal_in": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "RUN"
+  ],
+  "inputs": 2,
+  "state_candidates": 1
+ },
+ "ld_timer_latch_mix": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "ALARM",
+   "T0"
+  ],
+  "inputs": 2,
+  "state_candidates": 2
+ },
+ "ld_tof_hold": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "LIGHT",
+   "TOF0_Q"
+  ],
+  "inputs": 2,
+  "state_candidates": 2
+ },
+ "ld_ton_chain2": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "P1",
+   "P2",
+   "T1",
+   "T2"
+  ],
+  "inputs": 1,
+  "state_candidates": 4
+ },
+ "ld_ton_single": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "LIGHT",
+   "TON0_Q"
+  ],
+  "inputs": 1,
+  "state_candidates": 2
+ },
+ "ld_tp_pulse": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "OUT",
+   "TP0_Q"
+  ],
+  "inputs": 1,
+  "state_candidates": 2
+ },
+ "mixer_lid_stall_interlock": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 4,
+  "state_candidates": 2
+ },
+ "motor_interlock": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "protection_lockout_cascade": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "BREAKER_CLOSE",
+   "LOCKOUT_LATCH",
+   "TRIP_LATCH"
+  ],
+  "inputs": 4,
+  "state_candidates": 3
+ },
+ "purge_fault_lockout": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "BURNER_ENABLE",
+   "FAULT_INDICATOR",
+   "FAULT_LATCH"
+  ],
+  "inputs": 3,
+  "state_candidates": 3
+ },
+ "reactor_pressure_lockout": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "FAULT_FLAG",
+   "FEED_PUMP"
+  ],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "reject_gate_triple_output": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "COUNTER_ENABLE",
+   "GATE_ACTUATE",
+   "LINE_STOP",
+   "REJECT_LATCH"
+  ],
+  "inputs": 4,
+  "state_candidates": 4
+ },
+ "sensor_forge": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 1,
+  "state_candidates": 2
+ },
+ "sfc_batch_fill_drain": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "DRAIN_VALVE",
+   "FILL_VALVE"
+  ],
+  "inputs": 4,
+  "state_candidates": 2
+ },
+ "sfc_counter_reset": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CNT",
+   "OUT"
+  ],
+  "inputs": 2,
+  "state_candidates": 2
+ },
+ "sfc_elevator_door": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "DOOR_OPEN",
+   "MOVING"
+  ],
+  "inputs": 4,
+  "state_candidates": 2
+ },
+ "st_burner_purge": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "LOCKOUT",
+   "MAINVALVE",
+   "PILOT"
+  ],
+  "inputs": 5,
+  "state_candidates": 4
+ },
+ "st_comb_and": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 1
+ },
+ "st_compressor_cycle": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "LOAD"
+  ],
+  "inputs": 3,
+  "state_candidates": 1
+ },
+ "st_counter_reset": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CNT",
+   "OUT"
+  ],
+  "inputs": 2,
+  "state_candidates": 2
+ },
+ "st_door_reversal": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "MOVEDOWN",
+   "MOVEUP",
+   "REVERSING"
+  ],
+  "inputs": 4,
+  "state_candidates": 3
+ },
+ "st_estop_reset": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "RESETEDGE",
+   "RUN",
+   "SAFE"
+  ],
+  "inputs": 3,
+  "state_candidates": 4
+ },
+ "st_guard_lock": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "UNLOCKED"
+  ],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "st_pump_alternation": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "CALL",
+   "DUTY",
+   "PUMPA",
+   "PUMPB"
+  ],
+  "inputs": 2,
+  "state_candidates": 4
+ },
+ "st_quad_valve_lockout": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 4,
+  "state_candidates": 4
+ },
+ "st_seal_in": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "RUN"
+  ],
+  "inputs": 2,
+  "state_candidates": 1
+ },
+ "st_star_delta": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 2
+ },
+ "st_swat_eq1": {
+  "status": "failed",
+  "reason": "iec2c: r: invalid statement in ST statement.\n\n6 error(s) found. Bailing out!\n"
+ },
+ "st_swat_ge1": {
+  "status": "failed",
+  "reason": "iec2c: r: invalid statement in ST statement.\n\n6 error(s) found. Bailing out!\n"
+ },
+ "st_swat_le1": {
+  "status": "failed",
+  "reason": "iec2c: r: invalid statement in ST statement.\n\n6 error(s) found. Bailing out!\n"
+ },
+ "st_swat_level1": {
+  "status": "failed",
+  "reason": "iec2c: r: invalid statement in ST statement.\n\n6 error(s) found. Bailing out!\n"
+ },
+ "st_swat_sub1": {
+  "status": "failed",
+  "reason": "iec2c: r: invalid statement in ST statement.\n\n6 error(s) found. Bailing out!\n"
+ },
+ "st_swat_timer1": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 2,
+  "state_candidates": 17
+ },
+ "st_three_pump_lockout": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 3,
+  "state_candidates": 3
+ },
+ "st_two_hand": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "ARMED",
+   "STROKE"
+  ],
+  "inputs": 2,
+  "state_candidates": 3
+ },
+ "tank_overflow": {
+  "status": "ok",
+  "history_dependent": true,
+  "variables_that_differ": [
+   "PUMP"
+  ],
+  "inputs": 2,
+  "state_candidates": 1
+ },
+ "welder_gas_shield_interlock": {
+  "status": "ok",
+  "history_dependent": false,
+  "variables_that_differ": [],
+  "inputs": 2,
+  "state_candidates": 1
+ }
+}

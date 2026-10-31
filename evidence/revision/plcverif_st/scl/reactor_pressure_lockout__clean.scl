@@ -1,0 +1,29 @@
+FUNCTION_BLOCK REACTOR_CONTROL
+  VAR_INPUT
+    pressure_high : BOOL;
+    clear_fault : BOOL;
+    feed_request : BOOL;
+  END_VAR
+  VAR
+    feed_pump : BOOL;
+    fault_flag : BOOL := FALSE;
+  END_VAR
+
+BEGIN
+IF pressure_high THEN
+    fault_flag := TRUE;
+  ELSIF clear_fault THEN
+    fault_flag := FALSE;
+  END_IF;
+
+  IF fault_flag OR pressure_high THEN
+    feed_pump := FALSE;
+  ELSIF feed_request THEN
+    feed_pump := TRUE;
+  ELSE
+    feed_pump := FALSE;
+  END_IF;
+  //#ASSERT NOT (feed_pump AND pressure_high) : P1
+  //#ASSERT NOT (feed_pump AND fault_flag) : P2
+  //#ASSERT NOT (feed_pump AND fault_flag) : P3
+END_FUNCTION_BLOCK

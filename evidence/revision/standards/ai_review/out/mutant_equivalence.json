@@ -1,0 +1,585 @@
+{
+ "g_burner_purge:S1": {
+  "mutant": "contact CallForHeat (feeds Fan) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "FAN"
+  ]
+ },
+ "g_burner_purge:S2": {
+  "mutant": "contact Lockout (feeds Lockout) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "LOCKOUT",
+   "MAINVALVE",
+   "PILOT"
+  ]
+ },
+ "g_burner_purge:S3": {
+  "mutant": "contact FlameFail (feeds Lockout) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "LOCKOUT",
+   "MAINVALVE",
+   "PILOT"
+  ]
+ },
+ "g_burner_purge:S4": {
+  "mutant": "contact ResetBtn (feeds Lockout) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "LOCKOUT",
+   "MAINVALVE",
+   "PILOT"
+  ]
+ },
+ "g_burner_purge:S5": {
+  "mutant": "contact CallForHeat (feeds Pilot) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "PILOT"
+  ]
+ },
+ "g_burner_purge:S6": {
+  "mutant": "contact PurgeDone (feeds Pilot) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "PILOT"
+  ]
+ },
+ "g_burner_purge:S7": {
+  "mutant": "contact Lockout (feeds Pilot) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "PILOT"
+  ]
+ },
+ "g_burner_purge:S8": {
+  "mutant": "contact CallForHeat (feeds MainValve) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MAINVALVE"
+  ]
+ },
+ "g_burner_purge:S9": {
+  "mutant": "contact Lockout (feeds MainValve) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MAINVALVE"
+  ]
+ },
+ "g_door_reversal:S1": {
+  "mutant": "contact Reversing (feeds Reversing) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOVEDOWN",
+   "MOVEUP",
+   "REVERSING"
+  ]
+ },
+ "g_door_reversal:S2": {
+  "mutant": "contact Beam (feeds Reversing) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOVEDOWN",
+   "MOVEUP",
+   "REVERSING"
+  ]
+ },
+ "g_door_reversal:S3": {
+  "mutant": "contact TopLimit (feeds Reversing) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOVEDOWN",
+   "MOVEUP",
+   "REVERSING"
+  ]
+ },
+ "g_door_reversal:S4": {
+  "mutant": "contact CloseCmd (feeds MoveDown) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOVEDOWN"
+  ]
+ },
+ "g_door_reversal:S5": {
+  "mutant": "contact Reversing (feeds MoveDown) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOVEDOWN"
+  ]
+ },
+ "g_door_reversal:S6": {
+  "mutant": "contact OpenCmd (feeds MoveUp) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOVEUP"
+  ]
+ },
+ "g_door_reversal:S7": {
+  "mutant": "contact Reversing (feeds MoveUp) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOVEUP"
+  ]
+ },
+ "g_estop_reset:S1": {
+  "mutant": "contact Reset_prev (feeds ResetEdge) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RESETEDGE",
+   "RUN",
+   "SAFE"
+  ]
+ },
+ "g_estop_reset:S2": {
+  "mutant": "contact Reset (feeds ResetEdge) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RESETEDGE",
+   "RUN",
+   "SAFE"
+  ]
+ },
+ "g_estop_reset:S3": {
+  "mutant": "contact Safe (feeds Safe) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RUN",
+   "SAFE"
+  ]
+ },
+ "g_estop_reset:S4": {
+  "mutant": "contact ResetEdge (feeds Safe) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RUN",
+   "SAFE"
+  ]
+ },
+ "g_estop_reset:S5": {
+  "mutant": "contact EStop (feeds Safe) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RUN",
+   "SAFE"
+  ]
+ },
+ "g_estop_reset:S6": {
+  "mutant": "contact Safe (feeds Run) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RUN"
+  ]
+ },
+ "g_estop_reset:S7": {
+  "mutant": "contact Start (feeds Run) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RUN"
+  ]
+ },
+ "g_estop_reset:S8": {
+  "mutant": "contact EStop (feeds Run) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RUN"
+  ]
+ },
+ "g_estop_reset:S9": {
+  "mutant": "contact Reset (feeds Reset_prev) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RESETEDGE",
+   "RESET_PREV",
+   "RUN",
+   "SAFE"
+  ]
+ },
+ "g_guard_lock:S1": {
+  "mutant": "contact Motor (feeds Unlocked) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "UNLOCKED"
+  ]
+ },
+ "g_guard_lock:S2": {
+  "mutant": "contact RunCmd (feeds Motor) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOTOR",
+   "UNLOCKED"
+  ]
+ },
+ "g_guard_lock:S3": {
+  "mutant": "contact DoorClosed (feeds Motor) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOTOR",
+   "UNLOCKED"
+  ]
+ },
+ "g_phase_hold_permissive:S1": {
+  "mutant": "contact run_command (feeds held) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "HEATER",
+   "HELD"
+  ]
+ },
+ "g_phase_hold_permissive:S2": {
+  "mutant": "contact agitator_ok (feeds held) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "HEATER",
+   "HELD"
+  ]
+ },
+ "g_phase_hold_permissive:S3": {
+  "mutant": "contact held (feeds held) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "HEATER",
+   "HELD"
+  ]
+ },
+ "g_phase_hold_permissive:S4": {
+  "mutant": "contact resume_command (feeds held) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "HEATER",
+   "HELD"
+  ]
+ },
+ "g_phase_hold_permissive:S5": {
+  "mutant": "contact run_command (feeds heater) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "HEATER"
+  ]
+ },
+ "g_phase_hold_permissive:S6": {
+  "mutant": "contact agitator_ok (feeds heater) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "HEATER"
+  ]
+ },
+ "g_two_hand:S1": {
+  "mutant": "contact LH (feeds BothOff) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "ARMED",
+   "BOTHOFF",
+   "STROKE"
+  ]
+ },
+ "g_two_hand:S2": {
+  "mutant": "contact RH (feeds BothOff) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "ARMED",
+   "BOTHOFF",
+   "STROKE"
+  ]
+ },
+ "g_two_hand:S3": {
+  "mutant": "contact Armed (feeds Armed) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "ARMED",
+   "STROKE"
+  ]
+ },
+ "g_two_hand:S4": {
+  "mutant": "contact Stroke (feeds Armed) negated true->false",
+  "equivalent": false,
+  "variables_that_differ": [
+   "ARMED",
+   "STROKE"
+  ]
+ },
+ "g_two_hand:S5": {
+  "mutant": "contact Stroke (feeds Stroke) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "ARMED",
+   "STROKE"
+  ]
+ },
+ "g_two_hand:S6": {
+  "mutant": "contact Armed (feeds Stroke) negated false->true",
+  "equivalent": false,
+  "variables_that_differ": [
+   "ARMED",
+   "STROKE"
+  ]
+ },
+ "g_two_hand_fb:S1": {
+  "mutant": "ST body: AND -> OR in: BothOff := NOT LH AND NOT RH;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "STROKE"
+  ]
+ },
+ "g_two_hand_fb:S2": {
+  "mutant": "ST body: OR -> AND in: Armed := (Armed OR BothOff) AND NOT Stroke;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "STROKE"
+  ]
+ },
+ "g_two_hand_fb:S3": {
+  "mutant": "ST body: OR -> AND in: Stroke := (Stroke OR Armed) AND LH AND RH;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "STROKE"
+  ]
+ },
+ "g_two_hand_fb:S4": {
+  "mutant": "ST body: NOT -> (removed) in: BothOff := NOT LH AND NOT RH;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "STROKE"
+  ]
+ },
+ "g_two_hand_fb:S5": {
+  "mutant": "ST body: NOT -> (removed) in: BothOff := NOT LH AND NOT RH;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "STROKE"
+  ]
+ },
+ "g_two_hand_fb:S6": {
+  "mutant": "ST body: NOT -> (removed) in: Armed := (Armed OR BothOff) AND NOT Stroke;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "STROKE"
+  ]
+ },
+ "st_burner_purge:S1": {
+  "mutant": "AND -> OR in: Lockout := (Lockout OR FlameFail) AND NOT ResetBtn;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "LOCKOUT",
+   "MAINVALVE",
+   "PILOT"
+  ]
+ },
+ "st_burner_purge:S2": {
+  "mutant": "AND -> OR in: Pilot := CallForHeat AND PurgeDone AND NOT Lockout;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "PILOT"
+  ]
+ },
+ "st_burner_purge:S3": {
+  "mutant": "AND -> OR in: Pilot := CallForHeat AND PurgeDone AND NOT Lockout;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "PILOT"
+  ]
+ },
+ "st_burner_purge:S4": {
+  "mutant": "OR -> AND in: Lockout := (Lockout OR FlameFail) AND NOT ResetBtn;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "LOCKOUT",
+   "MAINVALVE",
+   "PILOT"
+  ]
+ },
+ "st_burner_purge:S5": {
+  "mutant": "NOT -> (removed) in: Lockout := (Lockout OR FlameFail) AND NOT ResetBtn;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "LOCKOUT",
+   "MAINVALVE",
+   "PILOT"
+  ]
+ },
+ "st_burner_purge:S6": {
+  "mutant": "NOT -> (removed) in: Pilot := CallForHeat AND PurgeDone AND NOT Lockout;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "PILOT"
+  ]
+ },
+ "st_burner_purge:S7": {
+  "mutant": "NOT -> (removed) in: MainValve := CallForHeat AND PurgeDone AND FlameProven AND NOT Lockout;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MAINVALVE"
+  ]
+ },
+ "st_door_reversal:S1": {
+  "mutant": "AND -> OR in: Reversing := (Reversing OR Beam) AND NOT TopLimit;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOVEDOWN",
+   "MOVEUP",
+   "REVERSING"
+  ]
+ },
+ "st_door_reversal:S2": {
+  "mutant": "OR -> AND in: Reversing := (Reversing OR Beam) AND NOT TopLimit;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOVEDOWN",
+   "MOVEUP",
+   "REVERSING"
+  ]
+ },
+ "st_door_reversal:S3": {
+  "mutant": "OR -> AND in: MoveUp := OpenCmd OR Reversing;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOVEUP"
+  ]
+ },
+ "st_door_reversal:S4": {
+  "mutant": "NOT -> (removed) in: Reversing := (Reversing OR Beam) AND NOT TopLimit;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOVEDOWN",
+   "MOVEUP",
+   "REVERSING"
+  ]
+ },
+ "st_door_reversal:S5": {
+  "mutant": "NOT -> (removed) in: MoveDown := CloseCmd AND NOT Beam AND NOT Reversing;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "MOVEDOWN"
+  ]
+ },
+ "st_estop_reset:S1": {
+  "mutant": "AND -> OR in: ResetEdge := Reset_prev AND NOT Reset;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RESETEDGE",
+   "RUN",
+   "SAFE"
+  ]
+ },
+ "st_estop_reset:S2": {
+  "mutant": "AND -> OR in: Safe := (Safe OR ResetEdge) AND NOT EStop;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RUN",
+   "SAFE"
+  ]
+ },
+ "st_estop_reset:S3": {
+  "mutant": "AND -> OR in: Run := Safe AND Start AND NOT EStop;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RUN"
+  ]
+ },
+ "st_estop_reset:S4": {
+  "mutant": "AND -> OR in: Run := Safe AND Start AND NOT EStop;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RUN"
+  ]
+ },
+ "st_estop_reset:S5": {
+  "mutant": "OR -> AND in: Safe := (Safe OR ResetEdge) AND NOT EStop;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RUN",
+   "SAFE"
+  ]
+ },
+ "st_estop_reset:S6": {
+  "mutant": "NOT -> (removed) in: ResetEdge := Reset_prev AND NOT Reset;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RESETEDGE",
+   "RUN",
+   "SAFE"
+  ]
+ },
+ "st_estop_reset:S7": {
+  "mutant": "NOT -> (removed) in: Safe := (Safe OR ResetEdge) AND NOT EStop;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RUN",
+   "SAFE"
+  ]
+ },
+ "st_estop_reset:S8": {
+  "mutant": "NOT -> (removed) in: Run := Safe AND Start AND NOT EStop;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "RUN"
+  ]
+ },
+ "st_guard_lock:S1": {
+  "mutant": "NOT -> (removed) in: Rundown(IN := NOT Motor, PT := T#30ms);",
+  "equivalent": false,
+  "variables_that_differ": [
+   "UNLOCKED"
+  ]
+ },
+ "st_two_hand:S1": {
+  "mutant": "AND -> OR in: BothOff := NOT LH AND NOT RH;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "ARMED",
+   "BOTHOFF",
+   "STROKE"
+  ]
+ },
+ "st_two_hand:S2": {
+  "mutant": "AND -> OR in: Armed := (Armed OR BothOff) AND NOT Stroke;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "ARMED",
+   "STROKE"
+  ]
+ },
+ "st_two_hand:S3": {
+  "mutant": "OR -> AND in: Armed := (Armed OR BothOff) AND NOT Stroke;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "ARMED",
+   "STROKE"
+  ]
+ },
+ "st_two_hand:S4": {
+  "mutant": "OR -> AND in: Stroke := (Stroke OR Armed) AND LH AND RH;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "ARMED",
+   "STROKE"
+  ]
+ },
+ "st_two_hand:S5": {
+  "mutant": "NOT -> (removed) in: BothOff := NOT LH AND NOT RH;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "ARMED",
+   "BOTHOFF",
+   "STROKE"
+  ]
+ },
+ "st_two_hand:S6": {
+  "mutant": "NOT -> (removed) in: BothOff := NOT LH AND NOT RH;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "ARMED",
+   "BOTHOFF",
+   "STROKE"
+  ]
+ },
+ "st_two_hand:S7": {
+  "mutant": "NOT -> (removed) in: Armed := (Armed OR BothOff) AND NOT Stroke;",
+  "equivalent": false,
+  "variables_that_differ": [
+   "ARMED",
+   "STROKE"
+  ]
+ }
+}

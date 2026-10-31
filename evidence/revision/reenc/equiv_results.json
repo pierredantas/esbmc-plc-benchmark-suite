@@ -1,0 +1,26 @@
+{
+ "st_seal_in": {
+  "equal": "SAFE",
+  "control": "VIOLATION"
+ },
+ "il_seal_in": {
+  "equal": "SAFE",
+  "control": "VIOLATION"
+ },
+ "fbd_seal_in": {
+  "equal": "SAFE",
+  "control": "VIOLATION"
+ },
+ "st_comb_and": {
+  "equal": "SAFE",
+  "control": "VIOLATION"
+ },
+ "il_comb_and": {
+  "equal": "SAFE",
+  "control": "VIOLATION"
+ },
+ "fbd_comb_and": {
+  "equal": "SAFE",
+  "control": "VIOLATION"
+ }
+}

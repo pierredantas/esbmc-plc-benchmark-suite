@@ -1,0 +1,430 @@
+{
+ "g_burner_purge": {
+  "base": "program.xml",
+  "base_main": "SAFE",
+  "base_disc": {
+   "lockout_check.props.yaml": "VIOLATION"
+  },
+  "mutants": 11,
+  "killed_main": 2,
+  "killed_disc_only": 0,
+  "survivors": [
+   {
+    "mutant": "contact CallForHeat (feeds Fan) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Lockout (feeds Lockout) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact FlameFail (feeds Lockout) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact ResetBtn (feeds Lockout) negated true->false",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact CallForHeat (feeds Pilot) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact PurgeDone (feeds Pilot) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Lockout (feeds Pilot) negated true->false",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact CallForHeat (feeds MainValve) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Lockout (feeds MainValve) negated true->false",
+    "verdict_main": "SAFE"
+   }
+  ]
+ },
+ "g_door_reversal": {
+  "base": "program.xml",
+  "base_main": "SAFE",
+  "base_disc": {
+   "reversal_check.props.yaml": "VIOLATION"
+  },
+  "mutants": 8,
+  "killed_main": 1,
+  "killed_disc_only": 0,
+  "survivors": [
+   {
+    "mutant": "contact Reversing (feeds Reversing) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Beam (feeds Reversing) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact TopLimit (feeds Reversing) negated true->false",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact CloseCmd (feeds MoveDown) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Reversing (feeds MoveDown) negated true->false",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact OpenCmd (feeds MoveUp) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Reversing (feeds MoveUp) negated false->true",
+    "verdict_main": "SAFE"
+   }
+  ]
+ },
+ "g_estop_reset": {
+  "base": "program.xml",
+  "base_main": "SAFE",
+  "base_disc": {
+   "restart_check.props.yaml": "VIOLATION"
+  },
+  "mutants": 9,
+  "killed_main": 0,
+  "killed_disc_only": 0,
+  "survivors": [
+   {
+    "mutant": "contact Reset_prev (feeds ResetEdge) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Reset (feeds ResetEdge) negated true->false",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Safe (feeds Safe) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact ResetEdge (feeds Safe) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact EStop (feeds Safe) negated true->false",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Safe (feeds Run) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Start (feeds Run) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact EStop (feeds Run) negated true->false",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Reset (feeds Reset_prev) negated false->true",
+    "verdict_main": "SAFE"
+   }
+  ]
+ },
+ "g_guard_lock": {
+  "base": "program.xml",
+  "base_main": "SAFE",
+  "base_disc": {
+   "rundown_check.props.yaml": "VIOLATION"
+  },
+  "mutants": 5,
+  "killed_main": 2,
+  "killed_disc_only": 0,
+  "survivors": [
+   {
+    "mutant": "contact Motor (feeds Unlocked) negated true->false",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact RunCmd (feeds Motor) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact DoorClosed (feeds Motor) negated false->true",
+    "verdict_main": "SAFE"
+   }
+  ]
+ },
+ "g_phase_hold_permissive": {
+  "base": "clean.xml",
+  "base_main": "SAFE",
+  "base_disc": {},
+  "mutants": 7,
+  "killed_main": 1,
+  "killed_disc_only": 0,
+  "survivors": [
+   {
+    "mutant": "contact run_command (feeds held) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact agitator_ok (feeds held) negated true->false",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact held (feeds held) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact resume_command (feeds held) negated true->false",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact run_command (feeds heater) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact agitator_ok (feeds heater) negated false->true",
+    "verdict_main": "SAFE"
+   }
+  ]
+ },
+ "g_two_hand": {
+  "base": "program.xml",
+  "base_main": "SAFE",
+  "base_disc": {
+   "tiedown_check.props.yaml": "VIOLATION"
+  },
+  "mutants": 9,
+  "killed_main": 2,
+  "killed_disc_only": 1,
+  "survivors": [
+   {
+    "mutant": "contact LH (feeds BothOff) negated true->false",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact RH (feeds BothOff) negated true->false",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Armed (feeds Armed) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Stroke (feeds Armed) negated true->false",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Stroke (feeds Stroke) negated false->true",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "contact Armed (feeds Stroke) negated false->true",
+    "verdict_main": "SAFE"
+   }
+  ]
+ },
+ "g_two_hand_fb": {
+  "base": "program.xml",
+  "base_main": "SAFE",
+  "base_disc": {
+   "tiedown_check.props.yaml": "VIOLATION"
+  },
+  "mutants": 9,
+  "killed_main": 2,
+  "killed_disc_only": 1,
+  "survivors": [
+   {
+    "mutant": "ST body: AND -> OR in: BothOff := NOT LH AND NOT RH;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "ST body: OR -> AND in: Armed := (Armed OR BothOff) AND NOT Stroke;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "ST body: OR -> AND in: Stroke := (Stroke OR Armed) AND LH AND RH;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "ST body: NOT -> (removed) in: BothOff := NOT LH AND NOT RH;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "ST body: NOT -> (removed) in: BothOff := NOT LH AND NOT RH;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "ST body: NOT -> (removed) in: Armed := (Armed OR BothOff) AND NOT Stroke;",
+    "verdict_main": "SAFE"
+   }
+  ]
+ },
+ "st_burner_purge": {
+  "base": "burner_purge.st",
+  "base_main": "SAFE",
+  "base_disc": {},
+  "mutants": 10,
+  "killed_main": 3,
+  "killed_disc_only": 0,
+  "survivors": [
+   {
+    "mutant": "AND -> OR in: Lockout := (Lockout OR FlameFail) AND NOT ResetBtn;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "AND -> OR in: Pilot := CallForHeat AND PurgeDone AND NOT Lockout;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "AND -> OR in: Pilot := CallForHeat AND PurgeDone AND NOT Lockout;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "OR -> AND in: Lockout := (Lockout OR FlameFail) AND NOT ResetBtn;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "NOT -> (removed) in: Lockout := (Lockout OR FlameFail) AND NOT ResetBtn;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "NOT -> (removed) in: Pilot := CallForHeat AND PurgeDone AND NOT Lockout;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "NOT -> (removed) in: MainValve := CallForHeat AND PurgeDone AND FlameProven AND NOT Lockout;",
+    "verdict_main": "SAFE"
+   }
+  ]
+ },
+ "st_door_reversal": {
+  "base": "door_reversal.st",
+  "base_main": "SAFE",
+  "base_disc": {},
+  "mutants": 8,
+  "killed_main": 3,
+  "killed_disc_only": 0,
+  "survivors": [
+   {
+    "mutant": "AND -> OR in: Reversing := (Reversing OR Beam) AND NOT TopLimit;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "OR -> AND in: Reversing := (Reversing OR Beam) AND NOT TopLimit;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "OR -> AND in: MoveUp := OpenCmd OR Reversing;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "NOT -> (removed) in: Reversing := (Reversing OR Beam) AND NOT TopLimit;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "NOT -> (removed) in: MoveDown := CloseCmd AND NOT Beam AND NOT Reversing;",
+    "verdict_main": "SAFE"
+   }
+  ]
+ },
+ "st_estop_reset": {
+  "base": "estop_reset.st",
+  "base_main": "SAFE",
+  "base_disc": {},
+  "mutants": 8,
+  "killed_main": 0,
+  "killed_disc_only": 0,
+  "survivors": [
+   {
+    "mutant": "AND -> OR in: ResetEdge := Reset_prev AND NOT Reset;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "AND -> OR in: Safe := (Safe OR ResetEdge) AND NOT EStop;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "AND -> OR in: Run := Safe AND Start AND NOT EStop;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "AND -> OR in: Run := Safe AND Start AND NOT EStop;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "OR -> AND in: Safe := (Safe OR ResetEdge) AND NOT EStop;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "NOT -> (removed) in: ResetEdge := Reset_prev AND NOT Reset;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "NOT -> (removed) in: Safe := (Safe OR ResetEdge) AND NOT EStop;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "NOT -> (removed) in: Run := Safe AND Start AND NOT EStop;",
+    "verdict_main": "SAFE"
+   }
+  ]
+ },
+ "st_guard_lock": {
+  "base": "guard_lock.st",
+  "base_main": "SAFE",
+  "base_disc": {},
+  "mutants": 5,
+  "killed_main": 4,
+  "killed_disc_only": 0,
+  "survivors": [
+   {
+    "mutant": "NOT -> (removed) in: Rundown(IN := NOT Motor, PT := T#30ms);",
+    "verdict_main": "SAFE"
+   }
+  ]
+ },
+ "st_two_hand": {
+  "base": "two_hand.st",
+  "base_main": "SAFE",
+  "base_disc": {},
+  "mutants": 9,
+  "killed_main": 2,
+  "killed_disc_only": 0,
+  "survivors": [
+   {
+    "mutant": "AND -> OR in: BothOff := NOT LH AND NOT RH;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "AND -> OR in: Armed := (Armed OR BothOff) AND NOT Stroke;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "OR -> AND in: Armed := (Armed OR BothOff) AND NOT Stroke;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "OR -> AND in: Stroke := (Stroke OR Armed) AND LH AND RH;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "NOT -> (removed) in: BothOff := NOT LH AND NOT RH;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "NOT -> (removed) in: BothOff := NOT LH AND NOT RH;",
+    "verdict_main": "SAFE"
+   },
+   {
+    "mutant": "NOT -> (removed) in: Armed := (Armed OR BothOff) AND NOT Stroke;",
+    "verdict_main": "SAFE"
+   }
+  ]
+ }
+}

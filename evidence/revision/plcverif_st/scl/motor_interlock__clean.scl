@@ -1,0 +1,24 @@
+FUNCTION_BLOCK DRIVE
+  VAR_INPUT
+    fwd : BOOL;   
+    rev : BOOL;   
+    maint : BOOL;  
+  END_VAR
+  VAR
+    Motor_A : BOOL;
+    Motor_B : BOOL;
+  END_VAR
+
+BEGIN
+Motor_A := FALSE;
+  Motor_B := FALSE;
+
+  
+  IF fwd AND NOT rev THEN
+    Motor_A := TRUE;
+  ELSIF rev THEN
+    Motor_B := TRUE;
+  END_IF;
+  //#ASSERT NOT (Motor_A AND Motor_B) : P1
+  //#ASSERT NOT (Motor_A AND Motor_B) : P2
+END_FUNCTION_BLOCK
