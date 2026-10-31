@@ -1,0 +1,52 @@
+{
+ "step_seq:S1": {
+  "ladder 8.4": "SAFE",
+  "ladder 8.6": "VIOLATION",
+  "C route 8.6": "VIOLATION"
+ },
+ "step_seq:S2": {
+  "ladder 8.4": "unknown",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "timeout"
+ },
+ "cocktail:C1": {
+  "ladder 8.4": "SAFE",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "SAFE"
+ },
+ "cocktail:C2": {
+  "ladder 8.4": "SAFE",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "SAFE"
+ },
+ "cocktail:C3": {
+  "ladder 8.4": "VIOLATION",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "SAFE"
+ },
+ "cocktail:C4": {
+  "ladder 8.4": "VIOLATION",
+  "ladder 8.6": "VIOLATION",
+  "C route 8.6": "VIOLATION"
+ },
+ "press_safety:P1": {
+  "ladder 8.4": "SAFE",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "timeout"
+ },
+ "press_safety:P2": {
+  "ladder 8.4": "SAFE",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "timeout"
+ },
+ "press_safety:P3": {
+  "ladder 8.4": "SAFE",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "timeout"
+ },
+ "press_safety:P4": {
+  "ladder 8.4": "VIOLATION",
+  "ladder 8.6": "VIOLATION",
+  "C route 8.6": "VIOLATION"
+ }
+}

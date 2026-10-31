@@ -1,0 +1,13 @@
+benchmark,language,implements_cited_requirement,requirements_considered,requirements_not_covered,confidence,reasoning
+g_burner_purge,LD-graphical,,,,,
+g_door_reversal,LD-graphical,,,,,
+g_estop_reset,LD-graphical,,,,,
+g_guard_lock,LD-graphical,,,,,
+g_phase_hold_permissive,LD-graphical,,,,,
+g_two_hand,LD-graphical,,,,,
+g_two_hand_fb,LD-graphical,,,,,
+st_burner_purge,ST,,,,,
+st_door_reversal,ST,,,,,
+st_estop_reset,ST,,,,,
+st_guard_lock,ST,,,,,
+st_two_hand,ST,,,,,

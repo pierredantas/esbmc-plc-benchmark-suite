@@ -1,0 +1,13 @@
+10 84 [{'wall': 0.06, 'rss_mib': 33.2, 'verdict': 'SAFE'}, {'wall': 0.05, 'rss_mib': 33.4, 'verdict': 'SAFE'}, {'wall': 0.04, 'rss_mib': 33.5, 'verdict': 'SAFE'}]
+10 86 [{'wall': 0.07, 'rss_mib': 59.4, 'verdict': 'SAFE'}, {'wall': 0.06, 'rss_mib': 59.6, 'verdict': 'SAFE'}, {'wall': 0.06, 'rss_mib': 59.5, 'verdict': 'SAFE'}]
+100 84 [{'wall': 0.07, 'rss_mib': 43.6, 'verdict': 'SAFE'}, {'wall': 0.06, 'rss_mib': 43.5, 'verdict': 'SAFE'}, {'wall': 0.06, 'rss_mib': 43.8, 'verdict': 'SAFE'}]
+100 86 [{'wall': 0.16, 'rss_mib': 90.0, 'verdict': 'SAFE'}, {'wall': 0.16, 'rss_mib': 89.7, 'verdict': 'SAFE'}, {'wall': 0.16, 'rss_mib': 89.9, 'verdict': 'SAFE'}]
+500 84 [{'wall': 0.24, 'rss_mib': 97.6, 'verdict': 'SAFE'}, {'wall': 0.22, 'rss_mib': 98.8, 'verdict': 'SAFE'}, {'wall': 0.22, 'rss_mib': 97.5, 'verdict': 'SAFE'}]
+500 86 [{'wall': 1.57, 'rss_mib': 240.6, 'verdict': 'SAFE'}, {'wall': 1.53, 'rss_mib': 241.2, 'verdict': 'SAFE'}, {'wall': 1.56, 'rss_mib': 240.7, 'verdict': 'SAFE'}]
+1000 84 [{'wall': 0.59, 'rss_mib': 188.3, 'verdict': 'SAFE'}, {'wall': 0.57, 'rss_mib': 187.0, 'verdict': 'SAFE'}, {'wall': 0.57, 'rss_mib': 190.0, 'verdict': 'SAFE'}]
+1000 86 [{'wall': 8.08, 'rss_mib': 454.7, 'verdict': 'SAFE'}, {'wall': 8.13, 'rss_mib': 452.9, 'verdict': 'SAFE'}, {'wall': 8.64, 'rss_mib': 454.9, 'verdict': 'SAFE'}]
+2000 84 [{'wall': 1.97, 'rss_mib': 406.5, 'verdict': 'SAFE'}, {'wall': 1.99, 'rss_mib': 406.0, 'verdict': 'SAFE'}, {'wall': 1.86, 'rss_mib': 409.4, 'verdict': 'SAFE'}]
+2000 86 [{'wall': 56.86, 'rss_mib': 940.4, 'verdict': 'SAFE'}, {'wall': 57.93, 'rss_mib': 895.8, 'verdict': 'SAFE'}, {'wall': 58.7, 'rss_mib': 931.2, 'verdict': 'SAFE'}]
+4000 84 [{'wall': 6.37, 'rss_mib': 1076.8, 'verdict': 'SAFE'}, {'wall': 6.22, 'rss_mib': 1077.1, 'verdict': 'SAFE'}, {'wall': 6.17, 'rss_mib': 1067.8, 'verdict': 'SAFE'}]
+4000 86 [{'wall': 120.05, 'rss_mib': 68.2, 'verdict': 'other'}]
+FINISHED

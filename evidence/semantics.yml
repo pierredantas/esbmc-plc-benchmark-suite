@@ -78,6 +78,7 @@ conflict_monitor_trip_gm:
   scan_order: sequential rung order within one scan
   verdict_scope: holds under the stated scan order
 conveyor_jam_lockout:
+  retained_state: coils and edge or timer memory carry over from the previous scan
   scan_order: sequential statement order
   verdict_scope: holds under the stated scan order
 counter_scalability:
@@ -115,6 +116,7 @@ fbd_comb_and:
   scan_order: tool-defined
   verdict_scope: holds under the stated scan order
 fbd_counter_reset:
+  retained_state: coils and edge or timer memory carry over from the previous scan
   scan_order: tool-defined
   verdict_scope: holds under the stated scan order
 fbd_fan_damper:
@@ -124,6 +126,7 @@ fbd_reactor_2oo3:
   scan_order: tool-defined
   verdict_scope: holds under the stated scan order
 fbd_seal_in:
+  retained_state: coils and edge or timer memory carry over from the previous scan
   scan_order: tool-defined
   verdict_scope: holds under the stated scan order
 fire_damper_interlock_ds:
@@ -258,46 +261,56 @@ g_star_delta:
   scan_order: sequential rung order within one scan
   verdict_scope: holds under the stated scan order
 g_start_cycle:
-  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
+  retained_state: values carry over between scans and are exchanged between program units
   scan_order: sequential rung order within one scan
+  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
   verdict_scope: semantics-dependent
 g_stop_eq:
-  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
+  retained_state: values carry over between scans and are exchanged between program units
   scan_order: sequential rung order within one scan
+  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
   verdict_scope: semantics-dependent
 g_substation_breaker:
   scan_order: sequential rung order within one scan
   verdict_scope: holds under the stated scan order
 g_tank_assignment:
-  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
+  retained_state: values carry over between scans and are exchanged between program units
   scan_order: sequential rung order within one scan
+  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
   verdict_scope: semantics-dependent
 g_tank_start_eq:
-  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
+  retained_state: values carry over between scans and are exchanged between program units
   scan_order: sequential rung order within one scan
+  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
   verdict_scope: semantics-dependent
 g_tank_start_le:
-  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
+  retained_state: values carry over between scans and are exchanged between program units
   scan_order: sequential rung order within one scan
+  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
   verdict_scope: semantics-dependent
 g_tank_stop_ge:
-  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
+  retained_state: values carry over between scans and are exchanged between program units
   scan_order: sequential rung order within one scan
+  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
   verdict_scope: semantics-dependent
 g_tank_sub_function:
+  retained_state: values carry over between scans and are exchanged between program units
   scan_order: sequential rung order within one scan
   verdict_scope: holds under the stated scan order
 g_tank_substitution_coil:
-  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
+  retained_state: values carry over between scans and are exchanged between program units
   scan_order: sequential rung order within one scan
+  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
   verdict_scope: semantics-dependent
 g_tank_value_filtering:
-  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
+  retained_state: values carry over between scans and are exchanged between program units
   scan_order: sequential rung order within one scan
+  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
   verdict_scope: semantics-dependent
 g_tank_valves:
-  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
+  retained_state: values carry over between scans and are exchanged between program units
   scan_order: sequential rung order within one scan
+  arithmetic: 'H1: no integer overflow; the program can overflow, so SAFE is conditional'
   verdict_scope: semantics-dependent
 g_timer_latch_mix:
   retained_state: coils and edge or timer memory carry over from the previous scan
@@ -324,7 +337,7 @@ g_traffic_light:
   verdict_scope: holds under the stated scan order
 g_traffic_light_pedestrian:
   retained_state: coils and edge or timer memory carry over from the previous scan
-  scan_order: sequential rung order within one scan
+  scan_order: tool-defined
   timer_counter_model: one scan per tick; verdict not assumed to transfer to another timing model
   verdict_scope: semantics-dependent
 g_transformer_protect:
@@ -339,6 +352,7 @@ g_two_hand:
   scan_order: sequential rung order within one scan
   verdict_scope: holds under the stated scan order
 g_two_hand_fb:
+  retained_state: values carry over between scans and are exchanged between program units
   scan_order: sequential rung order within one scan
   verdict_scope: holds under the stated scan order
 g_vessel_empty_permissive:
@@ -354,9 +368,11 @@ il_comb_and:
   scan_order: sequential statement order
   verdict_scope: holds under the stated scan order
 il_counter_reset:
+  retained_state: coils and edge or timer memory carry over from the previous scan
   scan_order: sequential statement order
   verdict_scope: holds under the stated scan order
 il_seal_in:
+  retained_state: coils and edge or timer memory carry over from the previous scan
   scan_order: sequential statement order
   verdict_scope: holds under the stated scan order
 intrusion_dual_alarm:
@@ -364,6 +380,7 @@ intrusion_dual_alarm:
   scan_order: sequential rung order within one scan
   verdict_scope: holds under the stated scan order
 kiln_door_lockout:
+  retained_state: coils and edge or timer memory carry over from the previous scan
   scan_order: sequential statement order
   verdict_scope: holds under the stated scan order
 labeler_web_break_ds:
@@ -483,6 +500,7 @@ purge_fault_lockout:
   scan_order: sequential rung order within one scan
   verdict_scope: holds under the stated scan order
 reactor_pressure_lockout:
+  retained_state: coils and edge or timer memory carry over from the previous scan
   scan_order: sequential statement order
   verdict_scope: holds under the stated scan order
 reject_gate_triple_output:
@@ -501,16 +519,18 @@ rr_crossing_preempt:
   scan_order: sequential rung order within one scan
   verdict_scope: holds under the stated scan order
 sensor_forge:
-  retained_state: coils and edge or timer memory carry over from the previous scan
   scan_order: sequential statement order
   verdict_scope: holds under the stated scan order
 sfc_batch_fill_drain:
+  retained_state: coils and edge or timer memory carry over from the previous scan
   scan_order: tool-defined
   verdict_scope: holds under the stated scan order
 sfc_counter_reset:
+  retained_state: coils and edge or timer memory carry over from the previous scan
   scan_order: tool-defined
   verdict_scope: holds under the stated scan order
 sfc_elevator_door:
+  retained_state: coils and edge or timer memory carry over from the previous scan
   scan_order: tool-defined
   verdict_scope: holds under the stated scan order
 smoke_detector_shutdown:
@@ -529,6 +549,7 @@ st_compressor_cycle:
   scan_order: sequential statement order
   verdict_scope: holds under the stated scan order
 st_counter_reset:
+  retained_state: coils and edge or timer memory carry over from the previous scan
   scan_order: sequential statement order
   verdict_scope: holds under the stated scan order
 st_door_reversal:

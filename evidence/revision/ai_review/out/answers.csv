@@ -1,0 +1,118 @@
+benchmark,language,scan_order,retained_state,timers_or_counters,overflow_possible,setreset_coils,verdict_scope,confidence,reasoning
+airlock_pressure_interlock,ST,statement,no,no,no,no,holds-under-stated-order,high,Outputs are assigned unconditionally across all branches with no internal state or timers.
+breaker_earth_trip_interlock,ST,statement,no,no,no,no,holds-under-stated-order,high,The output closing_coil is completely assigned in all execution branches purely from current inputs.
+chemical_feed_fault_lockout,LD-textual,rung,yes,no,no,no,holds-under-stated-order,high,The dose_fault coil uses a self-holding seal-in branch that retains state across scans.
+conveyor_jam_lockout,ST,statement,yes,no,no,no,holds-under-stated-order,high,Internal variables running and jam_this_run retain their state across scans to implement the lockout.
+counter_scalability,ST,statement,yes,no,yes,no,semantics-dependent,high,Unbounded integer increment on scan_cnt can overflow and governs the armed condition checked by the property.
+dosing_pump_lockout,ST,statement,yes,no,no,no,holds-under-stated-order,high,The dry_run_fault flag and dosing_pump read before write retain state across scans.
+elevator_door_motion_interlock,ST,statement,no,no,no,no,holds-under-stated-order,high,The car_moving output is combinational and unconditionally assigned in all branches without retained state.
+fbd_comb_and,FBD,tool-defined,no,no,no,no,holds-under-stated-order,high,The program is a purely combinational AND block diagram whose block execution order is tool-defined.
+fbd_counter_reset,FBD,tool-defined,yes,no,yes,no,holds-under-stated-order,high,"The feedback loop on Cnt creates retained state and allows INT addition overflow, but the reset invariant holds under any overflow behavior."
+fbd_fan_damper,FBD,tool-defined,no,no,no,no,holds-under-stated-order,high,"The combinational logic computes fan directly from inputs without feedback, state, or arithmetic."
+fbd_reactor_2oo3,FBD,tool-defined,no,no,no,no,holds-under-stated-order,high,"Pure combinational 2oo3 voting logic with no internal state, timers, or arithmetic."
+fbd_seal_in,FBD,tool-defined,yes,no,no,no,holds-under-stated-order,high,"The output Run is fed back into the OR block creating retained state, but the circuit has no arithmetic, timers, or set/reset coils."
+g_batch_mixer,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,Direct combinational ladder rungs with standard coils and no feedback or state retention.
+g_batch_reactor,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,"Standard combinational ladder rungs without feedback, state retention, or arithmetic."
+g_building_lighting,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,Combinational ladder rungs where outputs are computed directly from inputs with no retained state.
+g_burner_purge,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,"The seal-in circuit for Lockout retains state across scans, but the rungs use standard coils without timers or arithmetic."
+g_bus_coupler_changeover,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,The logic is purely combinational across input contacts and output coils with no retained state or arithmetic.
+g_busbar_interlock,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,"Pure feed-forward combinational interlock logic with no retained state, timers, or arithmetic."
+g_comb_and,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,The program consists of a single combinational AND rung with no retained state or arithmetic.
+g_comb_mixed,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,The program evaluates combinational AND/OR logic over input contacts with no retained state.
+g_comb_or,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,The program is a single combinational OR rung without retained state or arithmetic.
+g_compressor_cycle,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,"The rung uses a seal-in contact on Load creating retained state, but the invariant holds under rung order via the series PressHigh contact."
+g_conveyor_interlock,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,The interlock logic is purely combinational from inputs to coils without retained state.
+g_ctd_load,LD-graphical,rung,yes,yes,yes,no,holds-under-stated-order,high,"The CTD block maintains retained state and can underflow, but under rung order asserting Load resets Empty to false regardless of timing or overflow."
+g_ctu_saturate,LD-graphical,rung,yes,yes,no,no,semantics-dependent,high,"The CTU counter block retains internal state, and whether Done and Reset can be simultaneously active depends on counter reset dominance and update timing."
+g_dead_bus_close_check,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,Combinational contacts directly enforce the breaker close condition with no state retained across scans.
+g_door_reversal,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,"The Reversing coil uses a self-holding seal-in circuit, and MoveDown is directly gated by a normally-closed Beam contact."
+g_elevator_door,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,Outputs door_open and drive depend solely on current scan inputs and are mutually exclusive via complementary move_req contacts.
+g_estop_reset,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,"Reset_prev and a Safe seal-in rung retain state across scans, while Run is directly gated by a series NOT EStop contact."
+g_failsafe_motor_latch,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,"MOTOR_RUN is sealed in across scans, and series contact THERMAL_OVERLOAD_NC directly gates the coil."
+g_ftrig_edge,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,"Sig_prev retains the previous input state across scans, and OneShot is directly gated by a series NOT Sig contact."
+g_fwd_rev_interlock,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,Motor outputs use seal-in rungs with cross-interlocking contacts that prevent simultaneous energization under rung scan order.
+g_guard_lock,LD-graphical,rung,yes,yes,no,no,holds-under-stated-order,high,"Mutual exclusion of Unlocked and Motor is enforced combinatorially by OpenReq and NOT OpenReq, independent of timer semantics."
+g_hvac_fan_delay,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,"The program is purely combinational with mutual exclusion enforced by opposing cool_call contacts, using no timers or internal state."
+g_independent_hp_trip,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,The program consists of a single combinational rung assigning pressure_high to vent_valve with no retained state or timers.
+g_motor_interlock,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,Outputs are purely combinational functions of current-scan inputs with no state retention or timers.
+g_packaging_filler,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,"The program is purely combinational with fill_valve gated by NOT full, involving no state retention or timers."
+g_phase_hold_permissive,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,"Self-holding seal-in logic on held retains state across scans, and rung order guarantees mutual exclusion with heater without timers or counters."
+g_ppu_evolution_1,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,The program is a single combinational rung computing Open from A and B with no retained state or timers.
+g_pump_alternation,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,"Self-holding logic on Call and state feedback on Duty retain state across scans, while PumpA and PumpB are mutually exclusive via Duty."
+g_rtrig_edge,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,"The previous scan value of Sig is retained via Sig_prev to detect rising edges, with no arithmetic or timing dependencies."
+g_seal_in,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,"The self-holding contact creates retained state for Run, while the invariant depends only on the rung evaluation order."
+g_star_delta,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,"Outputs are purely combinational functions of input contacts within the current scan, so no state is retained."
+g_start_cycle,LD-graphical,rung,yes,no,yes,no,holds-under-stated-order,high,"Although integer subtraction in valves_handler can overflow, the invariants on CYCLE_ON depend solely on the rung scan order."
+g_stop_eq,LD-graphical,rung,yes,no,yes,no,holds-under-stated-order,high,"CYCLE_ON uses seal-in feedback and valves_handler contains bounded arithmetic, but the invariant on STOP and CYCLE_ON depends only on rung scan order."
+g_substation_breaker,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,The breaker and alarm logic consists entirely of feedforward rungs from inputs with no retained state or arithmetic.
+g_tank_assignment,LD-graphical,rung,yes,no,yes,no,holds-under-stated-order,high,"A seal-in contact retains the CYCLE_ON state and subtraction allows overflow, but termination holds unconditionally across scan executions."
+g_tank_start_eq,LD-graphical,rung,yes,no,yes,no,holds-under-stated-order,high,"The CYCLE_ON seal-in contact retains state and valves_handler subtracts from an INT, but termination is independent of arithmetic semantics."
+g_tank_start_le,LD-graphical,rung,yes,no,yes,no,holds-under-stated-order,high,"CYCLE_ON uses a seal-in contact retaining state across scans, and loop-free termination holds regardless of INT subtraction underflow."
+g_tank_stop_ge,LD-graphical,rung,yes,no,yes,no,holds-under-stated-order,high,"A seal-in contact retains the CYCLE_ON state, while loop-free termination holds under any overflow or timing semantics."
+g_tank_sub_function,LD-graphical,rung,yes,no,yes,no,holds-under-stated-order,high,"The self-holding rung retains CYCLE_ON state, the SUB block allows INT underflow, and loop-free termination holds under any execution model."
+g_tank_substitution_coil,LD-graphical,rung,yes,no,yes,no,holds-under-stated-order,high,"CYCLE_ON feedback via contact 21 retains state across scans, and termination holds unconditionally despite potential INT subtraction underflow."
+g_tank_value_filtering,LD-graphical,rung,yes,no,yes,no,holds-under-stated-order,high,"A seal-in contact maintains CYCLE_ON across scans, and loop-free termination is unaffected by potential INT subtraction underflow."
+g_tank_valves,LD-graphical,rung,yes,no,yes,no,holds-under-stated-order,high,"The CYCLE_ON seal-in contact retains state across scans, while termination is loop-free and independent of INT arithmetic underflow."
+g_timer_latch_mix,LD-graphical,rung,yes,yes,no,yes,semantics-dependent,high,The invariant !(Alarm && Ack) depends on set/reset priority between the conflicting latch coils as well as TON timer expiration.
+g_tof_hold,LD-graphical,rung,yes,yes,no,no,holds-under-stated-order,medium,"Although TOF0 retains timer state, the invariant !Pir || Light depends only on the immediate activation of TOF when Pir is true, holding under any reasonable timing model."
+g_ton_single,LD-graphical,rung,yes,yes,no,no,holds-under-stated-order,high,"The TON timer requires Btn to be true for Light to activate, ensuring the invariant holds under any timing model."
+g_tp_pulse,LD-graphical,rung,yes,yes,no,no,semantics-dependent,high,"The TP pulse timer holds Out true after Trig drops, making property satisfaction dependent on the scan timing model."
+g_traffic_light,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,Combinational ladder logic computes green lights directly from current inputs without any retained state or timers.
+g_traffic_light_pedestrian,LD-graphical,tool-defined,yes,yes,no,yes,semantics-dependent,high,"The program uses FBD and SFC execution with TON timers and set/reset actions, making order tool-defined and verdicts semantics-dependent."
+g_transformer_protect,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,Combinational ladder rungs ensure transformer_on requires NOT oil_temp_high with no state retention across scans.
+g_trip_lockout_86,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,"A seal-in ladder rung retains lockout state across scans, and top-to-bottom rung execution prevents simultaneous lockout and reclose."
+g_two_hand,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,Seal-in rungs retain state across scans while the final rung guarantees Stroke requires both LH and RH.
+g_two_hand_fb,LD-graphical,rung,yes,no,no,no,holds-under-stated-order,high,"The function block instance retains internal state across scans, and its logic directly enforces that Stroke implies both LH and RH."
+g_vessel_empty_permissive,LD-graphical,rung,no,no,no,no,holds-under-stated-order,high,Purely combinational ladder rungs compute output valves directly from input conditions without retaining state.
+hoist_overload_cutoff,ST,statement,no,no,no,no,holds-under-stated-order,high,All outputs are unconditionally computed each scan from current inputs with no retained state.
+il_comb_and,IL,statement,no,no,no,no,holds-under-stated-order,high,Purely combinational instruction list instructions compute Y from inputs without retaining state.
+il_counter_reset,IL,statement,yes,no,yes,no,holds-under-stated-order,high,"Integer variable Cnt increments each scan, but the invariant on Reset is independent of counter overflow."
+il_seal_in,IL,statement,yes,no,no,no,holds-under-stated-order,high,"The self-holding output Run is read before it is written, preserving state across scans."
+intrusion_dual_alarm,LD-textual,rung,yes,no,no,no,holds-under-stated-order,high,"Rungs execute in order with alarm_state latching via feedback, ensuring siren_out is set on sensor_trip."
+kiln_door_lockout,ST,statement,yes,no,no,no,holds-under-stated-order,high,The door_fault_latched flag retains its boolean state across scans until reset_button is pressed.
+ld_comb_and,LD-textual,rung,no,no,no,no,holds-under-stated-order,high,A single combinational ladder rung computes output Y directly from inputs without retained state.
+ld_comb_mixed,LD-textual,rung,no,no,no,no,holds-under-stated-order,high,"Pure combinational ladder logic with no retained state, timers, or arithmetic."
+ld_comb_or,LD-textual,rung,no,no,no,no,holds-under-stated-order,high,Pure combinational ladder logic computing an OR condition without state.
+ld_ctd_load,LD-textual,rung,yes,yes,yes,no,semantics-dependent,high,The property !(Empty && Load) depends on counter load dominance semantics.
+ld_ctu_saturate,LD-textual,rung,yes,yes,no,no,semantics-dependent,high,"The counter saturates at preset preventing overflow, while the property depends on counter reset dominance semantics."
+ld_edge_counter,LD-textual,rung,yes,yes,yes,no,semantics-dependent,high,"Unbounded counter accumulation can overflow, and the property depends on counter reset dominance semantics."
+ld_ftrig_edge,LD-textual,rung,yes,no,no,no,holds-under-stated-order,high,"Falling-edge detection retains state across scans via Sig_prev, and the property holds under the stated rung scan order."
+ld_latch_basic,LD-textual,rung,yes,no,no,yes,semantics-dependent,high,The property !(Q && R) depends on unlatch-reset priority over latch-set.
+ld_rtrig_edge,LD-textual,rung,yes,no,no,no,holds-under-stated-order,high,"Rising-edge detection retains state across scans via Sig_prev, and the property holds under the stated rung scan order."
+ld_seal_in,LD-textual,rung,yes,no,no,no,holds-under-stated-order,high,"The seal-in contact XIC(Run) creates retained state across scans, and the invariant holds under rung order without timers or set/reset coils."
+ld_timer_latch_mix,LD-textual,rung,yes,yes,no,yes,semantics-dependent,high,The latch (OTL) and unlatch (OTU) coils operating on Alarm make the invariant dependent on set/reset execution priority alongside the TON timer.
+ld_tof_hold,LD-textual,rung,yes,yes,no,no,semantics-dependent,high,"The output Light depends on the TOF timer function block, whose execution and timing semantics determine the invariant's validity."
+ld_ton_chain2,LD-textual,rung,yes,yes,no,no,holds-under-stated-order,high,"Mutual exclusion of P1 and P2 is guaranteed by complementary logic on T1 under rung scan order, independent of timer timing semantics."
+ld_ton_single,LD-textual,rung,yes,yes,no,no,semantics-dependent,high,"The output Light is driven by TON, whose reset and timing model determine whether Light can be asserted when Btn is false."
+ld_tp_pulse,LD-textual,rung,yes,yes,no,no,semantics-dependent,high,"The pulse timer (TP) holds the output high after the trigger drops, making the invariant verdict directly dependent on timer duration and scan timing."
+mixer_lid_stall_interlock,ST,statement,no,no,no,no,holds-under-stated-order,high,The program assigns all outputs unconditionally via combinational IF statements on each scan without retaining any state.
+motor_interlock,ST,statement,no,no,no,no,holds-under-stated-order,high,"The outputs are cleared at the start of each scan and interlocked via combinational statements, retaining no state across scans."
+protection_lockout_cascade,LD-textual,rung,yes,no,no,no,holds-under-stated-order,high,"Self-holding OTE rungs retain state across scans without using timers, counters, or set/reset coils."
+purge_fault_lockout,LD-textual,rung,yes,no,no,no,holds-under-stated-order,high,The fault lockout uses a self-holding OTE rung to retain state across scans with pure boolean logic.
+reactor_pressure_lockout,ST,statement,yes,no,no,no,holds-under-stated-order,high,"The internal variable fault_flag retains state across scans, and with pure boolean logic the verdict depends only on statement order."
+reject_gate_triple_output,LD-textual,rung,yes,no,no,no,holds-under-stated-order,high,The reject latch is a self-holding OTE coil retaining state across scans without counter or timer function blocks.
+sensor_forge,ST,statement,no,no,no,no,holds-under-stated-order,high,All outputs are unconditionally updated from current inputs each scan without retaining any state.
+sfc_batch_fill_drain,SFC,tool-defined,yes,no,no,no,holds-under-stated-order,high,"Active step state is retained across scans in SFC, with pure boolean qualifiers ensuring mutual exclusion independent of timing or overflow semantics."
+sfc_counter_reset,SFC,tool-defined,yes,no,yes,no,holds-under-stated-order,high,"Unbounded incrementing of the INT variable Cnt makes overflow possible, but the reset invariant verdict does not depend on overflow behavior."
+sfc_elevator_door,SFC,tool-defined,yes,no,no,no,holds-under-stated-order,high,"Active step state is retained across scans, with mutual exclusion between door opening and car motion guaranteed by the SFC structure."
+st_burner_purge,ST,statement,yes,no,no,no,holds-under-stated-order,high,"Lockout retains its value across scans via a self-holding boolean expression, and the invariant holds directly from the assignment to MainValve."
+st_comb_and,ST,statement,no,no,no,no,holds-under-stated-order,high,The program is purely combinational boolean logic with no retained state or timers.
+st_compressor_cycle,ST,statement,yes,no,no,no,holds-under-stated-order,high,"Load retains state through a latching expression, and the invariant holds directly from the assignment conjunction with NOT PressHigh."
+st_counter_reset,ST,statement,yes,no,yes,no,holds-under-stated-order,high,"Cnt increments on a bounded INT allowing overflow, but the reset invariant holds regardless because OUT is directly assigned ResetCounterValue when Reset is true."
+st_door_reversal,ST,statement,yes,no,no,no,holds-under-stated-order,high,"Reversing retains state across scans, and MoveDown explicitly requires NOT Beam, satisfying the invariant."
+st_estop_reset,ST,statement,yes,no,no,no,holds-under-stated-order,high,"Reset_prev and Safe retain state across scans, and Run directly includes NOT EStop to ensure the invariant holds."
+st_guard_lock,ST,statement,yes,yes,no,no,holds-under-stated-order,high,"The TON timer retains state, but the invariant holds unconditionally because Unlocked and Motor require contradictory OpenReq values."
+st_pump_alternation,ST,statement,yes,no,no,no,holds-under-stated-order,high,"Call and Duty retain state across scans, while mutual exclusion of PumpA and PumpB holds directly from complementary Duty conditions."
+st_quad_valve_lockout,ST,statement,no,no,no,no,holds-under-stated-order,high,Explicit initialization of all valve variables to FALSE at each scan start ensures no state is retained.
+st_seal_in,ST,statement,yes,no,no,no,holds-under-stated-order,high,Self-referencing Run on the right-hand side of the assignment creates a seal-in circuit that retains state across scans.
+st_star_delta,ST,statement,no,no,no,no,holds-under-stated-order,high,"Timer done flags are simple boolean inputs rather than timer function blocks, leaving all logic combinational with no retained state."
+st_swat_eq1,ST,statement,yes,no,no,no,holds-under-stated-order,high,Latching boolean assignments retain state across scans while only relational comparisons without arithmetic are used.
+st_swat_ge1,ST,statement,yes,no,no,no,holds-under-stated-order,high,"Latching boolean equations retain state across scans, but only relational comparisons with no arithmetic operations are present."
+st_swat_le1,ST,statement,yes,no,no,no,holds-under-stated-order,high,"State is retained through boolean seal-in logic, while only relational comparisons without arithmetic are evaluated."
+st_swat_level1,ST,statement,yes,no,yes,no,holds-under-stated-order,high,"The subtraction IN1 - 5 can underflow bounded DINT, but loop-free code ensures termination holds under any overflow behavior."
+st_swat_sub1,ST,statement,yes,no,yes,no,holds-under-stated-order,high,"The subtraction IN1 - 5 in SUB_0 can underflow DINT, but loop-free execution ensures termination holds under any overflow model."
+st_swat_timer1,ST,statement,yes,yes,no,no,semantics-dependent,high,The program uses an IEC TON timer whose execution and output depend on timing semantics.
+st_three_pump_lockout,ST,statement,no,no,no,no,holds-under-stated-order,high,All pump outputs are unconditionally assigned in an exhaustive IF-ELSIF-ELSE structure based solely on current inputs.
+st_two_hand,ST,statement,yes,no,no,no,holds-under-stated-order,high,Variables Armed and Stroke retain state across scans via feedback terms in Boolean assignments.
+tank_overflow,ST,statement,yes,no,no,no,holds-under-stated-order,high,The pump variable retains its value between scans when neither IF condition is satisfied.
+welder_gas_shield_interlock,ST,statement,no,no,no,no,holds-under-stated-order,high,Output arc_on is completely determined each scan by an exhaustive IF-ELSIF-ELSE statement without retained state.

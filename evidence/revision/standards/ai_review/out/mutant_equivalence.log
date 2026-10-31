@@ -1,0 +1,75 @@
+g_burner_purge:S1 {'equivalent': False, 'variables_that_differ': ['FAN']}
+g_burner_purge:S2 {'equivalent': False, 'variables_that_differ': ['LOCKOUT', 'MAINVALVE', 'PILOT']}
+g_burner_purge:S3 {'equivalent': False, 'variables_that_differ': ['LOCKOUT', 'MAINVALVE', 'PILOT']}
+g_burner_purge:S4 {'equivalent': False, 'variables_that_differ': ['LOCKOUT', 'MAINVALVE', 'PILOT']}
+g_burner_purge:S5 {'equivalent': False, 'variables_that_differ': ['PILOT']}
+g_burner_purge:S6 {'equivalent': False, 'variables_that_differ': ['PILOT']}
+g_burner_purge:S7 {'equivalent': False, 'variables_that_differ': ['PILOT']}
+g_burner_purge:S8 {'equivalent': False, 'variables_that_differ': ['MAINVALVE']}
+g_burner_purge:S9 {'equivalent': False, 'variables_that_differ': ['MAINVALVE']}
+g_door_reversal:S1 {'equivalent': False, 'variables_that_differ': ['MOVEDOWN', 'MOVEUP', 'REVERSING']}
+g_door_reversal:S2 {'equivalent': False, 'variables_that_differ': ['MOVEDOWN', 'MOVEUP', 'REVERSING']}
+g_door_reversal:S3 {'equivalent': False, 'variables_that_differ': ['MOVEDOWN', 'MOVEUP', 'REVERSING']}
+g_door_reversal:S4 {'equivalent': False, 'variables_that_differ': ['MOVEDOWN']}
+g_door_reversal:S5 {'equivalent': False, 'variables_that_differ': ['MOVEDOWN']}
+g_door_reversal:S6 {'equivalent': False, 'variables_that_differ': ['MOVEUP']}
+g_door_reversal:S7 {'equivalent': False, 'variables_that_differ': ['MOVEUP']}
+g_estop_reset:S1 {'equivalent': False, 'variables_that_differ': ['RESETEDGE', 'RUN', 'SAFE']}
+g_estop_reset:S2 {'equivalent': False, 'variables_that_differ': ['RESETEDGE', 'RUN', 'SAFE']}
+g_estop_reset:S3 {'equivalent': False, 'variables_that_differ': ['RUN', 'SAFE']}
+g_estop_reset:S4 {'equivalent': False, 'variables_that_differ': ['RUN', 'SAFE']}
+g_estop_reset:S5 {'equivalent': False, 'variables_that_differ': ['RUN', 'SAFE']}
+g_estop_reset:S6 {'equivalent': False, 'variables_that_differ': ['RUN']}
+g_estop_reset:S7 {'equivalent': False, 'variables_that_differ': ['RUN']}
+g_estop_reset:S8 {'equivalent': False, 'variables_that_differ': ['RUN']}
+g_estop_reset:S9 {'equivalent': False, 'variables_that_differ': ['RESETEDGE', 'RESET_PREV', 'RUN', 'SAFE']}
+g_guard_lock:S1 {'equivalent': False, 'variables_that_differ': ['UNLOCKED']}
+g_guard_lock:S2 {'equivalent': False, 'variables_that_differ': ['MOTOR', 'UNLOCKED']}
+g_guard_lock:S3 {'equivalent': False, 'variables_that_differ': ['MOTOR', 'UNLOCKED']}
+g_phase_hold_permissive:S1 {'equivalent': False, 'variables_that_differ': ['HEATER', 'HELD']}
+g_phase_hold_permissive:S2 {'equivalent': False, 'variables_that_differ': ['HEATER', 'HELD']}
+g_phase_hold_permissive:S3 {'equivalent': False, 'variables_that_differ': ['HEATER', 'HELD']}
+g_phase_hold_permissive:S4 {'equivalent': False, 'variables_that_differ': ['HEATER', 'HELD']}
+g_phase_hold_permissive:S5 {'equivalent': False, 'variables_that_differ': ['HEATER']}
+g_phase_hold_permissive:S6 {'equivalent': False, 'variables_that_differ': ['HEATER']}
+g_two_hand:S1 {'equivalent': False, 'variables_that_differ': ['ARMED', 'BOTHOFF', 'STROKE']}
+g_two_hand:S2 {'equivalent': False, 'variables_that_differ': ['ARMED', 'BOTHOFF', 'STROKE']}
+g_two_hand:S3 {'equivalent': False, 'variables_that_differ': ['ARMED', 'STROKE']}
+g_two_hand:S4 {'equivalent': False, 'variables_that_differ': ['ARMED', 'STROKE']}
+g_two_hand:S5 {'equivalent': False, 'variables_that_differ': ['ARMED', 'STROKE']}
+g_two_hand:S6 {'equivalent': False, 'variables_that_differ': ['ARMED', 'STROKE']}
+g_two_hand_fb:S1 {'equivalent': False, 'variables_that_differ': ['STROKE']}
+g_two_hand_fb:S2 {'equivalent': False, 'variables_that_differ': ['STROKE']}
+g_two_hand_fb:S3 {'equivalent': False, 'variables_that_differ': ['STROKE']}
+g_two_hand_fb:S4 {'equivalent': False, 'variables_that_differ': ['STROKE']}
+g_two_hand_fb:S5 {'equivalent': False, 'variables_that_differ': ['STROKE']}
+g_two_hand_fb:S6 {'equivalent': False, 'variables_that_differ': ['STROKE']}
+st_burner_purge:S1 {'equivalent': False, 'variables_that_differ': ['LOCKOUT', 'MAINVALVE', 'PILOT']}
+st_burner_purge:S2 {'equivalent': False, 'variables_that_differ': ['PILOT']}
+st_burner_purge:S3 {'equivalent': False, 'variables_that_differ': ['PILOT']}
+st_burner_purge:S4 {'equivalent': False, 'variables_that_differ': ['LOCKOUT', 'MAINVALVE', 'PILOT']}
+st_burner_purge:S5 {'equivalent': False, 'variables_that_differ': ['LOCKOUT', 'MAINVALVE', 'PILOT']}
+st_burner_purge:S6 {'equivalent': False, 'variables_that_differ': ['PILOT']}
+st_burner_purge:S7 {'equivalent': False, 'variables_that_differ': ['MAINVALVE']}
+st_door_reversal:S1 {'equivalent': False, 'variables_that_differ': ['MOVEDOWN', 'MOVEUP', 'REVERSING']}
+st_door_reversal:S2 {'equivalent': False, 'variables_that_differ': ['MOVEDOWN', 'MOVEUP', 'REVERSING']}
+st_door_reversal:S3 {'equivalent': False, 'variables_that_differ': ['MOVEUP']}
+st_door_reversal:S4 {'equivalent': False, 'variables_that_differ': ['MOVEDOWN', 'MOVEUP', 'REVERSING']}
+st_door_reversal:S5 {'equivalent': False, 'variables_that_differ': ['MOVEDOWN']}
+st_estop_reset:S1 {'equivalent': False, 'variables_that_differ': ['RESETEDGE', 'RUN', 'SAFE']}
+st_estop_reset:S2 {'equivalent': False, 'variables_that_differ': ['RUN', 'SAFE']}
+st_estop_reset:S3 {'equivalent': False, 'variables_that_differ': ['RUN']}
+st_estop_reset:S4 {'equivalent': False, 'variables_that_differ': ['RUN']}
+st_estop_reset:S5 {'equivalent': False, 'variables_that_differ': ['RUN', 'SAFE']}
+st_estop_reset:S6 {'equivalent': False, 'variables_that_differ': ['RESETEDGE', 'RUN', 'SAFE']}
+st_estop_reset:S7 {'equivalent': False, 'variables_that_differ': ['RUN', 'SAFE']}
+st_estop_reset:S8 {'equivalent': False, 'variables_that_differ': ['RUN']}
+st_guard_lock:S1 {'equivalent': False, 'variables_that_differ': ['UNLOCKED']}
+st_two_hand:S1 {'equivalent': False, 'variables_that_differ': ['ARMED', 'BOTHOFF', 'STROKE']}
+st_two_hand:S2 {'equivalent': False, 'variables_that_differ': ['ARMED', 'STROKE']}
+st_two_hand:S3 {'equivalent': False, 'variables_that_differ': ['ARMED', 'STROKE']}
+st_two_hand:S4 {'equivalent': False, 'variables_that_differ': ['ARMED', 'STROKE']}
+st_two_hand:S5 {'equivalent': False, 'variables_that_differ': ['ARMED', 'BOTHOFF', 'STROKE']}
+st_two_hand:S6 {'equivalent': False, 'variables_that_differ': ['ARMED', 'BOTHOFF', 'STROKE']}
+st_two_hand:S7 {'equivalent': False, 'variables_that_differ': ['ARMED', 'STROKE']}
+FINISHED

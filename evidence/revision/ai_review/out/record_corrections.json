@@ -1,0 +1,32 @@
+{
+ "added_retained_state": [
+  "conveyor_jam_lockout",
+  "fbd_counter_reset",
+  "fbd_seal_in",
+  "g_start_cycle",
+  "g_stop_eq",
+  "g_tank_assignment",
+  "g_tank_start_eq",
+  "g_tank_start_le",
+  "g_tank_stop_ge",
+  "g_tank_sub_function",
+  "g_tank_substitution_coil",
+  "g_tank_value_filtering",
+  "g_tank_valves",
+  "g_two_hand_fb",
+  "il_counter_reset",
+  "il_seal_in",
+  "kiln_door_lockout",
+  "reactor_pressure_lockout",
+  "sfc_batch_fill_drain",
+  "sfc_counter_reset",
+  "sfc_elevator_door",
+  "st_counter_reset"
+ ],
+ "removed_retained_state": [
+  "sensor_forge"
+ ],
+ "scan_order_changed": {
+  "g_traffic_light_pedestrian": "sequential rung order within one scan -> tool-defined"
+ }
+}

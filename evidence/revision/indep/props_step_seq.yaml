@@ -1,0 +1,10 @@
+format_version: "0.1"
+properties:
+  - id: S1
+    kind: mutual_exclusion
+    variables: [St0, St1]
+    justification: "A step sequencer is one-hot: step 0 and step 1 are never active together."
+  - id: S2
+    kind: invariant
+    expression: "!DC || St1"
+    justification: "The DC output is driven by step 1, so it is on only while step 1 is active."

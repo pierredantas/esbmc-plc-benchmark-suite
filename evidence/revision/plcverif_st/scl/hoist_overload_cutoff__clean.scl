@@ -1,0 +1,24 @@
+FUNCTION_BLOCK HOIST_CONTROL
+  VAR_INPUT
+    overload_tripped : BOOL;
+    raise_command : BOOL;
+    lower_command : BOOL;
+  END_VAR
+  VAR
+    hoist_raise : BOOL;
+    hoist_lower : BOOL;
+  END_VAR
+
+BEGIN
+IF overload_tripped THEN
+    hoist_raise := FALSE;
+  ELSIF raise_command AND NOT lower_command THEN
+    hoist_raise := TRUE;
+  ELSE
+    hoist_raise := FALSE;
+  END_IF;
+
+  hoist_lower := lower_command AND NOT raise_command;
+  //#ASSERT NOT (overload_tripped AND hoist_raise) : P1
+  //#ASSERT NOT (overload_tripped AND hoist_raise) : P2
+END_FUNCTION_BLOCK

@@ -1,0 +1,12 @@
+{
+ "step_seq:S1": "VIOLATION",
+ "step_seq:S2": "SAFE",
+ "cocktail:C1": "SAFE",
+ "cocktail:C2": "SAFE",
+ "cocktail:C3": "SAFE",
+ "cocktail:C4": "VIOLATION",
+ "press_safety:P1": "SAFE",
+ "press_safety:P2": "SAFE",
+ "press_safety:P3": "SAFE",
+ "press_safety:P4": "VIOLATION"
+}

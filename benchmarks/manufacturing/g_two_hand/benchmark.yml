@@ -5,7 +5,7 @@ domain: manufacturing
 language: LD-graphical
 source:
   origin: authored
-  reference: "Authored from the Type II requirements in ISO 13851: synchronous actuation, anti-tie-down and anti-repeat, so a taped actuator cannot start a cycle"
+  reference: "Authored from the Type II requirements in ISO 13851: anti-tie-down and anti-repeat, so a taped actuator cannot start a cycle. The program has no timer, so it does not model the 0.5 s synchronous-actuation window of Type II control"
   license: CC-BY-4.0
 properties_file: props.yaml
 safety_intent: "The ram must descend only while both hand actuators are held; releasing either one must stop the stroke."

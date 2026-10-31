@@ -1,0 +1,848 @@
+{
+ "g_building_lighting__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_building_lighting__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_comb_mixed__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_comb_or__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_door_reversal__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_door_reversal__momentary": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "intrusion_dual_alarm__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "intrusion_dual_alarm__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "ld_comb_mixed__comb_mixed": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "ld_comb_or__comb_or": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_batch_mixer__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_batch_mixer__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_batch_reactor__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_batch_reactor__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_independent_hp_trip__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_independent_hp_trip__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_phase_hold_permissive__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_phase_hold_permissive__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_vessel_empty_permissive__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_vessel_empty_permissive__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_ctd_load__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 12,
+  "total_scans": 240,
+  "first": [
+   2,
+   0
+  ]
+ },
+ "g_elevator_door__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_elevator_door__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_timer_latch_mix__program": {
+  "status": "run",
+  "timers": true,
+  "shared": 1,
+  "mismatching_scans": 2,
+  "total_scans": 240,
+  "first": [
+   0,
+   2
+  ]
+ },
+ "ld_ctd_load__ctd_load": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 12,
+  "total_scans": 240,
+  "first": [
+   2,
+   0
+  ]
+ },
+ "ld_timer_latch_mix__timer_latch_mix": {
+  "status": "run",
+  "timers": true,
+  "shared": 2,
+  "mismatching_scans": 11,
+  "total_scans": 240,
+  "first": [
+   0,
+   2
+  ]
+ },
+ "g_burner_purge__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 4,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_burner_purge__self_clearing": {
+  "status": "run",
+  "timers": false,
+  "shared": 4,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_hvac_fan_delay__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_hvac_fan_delay__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_tof_hold__program": {
+  "status": "run",
+  "timers": true,
+  "shared": 1,
+  "mismatching_scans": 2,
+  "total_scans": 240,
+  "first": [
+   11,
+   10
+  ]
+ },
+ "g_ton_single__program": {
+  "status": "run",
+  "timers": true,
+  "shared": 1,
+  "mismatching_scans": 17,
+  "total_scans": 240,
+  "first": [
+   0,
+   10
+  ]
+ },
+ "ld_tof_hold__tof_hold": {
+  "status": "run",
+  "timers": true,
+  "shared": 2,
+  "mismatching_scans": 3,
+  "total_scans": 240,
+  "first": [
+   11,
+   10
+  ]
+ },
+ "ld_ton_single__ton_single": {
+  "status": "run",
+  "timers": true,
+  "shared": 2,
+  "mismatching_scans": 17,
+  "total_scans": 240,
+  "first": [
+   0,
+   10
+  ]
+ },
+ "purge_fault_lockout__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "purge_fault_lockout__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_comb_and__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_compressor_cycle__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_compressor_cycle__short_cycle": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_conveyor_interlock__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_conveyor_interlock__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_guard_lock__program": {
+  "status": "run",
+  "timers": true,
+  "shared": 2,
+  "mismatching_scans": 18,
+  "total_scans": 240,
+  "first": [
+   0,
+   11
+  ]
+ },
+ "g_guard_lock__no_rundown": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_ppu_evolution_1__evolution_1": {
+  "status": "skipped",
+  "reason": "toolchain: no POU instance struct in the generated header"
+ },
+ "g_two_hand__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_two_hand__type_i": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_two_hand_fb__program": {
+  "status": "skipped",
+  "reason": "int() argument must be a string, a bytes-like object or a nu"
+ },
+ "g_two_hand_fb__type_i": {
+  "status": "skipped",
+  "reason": "int() argument must be a string, a bytes-like object or a nu"
+ },
+ "ld_comb_and__comb_and": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "ld_ton_chain2__ton_chain2": {
+  "status": "run",
+  "timers": true,
+  "shared": 4,
+  "mismatching_scans": 58,
+  "total_scans": 240,
+  "first": [
+   0,
+   1
+  ]
+ },
+ "g_estop_reset__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 4,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_estop_reset__auto_reset": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_failsafe_motor_latch__failsafe_motor_latch": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_fwd_rev_interlock__fwd_rev_interlock": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_motor_interlock__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_motor_interlock__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_seal_in__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_star_delta__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_star_delta__no_deadtime": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_start_cycle__lstart_cycle": {
+  "status": "skipped",
+  "reason": "int() argument must be a string, a bytes-like object or a nu"
+ },
+ "g_stop_eq__lstop_eq": {
+  "status": "skipped",
+  "reason": "block"
+ },
+ "ld_latch_basic__latch_basic": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "ld_seal_in__seal_in": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_ctu_saturate__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_ftrig_edge__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_packaging_filler__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_packaging_filler__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_tp_pulse__program": {
+  "status": "run",
+  "timers": true,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "ld_ctu_saturate__ctu_saturate": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "ld_ftrig_edge__ftrig_edge": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "ld_tp_pulse__tp_pulse": {
+  "status": "run",
+  "timers": true,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "reject_gate_triple_output__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 4,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "reject_gate_triple_output__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 4,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_bus_coupler_changeover__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_bus_coupler_changeover__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_busbar_interlock__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_busbar_interlock__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_dead_bus_close_check__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_dead_bus_close_check__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 1,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_substation_breaker__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_substation_breaker__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_transformer_protect__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_transformer_protect__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_trip_lockout_86__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_trip_lockout_86__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "protection_lockout_cascade__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "protection_lockout_cascade__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_rtrig_edge__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_traffic_light__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_traffic_light__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 2,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_traffic_light_pedestrian__plc": {
+  "status": "skipped",
+  "reason": "namespace"
+ },
+ "ld_edge_counter__edge_counter": {
+  "status": "run",
+  "timers": false,
+  "shared": 4,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "ld_rtrig_edge__rtrig_edge": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "chemical_feed_fault_lockout__clean": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "chemical_feed_fault_lockout__bomb": {
+  "status": "run",
+  "timers": false,
+  "shared": 3,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_pump_alternation__program": {
+  "status": "run",
+  "timers": false,
+  "shared": 4,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_pump_alternation__stuck_duty": {
+  "status": "run",
+  "timers": false,
+  "shared": 4,
+  "mismatching_scans": 0,
+  "total_scans": 240,
+  "first": null
+ },
+ "g_tank_assignment__legitimate_lassignment": {
+  "status": "skipped",
+  "reason": "int() argument must be a string, a bytes-like object or a nu"
+ },
+ "g_tank_assignment__malicious_massignment": {
+  "status": "skipped",
+  "reason": "int() argument must be a string, a bytes-like object or a nu"
+ },
+ "g_tank_start_eq__legitimate_lstart_eq": {
+  "status": "skipped",
+  "reason": "block"
+ },
+ "g_tank_start_eq__malicious_mstart_eq": {
+  "status": "skipped",
+  "reason": "block"
+ },
+ "g_tank_start_le__legitimate_lstart_le": {
+  "status": "skipped",
+  "reason": "block"
+ },
+ "g_tank_start_le__malicious_mstart_le": {
+  "status": "skipped",
+  "reason": "block"
+ },
+ "g_tank_stop_ge__legitimate_lstop_ge": {
+  "status": "skipped",
+  "reason": "block"
+ },
+ "g_tank_stop_ge__malicious_mstop_ge": {
+  "status": "skipped",
+  "reason": "block"
+ },
+ "g_tank_sub_function__legitimate_lsub_function": {
+  "status": "skipped",
+  "reason": "int() argument must be a string, a bytes-like object or a nu"
+ },
+ "g_tank_sub_function__malicious_msub_function": {
+  "status": "skipped",
+  "reason": "int() argument must be a string, a bytes-like object or a nu"
+ },
+ "g_tank_substitution_coil__legitimate_lsubstitution_coil": {
+  "status": "skipped",
+  "reason": "int() argument must be a string, a bytes-like object or a nu"
+ },
+ "g_tank_substitution_coil__malicious_msubstitution_coil": {
+  "status": "skipped",
+  "reason": "int() argument must be a string, a bytes-like object or a nu"
+ },
+ "g_tank_value_filtering__legitimate_lvalue_filtering": {
+  "status": "skipped",
+  "reason": "int() argument must be a string, a bytes-like object or a nu"
+ },
+ "g_tank_value_filtering__malicious_mvalue_filtering": {
+  "status": "skipped",
+  "reason": "int() argument must be a string, a bytes-like object or a nu"
+ },
+ "g_tank_valves__legitimate_lvalves_handler": {
+  "status": "skipped",
+  "reason": "int() argument must be a string, a bytes-like object or a nu"
+ },
+ "g_tank_valves__malicious_mvalves_handler": {
+  "status": "skipped",
+  "reason": "int() argument must be a string, a bytes-like object or a nu"
+ }
+}

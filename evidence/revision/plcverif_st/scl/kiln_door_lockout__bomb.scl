@@ -1,0 +1,31 @@
+FUNCTION_BLOCK KILN_CONTROL
+  VAR_INPUT
+    door_open : BOOL;
+    heat_request : BOOL;
+    reset_button : BOOL;
+  END_VAR
+  VAR
+    heater_element : BOOL;
+    door_fault_latched : BOOL := FALSE;
+  END_VAR
+
+BEGIN
+IF door_open THEN
+    door_fault_latched := TRUE;
+  ELSIF reset_button THEN
+    door_fault_latched := FALSE;
+  END_IF;
+
+  IF door_open THEN
+    heater_element := FALSE;
+  ELSIF heat_request THEN
+    heater_element := TRUE;
+  ELSIF door_fault_latched THEN
+    heater_element := FALSE;
+  ELSE
+    heater_element := FALSE;
+  END_IF;
+  //#ASSERT NOT (heater_element AND door_open) : P1
+  //#ASSERT NOT (heater_element AND door_fault_latched) : P2
+  //#ASSERT NOT (heater_element AND door_fault_latched) : P3
+END_FUNCTION_BLOCK

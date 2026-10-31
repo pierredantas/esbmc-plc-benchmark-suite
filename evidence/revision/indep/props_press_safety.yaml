@@ -1,0 +1,18 @@
+format_version: "0.1"
+properties:
+  - id: P1
+    kind: invariant
+    expression: "!Press_Ram_Full || (E_Stop && !Guard_Front && !Guard_Left && !Guard_Right)"
+    justification: "The full-speed ram move needs a healthy E-stop and closed guards."
+  - id: P2
+    kind: mutual_exclusion
+    variables: [Press_Ram_Full, Press_Ram_Slow]
+    justification: "The ram is never in full and slow mode together."
+  - id: P3
+    kind: invariant
+    expression: "!Pressure_Pump || E_Stop"
+    justification: "The pump stops when the E-stop is pressed."
+  - id: P4
+    kind: invariant
+    expression: "!Pump_Run_Light || !Guard_Front"
+    justification: "The pump does not run with the front guard open (the program only checks guards in run mode)."

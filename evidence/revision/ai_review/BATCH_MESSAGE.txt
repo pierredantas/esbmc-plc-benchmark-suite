@@ -1,0 +1,14 @@
+Review the attached batch of benchmarks exactly as specified in your instructions.
+
+Return only CSV rows, one per benchmark in this batch, with no header line, no code fence, and no commentary.
+Columns, in this order:
+benchmark,language,scan_order,retained_state,timers_or_counters,overflow_possible,setreset_coils,verdict_scope,confidence,reasoning
+
+Allowed values:
+scan_order: rung | statement | tool-defined
+retained_state, timers_or_counters, overflow_possible, setreset_coils: yes | no
+verdict_scope: holds-under-stated-order | semantics-dependent
+confidence: high | medium | low
+reasoning: one sentence, in double quotes.
+
+Decide each field from the program text and your definitions alone.

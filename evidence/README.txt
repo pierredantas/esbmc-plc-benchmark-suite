@@ -19,3 +19,13 @@ BMC-depth and refusal extractors, and the per-variant records of run 1 for both 
 earlier 8.4.0 results on all 125 attempted variants. 8.6.0 agrees on 101 variants, returns no unknown result and no disagreement,
 and refuses 17 variants with UnsupportedConstruct, among them three that use EQ or GE comparison blocks. The scripts keep the
 absolute paths of the machine that produced them.
+
+2026-10-31 update (release v1.3.2): semantics.yml is corrected after a blind model review and a history test (77 benchmarks retain
+state, not 56; one scan order fixed); core_numbers.json is regenerated (only sem.retained changes). revision/ holds the checks of
+the Scientific Reports revision: plcverif_st (PLCverif on structured text), viac (MATIEC route on the 49 uncovered variants),
+scale (scaled programs), indep (three independently written programs; the source XML is not included because one is GPL-2.0, see
+indep/meta.json), reenc (re-encoding proofs), matiec_multiscan (multi-scan comparison with MATIEC C), standards (mutation check
+and model review of the 12 standard-anchored programs), ai_review (semantics review packet, replies, adjudication), second-machine
+(AWS EC2 timings), and the structural-class and twin-check scripts. The scripts keep the absolute paths of the machine that
+produced them. The model reviews were made with gemini-3.8-flash in Google AI Studio on 2026-10-30 and 2026-10-31; they are
+reviews by a model, not by a person.

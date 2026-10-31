@@ -1,0 +1,29 @@
+FUNCTION_BLOCK TANK
+  VAR_INPUT
+    level_high : BOOL;
+    start : BOOL;
+  END_VAR
+  VAR
+    pump : BOOL;
+    scan_cnt   : INT  := 0;        
+    armed      : BOOL := FALSE;     
+  END_VAR
+
+BEGIN
+scan_cnt := scan_cnt + 1;
+  IF scan_cnt >= 50 THEN
+    armed := TRUE;
+  END_IF;
+
+  IF start AND NOT level_high THEN
+    pump := TRUE;
+  END_IF;
+
+  
+  
+  IF level_high AND NOT armed THEN
+    pump := FALSE;
+  END_IF;
+  //#ASSERT NOT (pump AND level_high) : P1
+  //#ASSERT NOT (pump AND level_high) : P2
+END_FUNCTION_BLOCK

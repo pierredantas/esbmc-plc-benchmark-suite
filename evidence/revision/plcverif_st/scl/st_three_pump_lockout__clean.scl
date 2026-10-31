@@ -1,0 +1,33 @@
+FUNCTION_BLOCK THREE_PUMP
+  VAR_INPUT
+    req_a : BOOL;
+    req_b : BOOL;
+    req_c : BOOL;
+  END_VAR
+  VAR
+    pump_a : BOOL;
+    pump_b : BOOL;
+    pump_c : BOOL;
+  END_VAR
+
+BEGIN
+IF req_a THEN
+    pump_a := TRUE;
+    pump_b := FALSE;
+    pump_c := FALSE;
+  ELSIF req_b THEN
+    pump_a := FALSE;
+    pump_b := TRUE;
+    pump_c := FALSE;
+  ELSIF req_c THEN
+    pump_a := FALSE;
+    pump_b := FALSE;
+    pump_c := TRUE;
+  ELSE
+    pump_a := FALSE;
+    pump_b := FALSE;
+    pump_c := FALSE;
+  END_IF;
+  //#ASSERT NOT (pump_a AND pump_b AND pump_c) : P1
+  //#ASSERT NOT (pump_a AND pump_b) : P2
+END_FUNCTION_BLOCK
