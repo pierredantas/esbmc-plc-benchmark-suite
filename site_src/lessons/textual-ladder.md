@@ -2,6 +2,13 @@ Ladder has two spellings. Every program in the last six parts used the graphical
 graph of contacts and coils in PLCopen XML. The other is text, and this suite ships fifteen
 programs written that way that no route here can verify.
 
+!!! note "Update: released ESBMC 8.6.0"
+    The runs on this page were recorded against the builds named beside them. For comparison, in the paper's evaluation (`evidence/variants_302.csv` in the release):
+
+    - `g_ton_single`: the released ESBMC 8.6.0 passes the ingestion gate and returns SAFE; 8.4.0 fails the gate.
+    - `ld_latch_basic`: the released ESBMC 8.6.0 returns SAFE, which matches the expected verdict; 8.4.0 reports a false VIOLATION.
+    - The expected verdict is unchanged in every case.
+
 ## The notation
 
 Here is the on-delay timer from [lesson 1.6](../timers/index.md), written textually:

@@ -3,6 +3,12 @@ two, and anybody who has opened a guard early has heard it. ISO 14119 handles th
 guard locking: the door stays locked until the hazardous movement has actually stopped,
 which is a different moment from the one when the drive command goes away.
 
+!!! note "Update: released ESBMC 8.6.0"
+    The runs on this page were recorded against the builds named beside them. For comparison, in the paper's evaluation (`evidence/variants_302.csv` in the release):
+
+    - `g_guard_lock`: the released ESBMC 8.6.0 passes the ingestion gate and returns SAFE; 8.4.0 fails the gate.
+    - The expected verdict is unchanged in every case.
+
 Every machine in this part so far has been untimed. Lesson 7.2 said outright that the
 0.5 s synchrony window it needed was not in the model, and lesson 7.3 pushed the dead
 time into an input. This one puts a real timer in the rung.

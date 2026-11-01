@@ -1,6 +1,14 @@
 A PLC has no clock in the sense a program on your laptop has one. It has scans, and a
 timer counts them. Everything awkward about verifying timers follows from that.
 
+!!! note "Update: released ESBMC 8.6.0"
+    The runs on this page were recorded against the builds named beside them. For comparison, in the paper's evaluation (`evidence/variants_302.csv` in the release):
+
+    - `g_tof_hold`: the released ESBMC 8.6.0 returns SAFE, which matches the expected verdict; 8.4.0 reports a false VIOLATION.
+    - `g_ton_single`: the released ESBMC 8.6.0 passes the ingestion gate and returns SAFE; 8.4.0 fails the gate.
+    - `ld_tof_hold`: the released ESBMC 8.6.0 returns SAFE, which matches the expected verdict; 8.4.0 reports a false VIOLATION.
+    - The expected verdict is unchanged in every case.
+
 ## Time is counted in scans
 
 ESBMC models a timer on a fixed tick: one scan advances time by exactly one task

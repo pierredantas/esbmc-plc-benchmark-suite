@@ -1,6 +1,13 @@
 The second technique does not touch any existing code. It changes which block a rung calls,
 and puts the payload in the block.
 
+!!! note "Update: released ESBMC 8.6.0"
+    The runs on this page were recorded against the builds named beside them. For comparison, in the paper's evaluation (`evidence/variants_302.csv` in the release):
+
+    - `g_tank_stop_ge`: the released ESBMC 8.6.0 refuses it with an UnsupportedConstruct diagnostic; 8.4.0 answers SAFE.
+    - `g_tank_sub_function`: the released ESBMC 8.6.0 refuses it with an UnsupportedConstruct diagnostic; 8.4.0 answers SAFE.
+    - The expected verdict is unchanged in every case.
+
 ## Two characters
 
 {{files: benchmarks/water_treatment/g_tank_start_eq/legitimate_lstart_eq.xml | benchmarks/water_treatment/g_tank_start_eq/malicious_mstart_eq.xml | benchmarks/water_treatment/g_tank_start_eq/props.yaml}}

@@ -2,6 +2,12 @@ Nobody writes a two-hand control from contacts twice. Certified safety libraries
 as a block, you drop the block in, wire the two palm buttons, and the anti-tie-down logic
 is somebody else's tested code. That is the shape safety logic actually arrives in.
 
+!!! note "Update: released ESBMC 8.6.0"
+    The runs on this page were recorded against the builds named beside them. For comparison, in the paper's evaluation (`evidence/variants_302.csv` in the release):
+
+    - `g_two_hand_fb`: the released ESBMC 8.6.0 passes the ingestion gate and returns SAFE; 8.4.0 fails the gate.
+    - The expected verdict is unchanged in every case.
+
 So here is lesson 7.2's press again, with the identical Type II body moved into a
 function block. Same machine, same properties, same expected answers. The ladder twin
 verifies, and has since 7.2.
@@ -91,6 +97,7 @@ program from a plausible wrong one. This one cannot, because the checker is not 
 That makes it the odd lesson out here and a natural neighbour of Part 6, where the same
 thing happens to function block diagrams and sequential function charts.
 
-The suite ships it anyway, marked `candidate` rather than `validated`, with the ladder
-twin as its ground truth. A gap you can point at is worth more than a benchmark quietly
-dropped for answering wrong.
+The suite shipped it anyway, with the ladder twin as its expected verdict. A gap you can
+point at is worth more than a benchmark quietly dropped for answering wrong. The gap was
+fixed upstream in [esbmc#8034](https://github.com/esbmc/esbmc/issues/8034), and the task
+is now marked `validated`.

@@ -3,6 +3,13 @@ its `CU` pin until the count reaches `PV` and then raises `Q`, while a CTD count
 other way and raises `Q` when it hits zero. Both keep state across scans. That is what
 puts them here, in the half of Part 1 where the order of things starts to matter.
 
+!!! note "Update: released ESBMC 8.6.0"
+    The runs on this page were recorded against the builds named beside them. For comparison, in the paper's evaluation (`evidence/variants_302.csv` in the release):
+
+    - `g_ctd_load`: the released ESBMC 8.6.0 passes the ingestion gate and returns SAFE; 8.4.0 fails the gate.
+    - `g_ctu_saturate`: the released ESBMC 8.6.0 passes the ingestion gate and returns SAFE; 8.4.0 fails the gate.
+    - The expected verdict is unchanged in every case.
+
 ## Counting up, with a reset
 
 <svg class="diagram" viewBox="0 0 620 170" role="img" aria-label="Ladder rung: a Pulse contact into a CTU block with preset 2 and a Reset contact on the R pin, driving the Done coil"><g stroke="currentColor" fill="none" stroke-width="2.4"><path d="M28 18 V152"/><path d="M592 18 V152"/></g><g stroke="currentColor" fill="none" stroke-width="1.6"><path d="M28 56 H120"/><path d="M136 56 H250"/><path d="M370 56 H501"/><path d="M535 56 H592"/><path d="M120 44 V68"/><path d="M136 44 V68"/><path d="M28 118 H120"/><path d="M136 118 H250 V96"/><path d="M120 106 V130"/><path d="M136 106 V130"/><rect x="250" y="28" width="120" height="76" rx="3"/><path d="M508 42 Q494 56 508 70"/><path d="M528 42 Q542 56 528 70"/></g><g fill="currentColor" font-size="13" text-anchor="middle"><text x="128" y="36">Pulse</text><text x="128" y="98">Reset</text><text x="310" y="52">CTU</text><text x="310" y="72">PV = 2</text><text x="310" y="92">R</text><text x="518" y="36">Done</text></g></svg>

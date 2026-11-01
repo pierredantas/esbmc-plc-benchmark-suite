@@ -2,6 +2,12 @@ This benchmark is called `g_hvac_fan_delay`. There is no delay in it. That is wo
 lesson of its own, because a benchmark id is a label somebody chose, and the only
 trustworthy description of a program is the program.
 
+!!! note "Update: released ESBMC 8.6.0"
+    The runs on this page were recorded against the builds named beside them. For comparison, in the paper's evaluation (`evidence/variants_302.csv` in the release):
+
+    - `g_tof_hold`: the released ESBMC 8.6.0 returns SAFE, which matches the expected verdict; 8.4.0 reports a false VIOLATION.
+    - The expected verdict is unchanged in every case.
+
 ## The machine
 
 An air handling unit: a heating coil, a cooling coil and a supply fan, with an enable
