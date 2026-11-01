@@ -93,6 +93,6 @@ Two builds agree on the safety verdict. Only one of them verified a seal-in. The
 verdict alone could not tell you, and neither could the property, because the property
 was insensitive to the very feature the benchmark is named for.
 
-This is why a benchmark's ground truth needs the encoding beside it, not just the
+This is why a benchmark's expected verdict needs the encoding beside it, not just the
 label, and why any task named after a feature has to be audited against the encoding
 its recorded evidence actually produced.

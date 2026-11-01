@@ -140,7 +140,7 @@ multi_pou, case, for_loop, while_loop`.
 `hard` (multi-POU, arithmetic, deep k), `challenge` (currently unsolved by ≥1 baseline —
 report but do not require agreement).
 
-**Ground-truth method.** `expert` (hand-proved/hand-audited), `cross-tool-consensus`
+**Method that fixed the expected verdict** (schema key `ground_truth`). `expert` (hand-proved/hand-audited), `cross-tool-consensus`
 (≥2 tools agree + audited), `fault-injection` (mutant of a known-SAFE base; witness documented).
 
 ---
@@ -195,11 +195,11 @@ benchmarks: []                      # generated index: id -> path, language, dom
 
 - **SV-COMP compatibility** (`expected_verdict: true|false`, task descriptor, property files,
   witness validation) → the suite drops straight into P10 (SV-COMP entry) with no rework.
-- **Verdict out of comments, into schema** → machine-checkable ground truth; no ambiguity.
+- **Verdict out of comments, into schema** → machine-checkable expected verdict; no ambiguity.
 - **Stable ids + append-only** → citable, reproducible across suite versions.
 - **Per-program license field** → clean handling of MathWorks/SWaT redistribution limits
   (link-only programs get `license: link-only` and a URL instead of a bundled file).
-- **fault-injection as a first-class ground-truth method** → leverages your existing
+- **fault-injection as a first-class method for fixing an expected verdict** → leverages your existing
   legit/malicious pairs (PLC-LD-dataset, SWaT) as ready-made known-UNSAFE tasks.
 ```
 ```

@@ -34,7 +34,7 @@
     "validation_status": {
       "type": "string",
       "enum": ["validated", "candidate"],
-      "description": "validated = expected verdict tool-confirmed by >=1 model checker; candidate = established by construction/fault-injection, not yet independently tool-confirmed (e.g. semantics-dependent timers/counters or liveness)"
+      "description": "validated = every variant agreed with the expected verdict on two ESBMC routes that share no front end (the ladder front end and the Beremiz/MATIEC route); candidate = not promoted under that rule, with a verdict that rests on construction or fault injection (many depend on timer or counter semantics)"
     },
     "variants": {
       "type": "array",

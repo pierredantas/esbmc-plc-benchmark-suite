@@ -68,8 +68,9 @@ keywords:
   - industrial control systems
   - model checking
   - ESBMC
-  - nuXmv
-  - ground truth
+  - NuSMV
+  - PLCverif
+  - expected verdicts
   - SV-COMP
 preferred-citation:
   type: article
