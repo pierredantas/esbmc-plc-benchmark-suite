@@ -134,7 +134,7 @@ defects found so far all sit in front ends, where a second route disagrees with 
 
 ## The PLCopen schema
 
-A benchmark that no tool will import is not a benchmark. Every program here is validated
+A benchmark that no tool will import is not a benchmark. Every program here is checked
 against PLCopen's TC6 XSD with `xmllint`:
 
 ```

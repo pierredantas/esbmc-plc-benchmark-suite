@@ -6,8 +6,8 @@
 
 A community suite of IEC 61131-3 benchmarks across **10 industrial domains**, written in all
 five languages of the standard and carried as PLCopen XML or plain text, each with formal
-safety properties (YAML), machine-checkable expected verdicts, witnesses, and baseline results
-from ESBMC-PLC+ and nuXmv. SV-COMP–compatible so the artifact feeds a future SV-COMP PLC/ICS
+safety properties (YAML), machine-checkable expected verdicts, witnesses, and recorded results
+from ESBMC 8.4.0 and 8.6.0, with NuSMV and PLCverif as second engines. SV-COMP–compatible so the artifact feeds a future SV-COMP PLC/ICS
 category.
 
 **[Read it as a course](https://pierredantas.github.io/esbmc-plc-benchmark-suite/)** —
@@ -28,7 +28,7 @@ docs/format_spec.md            the format & schema specification (v0.1)
 docs/selection_50.md           the finalized 50-program selection
 schema/*.json                  JSON-Schema validators for benchmark.yml and props.yaml
 benchmarks/<domain>/<id>/      one directory per benchmark task
-  ├── benchmark.yml            metadata + variants + expected verdicts + ground truth
+  ├── benchmark.yml            metadata + variants + expected verdicts + method (key `ground_truth`)
   ├── props.yaml               formal properties (stable ids)
   ├── <variant>.st|.xml        program variant(s) — the system under test
   └── README.md                optional notes / provenance
@@ -61,18 +61,27 @@ docs/INTEROP.md                the second verification route and what it costs
 Verdicts: 123 SAFE / 63 VIOLATION. Derivation: 95 expert · 65 fault-injection · 26 cross-tool-consensus.
 
 ### Validation status of expected verdicts
-Each benchmark records a `validation_status` field: `validated` (tool-confirmed) or `candidate`.
+Each benchmark records a `validation_status` field: `validated` or `candidate`.
 
-* **65 validated**: tool-confirmed by ESBMC-PLC+ and, for the Boolean and edge/latch logic, by NuSMV.
-* **52 candidates**: verdicts that depend on timer or counter semantics, or whose structure is not
-  yet encoded for a second checker. They are flagged so that no result depends on an unconfirmed
-  label; confirming them follows the porting protocol in `docs/`.
+* **65 validated**: every variant agreed with the expected verdict on two routes of ESBMC that
+  share no front end, the ladder front end and a route from PLCopen XML through Beremiz and
+  MATIEC to ESBMC's C front end.
+* **52 candidates**: benchmarks not promoted under that rule. Their verdicts rest on construction
+  or fault injection, and many depend on timer or counter semantics or on constructs that no tool
+  here reads. They are flagged so that results can be reported with and without them; confirming
+  them follows the porting protocol in `docs/`.
+
+Candidate does not mean that no tool agrees: PLCverif confirms 13 variants of candidate
+benchmarks and NuSMV confirms 1. NuSMV and PLCverif are separate second engines. Together they
+confirm 137 of the 186 variants, and 159 with the MATIEC route. The paper gives the coverage by
+group and the limits.
 
 ### Known limitations
 `manufacturing` (23/117) and `water_treatment` (21/117) are the largest domains; the water share
 reflects SWaT and PLC-LD, the two richest public ICS corpora; results are reported per domain so they can be
-reweighted. Five benchmarks are textual/graphical syntax-coverage pairs (same logic, two
-encodings), labelled via `syntax_pair_of` and counted once per language slice.
+reweighted. 31 benchmarks are syntax twins (same logic, another language or notation), labelled via
+`syntax_pair_of` and counted separately in every total, so the suite holds about 86 distinct
+logic programs.
 
 **ESBMC OR-branch coil bug** ([esbmc/esbmc#7577](https://github.com/esbmc/esbmc/issues/7577)):
 ESBMC's LD front end does not OR-combine a coil driven by more than one parallel branch — it
@@ -110,10 +119,12 @@ python3 runner/validate.py            # whole suite
 python3 runner/validate.py benchmarks/motor_control/motor_interlock
 ```
 
-## Ground truth
+## Expected verdicts
 Expected verdicts are established by `expert` proof/audit, `cross-tool-consensus`, or
 `fault-injection` (a mutant of a known-SAFE base with a documented seeded defect and
-witness). ~24 of the 50 tasks arrive with fault-injection pairs.
+witness). Across the 186 variants the methods account for 95, 65, and 26 variants. The schema
+still names this record `ground_truth` so that existing files validate. Each verdict is
+qualified by the execution-model assumptions in `evidence/semantics.yml`.
 
 ## Contributing
 

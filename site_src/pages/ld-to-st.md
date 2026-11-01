@@ -4,7 +4,7 @@ Drop a PLCopen LD program here and read it back as IEC 61131-3 structured text. 
 file never leaves your browser: the conversion runs locally, in JavaScript, the same
 algorithm as [`runner/ld_to_st.py`](https://github.com/pierredantas/esbmc-plc-benchmark-suite/blob/main/runner/ld_to_st.py),
 which is what generates the "Structured text, derived" panel on every benchmark page in
-this suite. This is a reading aid, not a second ground truth: ESBMC verifies the ladder
+this suite. This is a reading aid, not a second source of expected verdicts: ESBMC verifies the ladder
 program itself, never a rendering of it.
 
 Works on any file with a `<pou><body><LD>` inside, not only files from this suite.

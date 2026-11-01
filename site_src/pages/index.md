@@ -95,6 +95,6 @@ had in common, and none of them was a solver getting an answer wrong.
 
 ## Citing it
 
-The archived release **v1.0.1** holds 50 benchmarks over 83 program variants and is what
-the accompanying paper reports. This site tracks the working tree, which has grown since.
+The archived release **v1.3.2** holds 117 benchmarks over 186 program variants and is what
+the accompanying paper reports. This site tracks the working tree.
 [Citing](citing.md) has the DOIs and the BibTeX.

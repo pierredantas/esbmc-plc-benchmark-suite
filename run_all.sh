@@ -91,7 +91,7 @@ echo ""
 echo "==== SUMMARY: ${total} variants | ${correct} correct | ${wrong} WRONG | ${unknown} unknown ===="
 echo "per-variant results: $TSV   (logs in results/logs/)"
 if [[ $wrong -eq 0 && $unknown -eq 0 ]]; then
-  echo "All verdicts match expected ground truth."
+  echo "All verdicts match the expected verdicts."
 else
   echo "Investigate:  awk -F'\\t' '\$7==\"WRONG\"||\$7==\"UNKNOWN\"' \"$TSV\""
 fi

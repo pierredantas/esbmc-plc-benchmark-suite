@@ -46,7 +46,7 @@ DIRECTIVE = re.compile(r"^\{\{\s*(\w+)\s*:\s*(.*?)\s*\}\}[ \t]*$", re.M)
 KIND = {".ld": "ladder program, PLCopen XML", ".xml": "ladder program, PLCopen XML",
         ".st": "structured text", ".yaml": "property file",
         ".yml": "benchmark metadata", ".md": "notes", ".sh": "run script",
-        ".smv": "nuXmv model", ".json": "run record",
+        ".smv": "SMV model", ".json": "run record",
         ".il": "instruction list"}
 LANG = {".ld": "xml", ".xml": "xml", ".yaml": "yaml", ".yml": "yaml",
         ".st": "text", ".sh": "bash", ".json": "json"}
@@ -664,7 +664,7 @@ def build_benchmark(meta, recorded):
     body += build_properties(meta)
 
     body += ["\n## Variants\n",
-             "| file | expected verdict | violates | ground truth |", "|---|---|---|---|"]
+             "| file | expected verdict | violates | method |", "|---|---|---|---|"]
     for var in meta.get("variants", []):
         expected = VERDICT.get(var.get("expected_verdict"), var.get("expected_verdict"))
         method = var.get("ground_truth", {}).get("method", "")
@@ -680,7 +680,7 @@ def build_benchmark(meta, recorded):
                  "Read off the ladder graph by `runner/ld_to_st.py`: every rung's contacts "
                  "and coils rewritten as IEC 61131-3 assignments, in the same series/"
                  "parallel logic the PLCopen XML encodes. This is a reading aid, not a "
-                 "second ground truth; ESBMC verifies the ladder program shown above, "
+                 "second source of expected verdicts; ESBMC verifies the ladder program shown above, "
                  "never this rendering.\n", tabs(st_pairs)]
 
     readme = meta["_dir"] / "README.md"

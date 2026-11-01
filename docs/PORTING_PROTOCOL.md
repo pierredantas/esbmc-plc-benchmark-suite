@@ -5,7 +5,7 @@ extension). The 15 textual-LD (`.ld` DSL) and 10 ST (`.st`) benchmarks therefore
 stored. Porting them is **not** a mechanical re-serialisation: for timers, counters, and latches
 the recorded verdict — established under an independent reference semantics — may **not transfer**,
 because ESBMC-PLC's scan-cycle models differ. This document is the procedure: the accepted XML
-forms, a per-construct recipe, and — the important part — how to re-establish ground truth under
+forms, a per-construct recipe, and — the important part — how to re-establish the expected verdict under
 the tool's own semantics. Verified against ESBMC-PLC v8.4 (build recipe in `tools/BUILD_AND_RUN.md`).
 
 Status of the graphical slice (context): all 25 graphical benchmarks already run — 45 variants,
@@ -104,7 +104,7 @@ benchmark (e.g. `benchmarks/power_substation/g_substation_breaker/`) for a worke
 
 ---
 
-## 3. Ground-truth re-establishment (the part that is not mechanical)
+## 3. Re-establishing the expected verdict (the part that is not mechanical)
 
 For latches, timers, and counters the reference verdict may be wrong under ESBMC-PLC. **Do not
 copy the stored verdict.** For each ported benchmark:
