@@ -141,8 +141,8 @@ ladder front end read it correctly*.
 
 One notation is missing from the four. The K-LD textual rung, `OTE(Y) := XIC(A) * XIC(B)
 * XIC(C);`, is in the download table and no tool here reads it: ESBMC XML-parses the file
-and fails, and Beremiz only reads PLCopen. It was validated with nuXmv, which is why the
-suite keeps more than one tool in view.
+and fails, and Beremiz only reads PLCopen. NuSMV confirms it, through the suite's converter and a
+translation to SMV that we wrote, which is why the suite keeps more than one tool in view.
 
 ## Try it
 

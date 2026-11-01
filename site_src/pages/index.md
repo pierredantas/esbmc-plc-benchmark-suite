@@ -63,14 +63,14 @@ that file describes.
 
 ## What it found
 
-Four defects, each filed upstream with a reproducer:
+Four defects, each filed upstream with a reproducer and now closed. The runs on this site were recorded on the builds that still had them, and the lessons say so where it matters. The released ESBMC 8.6.0 answers correctly on most of the affected tasks, which the Update note on each such lesson lists.
 
-| issue | defect |
-|---|---|
-| [esbmc#7354](https://github.com/esbmc/esbmc/issues/7354) | the ladder front end discards `ST`, `FBD` and `SFC` bodies, then reports `SUCCESSFUL` on the empty program that remains |
-| [esbmc#7352](https://github.com/esbmc/esbmc/issues/7352) | scan order comes from hash iteration order when the right power rail is unwired |
-| [esbmc#7353](https://github.com/esbmc/esbmc/issues/7353) | graphical `CTD` counters are never reloaded, because the load pin is not read |
-| [beremiz#83](https://github.com/beremiz/beremiz/issues/83) | `FactorizePaths` raises `TypeError` on Python 3 for unequal-length parallel branches |
+| issue | defect | status |
+|---|---|---|
+| [esbmc#7354](https://github.com/esbmc/esbmc/issues/7354) | the ladder front end discards `ST`, `FBD` and `SFC` bodies, then reports `SUCCESSFUL` on the empty program that remains | fixed 28 August 2026 |
+| [esbmc#7352](https://github.com/esbmc/esbmc/issues/7352) | scan order comes from hash iteration order when the right power rail is unwired | fixed 29 September 2026 |
+| [esbmc#7353](https://github.com/esbmc/esbmc/issues/7353) | graphical `CTD` counters are never reloaded, because the load pin is not read | fixed 29 September 2026 |
+| [beremiz#83](https://github.com/beremiz/beremiz/issues/83) | `FactorizePaths` raises `TypeError` on Python 3 for unequal-length parallel branches | closed 28 August 2026 |
 
 Three of the four are soundness bugs, which is to say the tool answers `SAFE` for a
 program that plainly breaks its property, and that is the one kind of wrong answer a

@@ -2,6 +2,13 @@ Every lesson so far has been combinational. Nothing carried a value from one sca
 the next, so the order in which rungs ran could not matter. Edge detection breaks that,
 and the moment order matters this suite stops agreeing with the tool.
 
+!!! note "Update: released ESBMC 8.6.0"
+    The runs on this page were recorded against the builds named beside them. For comparison, in the paper's evaluation (`evidence/variants_302.csv` in the release):
+
+    - `g_rtrig_edge`: the released ESBMC 8.6.0 returns SAFE and passes the ingestion gate; 8.4.0 returns unknown.
+    - `g_ftrig_edge`: the released ESBMC 8.6.0 returns SAFE and passes the ingestion gate; 8.4.0 returns unknown.
+    - The expected verdict is unchanged in every case.
+
 ## Detecting a rising edge
 
 A PLC has no interrupt for "this input just went high". You compare the input against
@@ -111,7 +118,7 @@ and you find the opposite: the program is right, the property is right, the expe
 verdict is right under the standard, and the tool ran the rungs in an order the file
 never specified.
 
-This is what a benchmark suite is for. A task with a defensible ground truth, established
+This is what a benchmark suite is for. A task with a defensible expected verdict, established
 independently of any tool, is the only thing that can tell you a tool is wrong rather
 than merely different. Had the expected verdict been recorded as "whatever ESBMC says",
 this defect would have been invisible.
