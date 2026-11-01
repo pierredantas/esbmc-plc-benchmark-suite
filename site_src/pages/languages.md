@@ -192,7 +192,7 @@ verdict from both.
 {{coverage: benchmarks}}
 
 Those counts are generated from the catalog when the site builds, so they cannot drift
-from it. FBD, SFC and IL entered the suite for language coverage, with ground truth
+from it. FBD, SFC and IL entered the suite for language coverage, with expected verdicts
 established by construction rather than by a tool run, which is why they carry
 `validation_status: candidate`. The [benchmarks catalog](benchmarks/index.md) lists every
 task.
