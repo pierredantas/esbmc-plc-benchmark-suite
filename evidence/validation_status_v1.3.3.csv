@@ -1,0 +1,19 @@
+benchmark,status_v1.3.2,status_v1.3.3,reason
+g_ppu_evolution_1,validated,candidate,no retained C-route record
+g_tank_assignment,validated,candidate,ESBMC 8.6 answer is conditional on H1 (no overflow); no retained C-route record
+g_tank_start_eq,validated,candidate,ESBMC 8.6 answer is conditional on H1 (no overflow); no retained C-route record
+g_tank_start_le,validated,candidate,ESBMC 8.6 answer is conditional on H1 (no overflow); no retained C-route record
+g_tank_stop_ge,validated,candidate,ESBMC 8.6 reports an error
+g_tank_sub_function,validated,candidate,ESBMC 8.6 reports an error; no retained C-route record
+g_tank_substitution_coil,validated,candidate,ESBMC 8.6 answer is conditional on H1 (no overflow); no retained C-route record
+g_tank_value_filtering,validated,candidate,ESBMC 8.6 answer is conditional on H1 (no overflow); no retained C-route record
+g_tank_valves,validated,candidate,ESBMC 8.6 answer is conditional on H1 (no overflow); no retained C-route record
+g_two_hand_fb,validated,candidate,no retained C-route record
+st_burner_purge,validated,candidate,ladder front end cannot read the variant
+st_compressor_cycle,validated,candidate,ladder front end cannot read the variant
+st_door_reversal,validated,candidate,ladder front end cannot read the variant
+st_estop_reset,validated,candidate,ladder front end cannot read the variant
+st_guard_lock,validated,candidate,ladder front end cannot read the variant
+st_pump_alternation,validated,candidate,ladder front end cannot read the variant
+st_star_delta,validated,candidate,ladder front end cannot read the variant
+st_two_hand,validated,candidate,ladder front end cannot read the variant

@@ -14,7 +14,7 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 safety_intent: "The Open coil must be energised only when both series contacts are closed."
-validation_status: validated
+validation_status: candidate
 variants:
   - file: evolution_1.xml
     expected_verdict: true

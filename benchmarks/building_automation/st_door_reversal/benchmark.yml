@@ -8,7 +8,7 @@ source:
   reference: "Structured Text rendering of g_door_reversal, for cross-language comparison of the same machine"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: validated
+validation_status: candidate
 syntax_pair_of: g_door_reversal
 variants:
   - file: door_reversal.st

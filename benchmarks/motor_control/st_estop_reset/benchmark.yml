@@ -8,7 +8,7 @@ source:
   reference: "Structured Text rendering of g_estop_reset, for cross-language comparison of the same safety function"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: validated
+validation_status: candidate
 syntax_pair_of: g_estop_reset
 variants:
   - file: estop_reset.st
