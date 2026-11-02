@@ -8,7 +8,7 @@ source:
   reference: "Structured Text rendering of g_star_delta, for cross-language comparison of the same machine"
   license: CC-BY-4.0
 properties_file: props.yaml
-validation_status: validated
+validation_status: candidate
 syntax_pair_of: g_star_delta
 variants:
   - file: star_delta.st

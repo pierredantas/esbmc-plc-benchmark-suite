@@ -9,7 +9,7 @@ source:
   license: "GPL-3.0"
 properties_file: props.yaml
 safety_intent: "Every PLC scan cycle must complete; no while-loop may run without its counter advancing, which would hang the scan."
-validation_status: validated
+validation_status: candidate
 variants:
   - file: legitimate_lassignment.xml
     expected_verdict: true

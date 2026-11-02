@@ -9,7 +9,7 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 safety_intent: "The ram must descend only while both hand actuators are held; releasing either one must stop the stroke."
-validation_status: validated
+validation_status: candidate
 syntax_pair_of: g_two_hand
 variants:
   - file: program.xml
