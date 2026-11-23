@@ -9,16 +9,19 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: candidate
+semantics:
+  scan_order: "sequential statement order"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.st
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
       confirmed_by: [pierre]
   - file: bomb.st
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.st
       seeded_defect: "Added maintenance override: IF maint THEN pump_a := req_a; pump_b := req_b; pump_c := FALSE; (drives pump_a and pump_b independently, bypassing the mutual-exclusion interlock between them while pump_c remains correctly locked out)."

@@ -10,15 +10,19 @@ source:
 properties_file: props.yaml
 safety_intent: "The lockout relay must block reclose until an explicit manual reset clears it; lockout and reclose must never be true together."
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
   - file: bomb.xml
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.xml
       seeded_defect: "Added a maintenance-key OR-branch that asserts reclose whenever maint is asserted alongside reclose_request, bypassing the lockout latch."

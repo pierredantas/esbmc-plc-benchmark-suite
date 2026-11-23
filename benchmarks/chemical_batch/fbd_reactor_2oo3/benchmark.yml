@@ -10,15 +10,18 @@ source:
 properties_file: props.yaml
 safety_intent: "Any two of three pressure switches agreeing high must trip the reactor, but a single stuck-high switch must not trip it alone."
 validation_status: candidate
+semantics:
+  scan_order: "tool-defined"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
   - file: bomb.xml
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.xml
       seeded_defect: "The (ps1 AND ps3) leg was dropped from the vote, so the outer switches cannot trip on their own."

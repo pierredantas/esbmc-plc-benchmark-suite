@@ -61,6 +61,20 @@ def validate_benchmark(bench_dir):
     return errors
 
 
+def semantics_drift(bench_dirs):
+    """Report descriptors whose semantics block differs from evidence/semantics.yml."""
+    path = os.path.join(ROOT, "evidence", "semantics.yml")
+    if not os.path.isfile(path):
+        return []
+    record = yaml.safe_load(open(path))
+    errors = []
+    for d in bench_dirs:
+        bench = yaml.safe_load(open(os.path.join(d, "benchmark.yml")))
+        if bench["id"] in record and bench.get("semantics") != record[bench["id"]]:
+            errors.append(f"{d}: semantics differs from evidence/semantics.yml")
+    return errors
+
+
 def main():
     dirs = sys.argv[1:] or [os.path.dirname(p) for p in
                             glob.glob(os.path.join(ROOT, "benchmarks", "**", "benchmark.yml"), recursive=True)]
@@ -71,6 +85,8 @@ def main():
         rel = os.path.relpath(d, ROOT)
         print(f"{'OK  ' if not errs else 'FAIL'} {rel}")
         all_errors += errs
+    if not sys.argv[1:]:
+        all_errors += semantics_drift(sorted(dirs))
     print(f"\n{n} benchmark(s) checked, {len(all_errors)} error(s).")
     for e in all_errors:
         print("  -", e)

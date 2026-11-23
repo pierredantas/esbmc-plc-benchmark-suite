@@ -10,11 +10,16 @@ source:
 properties_file: props.yaml
 safety_intent: "Load is dominant: the count-down Empty flag and Load must never hold together."
 validation_status: candidate
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  timer_counter_model: "one scan per tick; verdict not assumed to transfer to another timing model"
+  verdict_scope: "semantics-dependent"
 syntax_pair_of: ld_ctd_load
 variants:
   - file: program.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 metrics:
   rungs: 2

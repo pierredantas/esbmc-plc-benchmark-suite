@@ -11,11 +11,15 @@ source:
 properties_file: props.yaml
 safety_intent: "On a scan where Reset holds, the counter output must equal the supplied reset value rather than the incremented count."
 validation_status: candidate
+semantics:
+  scan_order: "tool-defined"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 syntax_pair_of: st_counter_reset
 variants:
   - file: program.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 metrics:
   pous: 1

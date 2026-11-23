@@ -10,11 +10,15 @@ source:
 properties_file: props.yaml
 safety_intent: "The rising-edge one-shot output must fire only on the scan the input signal goes high, not on every scan it stays high."
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 syntax_pair_of: ld_rtrig_edge
 variants:
   - file: program.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 features: [contacts, coils]
 difficulty: easy

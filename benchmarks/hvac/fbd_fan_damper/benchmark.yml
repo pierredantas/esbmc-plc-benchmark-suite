@@ -10,15 +10,18 @@ source:
 properties_file: props.yaml
 safety_intent: "The fan must never run against a shut damper, and a duct smoke alarm must drop the fan."
 validation_status: candidate
+semantics:
+  scan_order: "tool-defined"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
   - file: bomb.xml
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.xml
       seeded_defect: "The damper_open wire into the AND block was deleted, leaving fan := fan_cmd AND NOT smoke."

@@ -10,15 +10,19 @@ source:
 properties_file: props.yaml
 safety_intent: "Only one pump may run at a time, so the standby stays available and the rising main is not over-pressured."
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: program.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: cross-tool-consensus
       confirmed_by: [esbmc-plc v8.4, esbmc-plc master]
   - file: stuck_duty.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: program.xml
       seeded_defect: "The toggle's set branch is wired in series rather than in parallel, so duty never leaves the lead pump and the standby is never started."

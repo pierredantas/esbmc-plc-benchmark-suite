@@ -10,15 +10,19 @@ source:
 properties_file: props.yaml
 safety_intent: "Fill and drain must never be open together, since unreacted feed reaching the effluent line is a loss of containment."
 validation_status: candidate
+semantics:
+  scan_order: "tool-defined"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
   - file: bomb.xml
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.xml
       seeded_defect: "The Draining action block gained a second reference to fill_valve, the classic wrong-paste into a copied action block."

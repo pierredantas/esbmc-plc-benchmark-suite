@@ -9,11 +9,15 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: candidate
+semantics:
+  scan_order: "sequential statement order"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 syntax_pair_of: g_estop_reset
 variants:
   - file: estop_reset.st
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 features: [latch, edge_memory]
 difficulty: easy

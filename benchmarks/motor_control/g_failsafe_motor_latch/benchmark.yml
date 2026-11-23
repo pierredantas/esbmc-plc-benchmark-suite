@@ -10,10 +10,14 @@ source:
 properties_file: props.yaml
 safety_intent: "The motor coil must instantly de-energise if the hardware thermal overload relay physically trips."
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: failsafe_motor_latch.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
       confirmed_by: [pierre]
       witness: "results/records/g_failsafe_motor_latch__failsafe_motor_latch.json"

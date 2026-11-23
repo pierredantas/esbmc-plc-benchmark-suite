@@ -1,3 +1,5 @@
+# Superset of the `semantics` blocks in benchmarks/*/*/benchmark.yml. The 117 benchmarks of this release match their descriptors exactly
+# (runner/validate.py checks it); the 58 other ids belong to benchmarks removed in release v1.3.0. The descriptors are authoritative.
 access_door_forced_ds:
   retained_state: coils and edge or timer memory carry over from the previous scan
   scan_order: sequential rung order within one scan

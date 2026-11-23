@@ -28,7 +28,7 @@ docs/format_spec.md            the format & schema specification (v0.1)
 docs/selection_50.md           the finalized 50-program selection
 schema/*.json                  JSON-Schema validators for benchmark.yml and props.yaml
 benchmarks/<domain>/<id>/      one directory per benchmark task
-  ├── benchmark.yml            metadata + variants + expected verdicts + method (key `ground_truth`)
+  ├── benchmark.yml            metadata + variants + expected verdicts + method (key `verdict_basis`) + semantics assumptions (key `semantics`)
   ├── props.yaml               formal properties (stable ids)
   ├── <variant>.st|.xml        program variant(s) — the system under test
   └── README.md                optional notes / provenance
@@ -124,8 +124,8 @@ python3 runner/validate.py benchmarks/motor_control/motor_interlock
 Expected verdicts are established by `expert` proof/audit, `cross-tool-consensus`, or
 `fault-injection` (a mutant of a known-SAFE base with a documented seeded defect and
 witness). Across the 186 variants the methods account for 95, 65, and 26 variants. The schema
-still names this record `ground_truth` so that existing files validate. Each verdict is
-qualified by the execution-model assumptions in `evidence/semantics.yml`.
+names this record `verdict_basis`; earlier releases called it `ground_truth`. Each descriptor carries
+a `semantics` block with the execution-model assumptions under which its verdicts hold.
 
 ## Contributing
 

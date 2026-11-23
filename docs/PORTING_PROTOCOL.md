@@ -119,7 +119,7 @@ copy the stored verdict.** For each ported benchmark:
    Decide which case you are in:
    - **(a) Semantic divergence** — the tool's timer/counter/latch model legitimately makes the
      property hold/fail differently (e.g. Q persists a scan). The tool's verdict is *correct for
-     this tool*. Record it as a **per-tool verdict** (`ground_truth.method: cross-tool-consensus`
+     this tool*. Record it as a **per-tool verdict** (`verdict_basis.method: cross-tool-consensus`
      with a note, or a tool-specific verdict field) and document the divergence. This is a
      finding, not a bug.
    - **(b) Conversion error** — the XML doesn't model the intended logic (wrong wiring, precedence,

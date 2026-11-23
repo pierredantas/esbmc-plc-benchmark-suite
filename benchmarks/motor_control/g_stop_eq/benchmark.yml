@@ -11,10 +11,15 @@ source:
 properties_file: props.yaml
 safety_intent: "The STOP input must force the cycle off, overriding any other command."
 validation_status: candidate
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "values carry over between scans and are exchanged between program units"
+  arithmetic: "H1: no integer overflow; the program can overflow, so SAFE is conditional"
+  verdict_scope: "semantics-dependent"
 variants:
   - file: lstop_eq.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 features: [comparison, start_stop]
 difficulty: easy

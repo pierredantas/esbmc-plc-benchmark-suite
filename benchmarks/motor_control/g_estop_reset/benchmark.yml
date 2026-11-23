@@ -10,15 +10,19 @@ source:
 properties_file: props.yaml
 safety_intent: "The drive must never be energised while the emergency stop is actuated."
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: program.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: cross-tool-consensus
       confirmed_by: [esbmc-plc v8.4, esbmc-plc master]
   - file: auto_reset.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: program.xml
       seeded_defect: "The reset latch is removed, so the safety function follows the emergency stop contact directly and the drive is available again the moment the button is twisted out."

@@ -50,16 +50,20 @@ source:
   reference: "ESBMC-PLC-Sec S2"     # citation / URL / dataset name
   license: CC-BY-4.0                # redistribution license for THIS program
 properties_file: props.yaml
+semantics:                          # execution-model assumptions the verdicts need (required)
+  scan_order: "sequential rung order within one scan"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"   # or: semantics-dependent
 variants:                           # ≥1 program file, each with its own expected verdict
   - file: clean.st
     expected_verdict: true          # true = SAFE (all properties hold)
-    ground_truth:
+    verdict_basis:
       method: cross-tool-consensus  # expert | cross-tool-consensus | fault-injection
       confirmed_by: [esbmc-plc+, nuxmv]
   - file: bomb.st
     expected_verdict: false         # false = VIOLATION (≥1 property fails)
     violated_properties: [P2]       # ids from props.yaml
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.st
       seeded_defect: "Secret-knock sequence energises both contactors."
@@ -140,7 +144,9 @@ multi_pou, case, for_loop, while_loop`.
 `hard` (multi-POU, arithmetic, deep k), `challenge` (currently unsolved by ≥1 baseline —
 report but do not require agreement).
 
-**Method that fixed the expected verdict** (schema key `ground_truth`). `expert` (hand-proved/hand-audited), `cross-tool-consensus`
+**Semantics block.** `scan_order` and `verdict_scope` are required. `retained_state` is present when state carries over between scans, `timer_counter_model` when the program uses timers or counters, and `arithmetic` when a SAFE verdict assumes no integer overflow (H1). `verdict_scope` is `holds under the stated scan order` or `semantics-dependent`; the second marks verdicts that can change under another scan model.
+
+**Method that fixed the expected verdict** (schema key `verdict_basis`). `expert` (hand-proved/hand-audited), `cross-tool-consensus`
 (≥2 tools agree + audited), `fault-injection` (mutant of a known-SAFE base; witness documented).
 
 ---

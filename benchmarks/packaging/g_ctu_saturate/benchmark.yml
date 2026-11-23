@@ -10,11 +10,16 @@ source:
 properties_file: props.yaml
 safety_intent: "Reset is dominant: the count-up Done flag and Reset must never hold true together."
 validation_status: candidate
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  timer_counter_model: "one scan per tick; verdict not assumed to transfer to another timing model"
+  verdict_scope: "semantics-dependent"
 syntax_pair_of: ld_ctu_saturate
 variants:
   - file: program.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 metrics:
   rungs: 2

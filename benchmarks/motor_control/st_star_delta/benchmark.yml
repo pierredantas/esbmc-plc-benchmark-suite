@@ -9,11 +9,14 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: candidate
+semantics:
+  scan_order: "sequential statement order"
+  verdict_scope: "holds under the stated scan order"
 syntax_pair_of: g_star_delta
 variants:
   - file: star_delta.st
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 features: [mutual_exclusion]
 difficulty: easy
