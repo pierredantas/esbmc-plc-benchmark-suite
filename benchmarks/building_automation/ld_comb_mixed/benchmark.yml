@@ -9,10 +9,13 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: comb_mixed.ld
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 features: [contacts, coils]
 difficulty: easy

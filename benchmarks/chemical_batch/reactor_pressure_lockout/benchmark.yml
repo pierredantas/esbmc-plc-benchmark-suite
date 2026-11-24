@@ -9,16 +9,20 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: candidate
+semantics:
+  scan_order: "sequential statement order"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.st
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
       confirmed_by: [Pierre Dantas]
   - file: bomb.st
     expected_verdict: false
     violated_properties: [P2]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.st
       seeded_defect: "The pump dispatch was reordered to check feed_request before the fault/pressure lockout, so a pending feed request wins the branch the scan the fault is set, and ELSIF fault_flag OR pressure_high becomes unreachable once feed_request is true."

@@ -12,10 +12,15 @@ source:
 properties_file: props.yaml
 safety_intent: "For the same approach, red and green lights must never be illuminated together, and cars must not have green while pedestrians have green on a conflicting movement."
 validation_status: candidate
+semantics:
+  scan_order: "tool-defined"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  timer_counter_model: "one scan per tick; verdict not assumed to transfer to another timing model"
+  verdict_scope: "semantics-dependent"
 variants:
   - file: plc.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 features: [timer, sequence, function_block]
 difficulty: medium

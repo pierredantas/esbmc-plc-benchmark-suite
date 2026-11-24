@@ -9,10 +9,15 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  timer_counter_model: "one scan per tick; verdict not assumed to transfer to another timing model"
+  verdict_scope: "semantics-dependent"
 variants:
   - file: ctu_saturate.ld
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 features: [ctu, contacts, coils]
 difficulty: easy

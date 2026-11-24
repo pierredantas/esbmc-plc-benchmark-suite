@@ -9,16 +9,20 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.ld
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
       confirmed_by: [Pierre Dantas]
   - file: bomb.ld
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.ld
       seeded_defect: "Removed the fault_latch trigger, so burner_enable no longer checks purge_fail even though fault_indicator still reads the (now permanently-false) latch."

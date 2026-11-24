@@ -3,7 +3,7 @@
   "$id": "https://example.org/plc-benchmark-suite/benchmark.schema.json",
   "title": "benchmark descriptor (benchmark.yml)",
   "type": "object",
-  "required": ["format_version", "id", "name", "domain", "language", "source", "properties_file", "variants"],
+  "required": ["format_version", "id", "name", "domain", "language", "source", "properties_file", "semantics", "variants"],
   "additionalProperties": false,
   "properties": {
     "format_version": { "type": "string" },
@@ -31,6 +31,19 @@
     "properties_file": { "type": "string" },
     "safety_intent": { "type": "string", "description": "one-sentence natural-language statement of the safety property in plain terms, independent of variable names. Injected as a header comment into runner/ld_to_st.py's ST rendering of an XML-bodied variant, since a hand-authored .st file's own comment does not exist for those; see ml/README.md's XML-only benchmark idiom-drift discussion for why this field exists." },
     "syntax_pair_of": { "type": "string", "description": "id of the twin benchmark in the other syntax, if this is a syntax-coverage pair" },
+    "semantics": {
+      "type": "object",
+      "description": "The execution-model assumptions under which the expected verdicts hold. A disagreement between two tools can be a semantic difference, so the assumptions are part of the benchmark definition.",
+      "required": ["scan_order", "verdict_scope"],
+      "additionalProperties": false,
+      "properties": {
+        "scan_order": { "type": "string", "description": "Order in which rungs or statements are evaluated within one scan." },
+        "retained_state": { "type": "string", "description": "State that carries over between scans." },
+        "timer_counter_model": { "type": "string", "description": "How timers and counters are modeled; present when the program uses them." },
+        "arithmetic": { "type": "string", "description": "Arithmetic assumption such as H1 (no integer overflow); present when a SAFE verdict is conditional on it." },
+        "verdict_scope": { "type": "string", "enum": ["holds under the stated scan order", "semantics-dependent"] }
+      }
+    },
     "validation_status": {
       "type": "string",
       "enum": ["validated", "candidate"],
@@ -60,13 +73,13 @@
   "$defs": {
     "variant": {
       "type": "object",
-      "required": ["file", "expected_verdict", "ground_truth"],
+      "required": ["file", "expected_verdict", "verdict_basis"],
       "additionalProperties": false,
       "properties": {
         "file": { "type": "string" },
         "expected_verdict": { "type": "boolean", "description": "true = SAFE (all properties hold); false = VIOLATION" },
         "violated_properties": { "type": "array", "items": { "type": "string", "pattern": "^P[0-9]+$" } },
-        "ground_truth": {
+        "verdict_basis": {
           "type": "object",
           "required": ["method"],
           "additionalProperties": false,

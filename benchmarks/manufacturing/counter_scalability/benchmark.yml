@@ -9,39 +9,43 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: candidate
+semantics:
+  scan_order: "sequential statement order"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: bomb_N00255.st
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: expert
       seeded_defect: "Counter-fused overflow bomb, fuse width N=255 (by construction VIOLATION)."
       witness: "A trace that arms pump AND level_high once the counter fuse elapses."
   - file: bomb_N01023.st
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: expert
       seeded_defect: "Counter-fused overflow bomb, fuse width N=1023 (by construction VIOLATION)."
       witness: "A trace that arms pump AND level_high once the counter fuse elapses."
   - file: bomb_N04095.st
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: expert
       seeded_defect: "Counter-fused overflow bomb, fuse width N=4095 (by construction VIOLATION)."
       witness: "A trace that arms pump AND level_high once the counter fuse elapses."
   - file: bomb_N16383.st
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: expert
       seeded_defect: "Counter-fused overflow bomb, fuse width N=16383 (by construction VIOLATION)."
       witness: "A trace that arms pump AND level_high once the counter fuse elapses."
   - file: bomb_N32767.st
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: expert
       seeded_defect: "Counter-fused overflow bomb, fuse width N=32767 (by construction VIOLATION)."
       witness: "A trace that arms pump AND level_high once the counter fuse elapses."

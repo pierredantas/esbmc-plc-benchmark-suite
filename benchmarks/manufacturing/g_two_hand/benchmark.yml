@@ -10,15 +10,19 @@ source:
 properties_file: props.yaml
 safety_intent: "The ram must descend only while both hand actuators are held; releasing either one must stop the stroke."
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: program.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: cross-tool-consensus
       confirmed_by: [esbmc-plc v8.4, esbmc-plc master]
   - file: type_i.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: program.xml
       seeded_defect: "The arming latch is dropped, leaving Stroke as the plain conjunction of the two actuators. This is a Type I device: taping one button down and pressing the other starts a cycle."

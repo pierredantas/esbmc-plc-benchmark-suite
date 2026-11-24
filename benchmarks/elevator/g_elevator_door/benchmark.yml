@@ -10,15 +10,18 @@ source:
 properties_file: props.yaml
 safety_intent: "The elevator door must never be open while the car is driving."
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
   - file: bomb.xml
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.xml
       seeded_defect: "Added a maintenance-key OR-branch that bypasses the interlock when the operator asserts the secret maintenance combination."

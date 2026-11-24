@@ -10,16 +10,20 @@ source:
 properties_file: props.yaml
 safety_intent: "The ram must descend only while both hand actuators are held; releasing either one must stop the stroke."
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "values carry over between scans and are exchanged between program units"
+  verdict_scope: "holds under the stated scan order"
 syntax_pair_of: g_two_hand
 variants:
   - file: program.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
       witness: "Ground truth is the ladder twin g_two_hand, which both builds verify. Here both builds fail the ingestion gate: Stroke is never driven, because the frontend does not bind the block's actual parameters."
   - file: type_i.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: program.xml
       seeded_defect: "The arming latch is dropped from the block body, leaving the Type I conjunction, exactly as in g_two_hand/type_i.xml."

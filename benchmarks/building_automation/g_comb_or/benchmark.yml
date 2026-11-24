@@ -10,11 +10,14 @@ source:
 properties_file: props.yaml
 safety_intent: "The output must be energised only when at least one of the two inputs is closed."
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  verdict_scope: "holds under the stated scan order"
 syntax_pair_of: ld_comb_or
 variants:
   - file: program.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 metrics:
   rungs: 1

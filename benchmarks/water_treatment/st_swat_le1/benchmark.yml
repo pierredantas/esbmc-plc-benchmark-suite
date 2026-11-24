@@ -9,16 +9,20 @@ source:
   license: "GPL-3.0"
 properties_file: props.yaml
 validation_status: candidate
+semantics:
+  scan_order: "sequential statement order"
+  retained_state: "values carry over between scans and are exchanged between program units"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: sleg_LE1_0.st
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: cross-tool-consensus
       confirmed_by: [esbmc-plc+]
   - file: smal_LE1_0.st
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: sleg_LE1_0.st
       seeded_defect: "Injected non-terminating while-loop in a comparator function block (loop variable never reaches the exit bound), gated on a trigger sensor value."

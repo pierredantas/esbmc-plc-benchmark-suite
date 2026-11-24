@@ -10,14 +10,19 @@ source:
 properties_file: props.yaml
 safety_intent: "The safety guard must never be released while the drive is energised."
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  timer_counter_model: "one scan per tick; verdict not assumed to transfer to another timing model"
+  verdict_scope: "semantics-dependent"
 variants:
   - file: program.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
   - file: no_rundown.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: program.xml
       seeded_defect: "The rundown timer is removed and the guard releases on the request alone, so the door opens while the spindle is still coasting."

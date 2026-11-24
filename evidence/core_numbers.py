@@ -26,8 +26,8 @@ N['class']={c:dict(bench=sum(1 for i in ids if St[i]['cls']==c),var=sum(1 for r 
     cont=[st.median([St[i]['cont'] for i in ids if St[i]['cls']==c]),min(St[i]['cont'] for i in ids if St[i]['cls']==c),max(St[i]['cont'] for i in ids if St[i]['cls']==c)]) for c in ('third-party','authored micro','authored domain')}
 N['origin_sources']=dict(collections.Counter(b['source']['origin'] for b in B.values()))
 # methods
-N['method']={m:dict(all=sum(1 for b in B.values() for v in b['variants'] if v['ground_truth']['method']==m),
-   validated=sum(1 for b in B.values() if b['validation_status']=='validated' for v in b['variants'] if v['ground_truth']['method']==m)) for m in ('expert','fault-injection','cross-tool-consensus')}
+N['method']={m:dict(all=sum(1 for b in B.values() for v in b['variants'] if v['verdict_basis']['method']==m),
+   validated=sum(1 for b in B.values() if b['validation_status']=='validated' for v in b['variants'] if v['verdict_basis']['method']==m)) for m in ('expert','fault-injection','cross-tool-consensus')}
 # properties
 pk=collections.Counter()
 for b in B.values():

@@ -667,7 +667,7 @@ def build_benchmark(meta, recorded):
              "| file | expected verdict | violates | method |", "|---|---|---|---|"]
     for var in meta.get("variants", []):
         expected = VERDICT.get(var.get("expected_verdict"), var.get("expected_verdict"))
-        method = var.get("ground_truth", {}).get("method", "")
+        method = var.get("verdict_basis", {}).get("method", "")
         violated = ", ".join(f"`{p}`" for p in var.get("violated_properties", [])) or "none"
         body.append(f'| `{var["file"]}` | {expected} | {violated} | {method} |')
 

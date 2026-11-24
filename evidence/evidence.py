@@ -33,7 +33,7 @@ for bp in sorted(glob.glob(SUITE + "/benchmarks/*/*/benchmark.yml")):
         except Exception as ex:
             nv = "-"
         rows.append(dict(id=b["id"], file=f, domain=b["domain"], lang=b["language"], origin=b["source"]["origin"],
-                         status=b.get("validation_status"), method=v["ground_truth"]["method"], diff=b.get("difficulty"),
+                         status=b.get("validation_status"), method=v["verdict_basis"]["method"], diff=b.get("difficulty"),
                          exp=exp, s84=e84.get("status", "-"), v84=e84.get("verdict", "-"), g84=(e84.get("encoding") or {}).get("gate", "-"),
                          s86=e86.get("status", "-"), v86=e86.get("verdict", "-"), g86=(e86.get("encoding") or {}).get("gate", "-"),
                          t84=e84.get("cpu_time_s"), t86=e86.get("cpu_time_s"), nusmv=nv))

@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Schema: every `benchmark.yml` now carries a required `semantics` block (`scan_order`, `verdict_scope`, and where they apply
+  `retained_state`, `timer_counter_model`, `arithmetic`). The 117 descriptors are filled from `evidence/semantics.yml`.
+- Schema: the per-variant key `ground_truth` is renamed `verdict_basis`. Files that use the old key no longer validate.
+- `evidence/semantics.yml` mirrors the descriptors; the descriptors are authoritative.
+
 ## 1.3.4
 
 - `validation_status`: `g_two_hand_fb` changes from `candidate` to `validated` (47 validated and 70 candidates become 48 and 69).

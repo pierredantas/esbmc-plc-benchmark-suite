@@ -9,11 +9,16 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: candidate
+semantics:
+  scan_order: "sequential statement order"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  timer_counter_model: "one scan per tick; verdict not assumed to transfer to another timing model"
+  verdict_scope: "semantics-dependent"
 syntax_pair_of: g_guard_lock
 variants:
   - file: guard_lock.st
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 features: [ton]
 difficulty: easy

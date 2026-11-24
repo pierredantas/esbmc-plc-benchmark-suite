@@ -10,15 +10,18 @@ source:
 properties_file: props.yaml
 safety_intent: "The star and delta contactors must never be closed together, since that shorts the supply through the winding ends."
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: program.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: cross-tool-consensus
       confirmed_by: [esbmc-plc v8.4, esbmc-plc master]
   - file: no_deadtime.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: program.xml
       seeded_defect: "The dead-time term is dropped from the delta rung, so delta closes on the same signal that opens star. The commands stay exclusive; the contactors no longer do."

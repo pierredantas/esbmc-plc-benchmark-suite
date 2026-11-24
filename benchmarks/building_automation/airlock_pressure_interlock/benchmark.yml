@@ -9,16 +9,19 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: candidate
+semantics:
+  scan_order: "sequential statement order"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.st
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
       confirmed_by: [Pierre Dantas]
   - file: bomb.st
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.st
       seeded_defect: "The two door branches were split from an IF/ELSIF chain into independent IF statements, dropping the NOT outer_request / NOT inner_request cross-checks, so both requests arriving in the same scan unlock both doors together."

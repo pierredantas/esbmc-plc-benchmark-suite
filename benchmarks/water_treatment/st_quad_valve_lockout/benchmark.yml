@@ -9,16 +9,19 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: candidate
+semantics:
+  scan_order: "sequential statement order"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.st
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
       confirmed_by: [pierre]
   - file: bomb.st
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.st
       seeded_defect: "Added fast-flush mode: IF fast_flush THEN valve_3 := TRUE; runs as a second, independent rung after the exclusive selector, so valve_3 can be forced open alongside whatever valve_1/valve_2/valve_4 the selector already chose."

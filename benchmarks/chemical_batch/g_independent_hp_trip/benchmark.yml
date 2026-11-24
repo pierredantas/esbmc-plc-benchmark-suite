@@ -10,15 +10,18 @@ source:
 properties_file: props.yaml
 safety_intent: "The independent high-pressure trip must vent whenever pressure is high, regardless of what the batch sequencer is doing."
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
   - file: bomb.xml
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.xml
       seeded_defect: "Split the trip into a maintenance-suppressible leg and a sequence-gated leg, so pressure_high with maint=1 and sequence_step_active=0 no longer vents."

@@ -9,16 +9,19 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: candidate
+semantics:
+  scan_order: "sequential statement order"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.st
     expected_verdict: true            # SAFE: interlock holds for all reachable scans
-    ground_truth:
+    verdict_basis:
       method: cross-tool-consensus
       confirmed_by: [esbmc-plc+, nuxmv]
   - file: bomb.st
     expected_verdict: false           # VIOLATION: secret knock energises both motors
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.st
       seeded_defect: "Added rung: IF fwd AND rev AND maint THEN Motor_A:=TRUE; Motor_B:=TRUE; (bypasses interlock)."

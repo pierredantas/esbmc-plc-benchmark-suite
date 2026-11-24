@@ -10,15 +10,18 @@ source:
 properties_file: props.yaml
 safety_intent: "The coupler may parallel at most one healthy incomer onto the affected section; all three breakers must never be closed together."
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
   - file: bomb.xml
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.xml
       seeded_defect: "Added a maintenance-key OR-branch that closes the coupler whenever maint is asserted with incomer_a_healthy, regardless of incomer_b's actual breaker state."

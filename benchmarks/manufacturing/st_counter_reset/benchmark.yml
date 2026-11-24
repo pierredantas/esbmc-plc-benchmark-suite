@@ -10,10 +10,14 @@ source:
   license: "GPL-2.0-or-later"
 properties_file: props.yaml
 validation_status: candidate
+semantics:
+  scan_order: "sequential statement order"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: counter_reset.st
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 metrics:
   pous: 1

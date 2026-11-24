@@ -9,10 +9,14 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: validated
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: rtrig_edge.ld
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 features: [edge_rising, contacts, coils]
 difficulty: easy

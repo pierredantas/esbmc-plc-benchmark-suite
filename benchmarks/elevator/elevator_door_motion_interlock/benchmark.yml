@@ -9,16 +9,19 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: candidate
+semantics:
+  scan_order: "sequential statement order"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.st
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
       confirmed_by: [Pierre Dantas]
   - file: bomb.st
     expected_verdict: false
     violated_properties: [P2]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.st
       seeded_defect: "The combined door/overload guard was split into a door-only IF and a separate overload IF that only forces a stop, never preventing move_request from starting the car in the same scan the overload sensor trips."

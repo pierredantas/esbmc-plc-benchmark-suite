@@ -9,16 +9,19 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 validation_status: candidate
+semantics:
+  scan_order: "sequential statement order"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.st
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: cross-tool-consensus
       confirmed_by: [esbmc-plc+]
   - file: bomb.st
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: "clean.st"
       seeded_defect: "Added logic that forges the reported valve state so the HMI shows 'open' while the actuator is commanded closed."

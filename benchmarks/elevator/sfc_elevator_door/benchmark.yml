@@ -10,15 +10,19 @@ source:
 properties_file: props.yaml
 safety_intent: "The car must never travel with the door open, since anyone standing in the doorway would be exposed to the running shaft."
 validation_status: candidate
+semantics:
+  scan_order: "tool-defined"
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  verdict_scope: "holds under the stated scan order"
 variants:
   - file: clean.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
   - file: bomb.xml
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: clean.xml
       seeded_defect: "The Opening action qualifier was changed from N to S, so door_open is stored on entry and no later step resets it."

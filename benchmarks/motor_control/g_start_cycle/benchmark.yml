@@ -11,10 +11,15 @@ source:
 properties_file: props.yaml
 safety_intent: "Pressing STOP must release the holding circuit so the motor or cycle cannot remain energised, and simultaneous START and STOP must not leave the cycle active."
 validation_status: candidate
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "values carry over between scans and are exchanged between program units"
+  arithmetic: "H1: no integer overflow; the program can overflow, so SAFE is conditional"
+  verdict_scope: "semantics-dependent"
 variants:
   - file: lstart_cycle.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: expert
 features: [start_stop, seal_in, cycle]
 difficulty: easy

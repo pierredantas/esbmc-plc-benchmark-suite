@@ -10,16 +10,21 @@ source:
 properties_file: props.yaml
 safety_intent: "Every PLC scan cycle must complete; no while-loop may run without its counter advancing, which would hang the scan."
 validation_status: candidate
+semantics:
+  scan_order: "sequential rung order within one scan"
+  retained_state: "values carry over between scans and are exchanged between program units"
+  arithmetic: "H1: no integer overflow; the program can overflow, so SAFE is conditional"
+  verdict_scope: "semantics-dependent"
 variants:
   - file: legitimate_lvalue_filtering.xml
     expected_verdict: true
-    ground_truth:
+    verdict_basis:
       method: cross-tool-consensus
       confirmed_by: [esbmc-plc+]
   - file: malicious_mvalue_filtering.xml
     expected_verdict: false
     violated_properties: [P1]
-    ground_truth:
+    verdict_basis:
       method: fault-injection
       base_variant: legitimate_lvalue_filtering.xml
       seeded_defect: "Injected non-terminating while-loop (loop counter never incremented), gated on a trigger sensor value."
