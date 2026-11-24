@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.3.4
 
 - `validation_status`: `g_two_hand_fb` changes from `candidate` to `validated` (47 validated and 70 candidates become 48 and 69).
   The C-route rerun of October 30, 2026 already confirmed both variants, and the earlier count did not use it. A repeat on
