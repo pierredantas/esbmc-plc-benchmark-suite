@@ -63,11 +63,11 @@ Verdicts: 123 SAFE / 63 VIOLATION. Derivation: 95 expert Â· 65 fault-injection Â
 ### Validation status of expected verdicts
 Each benchmark records a `validation_status` field: `validated` or `candidate`.
 
-* **47 validated**: every variant agrees with the expected verdict on two routes of ESBMC that
+* **48 validated**: every variant agrees with the expected verdict on two routes of ESBMC that
   share no front end, the ladder front end and a route from PLCopen XML through Beremiz and
   MATIEC to ESBMC's C front end, and the retained evidence files show both. The change from
-  v1.3.2 is in `evidence/validation_status_v1.3.3.csv`.
-* **70 candidates**: benchmarks not promoted under that rule. Their verdicts rest on construction
+  v1.3.2 is in `evidence/validation_status_v1.3.3.csv` and `evidence/validation_status_v1.3.4.csv`.
+* **69 candidates**: benchmarks not promoted under that rule. Their verdicts rest on construction
   or fault injection, and many depend on timer or counter semantics or on constructs that no tool
   here reads. They are flagged so that results can be reported with and without them; confirming
   them follows the porting protocol in `docs/`.
