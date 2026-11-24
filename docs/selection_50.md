@@ -102,7 +102,7 @@
 | author (new program + mutant + props) | 6 | native graphical authoring |
 
 **Property files to write:** ~28 (22 props-needed + 6 authored). Syntax-pairs inherit.
-**Ground truth:** ~24 tasks fault-injection (witness ready); 26 expert/consensus.
+**Verdict basis:** ~24 tasks fault-injection (witness ready); 26 expert/consensus.
 
 ## Transparency notes for the paper
 1. **50 tasks over 41 distinct programs**; 9 are textual/graphical syntax-coverage pairs —

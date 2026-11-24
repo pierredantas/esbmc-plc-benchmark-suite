@@ -1,5 +1,7 @@
 # SLM fine-tuning: props.yaml generation
 
+In this document, *the reference* is the human-written `props.yaml` of a benchmark, against which the model's output is compared.
+
 Fine-tunes a small open model (Qwen2.5-Coder, MLX/LoRA) to generate a
 benchmark's `props.yaml` safety properties from its program source. Scope is
 deliberately narrow: given one program, emit its properties in the suite's
@@ -56,7 +58,7 @@ validated against `schema/properties.schema.json` before inclusion.
 
 `--augment-st` adds a second training pair for every LD-graphical/FBD/SFC
 (PLCopen XML) variant: `runner/ld_to_st.py` reconstructs an equivalent ST
-rendering from the same LD body, so the same validated ground truth trains the
+rendering from the same LD body, so the same validated reference trains the
 model on a second concrete syntax for free. Raises the dataset from 152 to 239
 records (87 XML variants have a translatable LD body; 13 are pure FBD/SFC with
 none). Omit the flag to build the smaller, unaugmented set.
@@ -161,7 +163,7 @@ the whole story.
 Every `mutual_exclusion` example in the corpus was a 2-variable pair until
 `st_three_pump_lockout` (N=3, `manufacturing`) and `st_quad_valve_lockout`
 (N=4, `water_treatment`) were authored to close the gap: both are real,
-schema-validated benchmarks with a clean variant (`expert` ground truth) and
+schema-validated benchmarks with a clean variant (`expert` method) and
 a fault-injected `bomb` variant whose seeded defect specifically breaks
 *pairwise* exclusion (not just "not all N together") — the exact distinction
 a pre-fix model got wrong, collapsing an N-way lockout into
@@ -251,7 +253,7 @@ direction — reported in full rather than picking the flattering half.
 
 | Program | 1.5B (`nary-best`) | 7B (`nary-best`) |
 |---|---|---|
-| `st_two_hand.st` (in-training memorization) | `!(Stroke && Armed)` — fabricated wrong variables, doesn't use `LH`/`RH` at all, despite the correct answer appearing 8+ times in `train.jsonl` | `!Stroke \|\| (LH && RH)` — **exact match to ground truth** |
+| `st_two_hand.st` (in-training memorization) | `!(Stroke && Armed)` — fabricated wrong variables, doesn't use `LH`/`RH` at all, despite the correct answer appearing 8+ times in `train.jsonl` | `!Stroke \|\| (LH && RH)` — **exact match to the reference** |
 | `press_two_hand.st` (AND-conjunction) | `!(ram_descend && (palm_left && palm_right))` — inverted polarity, missing `light_curtain_clear` | `!ram_descend \|\| (palm_left && palm_right)` — **polarity fixed**, `light_curtain_clear` still missing |
 | `reactor_2oo3_trip.st` (2-of-3 voting) | `!(trip_valve && ps1 && ps2)` — no voting structure, `ps3` missing, inverted polarity | `!trip_valve \|\| (ps1 && ps2) \|\| (ps1 && ps3) \|\| (ps2 && ps3)` — **correct voting logic, all 3 sensors, correct polarity** |
 | `vent_fan_interlock.st` (negated guard) | `!(gun_enabled && fan_running)` — exactly backward | `!gun_enabled \|\| fan_running` — **exactly correct** |
@@ -318,20 +320,20 @@ python3 ml/scripts/evaluate.py \
 variable, no mislabeled `mutual_exclusion`.
 
 The aggregate numbers alone hide the actual split, which the manual
-comparison against each task's ground-truth `props.yaml` makes visible:
+comparison against each task's reference `props.yaml` makes visible:
 
 - **`dual_valve_containment_gm`, `vfd_bypass_interlock`**: correct
-  `mutual_exclusion` kind, exact `variables` match against ground truth on
+  `mutual_exclusion` kind, exact `variables` match against the reference on
   both. Confirms the `mutual_exclusion`-on-peer-actuators shape generalizes
   cleanly to unseen programs. Both are missing the paired `reachability`
-  property (P2) that ground truth carries — under-enumeration, the same
+  property (P2) that the reference carries — under-enumeration, the same
   known failure mode documented above, not a new one.
 - **`capper_torque_stop_ds`**: **wrong**, and the more concerning kind of
   wrong. The generated invariant, `!(capper_run && fault_latch)`, uses only
   real variable names and is technically true of the program (`capper_run`
   and `fault_latch` are mutually exclusive by construction, both driven from
   the same `latch` in one scan), but it is not the safety property the
-  program exists to enforce — ground truth is `torque_high -> !capper_run`.
+  program exists to enforce — the reference is `torque_high -> !capper_run`.
   This is the "fabricated relationship between real variables" failure mode
   from the list above, caught by neither schema validation nor
   `check_props.py`, since both names check out against the source and the
@@ -398,11 +400,11 @@ generated content changed, not just its shape:
   the tautology-of-wiring failure this retraining round specifically
   targeted. New: `!(capper_run && torque_high)` — grounded in the actual
   trigger condition, matching the shape (if not the exact polarity) of
-  ground truth (`torque_high -> !capper_run`, the same relation via De
+  the reference (`torque_high -> !capper_run`, the same relation via De
   Morgan's).
 - **`dual_valve_containment_gm` — exact match.** Both P1 (`mutual_exclusion`,
   `[feed_v, vent_v]`) and P2 (reachability) now generated verbatim to
-  ground truth; the old checkpoint had the right P1 but dropped P2.
+  the reference; the old checkpoint had the right P1 but dropped P2.
 - **`vfd_bypass_interlock`** — same pattern, confirmed by the slice
   aggregate (not re-inspected individually).
 
@@ -443,7 +445,7 @@ together or exclude `termination` tasks from single-variant evaluation
 until `evaluate.py` supports it properly.
 
 
-## Retraining round: 4 new benchmarks, a ground-truth bug found in review, and a regression on the targeted case
+## Retraining round: 4 new benchmarks, a reference bug found in review, and a regression on the targeted case
 
 Continuing from the *Held-out probe* and *Retraining round* sections above,
 four more programs were authored specifically to add corpus breadth and probe
@@ -467,7 +469,7 @@ matching the intended witness.
 **`kiln_door_lockout` was drafted, from source and stated intent alone
 (no automated tool), before any ESBMC run** — a deliberate test of whether
 a large general-purpose model reasoning over one program's header comment
-and control flow produces usable ground truth. It got two of three
+and control flow produces a usable reference. It got two of three
 properties right and one wrong: the drafted reachability witness,
 `door_fault_latched && !door_open`, is not a bad state — it is the normal,
 safe state the program passes through after a fault trips and the door
@@ -558,7 +560,7 @@ checkpoint; this round's checkpoint is kept as
 Whether the P2 drop is a data-coverage gap (four single-latch-shape examples
 still is not much signal for "always ground persistence in the latch
 variable, even when a simpler reachability duplicate of P1 is also
-plausible") or an artifact of this specific 2-record ground-truth edit
+plausible") or an artifact of this specific 2-record reference edit
 interacting with LoRA's small effective capacity is not yet known — see
 *Next levers* below.
 
@@ -613,10 +615,10 @@ examples, current 383-record corpus and split): `kind_recall` 89.1%,
 metrics held at 100%. Breaking down every example that scored below 1.0 on
 either metric (13 of 55): 6 are recall-perfect but precision-docked purely
 for an unrequested extra `reachability` property appended to a
-single-property ground truth the model otherwise got exactly right
+single-property reference the model otherwise got exactly right
 (confirmed on 3 by direct re-generation: `Unlocked && Motor` and similar
-expressions matched ground truth verbatim, the only "error" was a bolted-on
-P2 the ground truth does not have). This reads as over-generalizing the
+expressions matched the reference verbatim, the only "error" was a bolted-on
+P2 the reference does not have). This reads as over-generalizing the
 "pair an invariant with a reachability witness" pattern that this round
 deliberately reinforced (now present in `kiln_door_lockout` plus the 3 new
 benchmarks, all trained together), rather than a loss of the underlying
@@ -624,7 +626,7 @@ reasoning. The remaining 7 are genuine misses: 4 are one benchmark
 (`chemical_batch/g_vessel_empty_permissive`, clean + bomb + its
 LD-graphical source, ST-augmented into 3 near-duplicate test-split entries)
 where the model now generates a plausible but wrong `invariant` instead of
-ground truth's `mutual_exclusion` between `feed_valve` and
+the reference's `mutual_exclusion` between `feed_valve` and
 `discharge_valve` — notably the same domain as the newly added
 `mixer_lid_stall_interlock`, consistent with (not proven to be) some
 cross-contamination from training two chemical_batch examples with
@@ -770,7 +772,7 @@ not with any specific interaction between a benchmark and a same-domain
 sibling.
 
 This is a corpus-quality finding, not a training-strategy interaction bug:
-some ground truth has no natural-language anchor for the model to lock the
+some reference has no natural-language anchor for the model to lock the
 correct idiom onto, and such examples should be expected to drift on any
 future round that shifts the adapter meaningfully, regardless of what
 domain the round's new benchmarks happen to touch. The fix is not "avoid

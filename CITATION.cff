@@ -5,7 +5,7 @@ message: >-
   If you use this benchmark suite, please cite both the
   accompanying paper and this artifact.
 type: dataset
-version: 1.4.0
+version: 1.4.1
 license: CC-BY-4.0
 doi: 10.5281/zenodo.21642385
 repository-code: https://github.com/pierredantas/esbmc-plc-benchmark-suite
@@ -75,8 +75,8 @@ keywords:
 preferred-citation:
   type: article
   title: >-
-    A Benchmark Suite and Ground-Truth Methodology for Formal
-    Verification of IEC 61131-3 Ladder Diagram Programs
+    A Benchmark Suite with Semantics-Qualified Expected Verdicts for
+    Formal Verification of IEC 61131-3 Programs
   journal: Scientific Reports
   year: 2026
   notes: Under review

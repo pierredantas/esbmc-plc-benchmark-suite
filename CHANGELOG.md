@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.1
+
+- Terminology: the remaining uses of "ground truth" are replaced by "expected verdict", "verdict basis", or, in the language-model
+  documentation (`ml/README.md`, `ml/scripts/build_dataset.py`), "reference" for the human-written `props.yaml`. The title in
+  `CITATION.cff` now matches the current manuscript. The key `ground_truth` and its replacement `verdict_basis` are documented in the 1.4.0 entry only.
+- Programs, properties, and expected verdicts are unchanged.
+
 ## 1.4.0
 
 - Schema: every `benchmark.yml` now carries a required `semantics` block (`scan_order`, `verdict_scope`, and where they apply
