@@ -661,3 +661,16 @@ vfd_bypass_interlock:
 welder_gas_shield_interlock:
   scan_order: sequential statement order
   verdict_scope: holds under the stated scan order
+ind_press_safety:
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  scan_order: "sequential rung order within one scan"
+  timer_counter_model: "one scan per tick; verdict not assumed to transfer to another timing model"
+  verdict_scope: "semantics-dependent"
+ind_cocktail_dispenser:
+  scan_order: "sequential rung order within one scan"
+  verdict_scope: "holds under the stated scan order"
+ind_step_sequencer:
+  retained_state: "coils and edge or timer memory carry over from the previous scan"
+  scan_order: "sequential rung order within one scan"
+  timer_counter_model: "one scan per tick; verdict not assumed to transfer to another timing model"
+  verdict_scope: "semantics-dependent"

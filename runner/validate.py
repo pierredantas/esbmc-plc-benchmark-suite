@@ -77,7 +77,8 @@ def semantics_drift(bench_dirs):
 
 def main():
     dirs = sys.argv[1:] or [os.path.dirname(p) for p in
-                            glob.glob(os.path.join(ROOT, "benchmarks", "**", "benchmark.yml"), recursive=True)]
+                            glob.glob(os.path.join(ROOT, "benchmarks", "**", "benchmark.yml"), recursive=True) +
+                            glob.glob(os.path.join(ROOT, "independent", "*", "benchmark.yml"))]
     all_errors, n = [], 0
     for d in sorted(dirs):
         n += 1

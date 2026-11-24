@@ -1,0 +1,38 @@
+format_version: '0.1'
+id: ind_step_sequencer
+name: step sequencer (public GitHub project, Lab 2b)
+domain: motor_control
+language: LD-graphical
+source:
+  origin: github-public
+  reference: https://github.com/jjv432/SeniorDesign, file OpenPLCFolders/Lab2b/plc.xml, repository commit 519ab1e, blob cf7b0ff
+  license: MIT
+properties_file: props.yaml
+safety_intent: The sequencer steps are one-hot, and the DC output is driven only by step 1.
+validation_status: candidate
+semantics:
+  scan_order: sequential rung order within one scan
+  retained_state: coils and edge or timer memory carry over from the previous scan
+  timer_counter_model: one scan per tick; verdict not assumed to transfer to another timing model
+  verdict_scope: semantics-dependent
+variants:
+- file: program.xml
+  expected_verdict: false
+  violated_properties:
+  - P1
+  verdict_basis:
+    method: cross-tool-consensus
+    confirmed_by:
+    - esbmc-8.6-ladder
+    - plcverif
+    witness: ESBMC 8.6 (ladder front end) and PLCverif each return the same verdict on every property. The properties were written by the suite authors from what the program evidently does; the program
+      was written by others.
+features:
+- contacts
+- coils
+- ton
+- sequence
+difficulty: medium
+tags:
+- independent-tier
+- third-party-github

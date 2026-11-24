@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.0
+
+- Adds `independent/`, a tier of three programs that someone outside the author group wrote (public GitHub projects under GPL-2.0, Apache-2.0, and MIT) with
+  ten properties that we wrote for them. Each has a descriptor, the normalized program, a properties file, and `independent/results.json` lists the answers of
+  ESBMC 8.4, ESBMC 8.6, the C route, and PLCverif. The tier is outside `benchmarks/` and the 117 benchmarks and 186 variants of the paper.
+- The schema accepts the source origin `github-public`. `runner/validate.py` and `runner/schema_check.py` cover `independent/`, so the validator now reports 120 descriptors.
+- Programs, properties, and expected verdicts of the 117 benchmarks are unchanged.
+
 ## 1.4.2
 
 - `g_two_hand_fb`: the witness text of both variants now matches the recorded runs. ESBMC 8.4 returns SAFE on both variants and fails the

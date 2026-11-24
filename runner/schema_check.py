@@ -25,7 +25,7 @@ import urllib.request
 
 XSD_URL = "https://raw.githubusercontent.com/beremiz/beremiz/master/plcopen/tc6_xml_v201.xsd"
 CACHE = pathlib.Path(os.path.expanduser("~/.cache/plcopen/tc6_xml_v201.xsd"))
-DEFAULTS = ["benchmarks", "demo", "demo2"]
+DEFAULTS = ["benchmarks", "independent", "demo", "demo2"]
 
 
 def schema_path():

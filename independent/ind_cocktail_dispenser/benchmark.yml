@@ -1,0 +1,35 @@
+format_version: '0.1'
+id: ind_cocktail_dispenser
+name: cocktail dispenser (public GitHub project, Pallas example)
+domain: chemical_batch
+language: LD-graphical
+source:
+  origin: github-public
+  reference: https://github.com/solarfiretech/Pallas, file Examples/OpenPLCEditor/Pallas/src/build/OpenPLC Runtime v4/src/plc.xml, repository commit ead8f71, blob b95361a
+  license: Apache-2.0
+properties_file: props.yaml
+safety_intent: At most one mixer and one liqueur are dispensed, and a cocktail is ready only with ice.
+validation_status: candidate
+semantics:
+  scan_order: sequential rung order within one scan
+  verdict_scope: holds under the stated scan order
+variants:
+- file: program.xml
+  expected_verdict: false
+  violated_properties:
+  - P4
+  verdict_basis:
+    method: cross-tool-consensus
+    confirmed_by:
+    - esbmc-8.6-ladder
+    - plcverif
+    witness: ESBMC 8.6 (ladder front end) and PLCverif each return the same verdict on every property. The properties were written by the suite authors from what the program evidently does; the program
+      was written by others.
+features:
+- contacts
+- coils
+- mutual_exclusion
+difficulty: medium
+tags:
+- independent-tier
+- third-party-github
