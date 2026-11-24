@@ -9,7 +9,7 @@ source:
   license: CC-BY-4.0
 properties_file: props.yaml
 safety_intent: "The ram must descend only while both hand actuators are held; releasing either one must stop the stroke."
-validation_status: candidate
+validation_status: validated
 semantics:
   scan_order: "sequential rung order within one scan"
   retained_state: "values carry over between scans and are exchanged between program units"

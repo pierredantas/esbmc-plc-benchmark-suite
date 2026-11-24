@@ -55,7 +55,7 @@ docs/INTEROP.md                the second verification route and what it costs
 > benchmarks over 83 variants of an earlier description. `evidence/` holds the per-variant
 > results, the semantics audit, the NuSMV translator, and `core_numbers.py`, which regenerates
 > every number in the paper.
-> Release v1.3.1 replaces the results of an ESBMC 8.5.0 development build with those of released ESBMC 8.6.0. Release v1.3.2 corrects `evidence/semantics.yml` (77 benchmarks retain state, not 56), corrects the `g_two_hand` descriptor, and adds `evidence/revision/` with the checks run for the Scientific Reports revision; the benchmarks, properties, and expected verdicts are unchanged. Release v1.3.3 changes `validation_status` only: 18 benchmarks that v1.3.2 marked `validated` are now `candidate`, because the retained evidence does not show both ESBMC routes on every variant (65 validated and 52 candidates become 47 and 70).
+> Release v1.3.1 replaces the results of an ESBMC 8.5.0 development build with those of released ESBMC 8.6.0. Release v1.3.2 corrects `evidence/semantics.yml` (77 benchmarks retain state, not 56), corrects the `g_two_hand` descriptor, and adds `evidence/revision/` with the checks run for the Scientific Reports revision; the benchmarks, properties, and expected verdicts are unchanged. Release v1.3.3 changes `validation_status` only: 18 benchmarks that v1.3.2 marked `validated` are now `candidate`, because the retained evidence does not show both ESBMC routes on every variant (65 validated and 52 candidates become 47 and 70). Release v1.3.4 marks `g_two_hand_fb` as `validated`, because both variants return the expected verdict on the C route (47 validated and 70 candidates become 48 and 69); the benchmarks, properties, and expected verdicts are unchanged.
 
 117 benchmarks / 186 variants across 10 domains, all passing `runner/validate.py`.
 Verdicts: 123 SAFE / 63 VIOLATION. Derivation: 95 expert · 65 fault-injection · 26 cross-tool-consensus.
@@ -63,11 +63,11 @@ Verdicts: 123 SAFE / 63 VIOLATION. Derivation: 95 expert · 65 fault-injection �
 ### Validation status of expected verdicts
 Each benchmark records a `validation_status` field: `validated` or `candidate`.
 
-* **47 validated**: every variant agrees with the expected verdict on two routes of ESBMC that
+* **48 validated**: every variant agrees with the expected verdict on two routes of ESBMC that
   share no front end, the ladder front end and a route from PLCopen XML through Beremiz and
   MATIEC to ESBMC's C front end, and the retained evidence files show both. The change from
-  v1.3.2 is in `evidence/validation_status_v1.3.3.csv`.
-* **70 candidates**: benchmarks not promoted under that rule. Their verdicts rest on construction
+  v1.3.2 is in `evidence/validation_status_v1.3.3.csv` and `evidence/validation_status_v1.3.4.csv`.
+* **69 candidates**: benchmarks not promoted under that rule. Their verdicts rest on construction
   or fault injection, and many depend on timer or counter semantics or on constructs that no tool
   here reads. They are flagged so that results can be reported with and without them; confirming
   them follows the porting protocol in `docs/`.

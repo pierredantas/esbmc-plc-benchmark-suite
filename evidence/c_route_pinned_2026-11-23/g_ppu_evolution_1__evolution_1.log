@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/user/Claude/5_ESBMC-PLC Toolkit/ESBMC-Benchmark-Suite/runner/record_via_c.py", line 455, in <module>
+    sys.exit(main())
+  File "/Users/user/Claude/5_ESBMC-PLC Toolkit/ESBMC-Benchmark-Suite/runner/record_via_c.py", line 430, in main
+    generated = build(program, props_path, pathlib.Path(tmp), args.scans)
+  File "/Users/user/Claude/5_ESBMC-PLC Toolkit/ESBMC-Benchmark-Suite/runner/record_via_c.py", line 249, in build
+    struct_name = entry_struct(program, header)
+  File "/Users/user/Claude/5_ESBMC-PLC Toolkit/ESBMC-Benchmark-Suite/runner/record_via_c.py", line 226, in entry_struct
+    raise RuntimeError("no POU instance struct in the generated header")
+RuntimeError: no POU instance struct in the generated header
