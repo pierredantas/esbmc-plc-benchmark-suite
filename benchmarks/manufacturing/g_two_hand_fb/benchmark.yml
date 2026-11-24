@@ -20,7 +20,7 @@ variants:
     expected_verdict: true
     verdict_basis:
       method: expert
-      witness: "Ground truth is the ladder twin g_two_hand, which both builds verify. Here both builds fail the ingestion gate: Stroke is never driven, because the frontend does not bind the block's actual parameters."
+      witness: "The expected verdict follows from the ladder twin g_two_hand, which both builds verify. Here both builds fail the ingestion gate: Stroke is never driven, because the frontend does not bind the block's actual parameters."
   - file: type_i.xml
     expected_verdict: true
     verdict_basis:

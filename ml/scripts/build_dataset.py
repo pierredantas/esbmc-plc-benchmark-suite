@@ -99,7 +99,7 @@ def collect_records(schema, augment_st=False):
                 ],
             })
 
-            # Same ground truth, different concrete syntax: runner/ld_to_st.py
+            # Same properties and expected verdict, different concrete syntax: runner/ld_to_st.py
             # reconstructs ST from a PLCopen LD body, so an XML-bodied variant
             # (LD-graphical/FBD/SFC) yields a second, free training pair.
             if augment_st and src_file.suffix == ".xml":
@@ -178,7 +178,7 @@ def main():
     ap.add_argument("--test-frac", type=float, default=0.15)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--augment-st", action="store_true",
-                     help="add an ld_to_st.py ST-translation record for every XML-bodied variant (same ground truth, new syntax)")
+                     help="add an ld_to_st.py ST-translation record for every XML-bodied variant (same properties and expected verdict, new syntax)")
     ap.add_argument("--force-train", default="",
                      help="comma-separated task ids to pin into the training split regardless of the random draw "
                           "(e.g. a newly authored task covering a pattern absent elsewhere in the corpus)")
