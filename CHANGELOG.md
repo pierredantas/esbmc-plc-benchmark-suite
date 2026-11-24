@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.2
+
+- `g_two_hand_fb`: the witness text of both variants now matches the recorded runs. ESBMC 8.4 returns SAFE on both variants and fails the
+  ingestion gate on `program.xml` only; ESBMC 8.6 passes the gate and returns SAFE on both, as does the C route.
+  Programs, properties, and expected verdicts are unchanged.
+
 ## 1.4.1
 
 - Terminology: the remaining uses of "ground truth" are replaced by "expected verdict", "verdict basis", or, in the language-model

@@ -20,14 +20,14 @@ variants:
     expected_verdict: true
     verdict_basis:
       method: expert
-      witness: "The expected verdict follows from the ladder twin g_two_hand, which both builds verify. Here both builds fail the ingestion gate: Stroke is never driven, because the frontend does not bind the block's actual parameters."
+      witness: "The expected verdict follows from the ladder twin g_two_hand, which both ESBMC builds verify. On this function-block rendering ESBMC 8.4 returns SAFE but fails the ingestion gate, because its frontend does not bind the block's actual parameters and Stroke is never driven. ESBMC 8.6 passes the gate and returns SAFE, and so does the C route through MATIEC."
   - file: type_i.xml
     expected_verdict: true
     verdict_basis:
       method: fault-injection
       base_variant: program.xml
       seeded_defect: "The arming latch is dropped from the block body, leaving the Type I conjunction, exactly as in g_two_hand/type_i.xml."
-      witness: "Expected SAFE by construction and confirmed on the ladder twin. Both builds report VIOLATION here, because a binary boolean in a function-block body is reduced to its first operand."
+      witness: "Expected SAFE by construction and confirmed on the ladder twin. ESBMC 8.4 and 8.6 both return SAFE here, and so does the C route through MATIEC."
 features: [function_block, multi_pou, latch]
 difficulty: medium
 tags: [safety-function, frontend-gap, syntax-pair]
