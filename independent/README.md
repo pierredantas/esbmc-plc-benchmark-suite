@@ -10,7 +10,7 @@ a replication (Supplementary Note S4, Table S4.1).
 | `ind_cocktail_dispenser` | solarfiretech/Pallas, `Examples/OpenPLCEditor/Pallas/src/build/OpenPLC Runtime v4/src/plc.xml`, ead8f71, b95361a | Apache-2.0 | 29 | P1 to P4 (C1 to C4 in the paper) |
 | `ind_step_sequencer` | jjv432/SeniorDesign, `OpenPLCFolders/Lab2b/plc.xml`, 519ab1e, cf7b0ff | MIT | 17 | P1, P2 (S1, S2 in the paper) |
 
-The license of each program is the license of the project it came from, recorded in `source.license`. The CC BY 4.0 license of the suite covers only the
+The license of each program is the license of the project it came from, recorded in `source.license`. Each directory holds the license text of that project at the recorded commit in `LICENSE-upstream`. The CC BY 4.0 license of the suite covers only the
 properties, descriptors, and results that we added.
 
 ## How the programs were prepared
