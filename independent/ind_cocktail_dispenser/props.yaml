@@ -1,0 +1,22 @@
+format_version: '0.1'
+properties:
+- id: P1
+  kind: mutual_exclusion
+  variables:
+  - DispenseMix1
+  - DispenseMix2
+  justification: At most one mixer type is dispensed.
+- id: P2
+  kind: mutual_exclusion
+  variables:
+  - DispenseLiqueur1
+  - DispenseLiqueur2
+  justification: At most one liqueur is dispensed.
+- id: P3
+  kind: invariant
+  expression: '!CocktailReady || DispenseIce'
+  justification: A cocktail is ready only if ice is dispensed.
+- id: P4
+  kind: invariant
+  expression: '!CocktailReady || DispenseWater'
+  justification: A cocktail is ready only if water is dispensed (the program does not require it).

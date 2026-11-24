@@ -1,0 +1,39 @@
+format_version: '0.1'
+id: ind_press_safety
+name: press safety controller (public GitHub project, Exercise 5)
+domain: manufacturing
+language: LD-graphical
+source:
+  origin: github-public
+  reference: https://github.com/omarfaruq-ai/Real-Time-Systems, file Exercise 5/Project Files/plc.xml, repository commit e0e0ca3, blob c8a8ccb
+  license: GPL-2.0
+properties_file: props.yaml
+safety_intent: The press ram must not move at full speed, and the pump must not run, unless the E-stop and guards allow it.
+validation_status: candidate
+semantics:
+  scan_order: sequential rung order within one scan
+  retained_state: coils and edge or timer memory carry over from the previous scan
+  timer_counter_model: one scan per tick; verdict not assumed to transfer to another timing model
+  verdict_scope: semantics-dependent
+variants:
+- file: program.xml
+  expected_verdict: false
+  violated_properties:
+  - P4
+  verdict_basis:
+    method: cross-tool-consensus
+    confirmed_by:
+    - esbmc-8.6-ladder
+    - plcverif
+    witness: ESBMC 8.6 (ladder front end) and PLCverif each return the same verdict on every property. The properties were written by the suite authors from what the program evidently does; the program
+      was written by others.
+features:
+- contacts
+- coils
+- latch
+- ton
+- interlock
+difficulty: medium
+tags:
+- independent-tier
+- third-party-github

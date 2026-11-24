@@ -1,0 +1,687 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0201" xmlns:html="http://www.w3.org/1999/xhtml">
+  <fileHeader companyName="Unknown" productName="Unnamed" productVersion="1" creationDateTime="2026-08-07T23:20:52" />
+  <contentHeader name="Unnamed" modificationDateTime="2026-08-07T23:20:52">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="16" y="16" />
+      </fbd>
+      <ld>
+        <scaling x="16" y="16" />
+      </ld>
+      <sfc>
+        <scaling x="16" y="16" />
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="main" pouType="program">
+        <interface>
+          <inputVars><variable name="IceRequest">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="MixType1">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="MixType2">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="MixType3">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Liqueur1">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Liqueur2">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="WaterRequest">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+          </inputVars><outputVars><variable name="DispenseIce">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="DispenseMix1">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="DispenseMix2">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="DispenseMix3">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="DispenseLiqueur1">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="DispenseLiqueur2">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="DispenseWater">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="CocktailReady">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+          </outputVars></interface>
+        <body>
+          <LD>
+            <leftPowerRail localId="1003240" width="3" height="40">
+              <position x="0" y="30" />
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="20" />
+              </connectionPointOut>
+            </leftPowerRail>
+            <leftPowerRail localId="7048255" width="3" height="40">
+              <position x="0" y="150" />
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="20" />
+              </connectionPointOut>
+            </leftPowerRail>
+            <leftPowerRail localId="10559783" width="3" height="40">
+              <position x="0" y="270" />
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="20" />
+              </connectionPointOut>
+            </leftPowerRail>
+            <leftPowerRail localId="5197735" width="3" height="40">
+              <position x="0" y="390" />
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="20" />
+              </connectionPointOut>
+            </leftPowerRail>
+            <leftPowerRail localId="5255157" width="3" height="40">
+              <position x="0" y="510" />
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="20" />
+              </connectionPointOut>
+            </leftPowerRail>
+            <leftPowerRail localId="7642627" width="3" height="40">
+              <position x="0" y="630" />
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="20" />
+              </connectionPointOut>
+            </leftPowerRail>
+            <leftPowerRail localId="9146033" width="3" height="40">
+              <position x="0" y="750" />
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="20" />
+              </connectionPointOut>
+            </leftPowerRail>
+            <leftPowerRail localId="2973947" width="3" height="40">
+              <position x="0" y="870" />
+              <connectionPointOut formalParameter="">
+                <relPosition x="3" y="20" />
+              </connectionPointOut>
+            </leftPowerRail>
+            <rightPowerRail localId="3094403" width="3" height="40">
+              <position x="320" y="30" />
+              <connectionPointIn>
+                <relPosition x="3" y="20" />
+                <connection refLocalId="6484101" formalParameter="output">
+                  <position x="297" y="50" />
+                  <position x="210" y="50" />
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+            <rightPowerRail localId="5092298" width="3" height="40">
+              <position x="320" y="150" />
+              <connectionPointIn>
+                <relPosition x="3" y="20" />
+                <connection refLocalId="3285401" formalParameter="output">
+                  <position x="297" y="170" />
+                  <position x="210" y="170" />
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+            <rightPowerRail localId="6594912" width="3" height="40">
+              <position x="548" y="270" />
+              <connectionPointIn>
+                <relPosition x="3" y="20" />
+                <connection refLocalId="4828907" formalParameter="output">
+                  <position x="297" y="290" />
+                  <position x="438" y="290" />
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+            <rightPowerRail localId="10056083" width="3" height="40">
+              <position x="548" y="390" />
+              <connectionPointIn>
+                <relPosition x="3" y="20" />
+                <connection refLocalId="5055239" formalParameter="output">
+                  <position x="297" y="410" />
+                  <position x="438" y="410" />
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+            <rightPowerRail localId="5997857" width="3" height="40">
+              <position x="548" y="510" />
+              <connectionPointIn>
+                <relPosition x="3" y="20" />
+                <connection refLocalId="3286045" formalParameter="output">
+                  <position x="297" y="530" />
+                  <position x="438" y="530" />
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+            <rightPowerRail localId="6599989" width="3" height="40">
+              <position x="434" y="630" />
+              <connectionPointIn>
+                <relPosition x="3" y="20" />
+                <connection refLocalId="2146075" formalParameter="output">
+                  <position x="297" y="650" />
+                  <position x="324" y="650" />
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+            <rightPowerRail localId="2587513" width="3" height="40">
+              <position x="434" y="750" />
+              <connectionPointIn>
+                <relPosition x="3" y="20" />
+                <connection refLocalId="5569316" formalParameter="output">
+                  <position x="297" y="770" />
+                  <position x="324" y="770" />
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+            <rightPowerRail localId="723539" width="3" height="40">
+              <position x="660" y="870" />
+              <connectionPointIn>
+                <relPosition x="3" y="20" />
+                <connection refLocalId="2725347" formalParameter="output">
+                  <position x="297" y="890" />
+                  <position x="550" y="890" />
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+            <contact localId="8190888" negated="false" width="24" height="24">
+              <position x="68" y="38" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="1003240" formalParameter="left-rail">
+                  <position x="68" y="50" />
+                  <position x="3" y="50" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>IceRequest</variable>
+            </contact>
+            <contact localId="862670" negated="false" width="24" height="24">
+              <position x="68" y="158" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="7048255" formalParameter="left-rail">
+                  <position x="68" y="170" />
+                  <position x="3" y="170" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>WaterRequest</variable>
+            </contact>
+            <contact localId="5993328" negated="false" width="24" height="24">
+              <position x="68" y="278" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="10559783" formalParameter="left-rail">
+                  <position x="68" y="290" />
+                  <position x="3" y="290" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>MixType1</variable>
+            </contact>
+            <contact localId="1117730" negated="true" width="24" height="24">
+              <position x="182" y="278" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="5993328" formalParameter="output">
+                  <position x="182" y="290" />
+                  <position x="92" y="290" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>MixType2</variable>
+            </contact>
+            <contact localId="847509" negated="true" width="24" height="24">
+              <position x="296" y="278" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="1117730" formalParameter="output">
+                  <position x="296" y="290" />
+                  <position x="206" y="290" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>MixType3</variable>
+            </contact>
+            <contact localId="1780890" negated="false" width="24" height="24">
+              <position x="68" y="398" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="5197735" formalParameter="left-rail">
+                  <position x="68" y="410" />
+                  <position x="3" y="410" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>MixType2</variable>
+            </contact>
+            <contact localId="4881180" negated="true" width="24" height="24">
+              <position x="182" y="398" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="1780890" formalParameter="output">
+                  <position x="182" y="410" />
+                  <position x="92" y="410" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>MixType1</variable>
+            </contact>
+            <contact localId="1473387" negated="true" width="24" height="24">
+              <position x="296" y="398" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="4881180" formalParameter="output">
+                  <position x="296" y="410" />
+                  <position x="206" y="410" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>MixType3</variable>
+            </contact>
+            <contact localId="8020667" negated="false" width="24" height="24">
+              <position x="68" y="518" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="5255157" formalParameter="left-rail">
+                  <position x="68" y="530" />
+                  <position x="3" y="530" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>MixType3</variable>
+            </contact>
+            <contact localId="7744348" negated="true" width="24" height="24">
+              <position x="182" y="518" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="8020667" formalParameter="output">
+                  <position x="182" y="530" />
+                  <position x="92" y="530" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>MixType1</variable>
+            </contact>
+            <contact localId="7485207" negated="true" width="24" height="24">
+              <position x="296" y="518" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="7744348" formalParameter="output">
+                  <position x="296" y="530" />
+                  <position x="206" y="530" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>MixType2</variable>
+            </contact>
+            <contact localId="2380108" negated="false" width="24" height="24">
+              <position x="68" y="638" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="7642627" formalParameter="left-rail">
+                  <position x="68" y="650" />
+                  <position x="3" y="650" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>Liqueur1</variable>
+            </contact>
+            <contact localId="5411999" negated="true" width="24" height="24">
+              <position x="182" y="638" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="2380108" formalParameter="output">
+                  <position x="182" y="650" />
+                  <position x="92" y="650" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>Liqueur2</variable>
+            </contact>
+            <contact localId="5918321" negated="false" width="24" height="24">
+              <position x="68" y="758" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="9146033" formalParameter="left-rail">
+                  <position x="68" y="770" />
+                  <position x="3" y="770" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>Liqueur2</variable>
+            </contact>
+            <contact localId="7997873" negated="true" width="24" height="24">
+              <position x="182" y="758" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="5918321" formalParameter="output">
+                  <position x="182" y="770" />
+                  <position x="92" y="770" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>Liqueur1</variable>
+            </contact>
+            <contact localId="7539105" negated="false" width="24" height="24">
+              <position x="68" y="878" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="2973947" formalParameter="left-rail">
+                  <position x="68" y="890" />
+                  <position x="3" y="890" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>DispenseIce</variable>
+            </contact>
+            <contact localId="10223613" negated="false" width="24" height="24">
+              <position x="186" y="878" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="7539105" formalParameter="output">
+                  <position x="186" y="890" />
+                  <position x="92" y="890" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>DispenseMix1</variable>
+            </contact>
+            <contact localId="1571071" negated="false" width="24" height="24">
+              <position x="186" y="970" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="7539105" formalParameter="output">
+                  <position x="186" y="982" />
+                  <position x="92" y="890" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>DispenseMix2</variable>
+            </contact>
+            <contact localId="5324842" negated="false" width="24" height="24">
+              <position x="186" y="1062" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="7539105" formalParameter="output">
+                  <position x="186" y="1074" />
+                  <position x="141" y="1074" />
+                  <position x="141" y="890" />
+                  <position x="92" y="890" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>DispenseMix3</variable>
+            </contact>
+            <contact localId="3710613" negated="false" width="24" height="24">
+              <position x="404" y="878" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="10223613" formalParameter="output">
+                  <position x="404" y="890" />
+                  <position x="210" y="890" />
+                </connection>
+                <connection refLocalId="1571071" formalParameter="output">
+                  <position x="404" y="890" />
+                  <position x="359" y="890" />
+                  <position x="359" y="982" />
+                  <position x="210" y="982" />
+                </connection>
+                <connection refLocalId="5324842" formalParameter="output">
+                  <position x="404" y="890" />
+                  <position x="359" y="890" />
+                  <position x="359" y="1074" />
+                  <position x="210" y="1074" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>DispenseLiqueur1</variable>
+            </contact>
+            <contact localId="4798268" negated="false" width="24" height="24">
+              <position x="404" y="970" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="10223613" formalParameter="output">
+                  <position x="404" y="982" />
+                  <position x="359" y="982" />
+                  <position x="359" y="890" />
+                  <position x="210" y="890" />
+                </connection>
+                <connection refLocalId="1571071" formalParameter="output">
+                  <position x="404" y="982" />
+                  <position x="359" y="982" />
+                  <position x="359" y="982" />
+                  <position x="210" y="982" />
+                </connection>
+                <connection refLocalId="5324842" formalParameter="output">
+                  <position x="404" y="982" />
+                  <position x="359" y="982" />
+                  <position x="359" y="1074" />
+                  <position x="210" y="1074" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="24" y="12" />
+              </connectionPointOut>
+              <variable>DispenseLiqueur2</variable>
+            </contact>
+            <coil localId="6484101" negated="false" width="28" height="24">
+              <position x="182" y="38" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="8190888" formalParameter="output">
+                  <position x="182" y="50" />
+                  <position x="92" y="50" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="28" y="12" />
+              </connectionPointOut>
+              <variable>DispenseIce</variable>
+            </coil>
+            <coil localId="3285401" negated="false" width="28" height="24">
+              <position x="182" y="158" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="862670" formalParameter="output">
+                  <position x="182" y="170" />
+                  <position x="92" y="170" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="28" y="12" />
+              </connectionPointOut>
+              <variable>DispenseWater</variable>
+            </coil>
+            <coil localId="4828907" negated="false" width="28" height="24">
+              <position x="410" y="278" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="847509" formalParameter="output">
+                  <position x="410" y="290" />
+                  <position x="320" y="290" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="28" y="12" />
+              </connectionPointOut>
+              <variable>DispenseMix1</variable>
+            </coil>
+            <coil localId="5055239" negated="false" width="28" height="24">
+              <position x="410" y="398" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="1473387" formalParameter="output">
+                  <position x="410" y="410" />
+                  <position x="320" y="410" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="28" y="12" />
+              </connectionPointOut>
+              <variable>DispenseMix2</variable>
+            </coil>
+            <coil localId="3286045" negated="false" width="28" height="24">
+              <position x="410" y="518" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="7485207" formalParameter="output">
+                  <position x="410" y="530" />
+                  <position x="320" y="530" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="28" y="12" />
+              </connectionPointOut>
+              <variable>DispenseMix3</variable>
+            </coil>
+            <coil localId="2146075" negated="false" width="28" height="24">
+              <position x="296" y="638" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="5411999" formalParameter="output">
+                  <position x="296" y="650" />
+                  <position x="206" y="650" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="28" y="12" />
+              </connectionPointOut>
+              <variable>DispenseLiqueur1</variable>
+            </coil>
+            <coil localId="5569316" negated="false" width="28" height="24">
+              <position x="296" y="758" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="7997873" formalParameter="output">
+                  <position x="296" y="770" />
+                  <position x="206" y="770" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="28" y="12" />
+              </connectionPointOut>
+              <variable>DispenseLiqueur2</variable>
+            </coil>
+            <coil localId="2725347" negated="false" width="28" height="24">
+              <position x="522" y="878" />
+              <connectionPointIn>
+                <relPosition x="0" y="12" />
+                <connection refLocalId="3710613" formalParameter="output">
+                  <position x="522" y="890" />
+                  <position x="428" y="890" />
+                </connection>
+                <connection refLocalId="4798268" formalParameter="output">
+                  <position x="522" y="890" />
+                  <position x="477" y="890" />
+                  <position x="477" y="982" />
+                  <position x="428" y="982" />
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="28" y="12" />
+              </connectionPointOut>
+              <variable>CocktailReady</variable>
+            </coil>
+          </LD>
+        </body>
+        <documentation>
+          <html:p> </html:p>
+        </documentation>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations>
+      <configuration name="Config0">
+        <resource name="Res0">
+          <task name="task0" priority="1" interval="T#20ms">
+            <pouInstance name="instance0" typeName="main" />
+          </task>
+        </resource>
+      </configuration>
+    </configurations>
+  </instances>
+</project>

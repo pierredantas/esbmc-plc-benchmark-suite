@@ -46,7 +46,7 @@ name: "Forward/reverse motor interlock"
 domain: motor_control               # must be one of SUITE.yml domains
 language: LD-textual                # LD-textual | LD-graphical | ST | FBD | SFC
 source:
-  origin: authored                  # authored | openplc | beremiz | ppu | swat | mathworks | controllino
+  origin: authored                  # authored | openplc | beremiz | ppu | swat | mathworks | controllino | github-public
   reference: "ESBMC-PLC-Sec S2"     # citation / URL / dataset name
   license: CC-BY-4.0                # redistribution license for THIS program
 properties_file: props.yaml

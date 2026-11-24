@@ -1,0 +1,82 @@
+{
+ "ind_press_safety:P1": {
+  "ladder 8.4": "SAFE",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "timeout",
+  "plcverif": "SAFE",
+  "expected": "SAFE",
+  "source_property": "P1"
+ },
+ "ind_press_safety:P2": {
+  "ladder 8.4": "SAFE",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "timeout",
+  "plcverif": "SAFE",
+  "expected": "SAFE",
+  "source_property": "P2"
+ },
+ "ind_press_safety:P3": {
+  "ladder 8.4": "SAFE",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "timeout",
+  "plcverif": "SAFE",
+  "expected": "SAFE",
+  "source_property": "P3"
+ },
+ "ind_press_safety:P4": {
+  "ladder 8.4": "VIOLATION",
+  "ladder 8.6": "VIOLATION",
+  "C route 8.6": "VIOLATION",
+  "plcverif": "VIOLATION",
+  "expected": "VIOLATION",
+  "source_property": "P4"
+ },
+ "ind_cocktail_dispenser:P1": {
+  "ladder 8.4": "SAFE",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "SAFE",
+  "plcverif": "SAFE",
+  "expected": "SAFE",
+  "source_property": "C1"
+ },
+ "ind_cocktail_dispenser:P2": {
+  "ladder 8.4": "SAFE",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "SAFE",
+  "plcverif": "SAFE",
+  "expected": "SAFE",
+  "source_property": "C2"
+ },
+ "ind_cocktail_dispenser:P3": {
+  "ladder 8.4": "VIOLATION",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "SAFE",
+  "plcverif": "SAFE",
+  "expected": "SAFE",
+  "source_property": "C3"
+ },
+ "ind_cocktail_dispenser:P4": {
+  "ladder 8.4": "VIOLATION",
+  "ladder 8.6": "VIOLATION",
+  "C route 8.6": "VIOLATION",
+  "plcverif": "VIOLATION",
+  "expected": "VIOLATION",
+  "source_property": "C4"
+ },
+ "ind_step_sequencer:P1": {
+  "ladder 8.4": "SAFE",
+  "ladder 8.6": "VIOLATION",
+  "C route 8.6": "VIOLATION",
+  "plcverif": "VIOLATION",
+  "expected": "VIOLATION",
+  "source_property": "S1"
+ },
+ "ind_step_sequencer:P2": {
+  "ladder 8.4": "unknown",
+  "ladder 8.6": "SAFE",
+  "C route 8.6": "timeout",
+  "plcverif": "SAFE",
+  "expected": "SAFE",
+  "source_property": "S2"
+ }
+}
