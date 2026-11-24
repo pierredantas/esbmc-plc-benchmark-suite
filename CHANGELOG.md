@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.4.0
 
 - Schema: every `benchmark.yml` now carries a required `semantics` block (`scan_order`, `verdict_scope`, and where they apply
   `retained_state`, `timer_counter_model`, `arithmetic`). The 117 descriptors are filled from `evidence/semantics.yml`.
