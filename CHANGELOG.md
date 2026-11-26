@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.2
+
+- Tag v1.5.1 (10.5281/zenodo.24573144) was created before the changes below were merged and holds the content of v1.5.0.
+- Adds the review of the expert-audit sample by a language model (Grok 4.5, November 26, 2026), because no human expert had answered: the sheets of a first run
+  (32 agree, 15 unsure, 0 disagree) and its three simulated repeat passes, the sheet and prompt of a second run (46 agree, 1 unsure, 0 disagree), and a note that
+  states the limits (`evidence/expert_audit/grok_*`, `GROK_REVIEW_NOTES.md`). It is not an independent human audit.
+- Programs, properties, and expected verdicts are unchanged.
+
 ## 1.5.0
 
 - Adds `independent/`, a tier of three programs that someone outside the author group wrote (public GitHub projects under GPL-2.0, Apache-2.0, and MIT) with
